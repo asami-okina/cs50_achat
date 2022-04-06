@@ -1,53 +1,46 @@
-import React, { Component } from 'react';
+import React from 'react';
 import {
-  Text,View,Button,StyleSheet, SafeAreaView, ScrollView, Image, TouchableOpacity
+  Text,View,StyleSheet, SafeAreaView, Image, TouchableOpacity
 } from 'react-native';
 import AppLoading from 'expo-app-loading';
-import { useFonts, AlfaSlabOne_400Regular } from '@expo-google-fonts/alfa-slab-one';
-import { ABeeZee_400Regular_Italic } from '@expo-google-fonts/abeezee';
+import { expoGoogleFonts } from '../../assets/fonts/expoGoogleFonts'
 
 function Welcome({navigation}) {
-    // フォントファミリーを導入
-    let [fontsLoaded] = useFonts({
-        AlfaSlabOne_400Regular,
-        ABeeZee_400Regular_Italic
-      });
-    
-      // フォントがダウンロードできていなかったら、ローディング画面を出す
-      if (!fontsLoaded) {
-        return <AppLoading />;
-      } else {
-      // フォントがダウンロードできたら、画面を出力する 
-        return (
-            <SafeAreaView style={styles.containerStyle}>
-                <View style={styles.headContainerStyle}></View>
-                <View style={styles.mainContainerStyle}></View>
-                <View style={styles.paddingStyle}></View>
-                <View style={styles.headMessageContainerStyle}>
-                    <Text style={styles.headMessageStyle}>Welcome</Text>
-                </View>
-                <View style={styles.paddingStyle}></View>
-                <View style={styles.logoContainerStyle}>
-                    <Image style={styles.logoStyle} source={require("../../assets/images/a-chat-logo-after.png")}/>
-                </View>
-                <View style={styles.paddingStyle}></View>
-                <View style={styles.bottomStyle}>
-                    <TouchableOpacity
-                        style={styles.buttonContainerStyle}
-                        onPress={() => navigation.navigate('SignUp')}
-                    >
-                        <Text style={styles.buttonTextStyle}>Sign Up</Text>
+    // フォントがダウンロードできていなかったら、ローディング画面を出す
+    if (!expoGoogleFonts) {
+    return <AppLoading />;
+    } else {
+    // フォントがダウンロードできたら、画面を出力する 
+    return (
+        <SafeAreaView style={styles.containerStyle}>
+            <View style={styles.headContainerStyle}></View>
+            <View style={styles.mainContainerStyle}></View>
+            <View style={styles.paddingStyle}></View>
+            <View style={styles.headMessageContainerStyle}>
+                <Text style={styles.headMessageStyle}>Welcome</Text>
+            </View>
+            <View style={styles.paddingStyle}></View>
+            <View style={styles.logoContainerStyle}>
+                <Image style={styles.logoStyle} source={require("../../assets/images/a-chat-logo-after.png")}/>
+            </View>
+            <View style={styles.paddingStyle}></View>
+            <View style={styles.bottomStyle}>
+                <TouchableOpacity
+                    style={styles.buttonContainerStyle}
+                    onPress={() => navigation.navigate('SignUp')}
+                >
+                    <Text style={styles.buttonTextStyle}>Sign Up</Text>
+                </TouchableOpacity>
+                <View style={styles.toLoginStyle}>
+                    <Text style={styles.toLoginTextStyle}>Do you have an account?</Text>
+                    <TouchableOpacity onPress={() => navigation.navigate('LogIn')}>
+                        <Text style={[styles.toLoginTextStyle, styles.toLoginTextLinkStyle]}>Login here</Text>
                     </TouchableOpacity>
-                    <View style={styles.toLoginStyle}>
-                        <Text style={styles.toLoginTextStyle}>Do you have an account?</Text>
-                        <TouchableOpacity onPress={() => navigation.navigate('LogIn')}>
-                            <Text style={[styles.toLoginTextStyle, styles.toLoginTextLinkStyle]}>Login here</Text>
-                        </TouchableOpacity>
-                    </View>
                 </View>
-            </SafeAreaView>
-        );
-      }
+            </View>
+        </SafeAreaView>
+    );
+    }
 }
 
 const styles = StyleSheet.create({
