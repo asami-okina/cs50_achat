@@ -3,9 +3,11 @@ import { Text,View, Image, TextInput, Pressable} from 'react-native';
 import { styles } from '../../styles/SignUp/signUpStyles';
 
 
-export function MailForm(props) {
-    // 引数の展開
-    const {inputAccessoryViewID} = props
+export function MailForm({
+  inputAccessoryViewID,
+  isCorrectMail,
+  setIsCorrectMail
+}) {
 
     // 入力フォーム
     const [emailText, onChangeEmailText] = useState("");
@@ -14,8 +16,6 @@ export function MailForm(props) {
     const [displayMailDescription, setDisplayMailDescription] = useState(false);
     // メールアドレスアイコンのデフォルト表示
     const [defaultDisplayMailIcons, setDefaultDisplayMailIcons] = useState(false)
-    // メールアドレスのバリデーション
-    const [isCorrectMail, setIsCorrectMail] =  useState(false);
     // メールアドレスの入力フォームの枠線のデフォルト表示
     const [defaultMailBorderColor, setDefaultMailBorderColor] = useState(false)
 

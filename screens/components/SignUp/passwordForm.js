@@ -5,9 +5,14 @@ import { useTogglePasswordVisibility } from '../../hooks/useTogglePasswordVisibi
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 
 
-export function PasswordForm(props) {
+export function PasswordForm({
+    inputAccessoryViewID,
+    isCorrectPassewordSymbol,
+    setIsCorrectPassewordSymbol,
+    isCorrectPassewordStringCount,
+    setIsCorrectPassewordStringCount,
+}) {
     // 引数の展開
-    const {inputAccessoryViewID} = props
 
     // 入力フォーム
     const [passwordText, onChangePasswordText] = useState("");
@@ -18,10 +23,6 @@ export function PasswordForm(props) {
     const { passwordVisibility, rightIcon, handlePasswordVisibility } = useTogglePasswordVisibility();
     // パスワードアイコンのデフォルト表示
     const [defaultDisplayPasswordIcons, setDefaultDisplayPasswordIcons] = useState(false)
-    // パスワードのバリデーション(半角英数字記号)
-    const [isCorrectPassewordSymbol, setIsCorrectPassewordSymbol] = useState(false);
-    // パスワードのバリデーション(文字数)
-    const [isCorrectPassewordStringCount, setIsCorrectPassewordStringCount] = useState(false);
     // パスワードの入力フォームの枠線のデフォルト表示
     const [defaultPasswordBorderColor, setDefaultPasswordBorderColor] = useState(false)
 

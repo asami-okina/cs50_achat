@@ -1,13 +1,18 @@
 import React, {useState} from 'react';
-import { Text,View, Image, TextInput, Pressable} from 'react-native';
+import { Text,View, Image, TextInput, Pressable, KeyboardAvoidingView} from 'react-native';
 import { styles } from '../../styles/SignUp/signUpStyles';
 import {fetchIsAvailableUserId} from "../../../api/api";
 
 
-export function UserIdForm(props) {
-    // 引数の展開
-    const {inputAccessoryViewID} = props
-
+export function UserIdForm({
+    inputAccessoryViewID,
+    isCorrectUserIdSymbol,
+    setIsCorrectUserIdSymbol,
+    isCorrectUserIdStringCount,
+    setIsCorrectUserIdStringCount,
+    isAvailableUserId,
+    setIsAvailableUserId
+}) {
     // 入力フォーム
     const [userIdText, onChangeUserIdText] = useState("");
 
@@ -15,12 +20,6 @@ export function UserIdForm(props) {
     const [displayUserIdDescription, setDisplayUserIdDescription] = useState(false);
     // ユーザーIDアイコンのデフォルト表示
     const [defaultDisplayUserIcons, setDefaultDisplayUserIcons] = useState(false)
-    // ユーザーIDのバリデーション(半角英数字)
-    const [isCorrectUserIdSymbol, setIsCorrectUserIdSymbol] =  useState(false);
-    // ユーザーIDのバリデーション(文字数)
-    const [isCorrectUserIdStringCount, setIsCorrectUserIdStringCount] = useState(false);
-    // ユーザーIDのバリデーション(使用可能かどうか)
-    const [isAvailableUserId, setIsAvailableUserId] = useState(false)
     // ユーザーIDの入力フォームの枠線のデフォルト表示
     const [defaultUserIdBorderColor, setDefaultUserIdBorderColor] = useState(false)
     
@@ -58,13 +57,14 @@ export function UserIdForm(props) {
  
     return (
       <View>
-        {/* UserId */}
         <View style={styles.searchBoxStyle}>
             <View style={styles.searchWrapperStyle}>
                 <Pressable style={styles.searchContainerStyle} onPress={() => textInputUserId.focus()}>
                     <Text style={styles.searchTitleStyle}>UserId</Text>
+                    {/* <KeyboardAvoidingView behavior="padding"> */}
                     <View style={defaultUserIdBorderColor ? isCorrectUserIdSymbol && isCorrectUserIdStringCount ? styles.searchViewStyle : [styles.searchViewStyle, styles.inputIncorrectBorderColorStyle]: styles.searchViewStyle}>
                         <Image source={require("../../../assets/profile.png")} style={styles.searchIconStyle}/>
+                        {/* <KeyboardAvoidingView behavior="padding"> */}
                         <TextInput
                             onChangeText={onChangeUserIdText}
                             style={styles.searchContentStyle}
@@ -122,4 +122,3 @@ export function UserIdForm(props) {
     </View>
   )
 }
-

@@ -7,9 +7,10 @@ export const styles = StyleSheet.create({
           backgroundColor: "#1B1C56",
       },
       headContainerStyle: {
-          width: "100%",
-          height: "10%",
-          backgroundColor: "#1B1C56"
+        width: "100%",
+        height: "10%",
+        height: 40,
+        backgroundColor: "#1B1C56",
       },
       headMessageContainerStyle: {
           backgroundColor: "#feffff",
@@ -31,7 +32,6 @@ export const styles = StyleSheet.create({
       },
       // 検索フォーム
       searchBoxStyle: {
-        height: 70,
         flex: 1,
         backgroundColor: "#feffff",
       },
@@ -46,6 +46,7 @@ export const styles = StyleSheet.create({
       searchTitleStyle: {
           fontFamily: "ABeeZee_400Regular_Italic",
           color: "#262626",
+          marginBottom: 5,
       },
       searchIconStyle: {
           width: 24,
@@ -58,9 +59,9 @@ export const styles = StyleSheet.create({
           alignItems: 'center',
           backgroundColor: '#F6F7FB',
           borderWidth: 0.5,
-          height: 40,
+          height: 60,
           borderRadius: 5,
-          width: 250,
+          width: 300,
           borderColor: "#F6F7FB",
       },
       searchContentStyle: {
@@ -97,7 +98,7 @@ export const styles = StyleSheet.create({
       },
       descriptionContainerStyle: {
         flexDirection: "row",
-        width: 250,
+        width: 300,
       },
       descriptionTextStyle: {
         color: "#262626",
@@ -110,26 +111,24 @@ export const styles = StyleSheet.create({
         width: 12,
         height: 12,
       },
-      // 余白調整
-      paddingStyle: {
-          height: "30%",
-          backgroundColor: "#feffff",
-          backgroundColor: "yellow"
-      },
       // 画面下部分
       bottomStyle: {
-          alignItems: "center",
-          height: "100%",
-          backgroundColor: "#feffff",
+        display: "flex",
+        alignItems: "center",
+        height: "100%",
+        backgroundColor: "#feffff",
       },
       buttonContainerStyle: {
           alignItems: "center",
           justifyContent: "center",
           backgroundColor: "#1B1C56",
-          width: 247,
-          height: "15%",
+          width: 300,
+          height: 60,
           borderRadius: 10,
           fontSize: 18,
+      },
+      buttonContainerInvalidStyle:{
+        backgroundColor: "#C5C5C7",
       },
       buttonTextStyle: {
           color: "#feffff",
