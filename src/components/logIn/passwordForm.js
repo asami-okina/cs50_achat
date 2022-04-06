@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React from 'react';
 import { Text,View, Image, TextInput, Pressable} from 'react-native';
 import { styles } from '../../styles/signUpAndLogIn/signUpAndLogInStyles.js';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
@@ -7,14 +7,13 @@ import { useTogglePasswordVisibility } from '../../hooks/useTogglePasswordVisibi
 
 export function PasswordForm({
     inputAccessoryViewID,
-    isAvailableMailAndPassword,
     passwordText,
     setPasswordText,
-    isAvailableButton,
-}) {
-    // パスワードの入力フォームの枠線のデフォルト表示
-    const [defaultPasswordBorderColor, setDefaultPasswordBorderColor] = useState(false)
+    executedLoginAuthentication,
+    onFocusInputMailOrPasseword,
+    setOnFocusInputMailOrPasseword,
 
+}) {
     // パスワードの表示/非表示アイコン
     const { passwordVisibility, rightIcon, handlePasswordVisibility } = useTogglePasswordVisibility();
 
@@ -25,7 +24,7 @@ export function PasswordForm({
             <View style={styles.searchWrapperStyle}>
                 <Pressable style={styles.searchContainerStyle} onPress={() => textInputPassword.focus()}>
                     <Text style={styles.searchTitleStyle}>Password</Text>
-                    <View style={isAvailableButton ? styles.searchViewStyle : [styles.searchViewStyle, styles.inputIncorrectBorderColorStyle]}>
+                    <View style={executedLoginAuthentication ? onFocusInputMailOrPasseword ? styles.searchViewStyle:[styles.searchViewStyle, styles.inputIncorrectBorderColorStyle]: styles.searchViewStyle}>
                         <Image source={require("../../../assets/images/lock.png")} style={styles.searchIconStyle}/>
                         <TextInput
                             name="password"
@@ -42,12 +41,10 @@ export function PasswordForm({
                             ref={(input) => textInputPassword = input}
                             maxLength={200}
                             onFocus={() => {
-                                // パスワードの入力フォームの枠線のデフォルト表示
-                                setDefaultPasswordBorderColor(false);
+                                // メールアドレスもしくはパスワード入力中判定
+                                setOnFocusInputMailOrPasseword(true)
                             }}
                             onEndEditing={() => {
-                                // パスワードの入力フォームの枠線のデフォルト表示
-                                setDefaultPasswordBorderColor(true);
                             }}
                         />
                         <Pressable onPress={handlePasswordVisibility}>
