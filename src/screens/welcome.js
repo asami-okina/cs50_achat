@@ -28,7 +28,7 @@ function Welcome({navigation}) {
                 </View>
                 <View style={styles.paddingStyle}></View>
                 <View style={styles.logoContainerStyle}>
-                    <Image style={styles.logoStyle} source={require("../assets/a-chat-logo-after.png")}/>
+                    <Image style={styles.logoStyle} source={require("../../assets/images/a-chat-logo-after.png")}/>
                 </View>
                 <View style={styles.paddingStyle}></View>
                 <View style={styles.bottomStyle}>
@@ -40,7 +40,9 @@ function Welcome({navigation}) {
                     </TouchableOpacity>
                     <View style={styles.toLoginStyle}>
                         <Text style={styles.toLoginTextStyle}>Do you have an account?</Text>
-                        <Text style={[styles.toLoginTextStyle, styles.toLoginTextLinkStyle]}>Login here</Text>
+                        <TouchableOpacity onPress={() => navigation.navigate('LogIn')}>
+                            <Text style={[styles.toLoginTextStyle, styles.toLoginTextLinkStyle]}>Login here</Text>
+                        </TouchableOpacity>
                     </View>
                 </View>
             </SafeAreaView>

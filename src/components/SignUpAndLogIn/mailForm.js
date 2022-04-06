@@ -1,12 +1,14 @@
 import React, {useState} from 'react';
 import { Text,View, Image, TextInput, Pressable} from 'react-native';
-import { styles } from '../../styles/SignUp/signUpStyles';
+import { styles } from '../../styles/SignUpAndLogIn/signUpAndLogInStyles.js';
+import { MailFormDescription } from './_description/mailFormDescription';
 
 
 export function MailForm({
   inputAccessoryViewID,
   isCorrectMail,
-  setIsCorrectMail
+  setIsCorrectMail,
+  pageType,
 }) {
 
     // 入力フォーム
@@ -39,8 +41,8 @@ export function MailForm({
         <View style={styles.searchWrapperStyle}>
           <Pressable style={styles.searchContainerStyle} onPress={() => textInputEmail.focus()} >
               <Text style={styles.searchTitleStyle}>Email</Text>
-              <View style={defaultMailBorderColor ? isCorrectMail ? styles.searchViewStyle : [styles.searchViewStyle, styles.inputIncorrectBorderColorStyle]: styles.searchViewStyle}>
-                  <Image source={require("../../../assets/email.png")} style={styles.searchIconStyle} onPress={() => textInputEmail.focus()}/>
+              <View style={defaultMailBorderColor ? pageType === "SignUp" ? isCorrectMail ? styles.searchViewStyle: [styles.searchViewStyle, styles.inputIncorrectBorderColorStyle]:styles.searchViewStyle :styles.searchViewStyle}>
+                  <Image source={require("../../../assets/images/email.png")} style={styles.searchIconStyle} onPress={() => textInputEmail.focus()}/>
                   <TextInput
                       onChangeText={onChangeEmailText}
                       style={styles.searchContentStyle}
@@ -70,16 +72,9 @@ export function MailForm({
         </View>
     </View>
     {/* メールアドレスの説明文 */}
-    {displayMailDescription ? !isCorrectMail ? (
-      <View style={styles.descriptionBoxStyle}>
-        <View style={styles.descriptionWrapperStyle}>
-          <View style={styles.descriptionContainerStyle}>
-          {!defaultDisplayMailIcons ? isCorrectMail ?  null:  <Image source={require("../../../assets/incorrect.png")} style={styles.descriptionIconStyle}/>: null}
-          <Text style={styles.descriptionTextStyle}>Email address format is incorrect.</Text>
-          </View>
-        </View>
-      </View>
-      ): null: null}
+    {pageType === "SignUp" ? (
+      <MailFormDescription isCorrectMail={isCorrectMail} displayMailDescription={displayMailDescription} defaultDisplayMailIcons={defaultDisplayMailIcons}/>
+    ) : null}
     </View>
   )
 }

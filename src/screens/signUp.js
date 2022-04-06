@@ -3,10 +3,10 @@ import { Text,View, SafeAreaView, ScrollView, TouchableOpacity, KeyboardAvoiding
 import AppLoading from 'expo-app-loading';
 import { useFonts, AlfaSlabOne_400Regular } from '@expo-google-fonts/alfa-slab-one';
 import { ABeeZee_400Regular_Italic } from '@expo-google-fonts/abeezee';
-import { MailForm } from './components/SignUp/mailForm';
-import { PasswordForm } from './components/SignUp/passwordForm';
-import { UserIdForm } from './components/SignUp/userIdForm';
-import { styles } from './styles/SignUp/signUpStyles';
+import { MailForm } from '../components/SignUpAndLogIn/mailForm';
+import { PasswordForm } from '../components/SignUpAndLogIn/passwordForm';
+import { UserIdForm } from '../components/SignUpAndLogIn/userIdForm';
+import { styles } from '../styles/SignUpAndLogIn/signUpAndLogInStyles';
 
 function SignUp({navigation}) {
     // フォントファミリーを導入
@@ -53,6 +53,7 @@ function SignUp({navigation}) {
                         inputAccessoryViewID={inputAccessoryViewID} 
                         isCorrectMail={isCorrectMail}
                         setIsCorrectMail={setIsCorrectMail}
+                        pageType={"SignUp"}
                     />
                     {/* Password */}
                     <PasswordForm
@@ -61,6 +62,7 @@ function SignUp({navigation}) {
                         setIsCorrectPassewordSymbol={setIsCorrectPassewordSymbol}
                         isCorrectPassewordStringCount={isCorrectPassewordStringCount}
                         setIsCorrectPassewordStringCount={setIsCorrectPassewordStringCount}
+                        pageType={"SignUp"}
                     />
                     {/* UserId */}
                     <UserIdForm
@@ -71,25 +73,28 @@ function SignUp({navigation}) {
                         setIsCorrectUserIdStringCount={setIsCorrectUserIdStringCount}
                         isAvailableUserId={isAvailableUserId}
                         setIsAvailableUserId={setIsAvailableUserId}
+                        pageType={"SignUp"}
                     />
                     {/* 画面下 */}
                     <View style={styles.bottomStyle}>
                         {isCorrectMail && isCorrectPassewordSymbol && isCorrectPassewordStringCount && isCorrectUserIdSymbol && isCorrectUserIdStringCount && isAvailableUserId ?
                         (
                             <TouchableOpacity
-                                style={styles.buttonContainerStyle}>
+                                style={styles.buttonContainerStyle}
+                                onPress={() => navigation.navigate('Home')}>
                                     <Text style={styles.buttonTextStyle}>Sign Up</Text>
                             </TouchableOpacity>
                         ) : (
                             <TouchableOpacity
-                                style={[styles.buttonContainerStyle, styles.buttonContainerInvalidStyle]}
-                                onPress={() => navigation.navigate('SignUp')}>
+                                style={[styles.buttonContainerStyle, styles.buttonContainerInvalidStyle]}>
                                     <Text style={styles.buttonTextStyle}>Sign Up</Text>
                             </TouchableOpacity>
                         )}
                         <View style={styles.toLoginStyle}>
                             <Text style={styles.toLoginTextStyle}>Do you have an account?</Text>
-                            <Text style={[styles.toLoginTextStyle, styles.toLoginTextLinkStyle]}>Login here</Text>
+                            <TouchableOpacity onPress={() => navigation.navigate('LogIn')}>
+                                <Text style={[styles.toLoginTextStyle, styles.toLoginTextLinkStyle]}>Login here</Text>
+                            </TouchableOpacity>
                         </View>
                     </View>
                     {/* <InputAccessoryView nativeID={inputAccessoryViewID} backgroundColor= "hsl(0, 0%, 95%)" >

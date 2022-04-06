@@ -1,8 +1,9 @@
 import React, {useState} from 'react';
 import { Text,View, Image, TextInput, Pressable} from 'react-native';
-import { styles } from '../../styles/SignUp/signUpStyles';
+import { styles } from '../../styles/SignUpAndLogIn/signUpAndLogInStyles.js';
 import { useTogglePasswordVisibility } from '../../hooks/useTogglePasswordVisibility';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { PasswordFormDescription } from './_description/passwordFormDescription';
 
 
 export function PasswordForm({
@@ -11,9 +12,8 @@ export function PasswordForm({
     setIsCorrectPassewordSymbol,
     isCorrectPassewordStringCount,
     setIsCorrectPassewordStringCount,
+    pageType,
 }) {
-    // 引数の展開
-
     // 入力フォーム
     const [passwordText, onChangePasswordText] = useState("");
 
@@ -31,7 +31,7 @@ export function PasswordForm({
 
     // パスワード(半角英数字記号)のバリデーション関数
     function passwordSymbolVaridation(){
-        const regexp = /^[a-zA-Z0-9!-/:-@¥[-`{-~]*$/;
+        const regexp = /^[a-zA-Z0-9!-/:-@¥[-`{-~]+$/;
         setIsCorrectPassewordSymbol(regexp.test(passwordText))
     }
     
@@ -54,8 +54,8 @@ export function PasswordForm({
             <View style={styles.searchWrapperStyle}>
                 <Pressable style={styles.searchContainerStyle} onPress={() => textInputPassword.focus()}>
                     <Text style={styles.searchTitleStyle}>Password</Text>
-                    <View style={defaultPasswordBorderColor ? isCorrectPassewordSymbol && isCorrectPassewordStringCount ? styles.searchViewStyle : [styles.searchViewStyle, styles.inputIncorrectBorderColorStyle]: styles.searchViewStyle}>
-                        <Image source={require("../../../assets/lock.png")} style={styles.searchIconStyle}/>
+                    <View style={defaultPasswordBorderColor ? pageType === "SignUp" ? isCorrectPassewordSymbol && isCorrectPassewordStringCount ? styles.searchViewStyle: [styles.searchViewStyle, styles.inputIncorrectBorderColorStyle]:styles.searchViewStyle :styles.searchViewStyle}>
+                        <Image source={require("../../../assets/images/lock.png")} style={styles.searchIconStyle}/>
                         <TextInput
                             name="password"
                             placeholder="Password"
@@ -97,20 +97,9 @@ export function PasswordForm({
             </View>
         </View>
         {/* パスワードの説明文 */}
-        {displayPasswordDescription ? !isCorrectPassewordSymbol || !isCorrectPassewordStringCount ? (
-        <View style={styles.descriptionBoxStyle}>
-            <View style={styles.descriptionWrapperStyle}>
-                <View style={styles.descriptionContainerStyle}>
-                    {!defaultDisplayPasswordIcons ? isCorrectPassewordSymbol ?  <Image source={require("../../../assets/correct.png")} style={styles.descriptionIconStyle}/>:  <Image source={require("../../../assets/incorrect.png")} style={styles.descriptionIconStyle}/>: null}
-                    <Text style={styles.descriptionTextStyle}>Half-width alphanumeric symbols only.</Text>
-                </View>
-                <View style={styles.descriptionContainerStyle}>
-                    {!defaultDisplayPasswordIcons ? isCorrectPassewordStringCount ?  <Image source={require("../../../assets/correct.png")} style={styles.descriptionIconStyle}/>:  <Image source={require("../../../assets/incorrect.png")} style={styles.descriptionIconStyle}/>: null}
-                    <Text style={styles.descriptionTextStyle} >More than 5 and less than 200 characters.</Text>
-                </View>
-            </View>
-        </View>
-        ) : null: null}
+        {pageType === "SignUp" ? (
+            <PasswordFormDescription displayPasswordDescription={displayPasswordDescription} isCorrectPassewordSymbol={isCorrectPassewordSymbol} isCorrectPassewordStringCount={isCorrectPassewordStringCount} defaultDisplayPasswordIcons={defaultDisplayPasswordIcons} />
+        ): null}
     </View>
   )
 }

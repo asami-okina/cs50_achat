@@ -1,7 +1,8 @@
 import React, {useState} from 'react';
 import { Text,View, Image, TextInput, Pressable, KeyboardAvoidingView} from 'react-native';
-import { styles } from '../../styles/SignUp/signUpStyles';
-import {fetchIsAvailableUserId} from "../../../api/api";
+import { styles } from '../../styles/SignUpAndLogIn/signUpAndLogInStyles.js';
+import {fetchIsAvailableUserId} from "../../api/api";
+import { UserIdFormDescription } from './_description/userIdFormDescription';
 
 
 export function UserIdForm({
@@ -11,7 +12,8 @@ export function UserIdForm({
     isCorrectUserIdStringCount,
     setIsCorrectUserIdStringCount,
     isAvailableUserId,
-    setIsAvailableUserId
+    setIsAvailableUserId,
+    pageType,
 }) {
     // 入力フォーム
     const [userIdText, onChangeUserIdText] = useState("");
@@ -28,7 +30,7 @@ export function UserIdForm({
 
     // ユーザーID(半角英数字)のバリデーション
     function userIdSymbolValidation(){
-        const regexp = /^[0-9a-zA-Z]*$/;
+        const regexp = /^[0-9a-zA-Z]+$/;
         setIsCorrectUserIdSymbol(regexp.test(userIdText))
     }
   
@@ -63,7 +65,7 @@ export function UserIdForm({
                     <Text style={styles.searchTitleStyle}>UserId</Text>
                     {/* <KeyboardAvoidingView behavior="padding"> */}
                     <View style={defaultUserIdBorderColor ? isCorrectUserIdSymbol && isCorrectUserIdStringCount ? styles.searchViewStyle : [styles.searchViewStyle, styles.inputIncorrectBorderColorStyle]: styles.searchViewStyle}>
-                        <Image source={require("../../../assets/profile.png")} style={styles.searchIconStyle}/>
+                        <Image source={require("../../../assets/images/profile.png")} style={styles.searchIconStyle}/>
                         {/* <KeyboardAvoidingView behavior="padding"> */}
                         <TextInput
                             onChangeText={onChangeUserIdText}
@@ -101,24 +103,10 @@ export function UserIdForm({
             </View>
         </View>
         {/* ユーザーIDの説明文 */}
-        {displayUserIdDescription ? !isCorrectUserIdSymbol || !isCorrectUserIdStringCount || !isAvailableUserId ? (
-        <View style={styles.descriptionBoxStyle}>
-        <View style={styles.descriptionWrapperStyle}>
-            <View style={styles.descriptionContainerStyle}>
-            {!defaultDisplayUserIcons ? isCorrectUserIdSymbol ?  <Image source={require("../../../assets/correct.png")} style={styles.descriptionIconStyle}/>:  <Image source={require("../../../assets/incorrect.png")} style={styles.descriptionIconStyle}/>: null}
-            <Text style={styles.descriptionTextStyle}>Half-width alphanumeric characters only.</Text>
-            </View>
-            <View style={styles.descriptionContainerStyle}>
-            {!defaultDisplayUserIcons ? isCorrectUserIdStringCount ?  <Image source={require("../../../assets/correct.png")} style={styles.descriptionIconStyle}/>:  <Image source={require("../../../assets/incorrect.png")} style={styles.descriptionIconStyle}/>: null}
-            <Text style={styles.descriptionTextStyle} >More than 4 words and less than 100 words.</Text>
-            </View>
-            <View style={styles.descriptionContainerStyle}>
-            {!defaultDisplayUserIcons ? isAvailableUserId ?  <Image source={require("../../../assets/correct.png")} style={styles.descriptionIconStyle}/>:  <Image source={require("../../../assets/incorrect.png")} style={styles.descriptionIconStyle}/>: null}
-            <Text style={styles.descriptionTextStyle} >Available.</Text>
-            </View>
-        </View>
-        </View>
-    ) : null: null}
+        {pageType === "SignUp" ? (
+            <UserIdFormDescription displayUserIdDescription={displayUserIdDescription} isCorrectUserIdSymbol={isCorrectUserIdSymbol} isCorrectUserIdStringCount={isCorrectUserIdStringCount} isAvailableUserId={isAvailableUserId} defaultDisplayUserIcons={defaultDisplayUserIcons}/>
+        ): null}
+
     </View>
   )
 }
