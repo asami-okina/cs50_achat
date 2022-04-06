@@ -3,9 +3,10 @@ import { Text,View, SafeAreaView, ScrollView, TouchableOpacity, KeyboardAvoiding
 import AppLoading from 'expo-app-loading';
 import { useFonts, AlfaSlabOne_400Regular } from '@expo-google-fonts/alfa-slab-one';
 import { ABeeZee_400Regular_Italic } from '@expo-google-fonts/abeezee';
-import { MailForm } from '../components/signUpAndLogIn/mailForm';
-import { PasswordForm } from '../components/signUpAndLogIn/passwordForm';
+import { MailForm } from '../components/logIn/mailForm';
+import { PasswordForm } from '../components/logIn/passwordForm';
 import { styles } from '../styles/signUpAndLogIn/signUpAndLogInStyles';
+import { postLoginAuthentication } from '../api/api';
 
 function LogIn({navigation}) {
     // フォントファミリーを導入
@@ -17,21 +18,32 @@ function LogIn({navigation}) {
     // キーボードに完了ボタンを表示
     const inputAccessoryViewID = 'uniqueID';
 
-    // バリデーション
-    // メールアドレスのバリデーション
-    const [isCorrectMail, setIsCorrectMail] =  useState(false);
+    // ログイン認証結果
+    const [isAvailableMailAndPassword, setIsAvailableMailAndPassword] = useState(false)
 
-    // パスワードのバリデーション(半角英数字記号)
-    const [isCorrectPassewordSymbol, setIsCorrectPassewordSymbol] = useState(false);
-    // パスワードのバリデーション(文字数)
-    const [isCorrectPassewordStringCount, setIsCorrectPassewordStringCount] = useState(false);
+    // ログインボタンカラー
+    const [isAvailableButton, setIsAvailableButton] = useState(true)
 
-    // ユーザーIDのバリデーション(半角英数字)
-    const [isCorrectUserIdSymbol, setIsCorrectUserIdSymbol] =  useState(false);
-    // ユーザーIDのバリデーション(文字数)
-    const [isCorrectUserIdStringCount, setIsCorrectUserIdStringCount] = useState(false);
-    // ユーザーIDのバリデーション(使用可能かどうか)
-    const [isAvailableUserId, setIsAvailableUserId] = useState(false)
+    // メールアドレスの入力フォーム
+    const [emailText, setEmailText] = useState("");
+
+    // パスワードの入力フォーム
+    const [passwordText, setPasswordText] = useState("");
+
+    // ログイン認証
+    function loginAuthentication(){
+        // resultには、APIからの戻り値を入れる
+        let result = postLoginAuthentication(emailText, passwordText)
+        if (result.certificationResult){
+            setIsAvailableMailAndPassword(true)
+            setIsAvailableButton(true)
+            // Home画面へ遷移
+            navigation.navigate('Home')
+        } else {
+            setIsAvailableMailAndPassword(false)
+            setIsAvailableButton(false)
+        }
+    }
 
     // フォントがダウンロードできていなかったら、ローディング画面を出す
     if (!fontsLoaded) {
@@ -49,36 +61,32 @@ function LogIn({navigation}) {
                     </View>
                     {/* Email */}
                     <MailForm
-                        inputAccessoryViewID={inputAccessoryViewID} 
-                        isCorrectMail={isCorrectMail}
-                        setIsCorrectMail={setIsCorrectMail}
+                        inputAccessoryViewID={inputAccessoryViewID}
+                        isAvailableMailAndPassword={isAvailableMailAndPassword}
+                        emailText={emailText}
+                        setEmailText={setEmailText}
+                        isAvailableButton={isAvailableButton}
                     />
                     {/* Password */}
                     <PasswordForm
                         inputAccessoryViewID={inputAccessoryViewID}
-                        isCorrectPassewordSymbol={isCorrectPassewordSymbol}
-                        setIsCorrectPassewordSymbol={setIsCorrectPassewordSymbol}
-                        isCorrectPassewordStringCount={isCorrectPassewordStringCount}
-                        setIsCorrectPassewordStringCount={setIsCorrectPassewordStringCount}
+                        isAvailableMailAndPassword={isAvailableMailAndPassword}
+                        passwordText={passwordText}
+                        setPasswordText={setPasswordText}
+                        isAvailableButton={isAvailableButton}
                     />
                     {/* 画面下 */}
                     <View style={styles.bottomStyle}>
-                        {isCorrectMail && isCorrectPassewordSymbol && isCorrectPassewordStringCount && isCorrectUserIdSymbol && isCorrectUserIdStringCount && isAvailableUserId ?
-                        (
-                            <TouchableOpacity
-                                style={styles.buttonContainerStyle}
-                                onPress={() => navigation.navigate('Home')}>
-                                    <Text style={styles.buttonTextStyle}>Log In</Text>
-                            </TouchableOpacity>
-                        ) : (
-                            <TouchableOpacity
-                                style={[styles.buttonContainerStyle, styles.buttonContainerInvalidStyle]}>
-                                    <Text style={styles.buttonTextStyle}>Log In</Text>
-                            </TouchableOpacity>
-                        )}
+                        <TouchableOpacity
+                            style={isAvailableButton ? styles.buttonContainerStyle: [styles.buttonContainerStyle, styles.buttonContainerInvalidStyle]}
+                            onPress={() => loginAuthentication()}>
+                            <Text style={styles.buttonTextStyle}>Log In</Text>
+                        </TouchableOpacity>
                         <View style={styles.toLoginStyle}>
                             <Text style={styles.toLoginTextStyle}>Don't have an account?</Text>
-                            <TouchableOpacity onPress={() => navigation.navigate('SignUp')}>
+                            <TouchableOpacity onPress={() => {
+                                navigation.navigate('SignUp');
+                            }}>
                                 <Text style={[styles.toLoginTextStyle, styles.toLoginTextLinkStyle]}>Sign up here</Text>
                             </TouchableOpacity>
                         </View>

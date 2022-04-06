@@ -48,8 +48,8 @@ export function UserIdForm({
   
     // ユーザーID(使用可能かどうか)のバリデーション
     function isAvailableUserIdValidation(){
-        // checkedUserIdには、APIからの戻り値を入れる
-        let result = fetchIsAvailableUserId()
+        // resultには、APIからの戻り値を入れる
+        let result = fetchIsAvailableUserId(userIdText)
         if (result.isAvailableUserId){
             setIsAvailableUserId(true)
         } else {

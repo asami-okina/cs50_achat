@@ -8,8 +8,8 @@ export function MailForm({
   inputAccessoryViewID,
   isCorrectMail,
   setIsCorrectMail,
-  pageType,
 }) {
+
 
     // 入力フォーム
     const [emailText, onChangeEmailText] = useState("");
@@ -41,7 +41,7 @@ export function MailForm({
         <View style={styles.searchWrapperStyle}>
           <Pressable style={styles.searchContainerStyle} onPress={() => textInputEmail.focus()} >
               <Text style={styles.searchTitleStyle}>Email</Text>
-              <View style={defaultMailBorderColor ? pageType === "SignUp" ? isCorrectMail ? styles.searchViewStyle: [styles.searchViewStyle, styles.inputIncorrectBorderColorStyle]:styles.searchViewStyle :styles.searchViewStyle}>
+              <View style={defaultMailBorderColor ? isCorrectMail ? styles.searchViewStyle : [styles.searchViewStyle, styles.inputIncorrectBorderColorStyle]: styles.searchViewStyle}>
                   <Image source={require("../../../assets/images/email.png")} style={styles.searchIconStyle} onPress={() => textInputEmail.focus()}/>
                   <TextInput
                       onChangeText={onChangeEmailText}
@@ -72,9 +72,7 @@ export function MailForm({
         </View>
     </View>
     {/* メールアドレスの説明文 */}
-    {pageType === "SignUp" ? (
       <MailFormDescription isCorrectMail={isCorrectMail} displayMailDescription={displayMailDescription} defaultDisplayMailIcons={defaultDisplayMailIcons}/>
-    ) : null}
     </View>
   )
 }

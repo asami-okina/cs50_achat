@@ -12,7 +12,6 @@ export function PasswordForm({
     setIsCorrectPassewordSymbol,
     isCorrectPassewordStringCount,
     setIsCorrectPassewordStringCount,
-    pageType,
 }) {
     // 入力フォーム
     const [passwordText, onChangePasswordText] = useState("");
@@ -54,7 +53,7 @@ export function PasswordForm({
             <View style={styles.searchWrapperStyle}>
                 <Pressable style={styles.searchContainerStyle} onPress={() => textInputPassword.focus()}>
                     <Text style={styles.searchTitleStyle}>Password</Text>
-                    <View style={defaultPasswordBorderColor ? pageType === "SignUp" ? isCorrectPassewordSymbol && isCorrectPassewordStringCount ? styles.searchViewStyle: [styles.searchViewStyle, styles.inputIncorrectBorderColorStyle]:styles.searchViewStyle :styles.searchViewStyle}>
+                    <View style={defaultPasswordBorderColor ? isCorrectPassewordSymbol && isCorrectPassewordStringCount ? styles.searchViewStyle : [styles.searchViewStyle, styles.inputIncorrectBorderColorStyle]: styles.searchViewStyle}>
                         <Image source={require("../../../assets/images/lock.png")} style={styles.searchIconStyle}/>
                         <TextInput
                             name="password"
@@ -97,9 +96,7 @@ export function PasswordForm({
             </View>
         </View>
         {/* パスワードの説明文 */}
-        {pageType === "SignUp" ? (
-            <PasswordFormDescription displayPasswordDescription={displayPasswordDescription} isCorrectPassewordSymbol={isCorrectPassewordSymbol} isCorrectPassewordStringCount={isCorrectPassewordStringCount} defaultDisplayPasswordIcons={defaultDisplayPasswordIcons} />
-        ): null}
+        <PasswordFormDescription displayPasswordDescription={displayPasswordDescription} isCorrectPassewordSymbol={isCorrectPassewordSymbol} isCorrectPassewordStringCount={isCorrectPassewordStringCount} defaultDisplayPasswordIcons={defaultDisplayPasswordIcons} />
     </View>
   )
 }

@@ -3,9 +3,9 @@ import { Text,View, SafeAreaView, ScrollView, TouchableOpacity, KeyboardAvoiding
 import AppLoading from 'expo-app-loading';
 import { useFonts, AlfaSlabOne_400Regular } from '@expo-google-fonts/alfa-slab-one';
 import { ABeeZee_400Regular_Italic } from '@expo-google-fonts/abeezee';
-import { MailForm } from '../components/signUpAndLogIn/mailForm';
-import { PasswordForm } from '../components/signUpAndLogIn/passwordForm';
-import { UserIdForm } from '../components/signUpAndLogIn/userIdForm';
+import { MailForm } from '../components/signUp/mailForm';
+import { PasswordForm } from '../components/signUp/passwordForm';
+import { UserIdForm } from '../components/signUp/userIdForm';
 import { styles } from '../styles/signUpAndLogIn/signUpAndLogInStyles';
 
 function SignUp({navigation}) {
@@ -53,7 +53,6 @@ function SignUp({navigation}) {
                         inputAccessoryViewID={inputAccessoryViewID} 
                         isCorrectMail={isCorrectMail}
                         setIsCorrectMail={setIsCorrectMail}
-                        pageType={"SignUp"}
                     />
                     {/* Password */}
                     <PasswordForm
@@ -62,7 +61,6 @@ function SignUp({navigation}) {
                         setIsCorrectPassewordSymbol={setIsCorrectPassewordSymbol}
                         isCorrectPassewordStringCount={isCorrectPassewordStringCount}
                         setIsCorrectPassewordStringCount={setIsCorrectPassewordStringCount}
-                        pageType={"SignUp"}
                     />
                     {/* UserId */}
                     <UserIdForm
