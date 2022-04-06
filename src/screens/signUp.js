@@ -3,10 +3,10 @@ import { Text,View, SafeAreaView, ScrollView, TouchableOpacity, KeyboardAvoiding
 import AppLoading from 'expo-app-loading';
 import { useFonts, AlfaSlabOne_400Regular } from '@expo-google-fonts/alfa-slab-one';
 import { ABeeZee_400Regular_Italic } from '@expo-google-fonts/abeezee';
-import { MailForm } from '../components/SignUpAndLogIn/mailForm';
-import { PasswordForm } from '../components/SignUpAndLogIn/passwordForm';
-import { UserIdForm } from '../components/SignUpAndLogIn/userIdForm';
-import { styles } from '../styles/SignUpAndLogIn/signUpAndLogInStyles';
+import { MailForm } from '../components/signUpAndLogIn/mailForm';
+import { PasswordForm } from '../components/signUpAndLogIn/passwordForm';
+import { UserIdForm } from '../components/signUpAndLogIn/userIdForm';
+import { styles } from '../styles/signUpAndLogIn/signUpAndLogInStyles';
 
 function SignUp({navigation}) {
     // フォントファミリーを導入

@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import { Text,View, Image, TextInput, Pressable} from 'react-native';
-import { styles } from '../../styles/SignUpAndLogIn/signUpAndLogInStyles.js';
+import { styles } from '../../styles/signUpAndLogIn/signUpAndLogInStyles.js';
 import { useTogglePasswordVisibility } from '../../hooks/useTogglePasswordVisibility';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { PasswordFormDescription } from './_description/passwordFormDescription';

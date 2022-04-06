@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import { Text,View, Image, TextInput, Pressable, KeyboardAvoidingView} from 'react-native';
-import { styles } from '../../styles/SignUpAndLogIn/signUpAndLogInStyles.js';
+import { styles } from '../../styles/signUpAndLogIn/signUpAndLogInStyles.js';
 import {fetchIsAvailableUserId} from "../../api/api";
 import { UserIdFormDescription } from './_description/userIdFormDescription';
 
