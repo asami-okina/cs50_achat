@@ -47,6 +47,7 @@ function LogIn({navigation}) {
                 <View style={styles.headMessageContainerStyle}>
                     <Text style={styles.headMessageTextStyle}>Log In</Text>
                 </View>
+                {/* ログイン認証エラー */}
                 {executedLoginAuthentication ? onFocusInputMailOrPasseword ? null: (
                     <View style={logInStyles.errorContainerStyle}>
                         <Text style={logInStyles.errorTextStyle}>Your e-mail address or password is incorrect.</Text>
@@ -70,6 +71,12 @@ function LogIn({navigation}) {
                     onFocusInputMailOrPasseword={onFocusInputMailOrPasseword}
                     setOnFocusInputMailOrPasseword={setOnFocusInputMailOrPasseword}
                 />
+                {/* パスワードを忘れた場合 */}
+                <View style={logInStyles.forgotPasswordWrapperStyle}>
+                    <TouchableOpacity style={logInStyles.forgotPasswordContainerStyle} onPress={() => console.log('検討予定')}>
+                        <Text style={logInStyles.forgotPasswordTextStyle}>Forgot Password</Text>
+                    </TouchableOpacity>
+                </View>
                 {/* 画面下 */}
                 <View style={styles.bottomStyle}>
                     <TouchableOpacity

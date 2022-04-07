@@ -37,7 +37,7 @@ function SignUp({navigation}) {
                 </View>
                 {/* Email */}
                 <MailForm
-                    inputAccessoryViewID={inputAccessoryViewID} 
+                    inputAccessoryViewID={inputAccessoryViewID}
                     isCorrectMail={isCorrectMail}
                     setIsCorrectMail={setIsCorrectMail}
                 />

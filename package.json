@@ -13,6 +13,7 @@
     "@expo-google-fonts/abeezee": "^0.2.2",
     "@expo-google-fonts/alfa-slab-one": "^0.2.2",
     "@expo-google-fonts/inter": "^0.2.2",
+    "@expo-google-fonts/m-plus-1p": "^0.2.2",
     "@react-navigation/native": "^6.0.10",
     "@react-navigation/native-stack": "^6.6.1",
     "expo": "~44.0.0",

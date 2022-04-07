@@ -6,11 +6,26 @@ export const logInStyles = StyleSheet.create({
         alignItems: "center",
         backgroundColor: "#feffff",
         paddingBottom: 32,
-        fontWeight: "bold"
     },
     errorTextStyle:{
         color: "#ED195E",
         backgroundColor: "#feffff",
+        fontFamily: "ABeeZee_400Regular_Italic",
+        fontWeight: "bold"
+    },
+    forgotPasswordWrapperStyle: {
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        backgroundColor: "#feffff",
+        paddingBottom: 32,
+    },
+    forgotPasswordContainerStyle:{
+        backgroundColor: "#feffff",
+        alignItems: "flex-end",
+        width: 300,
+    },
+    forgotPasswordTextStyle: {
         fontFamily: "ABeeZee_400Regular_Italic",
     }
   });
