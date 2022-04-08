@@ -22,7 +22,7 @@ export const TOP_AREA_STYLE = 100
 export const OPERATION_SCREENHEIGHT = SCREEN_HEIGHT - (HEAD_CONTAINER_HEIGHT + FOOTER_HEIGHT + STATUS_BAR_HEIGHT + TOP_AREA_STYLE)
 
 // Welcome, SignUp ,Login画面の高さ
-export const START_SCREEN_HEIGHT = SCREEN_HEIGHT -(HEAD_CONTAINER_HEIGHT + STATUS_BAR_HEIGHT + TOP_AREA_STYLE)
+export const START_SCREEN_HEIGHT = SCREEN_HEIGHT - (HEAD_CONTAINER_HEIGHT + STATUS_BAR_HEIGHT + TOP_AREA_STYLE)
 
 // 検索フォームの高さ
 export const SEARCH_FORM_HEIGHT = 60
@@ -72,3 +72,8 @@ export const MAIN_TITLE_FONT = "AlfaSlabOne_400Regular"
 
 // 標準文字
 export const STANDARD_FONT = "ABeeZee_400Regular_Italic"
+
+// ------------------------------------------------------------------------------------------------
+// マージン
+// Welcome,SignUp,LogIn画面のロゴとボタンの間
+export const LOGO_TO_BUTTON_MARGIN_BY_SIGN_UP_AND_LOG_IN = 32
