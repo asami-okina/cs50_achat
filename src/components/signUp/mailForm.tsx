@@ -25,7 +25,7 @@ export function MailForm({
 	let textInputEmail;
 
 	// メールアドレスのバリデーション関数
-	function mailValidation() {
+	function _mailValidation() {
 		const regexp = /^[A-Za-z0-9]{1}[A-Za-z0-9_.-]*@{1}[A-Za-z0-9_.-]{1,}\.[A-Za-z0-9]{1,}$/;
 		if (!regexp.test(emailText)) {
 			// メールアドレスの説明文表示
@@ -60,7 +60,7 @@ export function MailForm({
 								}}
 								onEndEditing={() => {
 									// メールアドレスのバリデーション
-									mailValidation()
+									_mailValidation()
 									// メールアドレスの入力フォームの枠線のデフォルト表示
 									setDefaultMailBorderColor(true)
 									// メールアドレスアイコンのデフォルト表示

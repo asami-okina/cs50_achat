@@ -29,13 +29,13 @@ export function PasswordForm({
 	let textInputPassword;
 
 	// パスワード(半角英数字記号)のバリデーション関数
-	function passwordSymbolVaridation() {
+	function _passwordSymbolVaridation() {
 		const regexp = /^[a-zA-Z0-9!-/:-@¥[-`{-~]+$/;
 		setIsCorrectPassewordSymbol(regexp.test(passwordText))
 	}
 
 	// パスワード(文字数:5文字以上200文字未満)のバリデーション
-	function passwordStringCountValidation() {
+	function _passwordStringCountValidation() {
 		let passwordLength = passwordText.length;
 
 		// パスワードの文字数が5文字以上200文字未満であれば、バリデーションが通る
@@ -78,9 +78,9 @@ export function PasswordForm({
 								}}
 								onEndEditing={() => {
 									// パスワード(半角英数字記号)のバリデーション
-									passwordSymbolVaridation();
+									_passwordSymbolVaridation();
 									// パスワード(文字数)のバリデーション
-									passwordStringCountValidation();
+									_passwordStringCountValidation();
 									// パスワードアイコンのデフォルト表示を無くす
 									setDefaultDisplayPasswordIcons(false);
 									// パスワードの入力フォームの枠線のデフォルト表示

@@ -18,11 +18,11 @@ export const STATUS_BAR_HEIGHT = getStatusBarHeight()
 // トップ領域の高さ
 export const TOP_AREA_STYLE = 100
 
-// 操作画面の高さ(例:Home画面)
-export const OPERATION_SCREENHEIGHT = SCREEN_HEIGHT - (HEAD_CONTAINER_HEIGHT + FOOTER_HEIGHT + STATUS_BAR_HEIGHT + TOP_AREA_STYLE)
+// フッター有画面の操作画面の高さ 　(画面の高さ - (全画面共通の青色のヘッド部分の高さ + フッターの高さ + ステータスバーの高さ + トップ領域の高さ))
+export const WITH_FOOTER_OPERATION_SCREEN_HEIGHT = SCREEN_HEIGHT - (HEAD_CONTAINER_HEIGHT + FOOTER_HEIGHT + STATUS_BAR_HEIGHT + TOP_AREA_STYLE)
 
-// Welcome, SignUp ,Login画面の高さ
-export const START_SCREEN_HEIGHT = SCREEN_HEIGHT - (HEAD_CONTAINER_HEIGHT + STATUS_BAR_HEIGHT + TOP_AREA_STYLE)
+// フッター無画面の操作画面の高さ　(画面の高さ - (全画面共通の青色のヘッド部分の高さ + ステータスバーの高さ + トップ領域の高さ))
+export const OPERATION_SCREEN_HEIGHT = SCREEN_HEIGHT - (HEAD_CONTAINER_HEIGHT + STATUS_BAR_HEIGHT + TOP_AREA_STYLE)
 
 // 検索フォームの高さ
 export const SEARCH_FORM_HEIGHT = 60
@@ -77,3 +77,7 @@ export const STANDARD_FONT = "ABeeZee_400Regular_Italic"
 // マージン
 // Welcome,SignUp,LogIn画面のロゴとボタンの間
 export const LOGO_TO_BUTTON_MARGIN_BY_SIGN_UP_AND_LOG_IN = 32
+
+// 全画面共通
+// 検索フォーム内アイコンの左右マージン
+export const IN_SEARCH_FORM_SIDE_MARGIN = 10

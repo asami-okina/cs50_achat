@@ -18,7 +18,7 @@ export function Welcome({ navigation }) {
 			{/* 画面一番上にある青色の余白部分 */}
 			<View style={constantsStyles.topMarginViewStyle}></View>
 			{/* 丸みを帯びている白いトップ部分 */}
-			<TopAreaContainer title={null} />
+			<TopAreaContainer title={null} searchForm={null} searchFormProps={null} />
 			<View style={constantsStyles.mainContainerStyle}>
 				{/* タイトル */}
 				<HeadTitle title={"Welcome"} />

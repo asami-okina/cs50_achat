@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { Text, View, SafeAreaView, ScrollView, KeyboardAvoidingView, Pressable, Image, TextInput, StyleSheet } from 'react-native';
 import { fetchNickNameOrGroupNameBySearchForm, fetchGroupList, fetGroupCount, fetchFriendList, fetchFriendCount } from '../api/api'
-import { OPERATION_SCREENHEIGHT, HEAD_CONTAINER_HEIGHT, TOP_AREA_STYLE, SEARCH_FORM_HEIGHT, CONTENT_WIDTH, ICON_SIZE, MAIN_NAVY_COLOR, MAIN_WHITE_COLOR } from '../constants/layout'
+import { WITH_FOOTER_OPERATION_SCREEN_HEIGHT, HEAD_CONTAINER_HEIGHT, TOP_AREA_STYLE, SEARCH_FORM_HEIGHT, CONTENT_WIDTH, ICON_SIZE, MAIN_NAVY_COLOR, MAIN_WHITE_COLOR,IN_SEARCH_FORM_SIDE_MARGIN } from '../constants/layout'
 import { Footer } from '../components/common/footer'
+import {TopAreaContainer} from '../components/common/topAreaContainer'
 
 // constantsStyles
 import {constantsStyles} from '../constants/styles'
@@ -85,35 +86,14 @@ export function Home({ navigation }) {
 	let textInputSearch;
 
 	return (
-		<KeyboardAvoidingView behavior="padding" style={styles.containerStyle}>
-			<SafeAreaView style={styles.containerStyle}>
-				<ScrollView style={styles.containerStyle}>
-					<View style={styles.headContainerStyle}></View>
-					<View style={styles.topAreaStyle}>
-						{/* 検索フォーム */}
-						<View style={styles.searchWrapperStyle}>
-							<Pressable style={styles.searchContainerStyle} onPress={() => textInputSearch.focus()} >
-								<View style={styles.searchViewStyle}>
-									<TextInput
-										onChangeText={setSearchText}
-										style={styles.searchContentStyle}
-										value={searchText}
-										placeholder="Search by name"
-										ref={(input) => textInputSearch = input}
-										autoCapitalize="none"
-										textContentType="username"
-										onFocus={() => {
-										}}
-										onEndEditing={() => {
-											_searchName(searchText)
-										}}
-									/>
-									<Image source={require("../../assets/images/search.png")} style={styles.searchIconStyle} />
-								</View>
-							</Pressable>
-						</View>
-					</View>
-					<View style={{ minHeight: OPERATION_SCREENHEIGHT, backgroundColor: MAIN_WHITE_COLOR }}>
+		<KeyboardAvoidingView behavior="padding" style={constantsStyles.screenContainerStyle}>
+			<SafeAreaView style={constantsStyles.screenContainerStyle}>
+				{/* 画面一番上にある青色の余白部分 */}
+				<View style={constantsStyles.topMarginViewStyle}></View>
+				{/* 丸みを帯びている白いトップ部分 */}
+				<TopAreaContainer  title={null} searchForm={true} searchFormProps={{"setSearchText": setSearchText, "searchText": searchText, "textInputSearch": textInputSearch, "_searchName": _searchName }}/>
+				{/* トップ部分を除くメイン部分 */}
+				<ScrollView style={constantsStyles.withFooterMainContainerStyle}>
 						{/* グループ一覧 */}
 						<View style={styles.groupAndFriendWrapperStyle}>
 							<View style={styles.groupAndFriendContainerStyle}>
@@ -170,7 +150,6 @@ export function Home({ navigation }) {
 								})}
 							</View>
 						</View>
-					</View>
 				</ScrollView>
 				{/*フッター */}
 				<Footer />
@@ -180,52 +159,6 @@ export function Home({ navigation }) {
 }
 
 export const styles = StyleSheet.create({
-	// ヘッダー
-	containerStyle: {
-		flex: 1,
-		backgroundColor: MAIN_NAVY_COLOR,
-	},
-	headContainerStyle: {
-		height: HEAD_CONTAINER_HEIGHT,
-		backgroundColor: MAIN_NAVY_COLOR,
-	},
-	// main部分
-	topAreaStyle: {
-		height: TOP_AREA_STYLE,
-		backgroundColor: MAIN_WHITE_COLOR,
-		alignItems: 'center',
-		borderTopLeftRadius: 50,
-	},
-	// 検索フォーム
-	searchWrapperStyle: {
-		flex: 1,
-		alignItems: "center",
-		paddingBottom: 10,
-
-	},
-	searchContainerStyle: {
-		marginTop: 32,
-	},
-	searchIconStyle: {
-		width: ICON_SIZE,
-		height: ICON_SIZE,
-		marginRight: 10,
-		marginLeft: 10,
-	},
-	searchViewStyle: {
-		flexDirection: 'row',
-		alignItems: 'center',
-		backgroundColor: '#F6F7FB',
-		borderWidth: 0.5,
-		height: SEARCH_FORM_HEIGHT,
-		borderRadius: 5,
-		width: CONTENT_WIDTH,
-		borderColor: "#F6F7FB",
-	},
-	searchContentStyle: {
-		paddingLeft: 10,
-		flex: 1
-	},
 	groupAndFriendWrapperStyle: {
 		display: "flex",
 		justifyContent: "center",

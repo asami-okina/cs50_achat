@@ -30,7 +30,7 @@ export function LogIn({ navigation }) {
 
 
 	// ログイン認証
-	function loginAuthentication() {
+	function _loginAuthentication() {
 		// resultには、APIからの戻り値を入れる
 		let result = postLoginAuthentication(emailText, passwordText)
 		if (result.certificationResult) {
@@ -49,7 +49,7 @@ export function LogIn({ navigation }) {
 				{/* 画面一番上にある青色の余白部分 */}
 				<View style={constantsStyles.topMarginViewStyle}></View>
 				{/* 丸みを帯びている白いトップ部分 */}
-				<TopAreaContainer title={'Log In'} />
+				<TopAreaContainer title={'Log In'} searchForm={null} searchFormProps={null}  />
 				<ScrollView style={constantsStyles.mainContainerStyle}>
 					{/* ログイン認証エラー */}
 					{executedLoginAuthentication ? onFocusInputMailOrPasseword ? null : (
@@ -77,7 +77,7 @@ export function LogIn({ navigation }) {
 					<ForgotPassword />
 					{/* 画面下 */}
 					<View style={constantsStyles.bottomStyleByWelcomeAndSignUpAndLogin}>
-						<Button navigation={navigation} link={'Home'} buttonText={'Log In'} scene={'LogIn'} loginProps={{ 'emailText': emailText, 'passwordText': passwordText, 'executedLoginAuthentication': executedLoginAuthentication, 'onFocusInputMailOrPasseword': onFocusInputMailOrPasseword, 'onPressFunction': loginAuthentication }} enable={false} />
+						<Button navigation={navigation} link={'Home'} buttonText={'Log In'} scene={'LogIn'} loginProps={{ 'emailText': emailText, 'passwordText': passwordText, 'executedLoginAuthentication': executedLoginAuthentication, 'onFocusInputMailOrPasseword': onFocusInputMailOrPasseword, 'onPressFunction': _loginAuthentication }} enable={false} />
 						{/* サインアップまたはログインへのリンク */}
 						<ToSignUpOrLoginTextArea navigation={navigation} description={`Don't you have an account?`} link={'SignUp'} />
 					</View>
