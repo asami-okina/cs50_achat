@@ -4,6 +4,9 @@ import { fetchNickNameOrGroupNameBySearchForm, fetchGroupList, fetGroupCount, fe
 import { OPERATION_SCREENHEIGHT, HEAD_CONTAINER_HEIGHT, TOP_AREA_STYLE, SEARCH_FORM_HEIGHT, CONTENT_WIDTH, ICON_SIZE, MAIN_NAVY_COLOR, MAIN_WHITE_COLOR } from '../constants/layout'
 import { Footer } from '../components/common/footer'
 
+// constantsStyles
+import {constantsStyles} from '../constants/styles'
+
 export function Home({ navigation }) {
 	// ユーザーID(今後は認証から取得するようにする)
 	const userId = "asami11"
@@ -102,10 +105,10 @@ export function Home({ navigation }) {
 										onFocus={() => {
 										}}
 										onEndEditing={() => {
-											_searchName()
+											_searchName(searchText)
 										}}
 									/>
-									<Image source={require("../../assets/images/search.png")} style={styles.searchIconStyle} onPress={() => textInputEmail.focus()} />
+									<Image source={require("../../assets/images/search.png")} style={styles.searchIconStyle} />
 								</View>
 							</Pressable>
 						</View>
@@ -190,7 +193,6 @@ export const styles = StyleSheet.create({
 	topAreaStyle: {
 		height: TOP_AREA_STYLE,
 		backgroundColor: MAIN_WHITE_COLOR,
-		borderTopLeftRadius: 50,
 		alignItems: 'center',
 		borderTopLeftRadius: 50,
 	},

@@ -42,7 +42,7 @@ export function MailForm({
 					<Pressable style={styles.searchContainerStyle} onPress={() => textInputEmail.focus()} >
 						<Text style={styles.searchTitleStyle}>Email</Text>
 						<View style={defaultMailBorderColor ? isCorrectMail ? styles.searchViewStyle : [styles.searchViewStyle, styles.inputIncorrectBorderColorStyle] : styles.searchViewStyle}>
-							<Image source={require("../../../assets/images/email.png")} style={styles.searchIconStyle} onPress={() => textInputEmail.focus()} />
+							<Image source={require("../../../assets/images/email.png")} style={styles.searchIconStyle} />
 							<TextInput
 								onChangeText={onChangeEmailText}
 								style={styles.searchContentStyle}

@@ -56,7 +56,6 @@ export function PasswordForm({
 						<View style={defaultPasswordBorderColor ? isCorrectPassewordSymbol && isCorrectPassewordStringCount ? styles.searchViewStyle : [styles.searchViewStyle, styles.inputIncorrectBorderColorStyle] : styles.searchViewStyle}>
 							<Image source={require("../../../assets/images/lock.png")} style={styles.searchIconStyle} />
 							<TextInput
-								name="password"
 								placeholder="Password"
 								style={styles.searchContentStyle}
 								autoCapitalize="none"
@@ -89,7 +88,7 @@ export function PasswordForm({
 								}}
 							/>
 							<Pressable onPress={handlePasswordVisibility}>
-								<MaterialCommunityIcons name={rightIcon} size={22} color="#C5C5C7" style={styles.passwordIconStyle} />
+								<MaterialCommunityIcons image={rightIcon} size={22} color="#C5C5C7" style={styles.passwordIconStyle} />
 							</Pressable>
 						</View>
 					</Pressable>

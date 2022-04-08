@@ -11,7 +11,7 @@ import { ToSignUpOrLoginTextArea } from '../components/common/toSignUpOrLoginTex
 import { Button } from '../components/common/button'
 
 // constantsStyles
-import { screenContainerStyle, topMarginViewStyle, mainContainerStyle, bottomStyleByWelcomeAndSignUpAndLogin } from '../constants/styles'
+import {constantsStyles} from '../constants/styles'
 
 export function SignUp({ navigation }) {
 	// キーボードに完了ボタンを表示
@@ -34,14 +34,14 @@ export function SignUp({ navigation }) {
 	const [isAvailableUserId, setIsAvailableUserId] = useState(false)
 
 	return (
-		<KeyboardAvoidingView behavior="padding" style={screenContainerStyle}>
-			<SafeAreaView style={screenContainerStyle}>
+		<KeyboardAvoidingView behavior="padding" style={constantsStyles.screenContainerStyle}>
+			<SafeAreaView style={constantsStyles.screenContainerStyle}>
 				{/* 画面一番上にある青色の余白部分 */}
-				<View style={topMarginViewStyle}></View>
+				<View style={constantsStyles.topMarginViewStyle}></View>
 				{/* 丸みを帯びている白いトップ部分 */}
 				<TopAreaContainer  title={'SignUp'}/>
 				{/* トップ部分を除くメイン部分 */}
-				<ScrollView style={mainContainerStyle}>
+				<ScrollView style={constantsStyles.mainContainerStyle}>
 					{/* Email */}
 					<MailForm
 						inputAccessoryViewID={inputAccessoryViewID}
@@ -68,12 +68,12 @@ export function SignUp({ navigation }) {
 						pageType={"SignUp"}
 					/>
 					{/* 画面下 */}
-					<View style={bottomStyleByWelcomeAndSignUpAndLogin}>
+					<View style={constantsStyles.bottomStyleByWelcomeAndSignUpAndLogin}>
 						{isCorrectMail && isCorrectPassewordSymbol && isCorrectPassewordStringCount && isCorrectUserIdSymbol && isCorrectUserIdStringCount && isAvailableUserId ?
 							(
-								<Button navigation={navigation} link={'Home'} buttonText={'Sign Up'} enable={true} scene={'SignUp'} />
+								<Button navigation={navigation} link={'Home'} buttonText={'Sign Up'} enable={true} scene={'SignUp'} loginProps={null} />
 							) : (
-								<Button navigation={navigation} link={'Home'} buttonText={'Sign Up'} enable={false} scene={'SignUp'} />
+								<Button navigation={navigation} link={'Home'} buttonText={'Sign Up'} enable={false} scene={'SignUp'} loginProps={null} />
 							)}
 					{/* サインアップまたはログインへのリンク */}
 					<ToSignUpOrLoginTextArea navigation={navigation} description={'Do you have an account?'} link={'LogIn'} />

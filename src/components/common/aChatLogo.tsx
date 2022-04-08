@@ -1,6 +1,6 @@
 import React from 'react';
 import {View, StyleSheet, Image} from 'react-native';
-import { MAIN_WHITE_COLOR, A_CHAT_LOG_SIZE } from 'src'
+import { MAIN_WHITE_COLOR, A_CHAT_LOG_SIZE } from '../../constants/layout'
 
 export function AChatLogo() {
 	return (

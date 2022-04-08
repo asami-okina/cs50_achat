@@ -1,6 +1,6 @@
 import React from 'react';
 import { Text, View, TouchableOpacity, StyleSheet } from 'react-native';
-import { MAIN_WHITE_COLOR,STANDARD_FONT, CONTENT_WIDTH } from ''
+import { MAIN_WHITE_COLOR,STANDARD_FONT, CONTENT_WIDTH } from '../../constants/layout'
 
 export function ForgotPassword() {
 	return (

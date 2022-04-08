@@ -10,25 +10,25 @@ import { ToSignUpOrLoginTextArea } from '../components/common/toSignUpOrLoginTex
 import {TopAreaContainer} from '../components/common/topAreaContainer'
 
 // constantsStyles
-import { screenContainerStyle, topMarginViewStyle, mainContainerStyle, bottomStyleByWelcomeAndSignUpAndLogin } from '../constants/styles'
+import {constantsStyles} from '../constants/styles'
 
 export function Welcome({ navigation }) {
 	return (
-		<SafeAreaView style={screenContainerStyle}>
+		<SafeAreaView style={constantsStyles.screenContainerStyle}>
 			{/* 画面一番上にある青色の余白部分 */}
-			<View style={topMarginViewStyle}></View>
+			<View style={constantsStyles.topMarginViewStyle}></View>
 			{/* 丸みを帯びている白いトップ部分 */}
-			<TopAreaContainer />
-			<View style={mainContainerStyle}>
+			<TopAreaContainer title={null} />
+			<View style={constantsStyles.mainContainerStyle}>
 				{/* タイトル */}
-				<HeadTitle navigation={navigation} title={"Welcome"} />
+				<HeadTitle title={"Welcome"} />
 				{/* A-Chatロゴ */}
 				<AChatLogo />
-				<View style={bottomStyleByWelcomeAndSignUpAndLogin}>
+				<View style={constantsStyles.bottomStyleByWelcomeAndSignUpAndLogin}>
 					{/* 遷移ボタン */}
-					<Button navigation={navigation} link={'Home'} buttonText={'Sign Up'} enable={true} scene={'Welcome'} />
+					<Button navigation={navigation} link={'Home'} buttonText={'Sign Up'} enable={true} scene={'Welcome'} loginProps={null} />
 					{/* サインアップまたはログインへのリンク */}
-					<ToSignUpOrLoginTextArea navigation={navigation} description={'Do you have an account?'} link={'LogIn'} linkText={'Login'} />
+					<ToSignUpOrLoginTextArea navigation={navigation} description={'Do you have an account?'} link={'LogIn'} />
 				</View>
 			</View>
 		</SafeAreaView>

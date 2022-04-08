@@ -1,45 +1,36 @@
 import React from 'react';
 import { Text, View, Image, TextInput, Pressable, StyleSheet } from 'react-native';
-import { MaterialCommunityIcons } from '@expo/vector-icons';
-import { useTogglePasswordVisibility } from '../../hooks/useTogglePasswordVisibility';
 import { MAIN_WHITE_COLOR, CONTENT_WIDTH,MAIN_PINK_COLOR,STANDARD_FONT } from '../../constants/layout';
 
 
-export function PasswordForm({
+export function MailForm({
 	inputAccessoryViewID,
-	passwordText,
-	setPasswordText,
+	emailText,
+	setEmailText,
 	executedLoginAuthentication,
 	onFocusInputMailOrPasseword,
 	setOnFocusInputMailOrPasseword,
-
 }) {
-	// パスワードの表示/非表示アイコン
-	const { passwordVisibility, rightIcon, handlePasswordVisibility } = useTogglePasswordVisibility();
-
+	// メールフォームのラベル化
+	let textInputEmail;
 	return (
 		<View>
-			{/* Password */}
+			{/* Email */}
 			<View style={styles.searchBoxStyle}>
 				<View style={styles.searchWrapperStyle}>
-					<Pressable style={styles.searchContainerStyle} onPress={() => textInputPassword.focus()}>
-						<Text style={styles.searchTitleStyle}>Password</Text>
+					<Pressable style={styles.searchContainerStyle} onPress={() => textInputEmail.focus()} >
+						<Text style={styles.searchTitleStyle}>Email</Text>
 						<View style={executedLoginAuthentication ? onFocusInputMailOrPasseword ? styles.searchViewStyle : [styles.searchViewStyle, styles.inputIncorrectBorderColorStyle] : styles.searchViewStyle}>
-							<Image source={require("../../../assets/images/lock.png")} style={styles.searchIconStyle} />
+							<Image source={require("../../../assets/images/email.png")} style={styles.searchIconStyle} />
 							<TextInput
-								name="password"
-								placeholder="Password"
+								onChangeText={setEmailText}
 								style={styles.searchContentStyle}
-								autoCapitalize="none"
-								autoCorrect={false}
-								textContentType="newPassword"
-								secureTextEntry={passwordVisibility}
-								value={passwordText}
-								enablesReturnKeyAutomatically
-								onChangeText={setPasswordText}
+								value={emailText}
+								placeholder="a-chat@test.com"
 								inputAccessoryViewID={inputAccessoryViewID}
-								ref={(input) => textInputPassword = input}
-								maxLength={200}
+								ref={(input) => textInputEmail = input}
+								autoCapitalize="none"
+								textContentType="emailAddress"
 								onFocus={() => {
 									// メールアドレスもしくはパスワード入力中判定
 									setOnFocusInputMailOrPasseword(true)
@@ -47,9 +38,6 @@ export function PasswordForm({
 								onEndEditing={() => {
 								}}
 							/>
-							<Pressable onPress={handlePasswordVisibility}>
-								<MaterialCommunityIcons name={rightIcon} size={22} color="#C5C5C7" style={styles.passwordIconStyle} />
-							</Pressable>
 						</View>
 					</Pressable>
 				</View>
@@ -100,9 +88,5 @@ export const styles = StyleSheet.create({
 	inputIncorrectBorderColorStyle: {
 		borderWidth: 2,
 		borderColor: MAIN_PINK_COLOR,
-	},
-	// パスワードアイコンの表示/非表示
-	passwordIconStyle: {
-		marginRight: 10
 	},
 });

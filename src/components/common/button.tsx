@@ -39,7 +39,6 @@ const styles = StyleSheet.create({
 	buttonContainerStyle: {
 		alignItems: "center",
 		justifyContent: "center",
-		backgroundColor: MAIN_NAVY_COLOR,
 		width: CONTENT_WIDTH,
 		height: BUTTON_HEIGHT,
 		borderRadius: 10,

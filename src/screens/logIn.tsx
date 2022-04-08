@@ -3,12 +3,14 @@ import { View, SafeAreaView, ScrollView, KeyboardAvoidingView } from 'react-nati
 import { MailForm } from '../components/logIn/mailForm';
 import { PasswordForm } from '../components/logIn/passwordForm';
 import { postLoginAuthentication } from '../api/api';
-import { screenContainerStyle, topMarginViewStyle, mainContainerStyle, bottomStyleByWelcomeAndSignUpAndLogin } from '../constants/styles'
 import { TopAreaContainer } from '../components/common/topAreaContainer'
 import { ToSignUpOrLoginTextArea } from '../components/common/toSignUpOrLoginTextArea'
 import { Button } from '../components/common/button'
 import { AuthErrorText } from '../components/logIn/authErrorText';
 import { ForgotPassword } from '../components/logIn/forgotPasseword';
+
+// constantsStyles
+import {constantsStyles} from '../constants/styles'
 
 export function LogIn({ navigation }) {
 	// キーボードに完了ボタンを表示
@@ -42,13 +44,13 @@ export function LogIn({ navigation }) {
 	}
 
 	return (
-		<KeyboardAvoidingView behavior="padding" style={screenContainerStyle}>
-			<SafeAreaView style={screenContainerStyle}>
+		<KeyboardAvoidingView behavior="padding" style={constantsStyles.screenContainerStyle}>
+			<SafeAreaView style={constantsStyles.screenContainerStyle}>
 				{/* 画面一番上にある青色の余白部分 */}
-				<View style={topMarginViewStyle}></View>
+				<View style={constantsStyles.topMarginViewStyle}></View>
 				{/* 丸みを帯びている白いトップ部分 */}
 				<TopAreaContainer title={'Log In'} />
-				<ScrollView style={mainContainerStyle}>
+				<ScrollView style={constantsStyles.mainContainerStyle}>
 					{/* ログイン認証エラー */}
 					{executedLoginAuthentication ? onFocusInputMailOrPasseword ? null : (
 						<AuthErrorText />
@@ -74,7 +76,7 @@ export function LogIn({ navigation }) {
 					{/* パスワードを忘れた場合 */}
 					<ForgotPassword />
 					{/* 画面下 */}
-					<View style={bottomStyleByWelcomeAndSignUpAndLogin}>
+					<View style={constantsStyles.bottomStyleByWelcomeAndSignUpAndLogin}>
 						<Button navigation={navigation} link={'Home'} buttonText={'Log In'} scene={'LogIn'} loginProps={{ 'emailText': emailText, 'passwordText': passwordText, 'executedLoginAuthentication': executedLoginAuthentication, 'onFocusInputMailOrPasseword': onFocusInputMailOrPasseword, 'onPressFunction': loginAuthentication }} enable={false} />
 						{/* サインアップまたはログインへのリンク */}
 						<ToSignUpOrLoginTextArea navigation={navigation} description={`Don't you have an account?`} link={'SignUp'} />
