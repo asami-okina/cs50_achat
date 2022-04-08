@@ -1,9 +1,9 @@
 // libs
 import React from 'react';
-import { View, SafeAreaView, Text} from 'react-native';
+import { View, Text} from 'react-native';
 
 // styles
-import { topAreaTitleStyle, screenContainerStyle, topMarginViewStyle, topAreaContainerStyle, mainContainerStyle, bottomStyleByWelcomeAndSignUpAndLogin } from '../../constants/styles'
+import { topAreaTitleStyle,topAreaContainerStyle } from '../../constants/styles'
 
 // 丸みを帯びている白いトップ部分
 export function TopAreaContainer({ title }) {

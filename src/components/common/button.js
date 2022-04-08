@@ -1,22 +1,39 @@
 import React from 'react';
-import {Text, View, StyleSheet, SafeAreaView, Image, TouchableOpacity} from 'react-native';
-import { MAIN_NAVY_COLOR, MAIN_WHITE_COLOR, A_CHAT_LOG_SIZE,MAIN_PINK_COLOR,HEAD_CONTAINER_HEIGHT,TOP_AREA_STYLE,TOP_AREA_LEFT_RADIUS,MAIN_TITLE_SIZE,MAIN_TITLE_FONT,START_SCREEN_HEIGHT,BUTTON_HEIGHT,CONTENT_WIDTH,STANDARD_FONT,BUTTON_TEXT_SIZE } from '../../constants/layout'
+import { Text, StyleSheet, TouchableOpacity } from 'react-native';
+import { MAIN_NAVY_COLOR, MAIN_WHITE_COLOR, BUTTON_HEIGHT, CONTENT_WIDTH, STANDARD_FONT, BUTTON_TEXT_SIZE } from '../../constants/layout'
 
-export function Button({ navigation,link,buttonText, enable }) {
+export function Button({ navigation, link, buttonText, enable, scene, loginProps }) {
 	return (
-		<TouchableOpacity
-			style={enable ? styles.buttonContainerStyle: [styles.buttonContainerStyle, styles.buttonContainerInvalidStyle]}
-			onPress={() => {
-				if (enable){
-					navigation.navigate(link)
-				}
-			}}
-		>
-			<Text style={styles.buttonTextStyle}>{buttonText}</Text>
-		</TouchableOpacity>
+		<>
+			{
+				// ログイン画面の場合
+				scene === 'LogIn' ? (
+					<TouchableOpacity
+						style={loginProps.emailText.length !== 0 && loginProps.passwordText.length !== 0 ? loginProps.executedLoginAuthentication ? loginProps.onFocusInputMailOrPasseword ? styles.buttonContainerStyle : [styles.buttonContainerStyle, styles.buttonContainerInvalidStyle] : styles.buttonContainerStyle : [styles.buttonContainerStyle, styles.buttonContainerInvalidStyle]}
+						onPress={() => {
+							if (loginProps.emailText.length !== 0 && loginProps.passwordText.length !== 0) {
+								loginProps.onPressFunction()
+							}
+						}}>
+						<Text style={styles.buttonTextStyle}>Log In</Text>
+					</TouchableOpacity>
+				) : (
+					// ログイン以外の画面の場合(scene === 'Welcome' || scene === 'SignUp')
+					<TouchableOpacity
+						style={enable ? styles.buttonContainerStyle : [styles.buttonContainerStyle, styles.buttonContainerInvalidStyle]}
+						onPress={() => {
+							if (enable) {
+								navigation.navigate(link)
+							}
+						}}
+					>
+						<Text style={styles.buttonTextStyle}>{buttonText}</Text>
+					</TouchableOpacity>
+				)
+			}
+		</>
 	);
 }
-
 
 const styles = StyleSheet.create({
 	buttonContainerStyle: {

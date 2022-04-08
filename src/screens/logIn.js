@@ -1,9 +1,14 @@
 import React, { useState } from 'react';
-import { Text, View, SafeAreaView, ScrollView, TouchableOpacity, KeyboardAvoidingView, StyleSheet } from 'react-native';
+import { View, SafeAreaView, ScrollView, KeyboardAvoidingView } from 'react-native';
 import { MailForm } from '../components/logIn/mailForm';
 import { PasswordForm } from '../components/logIn/passwordForm';
 import { postLoginAuthentication } from '../api/api';
-import { CONTENT_WIDTH, BUTTON_HEIGHT, MAIN_NAVY_COLOR, MAIN_WHITE_COLOR,MAIN_PINK_COLOR,MAIN_TITLE_FONT,STANDARD_FONT } from '../constants/layout'
+import { screenContainerStyle, topMarginViewStyle, mainContainerStyle, bottomStyleByWelcomeAndSignUpAndLogin } from '../constants/styles'
+import { TopAreaContainer } from '../components/common/topAreaContainer'
+import { ToSignUpOrLoginTextArea } from '../components/common/toSignUpOrLoginTextArea'
+import { Button } from '../components/common/button'
+import { AuthErrorText } from '../components/logIn/authErrorText';
+import { ForgotPassword } from '../components/logIn/forgotPasseword';
 
 export function LogIn({ navigation }) {
 	// キーボードに完了ボタンを表示
@@ -30,26 +35,23 @@ export function LogIn({ navigation }) {
 			// Home画面へ遷移
 			navigation.navigate('Home')
 		} else {
-			// ログインボタンを押した
+			// ログインボタンを押した場合
 			setExecutedLoginAuthentication(true)
 			setOnFocusInputMailOrPasseword(false)
 		}
 	}
 
 	return (
-		<KeyboardAvoidingView behavior="padding" style={styles.containerStyle}>
-			<SafeAreaView style={styles.containerStyle}>
-				<ScrollView style={styles.containerStyle}>
-					<View style={styles.headContainerStyle}></View>
-					<View style={styles.mainContainerStyle}></View>
-					<View style={styles.headMessageContainerStyle}>
-						<Text style={styles.headMessageTextStyle}>Log In</Text>
-					</View>
+		<KeyboardAvoidingView behavior="padding" style={screenContainerStyle}>
+			<SafeAreaView style={screenContainerStyle}>
+				{/* 画面一番上にある青色の余白部分 */}
+				<View style={topMarginViewStyle}></View>
+				{/* 丸みを帯びている白いトップ部分 */}
+				<TopAreaContainer title={'Log In'} />
+				<ScrollView style={mainContainerStyle}>
 					{/* ログイン認証エラー */}
 					{executedLoginAuthentication ? onFocusInputMailOrPasseword ? null : (
-						<View style={styles.errorContainerStyle}>
-							<Text style={styles.errorTextStyle}>Your e-mail address or password is incorrect.</Text>
-						</View>
+						<AuthErrorText />
 					) : null}
 					{/* Email */}
 					<MailForm
@@ -70,130 +72,15 @@ export function LogIn({ navigation }) {
 						setOnFocusInputMailOrPasseword={setOnFocusInputMailOrPasseword}
 					/>
 					{/* パスワードを忘れた場合 */}
-					<View style={styles.forgotPasswordWrapperStyle}>
-						<TouchableOpacity style={styles.forgotPasswordContainerStyle} onPress={() => console.log('検討予定')}>
-							<Text style={styles.forgotPasswordTextStyle}>Forgot Password</Text>
-						</TouchableOpacity>
-					</View>
+					<ForgotPassword />
 					{/* 画面下 */}
-					<View style={styles.bottomStyle}>
-						<TouchableOpacity
-							style={emailText.length !== 0 && passwordText.length !== 0 ? executedLoginAuthentication ? onFocusInputMailOrPasseword ? styles.buttonContainerStyle : [styles.buttonContainerStyle, styles.buttonContainerInvalidStyle] : styles.buttonContainerStyle : [styles.buttonContainerStyle, styles.buttonContainerInvalidStyle]}
-							onPress={() => {
-								if (emailText.length !== 0 && passwordText.length !== 0) {
-									loginAuthentication()
-								}
-							}}>
-							<Text style={styles.buttonTextStyle}>Log In</Text>
-						</TouchableOpacity>
-						<View style={styles.toLoginStyle}>
-							<Text style={styles.toLoginTextStyle}>Don't have an account?</Text>
-							<TouchableOpacity onPress={() => {
-								navigation.navigate('SignUp');
-							}}>
-								<Text style={[styles.toLoginTextStyle, styles.toLoginTextLinkStyle]}>Sign up here</Text>
-							</TouchableOpacity>
-						</View>
+					<View style={bottomStyleByWelcomeAndSignUpAndLogin}>
+						<Button navigation={navigation} link={'Home'} buttonText={'Log In'} scene={'LogIn'} loginProps={{ 'emailText': emailText, 'passwordText': passwordText, 'executedLoginAuthentication': executedLoginAuthentication, 'onFocusInputMailOrPasseword': onFocusInputMailOrPasseword, 'onPressFunction': loginAuthentication }} enable={false} />
+						{/* サインアップまたはログインへのリンク */}
+						<ToSignUpOrLoginTextArea navigation={navigation} description={`Don't you have an account?`} link={'SignUp'} />
 					</View>
 				</ScrollView>
 			</SafeAreaView>
 		</KeyboardAvoidingView>
 	);
 }
-
-export const styles = StyleSheet.create({
-	// ヘッダー
-	containerStyle: {
-		flex: 1,
-		backgroundColor: MAIN_NAVY_COLOR,
-	},
-	headContainerStyle: {
-		height: "10%",
-		height: 40,
-		backgroundColor: MAIN_NAVY_COLOR,
-	},
-	headMessageContainerStyle: {
-		backgroundColor: MAIN_WHITE_COLOR,
-		alignItems: 'center',
-	},
-	headMessageTextStyle: {
-		fontSize: 50,
-		fontFamily: MAIN_TITLE_FONT,
-		color: MAIN_NAVY_COLOR,
-		marginBottom: 32,
-	},
-	// main部分
-	mainContainerStyle: {
-		height: "15%",
-		backgroundColor: MAIN_WHITE_COLOR,
-		borderTopLeftRadius: 50,
-		alignItems: 'center',
-	},
-	// 検索フォーム
-	searchBoxStyle: {
-		flex: 1,
-		backgroundColor: MAIN_WHITE_COLOR,
-	},
-	// 画面下部分
-	bottomStyle: {
-		display: "flex",
-		alignItems: "center",
-		height: "100%",
-		backgroundColor: MAIN_WHITE_COLOR,
-	},
-	buttonContainerStyle: {
-		alignItems: "center",
-		justifyContent: "center",
-		backgroundColor: MAIN_NAVY_COLOR,
-		width: CONTENT_WIDTH,
-		height: BUTTON_HEIGHT,
-		borderRadius: 10,
-		fontSize: 18,
-	},
-	buttonContainerInvalidStyle: {
-		backgroundColor: "#C5C5C7",
-	},
-	buttonTextStyle: {
-		color: MAIN_WHITE_COLOR,
-		fontFamily: STANDARD_FONT,
-	},
-	toLoginStyle: {
-		marginTop: 10,
-		height: "5%",
-		flexDirection: "row"
-	},
-	toLoginTextStyle: {
-		fontFamily: STANDARD_FONT,
-	},
-	toLoginTextLinkStyle: {
-		color: MAIN_PINK_COLOR,
-		marginLeft: 10,
-	},
-	errorContainerStyle: {
-		display: "flex",
-		alignItems: "center",
-		backgroundColor: MAIN_WHITE_COLOR,
-		paddingBottom: 32,
-	},
-	errorTextStyle: {
-		color: MAIN_PINK_COLOR,
-		backgroundColor: MAIN_WHITE_COLOR,
-		fontFamily: STANDARD_FONT,
-		fontWeight: "bold"
-	},
-	forgotPasswordWrapperStyle: {
-		display: "flex",
-		justifyContent: "center",
-		alignItems: "center",
-		backgroundColor: MAIN_WHITE_COLOR,
-		paddingBottom: 32,
-	},
-	forgotPasswordContainerStyle: {
-		backgroundColor: MAIN_WHITE_COLOR,
-		alignItems: "flex-end",
-		width: 300,
-	},
-	forgotPasswordTextStyle: {
-		fontFamily: STANDARD_FONT,
-	}
-});
