@@ -1,104 +1,104 @@
-import React, {useState} from 'react';
-import { Text,View, SafeAreaView, ScrollView, TouchableOpacity, KeyboardAvoidingView, StyleSheet } from 'react-native';
+import React, { useState } from 'react';
+import { Text, View, SafeAreaView, ScrollView, TouchableOpacity, KeyboardAvoidingView, StyleSheet } from 'react-native';
 import { MailForm } from '../components/logIn/mailForm';
 import { PasswordForm } from '../components/logIn/passwordForm';
 import { postLoginAuthentication } from '../api/api';
-import { CONTENT_WIDTH, BIG_BUTTON_HEIGHT,MAIN_NAVY_COLOR,MAIN_WHITE_COLOR} from '../constants/layout'
+import { CONTENT_WIDTH, BIG_BUTTON_HEIGHT, MAIN_NAVY_COLOR, MAIN_WHITE_COLOR } from '../constants/layout'
 
-export function LogIn({navigation}) {
-    // キーボードに完了ボタンを表示
-    const inputAccessoryViewID = 'uniqueID';
+export function LogIn({ navigation }) {
+	// キーボードに完了ボタンを表示
+	const inputAccessoryViewID = 'uniqueID';
 
-    // メールアドレスの入力フォーム
-    const [emailText, setEmailText] = useState("");
+	// メールアドレスの入力フォーム
+	const [emailText, setEmailText] = useState("");
 
-    // パスワードの入力フォーム
-    const [passwordText, setPasswordText] = useState("");
+	// パスワードの入力フォーム
+	const [passwordText, setPasswordText] = useState("");
 
-    // メールアドレスもしくはパスワード入力中
-    const [onFocusInputMailOrPasseword, setOnFocusInputMailOrPasseword] = useState(false)
+	// メールアドレスもしくはパスワード入力中
+	const [onFocusInputMailOrPasseword, setOnFocusInputMailOrPasseword] = useState(false)
 
-    // ログインボタンをしたかどうか
-    const [executedLoginAuthentication, setExecutedLoginAuthentication] = useState(false)
+	// ログインボタンをしたかどうか
+	const [executedLoginAuthentication, setExecutedLoginAuthentication] = useState(false)
 
 
-    // ログイン認証
-    function loginAuthentication(){
-        // resultには、APIからの戻り値を入れる
-        let result = postLoginAuthentication(emailText, passwordText)
-        if (result.certificationResult){
-            // Home画面へ遷移
-            navigation.navigate('Home')
-        } else {
-            // ログインボタンを押した
-            setExecutedLoginAuthentication(true)
-            setOnFocusInputMailOrPasseword(false)
-        }
-    }
+	// ログイン認証
+	function loginAuthentication() {
+		// resultには、APIからの戻り値を入れる
+		let result = postLoginAuthentication(emailText, passwordText)
+		if (result.certificationResult) {
+			// Home画面へ遷移
+			navigation.navigate('Home')
+		} else {
+			// ログインボタンを押した
+			setExecutedLoginAuthentication(true)
+			setOnFocusInputMailOrPasseword(false)
+		}
+	}
 
-    return (
-    <KeyboardAvoidingView behavior="padding" style={styles.containerStyle}>
-        <SafeAreaView style={styles.containerStyle}>
-            <ScrollView style={styles.containerStyle}>
-                <View style={styles.headContainerStyle}></View>
-                <View style={styles.mainContainerStyle}></View>
-                <View style={styles.headMessageContainerStyle}>
-                    <Text style={styles.headMessageTextStyle}>Log In</Text>
-                </View>
-                {/* ログイン認証エラー */}
-                {executedLoginAuthentication ? onFocusInputMailOrPasseword ? null: (
-                    <View style={styles.errorContainerStyle}>
-                        <Text style={styles.errorTextStyle}>Your e-mail address or password is incorrect.</Text>
-                    </View>
-                ): null}
-                {/* Email */}
-                <MailForm
-                    inputAccessoryViewID={inputAccessoryViewID}
-                    emailText={emailText}
-                    setEmailText={setEmailText}
-                    executedLoginAuthentication={executedLoginAuthentication}
-                    onFocusInputMailOrPasseword={onFocusInputMailOrPasseword}
-                    setOnFocusInputMailOrPasseword={setOnFocusInputMailOrPasseword}
-                />
-                {/* Password */}
-                <PasswordForm
-                    inputAccessoryViewID={inputAccessoryViewID}
-                    passwordText={passwordText}
-                    setPasswordText={setPasswordText}
-                    executedLoginAuthentication={executedLoginAuthentication}
-                    onFocusInputMailOrPasseword={onFocusInputMailOrPasseword}
-                    setOnFocusInputMailOrPasseword={setOnFocusInputMailOrPasseword}
-                />
-                {/* パスワードを忘れた場合 */}
-                <View style={styles.forgotPasswordWrapperStyle}>
-                    <TouchableOpacity style={styles.forgotPasswordContainerStyle} onPress={() => console.log('検討予定')}>
-                        <Text style={styles.forgotPasswordTextStyle}>Forgot Password</Text>
-                    </TouchableOpacity>
-                </View>
-                {/* 画面下 */}
-                <View style={styles.bottomStyle}>
-                    <TouchableOpacity
-                        style={emailText.length !== 0 && passwordText.length !== 0 ? executedLoginAuthentication ? onFocusInputMailOrPasseword ? styles.buttonContainerStyle : [styles.buttonContainerStyle, styles.buttonContainerInvalidStyle] :styles.buttonContainerStyle: [styles.buttonContainerStyle, styles.buttonContainerInvalidStyle]}
-                        onPress={() => {
-                            if(emailText.length !== 0 && passwordText.length !== 0) {
-                                loginAuthentication()
-                            }
-                        }}>
-                        <Text style={styles.buttonTextStyle}>Log In</Text>
-                    </TouchableOpacity>
-                    <View style={styles.toLoginStyle}>
-                        <Text style={styles.toLoginTextStyle}>Don't have an account?</Text>
-                        <TouchableOpacity onPress={() => {
-                            navigation.navigate('SignUp');
-                        }}>
-                            <Text style={[styles.toLoginTextStyle, styles.toLoginTextLinkStyle]}>Sign up here</Text>
-                        </TouchableOpacity>
-                    </View>
-                </View>
-            </ScrollView>
-        </SafeAreaView>
-    </KeyboardAvoidingView>
-    );
+	return (
+		<KeyboardAvoidingView behavior="padding" style={styles.containerStyle}>
+			<SafeAreaView style={styles.containerStyle}>
+				<ScrollView style={styles.containerStyle}>
+					<View style={styles.headContainerStyle}></View>
+					<View style={styles.mainContainerStyle}></View>
+					<View style={styles.headMessageContainerStyle}>
+						<Text style={styles.headMessageTextStyle}>Log In</Text>
+					</View>
+					{/* ログイン認証エラー */}
+					{executedLoginAuthentication ? onFocusInputMailOrPasseword ? null : (
+						<View style={styles.errorContainerStyle}>
+							<Text style={styles.errorTextStyle}>Your e-mail address or password is incorrect.</Text>
+						</View>
+					) : null}
+					{/* Email */}
+					<MailForm
+						inputAccessoryViewID={inputAccessoryViewID}
+						emailText={emailText}
+						setEmailText={setEmailText}
+						executedLoginAuthentication={executedLoginAuthentication}
+						onFocusInputMailOrPasseword={onFocusInputMailOrPasseword}
+						setOnFocusInputMailOrPasseword={setOnFocusInputMailOrPasseword}
+					/>
+					{/* Password */}
+					<PasswordForm
+						inputAccessoryViewID={inputAccessoryViewID}
+						passwordText={passwordText}
+						setPasswordText={setPasswordText}
+						executedLoginAuthentication={executedLoginAuthentication}
+						onFocusInputMailOrPasseword={onFocusInputMailOrPasseword}
+						setOnFocusInputMailOrPasseword={setOnFocusInputMailOrPasseword}
+					/>
+					{/* パスワードを忘れた場合 */}
+					<View style={styles.forgotPasswordWrapperStyle}>
+						<TouchableOpacity style={styles.forgotPasswordContainerStyle} onPress={() => console.log('検討予定')}>
+							<Text style={styles.forgotPasswordTextStyle}>Forgot Password</Text>
+						</TouchableOpacity>
+					</View>
+					{/* 画面下 */}
+					<View style={styles.bottomStyle}>
+						<TouchableOpacity
+							style={emailText.length !== 0 && passwordText.length !== 0 ? executedLoginAuthentication ? onFocusInputMailOrPasseword ? styles.buttonContainerStyle : [styles.buttonContainerStyle, styles.buttonContainerInvalidStyle] : styles.buttonContainerStyle : [styles.buttonContainerStyle, styles.buttonContainerInvalidStyle]}
+							onPress={() => {
+								if (emailText.length !== 0 && passwordText.length !== 0) {
+									loginAuthentication()
+								}
+							}}>
+							<Text style={styles.buttonTextStyle}>Log In</Text>
+						</TouchableOpacity>
+						<View style={styles.toLoginStyle}>
+							<Text style={styles.toLoginTextStyle}>Don't have an account?</Text>
+							<TouchableOpacity onPress={() => {
+								navigation.navigate('SignUp');
+							}}>
+								<Text style={[styles.toLoginTextStyle, styles.toLoginTextLinkStyle]}>Sign up here</Text>
+							</TouchableOpacity>
+						</View>
+					</View>
+				</ScrollView>
+			</SafeAreaView>
+		</KeyboardAvoidingView>
+	);
 }
 
 export const styles = StyleSheet.create({
@@ -150,7 +150,7 @@ export const styles = StyleSheet.create({
 		borderRadius: 10,
 		fontSize: 18,
 	},
-	buttonContainerInvalidStyle:{
+	buttonContainerInvalidStyle: {
 		backgroundColor: "#C5C5C7",
 	},
 	buttonTextStyle: {
@@ -175,7 +175,7 @@ export const styles = StyleSheet.create({
 		backgroundColor: MAIN_WHITE_COLOR,
 		paddingBottom: 32,
 	},
-	errorTextStyle:{
+	errorTextStyle: {
 		color: "#ED195E",
 		backgroundColor: MAIN_WHITE_COLOR,
 		fontFamily: "ABeeZee_400Regular_Italic",
@@ -188,7 +188,7 @@ export const styles = StyleSheet.create({
 		backgroundColor: MAIN_WHITE_COLOR,
 		paddingBottom: 32,
 	},
-	forgotPasswordContainerStyle:{
+	forgotPasswordContainerStyle: {
 		backgroundColor: MAIN_WHITE_COLOR,
 		alignItems: "flex-end",
 		width: 300,
