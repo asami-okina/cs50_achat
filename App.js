@@ -9,6 +9,7 @@ import SignUp from './src/screens/signUp';
 import LogIn from './src/screens/logIn';
 import Welcome from './src/screens/welcome';
 import Home from './src/screens/home';
+import Footer from './src/components/common/footer';
 
 // fonts
 import { useFonts, AlfaSlabOne_400Regular } from '@expo-google-fonts/alfa-slab-one';
@@ -51,6 +52,7 @@ function App() {
           {/* <Stack.Screen name="SignUp" component={SignUp} options={{ headerShown: false }} /> */}
           {/* <Stack.Screen name="LogIn" component={LogIn} options={{ headerShown: false }} /> */}
           <Stack.Screen name="Home" component={Home} options={{ headerShown: false }} />
+					{/* <Stack.Screen name="Footer" component={Footer} options={{ headerShown: false }} /> */}
         </Stack.Navigator>
       </NavigationContainer>
     );

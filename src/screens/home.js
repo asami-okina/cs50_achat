@@ -1,7 +1,9 @@
 import React, {useEffect, useState} from 'react';
-import { Text,View, SafeAreaView, ScrollView, TouchableOpacity, KeyboardAvoidingView, Pressable, Image, TextInput, Dimensions, StyleSheet} from 'react-native';
+import { Text,View, SafeAreaView, ScrollView, KeyboardAvoidingView, Pressable, Image, TextInput} from 'react-native';
 import { styles } from '../styles/home/home';
-import {fetchNickNameOrGroupNameBySearchForm, fetchGroupList, fetGroupCount,fetchFriendList,fetchFriendCount} from '../api/api'
+import { fetchNickNameOrGroupNameBySearchForm, fetchGroupList, fetGroupCount,fetchFriendList,fetchFriendCount} from '../api/api'
+import { OPERATION_SCREENHEIGHT }from '../constants/layout'
+import { Footer } from '../components/common/footer'
 
 function Home({navigation}) {
 	// ユーザーID(今後は認証から取得するようにする)
@@ -80,112 +82,96 @@ function Home({navigation}) {
 	// 検索フォームのラベル化
 	let textInputSearch;
 
-	// 画面情報を取得
-	const { width, height, scale } = Dimensions.get('window');
     return (
     <KeyboardAvoidingView behavior="padding" style={styles.containerStyle}>
         <SafeAreaView style={styles.containerStyle}>
             <ScrollView style={styles.containerStyle}>
 							<View style={styles.headContainerStyle}></View>
-                <View style={styles.mainContainerStyle}>
-									{/* 検索フォーム */}
-									<View style={styles.searchWrapperStyle}>
-										<Pressable style={styles.searchContainerStyle} onPress={() => textInputSearch.focus()} >
-												<View style={styles.searchViewStyle}>
-														<TextInput
-																onChangeText={setSearchText}
-																style={styles.searchContentStyle}
-																value={searchText}
-																placeholder="Search by name"
-																ref={(input) => textInputSearch = input}
-																autoCapitalize="none"
-																textContentType="username"
-																onFocus={() => {
-																}}
-																onEndEditing={() => {
-																	_searchName()
-																}}
-														/>
-														<Image source={require("../../assets/images/search.png")} style={styles.searchIconStyle} onPress={() => textInputEmail.focus()}/>
+								<View style={styles.topAreaStyle}>
+										{/* 検索フォーム */}
+										<View style={styles.searchWrapperStyle}>
+											<Pressable style={styles.searchContainerStyle} onPress={() => textInputSearch.focus()} >
+													<View style={styles.searchViewStyle}>
+															<TextInput
+																	onChangeText={setSearchText}
+																	style={styles.searchContentStyle}
+																	value={searchText}
+																	placeholder="Search by name"
+																	ref={(input) => textInputSearch = input}
+																	autoCapitalize="none"
+																	textContentType="username"
+																	onFocus={() => {
+																	}}
+																	onEndEditing={() => {
+																		_searchName()
+																	}}
+															/>
+															<Image source={require("../../assets/images/search.png")} style={styles.searchIconStyle} onPress={() => textInputEmail.focus()}/>
+													</View>
+											</Pressable>
+										</View>
+									</View>
+									<View style={{minHeight: OPERATION_SCREENHEIGHT, backgroundColor: "#feffff"}}>
+									{/* グループ一覧 */}
+									<View style={styles.groupAndFriendWrapperStyle}>
+										<View style={styles.groupAndFriendContainerStyle}>
+											<View style={styles.topContainerStyle}>
+												<Text style={styles.titleStyle}>Group</Text>
+												<Text style={styles.countStyle}>{groupCount}</Text>
+												<View style={styles.iconsBoxStyle}>
+													<Pressable>
+														<Image source={require("../../assets/images/plus.png")} style={styles.plusIconStyle}/>
+													</Pressable>
+													<Pressable onPress={() => setOpenGroupList(!openGroupList)}>
+														<Image source={require("../../assets/images/open.png")}style={styles.openIconStyle}/>
+													</Pressable>
 												</View>
-										</Pressable>
-									</View>
-								</View>
-								<View style={styles.searchBoxStyle}>
-								</View>
-								{/* グループ一覧 */}
-								<View style={styles.groupAndFriendWrapperStyle}>
-									<View style={styles.groupAndFriendContainerStyle}>
-										<View style={styles.topContainerStyle}>
-											<Text style={styles.titleStyle}>Group</Text>
-											<Text style={styles.countStyle}>{groupCount}</Text>
-											<View style={styles.iconsBoxStyle}>
-												<Pressable>
-													<Image source={require("../../assets/images/plus.png")} style={styles.plusIconStyle}/>
-												</Pressable>
-												<Pressable onPress={() => setOpenGroupList(!openGroupList)}>
-													<Image source={require("../../assets/images/open.png")}style={styles.openIconStyle}/>
-												</Pressable>
 											</View>
+											{/* グループ一覧をmapで回して表示 */}
+											{openGroupList && groupList.length != 0 && groupList.map((list) => {
+												return (
+													<View style={styles.listWrapperStyle} key={list.group_chat_room_id}>
+													<Pressable style={styles.listItemContainerStyle}>
+														<Image source={list.group_image} style={styles.profileImageStyle}/>
+														<Text style={styles.listItemNameStyle}>{list.group_name}</Text>
+													</Pressable>
+												</View>
+												)
+											})}
 										</View>
-										{/* グループ一覧をmapで回して表示 */}
-										{openGroupList && groupList.length != 0 && groupList.map((list) => {
-											return (
-												<View style={styles.listWrapperStyle} key={list.group_chat_room_id}>
-												<Pressable style={styles.listItemContainerStyle}>
-													<Image source={list.group_image} style={styles.profileImageStyle}/>
-													<Text style={styles.listItemNameStyle}>{list.group_name}</Text>
-												</Pressable>
-											</View>
-											)
-										})}
 									</View>
-								</View>
-								{/* 友達一覧 */}
-								<View style={styles.groupAndFriendWrapperStyle}>
-									<View style={styles.groupAndFriendContainerStyle}>
-										<View style={styles.topContainerStyle}>
-											<Text style={styles.titleStyle}>Friend</Text>
-											<Text style={styles.countStyle}>{friendCount}</Text>
-											<View style={styles.iconsBoxStyle}>
-												<Pressable>
-													<Image source={require("../../assets/images/plus.png")} style={styles.plusIconStyle}/>
-												</Pressable>
-												<Pressable onPress={() => setOpenFriendList(!openFriendList)}>
-													<Image source={require("../../assets/images/open.png")}style={styles.openIconStyle}/>
-												</Pressable>
+									{/* 友達一覧 */}
+									<View style={styles.groupAndFriendWrapperStyle}>
+										<View style={styles.groupAndFriendContainerStyle}>
+											<View style={styles.topContainerStyle}>
+												<Text style={styles.titleStyle}>Friend</Text>
+												<Text style={styles.countStyle}>{friendCount}</Text>
+												<View style={styles.iconsBoxStyle}>
+													<Pressable>
+														<Image source={require("../../assets/images/plus.png")} style={styles.plusIconStyle}/>
+													</Pressable>
+													<Pressable onPress={() => setOpenFriendList(!openFriendList)}>
+														<Image source={require("../../assets/images/open.png")}style={styles.openIconStyle}/>
+													</Pressable>
+												</View>
 											</View>
+											{/* 友達一覧をmapで回して表示 */}
+											{openFriendList && friendList.length != 0 && friendList.map((list) => {
+												return (
+													<View style={styles.listWrapperStyle} key={list.direct_chat_room_id}>
+													<Pressable style={styles.listItemContainerStyle}>
+														<Image source={list.friend_profile_image} style={styles.profileImageStyle}/>
+														<Text style={styles.listItemNameStyle}>{list.friend_nickname}</Text>
+													</Pressable>
+												</View>
+												)
+											})}
 										</View>
-										{/* 友達一覧をmapで回して表示 */}
-										{openFriendList && friendList.length != 0 && friendList.map((list) => {
-											return (
-												<View style={styles.listWrapperStyle} key={list.direct_chat_room_id}>
-												<Pressable style={styles.listItemContainerStyle}>
-													<Image source={list.friend_profile_image} style={styles.profileImageStyle}/>
-													<Text style={styles.listItemNameStyle}>{list.friend_nickname}</Text>
-												</Pressable>
-											</View>
-											)
-										})}
 									</View>
-								</View>
-								<View style={{height: height - 200, backgroundColor: "#feffff"}}></View>
+									</View>
             </ScrollView>
 						{/*フッター */}
-						<View style={styles.footerStyle}>
-							<Pressable style={styles.footerItemStyle}>
-								<Image source={require('../../assets/images/home.png')}/>
-								<Text style={styles.footerTextStyle}>Home</Text>
-							</Pressable>
-							<Pressable style={styles.footerItemStyle}>
-								<Image source={require('../../assets/images/message.png')}/>
-								<Text style={styles.footerTextStyle}>Chats</Text>
-							</Pressable>
-							<Pressable style={styles.footerItemStyle}>
-							<Image source={require('../../assets/images/white_profile.png')}/>
-							<Text style={styles.footerTextStyle}>Profile</Text>
-							</Pressable>
-						</View>
+						<Footer />
         </SafeAreaView>
     </KeyboardAvoidingView>
     );

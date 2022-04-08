@@ -33,7 +33,7 @@ export function MailForm({
       }
       setIsCorrectMail(regexp.test(emailText))
     }
- 
+
     return (
       <View>
       {/* Email */}

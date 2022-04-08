@@ -1,4 +1,5 @@
 import { StyleSheet } from 'react-native';
+import {  HEAD_CONTAINER_HEIGHT, FOOTER_HEIGHT, TOP_AREA_STYLE }from '../../constants/layout'
 
 export const styles = StyleSheet.create({
     // ヘッダー
@@ -12,7 +13,7 @@ export const styles = StyleSheet.create({
       headContainerStyle: {
         width: "100%",
         height: "10%",
-        height: 40,
+        height: HEAD_CONTAINER_HEIGHT,
         backgroundColor: "#1B1C56",
       },
       headMessageContainerStyle: {
@@ -26,16 +27,18 @@ export const styles = StyleSheet.create({
         marginBottom: 32,
       },
       // main部分
-      mainContainerStyle: {
-          height: 100,
+      topAreaStyle: {
+          height: TOP_AREA_STYLE,
           backgroundColor: "#feffff",
           borderTopLeftRadius: 50,
           alignItems: 'center',
+					borderTopLeftRadius: 50,
       },
       // 検索フォーム
       searchBoxStyle: {
         flex: 1,
         backgroundColor: "#feffff",
+				// backgroundColor: "red",
       },
       searchWrapperStyle: {
           flex: 1,
@@ -208,26 +211,5 @@ export const styles = StyleSheet.create({
 			listItemNameStyle: {
 				fontFamily: "ABeeZee_400Regular",
 				marginLeft: 12,
-			},
-			footerStyle: {
-				height: 60,
-				backgroundColor: "#1B1C56",
-				backgroundColor: "red",
-				flexDirection: "row"
-			},
-			footerItemStyle:{
-				flex: 1,
-				backgroundColor: "#1B1C56",
-				display: "flex",
-				justifyContent: "center",
-				alignItems: "center"
-			},
-			footerTextStyle: {
-				fontFamily: "ABeeZee_400Regular",
-				color: "#feffff"
-			},
-			paddingStyle: {
-				flex: 1,
-				backgroundColor: "yellow"
 			}
   });

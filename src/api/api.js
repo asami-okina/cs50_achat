@@ -64,7 +64,17 @@ export const fetchGroupList = (userId) => {
 			"group_chat_room_id": "2",
 			"group_name": "group 2",
 			"group_image": require("../../assets/images/group_image_2.jpg")
-		}
+		},
+		{
+			"group_chat_room_id": "3",
+			"group_name": "group 3",
+			"group_image": require("../../assets/images/group_image_2.jpg")
+		},
+		{
+			"group_chat_room_id": "4",
+			"group_name": "group 4",
+			"group_image": require("../../assets/images/group_image_2.jpg")
+		},
 	]
 	// 検索にヒットしない場合
 	// let result = []
@@ -73,7 +83,7 @@ export const fetchGroupList = (userId) => {
 
 // ユーザーの所属するグループ数
 export const fetGroupCount = (userId) => {
-	let result = 2
+	let result = 4
 	return result
 }
 
@@ -91,7 +101,19 @@ export const fetchFriendList = (userId) => {
 			"friend_use_id": "friend 2",
 			"friend_profile_image": require("../../assets/images/friend_profile_image_2.jpg"),
 			"friend_nickname": "asami2"
-		}
+		},
+		{
+			"direct_chat_room_id": "3",
+			"friend_use_id": "friend 3",
+			"friend_profile_image": require("../../assets/images/friend_profile_image_2.jpg"),
+			"friend_nickname": "asami3"
+		},
+		{
+			"direct_chat_room_id": "4",
+			"friend_use_id": "friend 4",
+			"friend_profile_image": require("../../assets/images/friend_profile_image_2.jpg"),
+			"friend_nickname": "asami4"
+		},
 	]
 	// 検索にヒットしない場合
 	// let result = []
@@ -100,7 +122,7 @@ export const fetchFriendList = (userId) => {
 
 // ユーザの友達数
 export const fetchFriendCount = (userId) => {
-	let result = 2
+	let result = 4
 	return result
 }
 
