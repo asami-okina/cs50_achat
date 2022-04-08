@@ -3,7 +3,7 @@ import { Text, View, SafeAreaView, ScrollView, TouchableOpacity, KeyboardAvoidin
 import { MailForm } from '../components/logIn/mailForm';
 import { PasswordForm } from '../components/logIn/passwordForm';
 import { postLoginAuthentication } from '../api/api';
-import { CONTENT_WIDTH, BIG_BUTTON_HEIGHT, MAIN_NAVY_COLOR, MAIN_WHITE_COLOR } from '../constants/layout'
+import { CONTENT_WIDTH, BIG_BUTTON_HEIGHT, MAIN_NAVY_COLOR, MAIN_WHITE_COLOR,MAIN_PINK_COLOR,MAIN_TITLE_FONT,STANDARD_FONT } from '../constants/layout'
 
 export function LogIn({ navigation }) {
 	// キーボードに完了ボタンを表示
@@ -118,7 +118,7 @@ export const styles = StyleSheet.create({
 	},
 	headMessageTextStyle: {
 		fontSize: 50,
-		fontFamily: "AlfaSlabOne_400Regular",
+		fontFamily: MAIN_TITLE_FONT,
 		color: MAIN_NAVY_COLOR,
 		marginBottom: 32,
 	},
@@ -155,7 +155,7 @@ export const styles = StyleSheet.create({
 	},
 	buttonTextStyle: {
 		color: MAIN_WHITE_COLOR,
-		fontFamily: "ABeeZee_400Regular_Italic",
+		fontFamily: STANDARD_FONT,
 	},
 	toLoginStyle: {
 		marginTop: 10,
@@ -163,10 +163,10 @@ export const styles = StyleSheet.create({
 		flexDirection: "row"
 	},
 	toLoginTextStyle: {
-		fontFamily: "ABeeZee_400Regular_Italic",
+		fontFamily: STANDARD_FONT,
 	},
 	toLoginTextLinkStyle: {
-		color: "#ED195E",
+		color: MAIN_PINK_COLOR,
 		marginLeft: 10,
 	},
 	errorContainerStyle: {
@@ -176,9 +176,9 @@ export const styles = StyleSheet.create({
 		paddingBottom: 32,
 	},
 	errorTextStyle: {
-		color: "#ED195E",
+		color: MAIN_PINK_COLOR,
 		backgroundColor: MAIN_WHITE_COLOR,
-		fontFamily: "ABeeZee_400Regular_Italic",
+		fontFamily: STANDARD_FONT,
 		fontWeight: "bold"
 	},
 	forgotPasswordWrapperStyle: {
@@ -194,6 +194,6 @@ export const styles = StyleSheet.create({
 		width: 300,
 	},
 	forgotPasswordTextStyle: {
-		fontFamily: "ABeeZee_400Regular_Italic",
+		fontFamily: STANDARD_FONT,
 	}
 });

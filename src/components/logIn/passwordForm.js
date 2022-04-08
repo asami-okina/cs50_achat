@@ -2,7 +2,7 @@ import React from 'react';
 import { Text, View, Image, TextInput, Pressable, StyleSheet } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { useTogglePasswordVisibility } from '../../hooks/useTogglePasswordVisibility';
-import { MAIN_NAVY_COLOR, MAIN_WHITE_COLOR, CONTENT_WIDTH } from '../../constants/layout';
+import { MAIN_WHITE_COLOR, CONTENT_WIDTH,MAIN_PINK_COLOR,STANDARD_FONT } from '../../constants/layout';
 
 
 export function PasswordForm({
@@ -73,7 +73,7 @@ export const styles = StyleSheet.create({
 	searchContainerStyle: {
 	},
 	searchTitleStyle: {
-		fontFamily: "ABeeZee_400Regular_Italic",
+		fontFamily: STANDARD_FONT,
 		color: "#262626",
 		marginBottom: 5,
 	},
@@ -99,7 +99,7 @@ export const styles = StyleSheet.create({
 	// 入力が間違っている場合のフォーム枠線の色
 	inputIncorrectBorderColorStyle: {
 		borderWidth: 2,
-		borderColor: "#ED195E",
+		borderColor: MAIN_PINK_COLOR,
 	},
 	// パスワードアイコンの表示/非表示
 	passwordIconStyle: {

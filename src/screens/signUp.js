@@ -3,7 +3,7 @@ import { Text, View, SafeAreaView, ScrollView, TouchableOpacity, KeyboardAvoidin
 import { MailForm } from '../components/signUp/mailForm';
 import { PasswordForm } from '../components/signUp/passwordForm';
 import { UserIdForm } from '../components/signUp/userIdForm';
-import { MAIN_NAVY_COLOR, MAIN_WHITE_COLOR, CONTENT_WIDTH } from '../constants/layout'
+import { MAIN_NAVY_COLOR, MAIN_WHITE_COLOR, CONTENT_WIDTH,MAIN_PINK_COLOR,MAIN_TITLE_FONT,STANDARD_FONT } from '../constants/layout'
 
 export function SignUp({ navigation }) {
 	// キーボードに完了ボタンを表示
@@ -106,7 +106,7 @@ export const styles = StyleSheet.create({
 	},
 	headMessageTextStyle: {
 		fontSize: 50,
-		fontFamily: "AlfaSlabOne_400Regular",
+		fontFamily: MAIN_TITLE_FONT,
 		color: MAIN_NAVY_COLOR,
 		marginBottom: 32,
 	},
@@ -132,7 +132,7 @@ export const styles = StyleSheet.create({
 	searchContainerStyle: {
 	},
 	searchTitleStyle: {
-		fontFamily: "ABeeZee_400Regular_Italic",
+		fontFamily: STANDARD_FONT,
 		color: "#262626",
 		marginBottom: 5,
 	},
@@ -158,7 +158,7 @@ export const styles = StyleSheet.create({
 	// 入力が間違っている場合のフォーム枠線の色
 	inputIncorrectBorderColorStyle: {
 		borderWidth: 2,
-		borderColor: "#ED195E",
+		borderColor: MAIN_PINK_COLOR,
 	},
 	// キーボードに「完了」を表示
 	completeBoxStyle: {
@@ -220,7 +220,7 @@ export const styles = StyleSheet.create({
 	},
 	buttonTextStyle: {
 		color: MAIN_WHITE_COLOR,
-		fontFamily: "ABeeZee_400Regular_Italic",
+		fontFamily: STANDARD_FONT,
 	},
 	toLoginStyle: {
 		marginTop: 10,
@@ -228,10 +228,10 @@ export const styles = StyleSheet.create({
 		flexDirection: "row"
 	},
 	toLoginTextStyle: {
-		fontFamily: "ABeeZee_400Regular_Italic",
+		fontFamily: STANDARD_FONT,
 	},
 	toLoginTextLinkStyle: {
-		color: "#ED195E",
+		color: MAIN_PINK_COLOR,
 		marginLeft: 10,
 	},
 });
