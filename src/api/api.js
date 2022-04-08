@@ -11,7 +11,7 @@ export const fetchIsAvailableUserId = (userId) => {
 // ログイン認証
 export const postLoginAuthentication = (mail, password) => {
     let result = {
-        "certificationResult": false
+        "certificationResult": true
     }
     return result
 }

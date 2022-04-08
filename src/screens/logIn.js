@@ -1,13 +1,11 @@
-import React, {useEffect, useState} from 'react';
-import { Text,View, SafeAreaView, ScrollView, TouchableOpacity, KeyboardAvoidingView} from 'react-native';
-import AppLoading from 'expo-app-loading';
+import React, {useState} from 'react';
+import { Text,View, SafeAreaView, ScrollView, TouchableOpacity, KeyboardAvoidingView, StyleSheet } from 'react-native';
 import { MailForm } from '../components/logIn/mailForm';
 import { PasswordForm } from '../components/logIn/passwordForm';
-import { styles } from '../styles/signUpAndLogIn/signUpAndLogInStyles';
-import { logInStyles } from '../styles/logIn/logIn';
 import { postLoginAuthentication } from '../api/api';
+import { CONTENT_WIDTH, BIG_BUTTON_HEIGHT,MAIN_NAVY_COLOR,MAIN_WHITE_COLOR} from '../constants/layout'
 
-function LogIn({navigation}) {
+export function LogIn({navigation}) {
     // キーボードに完了ボタンを表示
     const inputAccessoryViewID = 'uniqueID';
 
@@ -49,8 +47,8 @@ function LogIn({navigation}) {
                 </View>
                 {/* ログイン認証エラー */}
                 {executedLoginAuthentication ? onFocusInputMailOrPasseword ? null: (
-                    <View style={logInStyles.errorContainerStyle}>
-                        <Text style={logInStyles.errorTextStyle}>Your e-mail address or password is incorrect.</Text>
+                    <View style={styles.errorContainerStyle}>
+                        <Text style={styles.errorTextStyle}>Your e-mail address or password is incorrect.</Text>
                     </View>
                 ): null}
                 {/* Email */}
@@ -72,9 +70,9 @@ function LogIn({navigation}) {
                     setOnFocusInputMailOrPasseword={setOnFocusInputMailOrPasseword}
                 />
                 {/* パスワードを忘れた場合 */}
-                <View style={logInStyles.forgotPasswordWrapperStyle}>
-                    <TouchableOpacity style={logInStyles.forgotPasswordContainerStyle} onPress={() => console.log('検討予定')}>
-                        <Text style={logInStyles.forgotPasswordTextStyle}>Forgot Password</Text>
+                <View style={styles.forgotPasswordWrapperStyle}>
+                    <TouchableOpacity style={styles.forgotPasswordContainerStyle} onPress={() => console.log('検討予定')}>
+                        <Text style={styles.forgotPasswordTextStyle}>Forgot Password</Text>
                     </TouchableOpacity>
                 </View>
                 {/* 画面下 */}
@@ -103,5 +101,99 @@ function LogIn({navigation}) {
     );
 }
 
-
-export default LogIn;
+export const styles = StyleSheet.create({
+	// ヘッダー
+	containerStyle: {
+		flex: 1,
+		backgroundColor: MAIN_NAVY_COLOR,
+	},
+	headContainerStyle: {
+		height: "10%",
+		height: 40,
+		backgroundColor: MAIN_NAVY_COLOR,
+	},
+	headMessageContainerStyle: {
+		backgroundColor: MAIN_WHITE_COLOR,
+		alignItems: 'center',
+	},
+	headMessageTextStyle: {
+		fontSize: 50,
+		fontFamily: "AlfaSlabOne_400Regular",
+		color: MAIN_NAVY_COLOR,
+		marginBottom: 32,
+	},
+	// main部分
+	mainContainerStyle: {
+		height: "15%",
+		backgroundColor: MAIN_WHITE_COLOR,
+		borderTopLeftRadius: 50,
+		alignItems: 'center',
+	},
+	// 検索フォーム
+	searchBoxStyle: {
+		flex: 1,
+		backgroundColor: MAIN_WHITE_COLOR,
+	},
+	// 画面下部分
+	bottomStyle: {
+		display: "flex",
+		alignItems: "center",
+		height: "100%",
+		backgroundColor: MAIN_WHITE_COLOR,
+	},
+	buttonContainerStyle: {
+		alignItems: "center",
+		justifyContent: "center",
+		backgroundColor: MAIN_NAVY_COLOR,
+		width: CONTENT_WIDTH,
+		height: BIG_BUTTON_HEIGHT,
+		borderRadius: 10,
+		fontSize: 18,
+	},
+	buttonContainerInvalidStyle:{
+		backgroundColor: "#C5C5C7",
+	},
+	buttonTextStyle: {
+		color: MAIN_WHITE_COLOR,
+		fontFamily: "ABeeZee_400Regular_Italic",
+	},
+	toLoginStyle: {
+		marginTop: 10,
+		height: "5%",
+		flexDirection: "row"
+	},
+	toLoginTextStyle: {
+		fontFamily: "ABeeZee_400Regular_Italic",
+	},
+	toLoginTextLinkStyle: {
+		color: "#ED195E",
+		marginLeft: 10,
+	},
+	errorContainerStyle: {
+		display: "flex",
+		alignItems: "center",
+		backgroundColor: MAIN_WHITE_COLOR,
+		paddingBottom: 32,
+	},
+	errorTextStyle:{
+		color: "#ED195E",
+		backgroundColor: MAIN_WHITE_COLOR,
+		fontFamily: "ABeeZee_400Regular_Italic",
+		fontWeight: "bold"
+	},
+	forgotPasswordWrapperStyle: {
+		display: "flex",
+		justifyContent: "center",
+		alignItems: "center",
+		backgroundColor: MAIN_WHITE_COLOR,
+		paddingBottom: 32,
+	},
+	forgotPasswordContainerStyle:{
+		backgroundColor: MAIN_WHITE_COLOR,
+		alignItems: "flex-end",
+		width: 300,
+	},
+	forgotPasswordTextStyle: {
+		fontFamily: "ABeeZee_400Regular_Italic",
+	}
+});
