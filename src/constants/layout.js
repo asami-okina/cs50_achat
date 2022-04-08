@@ -28,7 +28,7 @@ export const START_SCREEN_HEIGHT = SCREEN_HEIGHT -(HEAD_CONTAINER_HEIGHT + STATU
 export const SEARCH_FORM_HEIGHT = 60
 
 // ボタンの高さ
-export const BIG_BUTTON_HEIGHT = 60
+export const BUTTON_HEIGHT = 60
 
 // ------------------------------------------------------------------------------------------------
 // 幅
@@ -46,6 +46,9 @@ export const A_CHAT_LOG_SIZE = 250
 
 // メインタイトルの大きさ
 export const MAIN_TITLE_SIZE = 50
+
+// ボタンの文字の大きさ
+export const BUTTON_TEXT_SIZE = 18
 
 // ------------------------------------------------------------------------------------------------
 // 色

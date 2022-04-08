@@ -3,7 +3,7 @@ import { Text, View, SafeAreaView, ScrollView, TouchableOpacity, KeyboardAvoidin
 import { MailForm } from '../components/logIn/mailForm';
 import { PasswordForm } from '../components/logIn/passwordForm';
 import { postLoginAuthentication } from '../api/api';
-import { CONTENT_WIDTH, BIG_BUTTON_HEIGHT, MAIN_NAVY_COLOR, MAIN_WHITE_COLOR,MAIN_PINK_COLOR,MAIN_TITLE_FONT,STANDARD_FONT } from '../constants/layout'
+import { CONTENT_WIDTH, BUTTON_HEIGHT, MAIN_NAVY_COLOR, MAIN_WHITE_COLOR,MAIN_PINK_COLOR,MAIN_TITLE_FONT,STANDARD_FONT } from '../constants/layout'
 
 export function LogIn({ navigation }) {
 	// キーボードに完了ボタンを表示
@@ -146,7 +146,7 @@ export const styles = StyleSheet.create({
 		justifyContent: "center",
 		backgroundColor: MAIN_NAVY_COLOR,
 		width: CONTENT_WIDTH,
-		height: BIG_BUTTON_HEIGHT,
+		height: BUTTON_HEIGHT,
 		borderRadius: 10,
 		fontSize: 18,
 	},
