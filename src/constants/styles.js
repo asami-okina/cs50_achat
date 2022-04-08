@@ -38,3 +38,11 @@ export const bottomStyleByWelcomeAndSignUpAndLogin = {
 	flex: 1,
 	backgroundColor: MAIN_WHITE_COLOR,
 }
+
+// 丸みを帯びている白いトップ部分のタイトル
+export const topAreaTitleStyle = {
+	fontSize: 50,
+	fontFamily: MAIN_TITLE_FONT,
+	color: MAIN_NAVY_COLOR,
+	marginBottom: 32,
+}

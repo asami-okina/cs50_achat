@@ -2,11 +2,15 @@ import React from 'react';
 import {Text, View, StyleSheet, SafeAreaView, Image, TouchableOpacity} from 'react-native';
 import { MAIN_NAVY_COLOR, MAIN_WHITE_COLOR, A_CHAT_LOG_SIZE,MAIN_PINK_COLOR,HEAD_CONTAINER_HEIGHT,TOP_AREA_STYLE,TOP_AREA_LEFT_RADIUS,MAIN_TITLE_SIZE,MAIN_TITLE_FONT,START_SCREEN_HEIGHT,BUTTON_HEIGHT,CONTENT_WIDTH,STANDARD_FONT,BUTTON_TEXT_SIZE } from '../../constants/layout'
 
-export function Button({ navigation,link,buttonText }) {
+export function Button({ navigation,link,buttonText, enable }) {
 	return (
 		<TouchableOpacity
-			style={styles.buttonContainerStyle}
-			onPress={() => navigation.navigate(link)}
+			style={enable ? styles.buttonContainerStyle: [styles.buttonContainerStyle, styles.buttonContainerInvalidStyle]}
+			onPress={() => {
+				if (enable){
+					navigation.navigate(link)
+				}
+			}}
 		>
 			<Text style={styles.buttonTextStyle}>{buttonText}</Text>
 		</TouchableOpacity>
@@ -28,6 +32,9 @@ const styles = StyleSheet.create({
 	buttonTextStyle: {
 		color: MAIN_WHITE_COLOR,
 		fontFamily: STANDARD_FONT,
+	},
+	buttonContainerInvalidStyle: {
+		backgroundColor: "#C5C5C7",
 	},
 });
 

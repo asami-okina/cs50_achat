@@ -7,15 +7,18 @@ import { Button } from '../components/common/button'
 import { HeadTitle } from '../components/common/headTitle';
 import { AChatLogo } from '../components/common/aChatLogo'
 import { ToSignUpOrLoginTextArea } from '../components/common/toSignUpOrLoginTextArea'
+import {TopAreaContainer} from '../components/common/topAreaContainer'
 
-// styles
-import { screenContainerStyle, topMarginViewStyle, topAreaContainerStyle, mainContainerStyle, bottomStyleByWelcomeAndSignUpAndLogin } from '../constants/styles'
+// constantsStyles
+import { screenContainerStyle, topMarginViewStyle, mainContainerStyle, bottomStyleByWelcomeAndSignUpAndLogin } from '../constants/styles'
 
 export function Welcome({ navigation }) {
 	return (
 		<SafeAreaView style={screenContainerStyle}>
+			{/* 画面一番上にある青色の余白部分 */}
 			<View style={topMarginViewStyle}></View>
-			<View style={topAreaContainerStyle}></View>
+			{/* 丸みを帯びている白いトップ部分 */}
+			<TopAreaContainer />
 			<View style={mainContainerStyle}>
 				{/* タイトル */}
 				<HeadTitle navigation={navigation} title={"Welcome"} />
@@ -23,7 +26,7 @@ export function Welcome({ navigation }) {
 				<AChatLogo />
 				<View style={bottomStyleByWelcomeAndSignUpAndLogin}>
 					{/* 遷移ボタン */}
-					<Button navigation={navigation} link={'SignUp'} buttonText={'Sign Up'} />
+					<Button navigation={navigation} link={'Home'} buttonText={'Sign Up'} enable={true} />
 					{/* サインアップまたはログインへのリンク */}
 					<ToSignUpOrLoginTextArea navigation={navigation} description={'Do you have an account?'} link={'LogIn'} linkText={'Login'} />
 				</View>

@@ -13,6 +13,7 @@ import { Footer } from './src/components/common/footer';
 import { Button } from './src/components/common/button'
 import {ToSignUpOrLoginTextArea} from './src/components/common/toSignUpOrLoginTextArea'
 import {SignUpAndLogInBottom} from './src/components/common/signUpAndLogInBottom'
+import {TopAreaContainer} from './src/components/common/topAreaContainer'
 
 // fonts
 import { useFonts, AlfaSlabOne_400Regular } from '@expo-google-fonts/alfa-slab-one';
@@ -45,7 +46,7 @@ function App() {
 			<NavigationContainer>
 				<Stack.Navigator>
 					{/* あとで更新 */}
-					<Stack.Screen name="Welcome" component={Welcome} options={{ headerShown: false }} />
+					{/* <Stack.Screen name="Welcome" component={Welcome} options={{ headerShown: false }} /> */}
 					<Stack.Screen name="SignUp" component={SignUp} options={{ headerShown: false }} />
 					<Stack.Screen name="LogIn" component={LogIn} options={{ headerShown: false }} />
 					<Stack.Screen name="Home" component={Home} options={{ headerShown: false }} />
@@ -53,6 +54,7 @@ function App() {
 					<Stack.Screen name="Button" component={Button} options={{ headerShown: false }} />
 					<Stack.Screen name="ToSignUpOrLoginTextArea" component={ToSignUpOrLoginTextArea} options={{ headerShown: false }} />
 					<Stack.Screen name="SignUpAndLogInBottom" component={SignUpAndLogInBottom} options={{ headerShown: false }} />
+					<Stack.Screen name="TopAreaContainer" component={TopAreaContainer} options={{ headerShown: false }} />
 				</Stack.Navigator>
 			</NavigationContainer>
 		);
