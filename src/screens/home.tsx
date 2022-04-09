@@ -8,7 +8,7 @@ import { GroupAndFriendList } from '../components/home/groupAndFriendList'
 // constantsStyles
 import { constantsStyles } from '../constants/styles'
 
-export function Home() {
+export function Home({navigation}) {
 	// ユーザーID(今後は認証から取得するようにする)
 	const userId = "asami11"
 	// 検索フォーム
@@ -100,7 +100,7 @@ export function Home() {
 					<GroupAndFriendList friendListProps={{ "friendCount": friendCount, "setOpenFriendList": setOpenFriendList, "openFriendList": openFriendList, "friendList": friendList }} groupListProps={null} type={"Friend"} />
 				</ScrollView>
 				{/*フッター */}
-				<Footer />
+				<Footer navigation={navigation}/>
 			</SafeAreaView>
 		</KeyboardAvoidingView>
 	);

@@ -2,14 +2,14 @@ import React from 'react';
 import { Text, View, Pressable, Image, StyleSheet } from 'react-native';
 import { FOOTER_HEIGHT, MAIN_NAVY_COLOR, MAIN_WHITE_COLOR } from '../../constants/layout'
 
-export function Footer() {
+export function Footer({navigation}) {
 	return (
 		<View style={styles.footerStyle}>
-			<Pressable style={styles.footerItemStyle}>
+			<Pressable style={styles.footerItemStyle} onPress={() => navigation.navigate('Home')}>
 				<Image source={require('../../../assets/images/home.png')} />
 				<Text style={styles.footerTextStyle}>Home</Text>
 			</Pressable>
-			<Pressable style={styles.footerItemStyle}>
+			<Pressable style={styles.footerItemStyle} onPress={() => navigation.navigate('Chats')}>
 				<Image source={require('../../../assets/images/message.png')} />
 				<Text style={styles.footerTextStyle}>Chats</Text>
 			</Pressable>

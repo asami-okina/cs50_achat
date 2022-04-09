@@ -81,6 +81,6 @@ export const styles = StyleSheet.create({
 	},
 	countStyle: {
 		fontFamily: "MPLUS1p_400Regular",
-		fontSize: 36,
+		fontSize: 24,
 	},
 });

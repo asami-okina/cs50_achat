@@ -15,6 +15,7 @@ import {ToSignUpOrLoginTextArea} from './src/components/common/toSignUpOrLoginTe
 import {TopAreaContainer} from './src/components/common/topAreaContainer'
 import { AuthErrorText } from './src/components/logIn/authErrorText';
 import { ForgotPassword } from './src/components/logIn/forgotPasseword';
+import { Chats } from './src/screens/chats';
 
 // fonts
 import { useFonts, AlfaSlabOne_400Regular } from '@expo-google-fonts/alfa-slab-one';
@@ -57,6 +58,7 @@ function App() {
 					<Stack.Screen name="TopAreaContainer" component={TopAreaContainer} options={{ headerShown: false }} />
 					<Stack.Screen name="AuthErrorText" component={AuthErrorText} options={{ headerShown: false }} />
 					<Stack.Screen name="ForgotPassword" component={ForgotPassword} options={{ headerShown: false }} />
+					<Stack.Screen name="Chats" component={Chats} options={{ headerShown: false }} />
 				</Stack.Navigator>
 			</NavigationContainer>
 		);

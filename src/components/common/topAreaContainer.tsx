@@ -31,6 +31,8 @@ export function TopAreaContainer({ title,searchForm,searchFormProps }) {
 								onEndEditing={() => {
 									searchFormProps._searchName(searchFormProps.searchText)
 								}}
+								clearButtonMode="while-editing"
+								clearTextOnFocus={true}
 							/>
 							<Image source={require("../../../assets/images/search.png")} style={styles.searchIconStyle} />
 						</View>
