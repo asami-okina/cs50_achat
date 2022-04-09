@@ -29,13 +29,13 @@ export function UserIdForm({
 	let textInputUserId;
 
 	// ユーザーID(半角英数字)のバリデーション
-	function userIdSymbolValidation() {
+	function _userIdSymbolValidation() {
 		const regexp = /^[0-9a-zA-Z]+$/;
 		setIsCorrectUserIdSymbol(regexp.test(userIdText))
 	}
 
 	// ユーザーID(文字数:4文字以上100文字以内)のバリデーション
-	function userIdStringCountValidation() {
+	function _userIdStringCountValidation() {
 		let userIdLength = userIdText.length;
 
 		// ユーザーIDの文字数が4文字以上100文字以内であれば、バリデーションが通る
@@ -47,7 +47,7 @@ export function UserIdForm({
 	}
 
 	// ユーザーID(使用可能かどうか)のバリデーション
-	function isAvailableUserIdValidation() {
+	function _isAvailableUserIdValidation() {
 		// resultには、APIからの戻り値を入れる
 		let result = fetchIsAvailableUserId(userIdText)
 		if (result.isAvailableUserId) {
@@ -87,15 +87,15 @@ export function UserIdForm({
 								}}
 								onEndEditing={() => {
 									// ユーザーID(半角英数字)のバリデーション
-									userIdSymbolValidation();
+									_userIdSymbolValidation();
 									// ユーザーID(文字数)のバリデーション
-									userIdStringCountValidation();
+									_userIdStringCountValidation();
 									// ユーザーIDアイコンのデフォルト表示を無くす
 									setDefaultDisplayUserIcons(false);
 									// ユーザーIDの入力フォームの枠線のデフォルト表示
 									setDefaultUserIdBorderColor(true);
 									// ユーザーID(使用可能かどうか)のバリデーション
-									isAvailableUserIdValidation()
+									_isAvailableUserIdValidation()
 								}}
 							/>
 						</View>

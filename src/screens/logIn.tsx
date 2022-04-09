@@ -10,7 +10,7 @@ import { AuthErrorText } from '../components/logIn/authErrorText';
 import { ForgotPassword } from '../components/logIn/forgotPasseword';
 
 // constantsStyles
-import {constantsStyles} from '../constants/styles'
+import { constantsStyles } from '../constants/styles'
 
 export function LogIn({ navigation }) {
 	// キーボードに完了ボタンを表示
@@ -49,7 +49,7 @@ export function LogIn({ navigation }) {
 				{/* 画面一番上にある青色の余白部分 */}
 				<View style={constantsStyles.topMarginViewStyle}></View>
 				{/* 丸みを帯びている白いトップ部分 */}
-				<TopAreaContainer title={'Log In'} searchForm={null} searchFormProps={null}  />
+				<TopAreaContainer title={'Log In'} searchForm={null} searchFormProps={null} />
 				<ScrollView style={constantsStyles.mainContainerStyle}>
 					{/* ログイン認証エラー */}
 					{executedLoginAuthentication ? onFocusInputMailOrPasseword ? null : (

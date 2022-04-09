@@ -1,14 +1,14 @@
 import React, { useEffect, useState } from 'react';
-import { Text, View, SafeAreaView, ScrollView, KeyboardAvoidingView, Pressable, Image, TextInput, StyleSheet } from 'react-native';
+import { View, SafeAreaView, ScrollView, KeyboardAvoidingView } from 'react-native';
 import { fetchNickNameOrGroupNameBySearchForm, fetchGroupList, fetGroupCount, fetchFriendList, fetchFriendCount } from '../api/api'
-import { WITH_FOOTER_OPERATION_SCREEN_HEIGHT, HEAD_CONTAINER_HEIGHT, TOP_AREA_STYLE, SEARCH_FORM_HEIGHT, CONTENT_WIDTH, ICON_SIZE, MAIN_NAVY_COLOR, MAIN_WHITE_COLOR,IN_SEARCH_FORM_SIDE_MARGIN } from '../constants/layout'
 import { Footer } from '../components/common/footer'
-import {TopAreaContainer} from '../components/common/topAreaContainer'
+import { TopAreaContainer } from '../components/common/topAreaContainer'
+import { GroupAndFriendList } from '../components/home/groupAndFriendList'
 
 // constantsStyles
-import {constantsStyles} from '../constants/styles'
+import { constantsStyles } from '../constants/styles'
 
-export function Home({ navigation }) {
+export function Home() {
 	// ユーザーID(今後は認証から取得するようにする)
 	const userId = "asami11"
 	// 検索フォーム
@@ -91,65 +91,13 @@ export function Home({ navigation }) {
 				{/* 画面一番上にある青色の余白部分 */}
 				<View style={constantsStyles.topMarginViewStyle}></View>
 				{/* 丸みを帯びている白いトップ部分 */}
-				<TopAreaContainer  title={null} searchForm={true} searchFormProps={{"setSearchText": setSearchText, "searchText": searchText, "textInputSearch": textInputSearch, "_searchName": _searchName }}/>
+				<TopAreaContainer title={null} searchForm={true} searchFormProps={{ "setSearchText": setSearchText, "searchText": searchText, "textInputSearch": textInputSearch, "_searchName": _searchName }} />
 				{/* トップ部分を除くメイン部分 */}
 				<ScrollView style={constantsStyles.withFooterMainContainerStyle}>
-						{/* グループ一覧 */}
-						<View style={styles.groupAndFriendWrapperStyle}>
-							<View style={styles.groupAndFriendContainerStyle}>
-								<View style={styles.topContainerStyle}>
-									<Text style={styles.titleStyle}>Group</Text>
-									<Text style={styles.countStyle}>{groupCount}</Text>
-									<View style={styles.iconsBoxStyle}>
-										<Pressable>
-											<Image source={require("../../assets/images/plus.png")} style={styles.plusIconStyle} />
-										</Pressable>
-										<Pressable onPress={() => setOpenGroupList(!openGroupList)}>
-											<Image source={require("../../assets/images/open.png")} style={styles.openIconStyle} />
-										</Pressable>
-									</View>
-								</View>
-								{/* グループ一覧をmapで回して表示 */}
-								{openGroupList && groupList.length != 0 && groupList.map((list) => {
-									return (
-										<View style={styles.listWrapperStyle} key={list.group_chat_room_id}>
-											<Pressable style={styles.listItemContainerStyle}>
-												<Image source={list.group_image} style={styles.profileImageStyle} />
-												<Text style={styles.listItemNameStyle}>{list.group_name}</Text>
-											</Pressable>
-										</View>
-									)
-								})}
-							</View>
-						</View>
-						{/* 友達一覧 */}
-						<View style={styles.groupAndFriendWrapperStyle}>
-							<View style={styles.groupAndFriendContainerStyle}>
-								<View style={styles.topContainerStyle}>
-									<Text style={styles.titleStyle}>Friend</Text>
-									<Text style={styles.countStyle}>{friendCount}</Text>
-									<View style={styles.iconsBoxStyle}>
-										<Pressable>
-											<Image source={require("../../assets/images/plus.png")} style={styles.plusIconStyle} />
-										</Pressable>
-										<Pressable onPress={() => setOpenFriendList(!openFriendList)}>
-											<Image source={require("../../assets/images/open.png")} style={styles.openIconStyle} />
-										</Pressable>
-									</View>
-								</View>
-								{/* 友達一覧をmapで回して表示 */}
-								{openFriendList && friendList.length != 0 && friendList.map((list) => {
-									return (
-										<View style={styles.listWrapperStyle} key={list.direct_chat_room_id}>
-											<Pressable style={styles.listItemContainerStyle}>
-												<Image source={list.friend_profile_image} style={styles.profileImageStyle} />
-												<Text style={styles.listItemNameStyle}>{list.friend_nickname}</Text>
-											</Pressable>
-										</View>
-									)
-								})}
-							</View>
-						</View>
+					{/* グループ一覧 */}
+					<GroupAndFriendList groupListProps={{ "groupCount": groupCount, "setOpenGroupList": setOpenGroupList, "openGroupList": openGroupList, "groupList": groupList }} friendListProps={null} type={"Group"} />
+					{/* 友達一覧 */}
+					<GroupAndFriendList friendListProps={{ "friendCount": friendCount, "setOpenFriendList": setOpenFriendList, "openFriendList": openFriendList, "friendList": friendList }} groupListProps={null} type={"Friend"} />
 				</ScrollView>
 				{/*フッター */}
 				<Footer />
@@ -157,65 +105,3 @@ export function Home({ navigation }) {
 		</KeyboardAvoidingView>
 	);
 }
-
-export const styles = StyleSheet.create({
-	groupAndFriendWrapperStyle: {
-		display: "flex",
-		justifyContent: "center",
-		alignItems: "center",
-		backgroundColor: MAIN_WHITE_COLOR
-	},
-	groupAndFriendContainerStyle: {
-		display: "flex",
-		justifyContent: "center",
-		backgroundColor: MAIN_WHITE_COLOR,
-		width: CONTENT_WIDTH,
-	},
-	topContainerStyle: {
-		flexDirection: "row",
-		alignItems: "center",
-		justifyContent: "space-between",
-	},
-	iconsBoxStyle: {
-		flexDirection: "row",
-		justifyContent: "space-between",
-		width: "40%",
-	},
-	plusIconStyle: {
-		width: ICON_SIZE,
-		height: ICON_SIZE,
-	},
-	openIconStyle: {
-		width: ICON_SIZE,
-		height: ICON_SIZE,
-	},
-	titleStyle: {
-		fontFamily: "MPLUS1p_700Bold",
-		fontSize: 36,
-	},
-	countStyle: {
-		fontFamily: "MPLUS1p_400Regular",
-		fontSize: 36,
-	},
-	listWrapperStyle: {
-		height: 60,
-		width: CONTENT_WIDTH,
-		display: "flex",
-		justifyContent: "center",
-		marginBottom: 5,
-	},
-	listItemContainerStyle: {
-		display: "flex",
-		flexDirection: "row",
-		alignItems: "center",
-	},
-	profileImageStyle: {
-		width: 50,
-		height: 50,
-		borderRadius: 50
-	},
-	listItemNameStyle: {
-		fontFamily: "ABeeZee_400Regular",
-		marginLeft: 12,
-	}
-});
