@@ -1,6 +1,6 @@
 
 import { Text, View, StyleSheet, SafeAreaView, Image, TouchableOpacity } from 'react-native';
-import { MAIN_NAVY_COLOR, MAIN_WHITE_COLOR, A_CHAT_LOG_SIZE, MAIN_PINK_COLOR, HEAD_CONTAINER_HEIGHT, TOP_AREA_STYLE, TOP_AREA_LEFT_RADIUS, MAIN_TITLE_SIZE, MAIN_TITLE_FONT, OPERATION_SCREEN_HEIGHT, BUTTON_HEIGHT, CONTENT_WIDTH, STANDARD_FONT, BUTTON_TEXT_SIZE,WITH_FOOTER_OPERATION_SCREEN_HEIGHT } from './layout'
+import { MAIN_NAVY_COLOR, MAIN_WHITE_COLOR, A_CHAT_LOG_SIZE, MAIN_PINK_COLOR, HEAD_CONTAINER_HEIGHT, TOP_AREA_STYLE, TOP_AREA_LEFT_RADIUS, MAIN_TITLE_SIZE, MAIN_TITLE_FONT, OPERATION_SCREEN_HEIGHT, BUTTON_HEIGHT, CONTENT_WIDTH, STANDARD_FONT, BUTTON_TEXT_SIZE,WITH_FOOTER_OPERATION_SCREEN_HEIGHT, WITH_FOOTER_OPERATION_SCREEN_HEIGHT_IPHONE_X } from './layout'
 
 export const constantsStyles = StyleSheet.create({
 	// 全画面共通
@@ -45,9 +45,14 @@ export const constantsStyles = StyleSheet.create({
 		minHeight: OPERATION_SCREEN_HEIGHT,
 		backgroundColor: MAIN_WHITE_COLOR,
 	},
-	// フッター有画面の操作画面の高さ
+	// フッター有画面の操作画面の高さ(iphoneX以外)
 	withFooterMainContainerStyle: {
 		minHeight: WITH_FOOTER_OPERATION_SCREEN_HEIGHT,
+		backgroundColor: MAIN_WHITE_COLOR,
+	},
+	// フッター有画面の操作画面の高さ(iphoneX)
+	withFooterMainContainerIphoneXStyle: {
+		minHeight: WITH_FOOTER_OPERATION_SCREEN_HEIGHT_IPHONE_X,
 		backgroundColor: MAIN_WHITE_COLOR,
 	},
 })

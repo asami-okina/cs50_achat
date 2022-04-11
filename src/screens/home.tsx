@@ -8,6 +8,9 @@ import { GroupAndFriendList } from '../components/home/groupAndFriendList'
 // constantsStyles
 import { constantsStyles } from '../constants/styles'
 
+// constantsLayout
+import {IPHONE_X_BOTTOM_SPACE} from '../constants/layout'
+
 export function Home({navigation}) {
 	// ユーザーID(今後は認証から取得するようにする)
 	const userId = "asami11"
@@ -92,8 +95,8 @@ export function Home({navigation}) {
 				<View style={constantsStyles.topMarginViewStyle}></View>
 				{/* 丸みを帯びている白いトップ部分 */}
 				<TopAreaContainer title={null} searchForm={true} searchFormProps={{ "setSearchText": setSearchText, "searchText": searchText, "textInputSearch": textInputSearch, "_searchName": _searchName }} />
-				{/* トップ部分を除くメイン部分 */}
-				<ScrollView style={constantsStyles.withFooterMainContainerStyle}>
+				{/* トップ部分を除くメイン部分: iphoneXの場合は、底のマージンを考慮 */}
+				<ScrollView style={IPHONE_X_BOTTOM_SPACE === 0 ? constantsStyles.withFooterMainContainerStyle: constantsStyles.withFooterMainContainerIphoneXStyle}>
 					{/* グループ一覧 */}
 					<GroupAndFriendList groupListProps={{ "groupCount": groupCount, "setOpenGroupList": setOpenGroupList, "openGroupList": openGroupList, "groupList": groupList }} friendListProps={null} type={"Group"} />
 					{/* 友達一覧 */}

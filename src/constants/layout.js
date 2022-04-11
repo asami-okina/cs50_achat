@@ -1,5 +1,5 @@
 import { Dimensions } from 'react-native';
-import { getStatusBarHeight } from 'react-native-iphone-x-helper'
+import { getStatusBarHeight, getBottomSpace } from 'react-native-iphone-x-helper'
 
 // ------------------------------------------------------------------------------------------------
 // 高さ
@@ -15,11 +15,17 @@ export const FOOTER_HEIGHT = 60
 // ステータスバーの高さ
 export const STATUS_BAR_HEIGHT = getStatusBarHeight()
 
+// iphone Xの底の高さ
+export const IPHONE_X_BOTTOM_SPACE = getBottomSpace()
+
 // トップ領域の高さ
 export const TOP_AREA_STYLE = 100
 
-// フッター有画面の操作画面の高さ 　(画面の高さ - (全画面共通の青色のヘッド部分の高さ + フッターの高さ + ステータスバーの高さ + トップ領域の高さ))
+// フッター有画面の操作画面の高さ:iphoneX以外 　(画面の高さ - (全画面共通の青色のヘッド部分の高さ + フッターの高さ + ステータスバーの高さ + トップ領域の高さ))
 export const WITH_FOOTER_OPERATION_SCREEN_HEIGHT = SCREEN_HEIGHT - (HEAD_CONTAINER_HEIGHT + FOOTER_HEIGHT + STATUS_BAR_HEIGHT + TOP_AREA_STYLE)
+
+// フッター有画面の操作画面の高さ:iphoneX 　(画面の高さ - (全画面共通の青色のヘッド部分の高さ + フッターの高さ + ステータスバーの高さ + トップ領域の高さ + iphoeXの底の高さ))
+export const WITH_FOOTER_OPERATION_SCREEN_HEIGHT_IPHONE_X = SCREEN_HEIGHT - (HEAD_CONTAINER_HEIGHT + FOOTER_HEIGHT + STATUS_BAR_HEIGHT + TOP_AREA_STYLE + IPHONE_X_BOTTOM_SPACE)
 
 // フッター無画面の操作画面の高さ　(画面の高さ - (全画面共通の青色のヘッド部分の高さ + ステータスバーの高さ + トップ領域の高さ))
 export const OPERATION_SCREEN_HEIGHT = SCREEN_HEIGHT - (HEAD_CONTAINER_HEIGHT + STATUS_BAR_HEIGHT + TOP_AREA_STYLE)
@@ -49,6 +55,9 @@ export const MAIN_TITLE_SIZE = 50
 
 // ボタンの文字の大きさ
 export const BUTTON_TEXT_SIZE = 18
+
+// チャット関連のプロフィール画像の大きさ
+export const PROFILE_IMAGE_SIZE = 40
 
 // ------------------------------------------------------------------------------------------------
 // 色
