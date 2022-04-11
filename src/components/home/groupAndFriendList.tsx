@@ -32,11 +32,11 @@ export function GroupAndFriendList({ groupListProps, friendListProps, type }) {
 					</View>
 				</View>
 				{/* グループ一覧をmapで回して表示 */}
-				{type === "Group" && (
+				{type === "Group" && groupListProps.openGroupList && (
 					<ListItem groupListProps={{ "openGroupList": groupListProps?.openGroupList, "groupList": groupListProps?.groupList }} friendListProps={null} type={"Group"} />
 				)}
 				{/* 友達一覧をmapで回して表示 */}
-				{type === "Friend" && (
+				{type === "Friend" && friendListProps.openFriendList && (
 					<ListItem friendListProps={{ "openFriendList": friendListProps?.openFriendList, "friendList": friendListProps?.friendList }} groupListProps={null} type={"Friend"} />
 				)}
 			</View>

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { View, SafeAreaView, ScrollView, KeyboardAvoidingView } from 'react-native';
+import { View, SafeAreaView, ScrollView, KeyboardAvoidingView, Text } from 'react-native';
 import { fetchNickNameOrGroupNameBySearchForm, fetchGroupList, fetGroupCount, fetchFriendList, fetchFriendCount } from '../api/api'
 import { Footer } from '../components/common/footer'
 import { TopAreaContainer } from '../components/common/topAreaContainer'
@@ -9,9 +9,9 @@ import { GroupAndFriendList } from '../components/home/groupAndFriendList'
 import { constantsStyles } from '../constants/styles'
 
 // constantsLayout
-import {IPHONE_X_BOTTOM_SPACE} from '../constants/layout'
+import { IPHONE_X_BOTTOM_SPACE } from '../constants/layout'
 
-export function Home({navigation}) {
+export function Home({ navigation }) {
 	// ユーザーID(今後は認証から取得するようにする)
 	const userId = "asami11"
 	// 検索フォーム
@@ -96,14 +96,16 @@ export function Home({navigation}) {
 				{/* 丸みを帯びている白いトップ部分 */}
 				<TopAreaContainer title={null} searchForm={true} searchFormProps={{ "setSearchText": setSearchText, "searchText": searchText, "textInputSearch": textInputSearch, "_searchName": _searchName }} />
 				{/* トップ部分を除くメイン部分: iphoneXの場合は、底のマージンを考慮 */}
-				<ScrollView style={IPHONE_X_BOTTOM_SPACE === 0 ? constantsStyles.withFooterMainContainerStyle: constantsStyles.withFooterMainContainerIphoneXStyle}>
+				{/* <ScrollView style={IPHONE_X_BOTTOM_SPACE === 0 ? constantsStyles.withFooterMainContainerStyle: constantsStyles.withFooterMainContainerIphoneXStyle}> */}
+				<View style={IPHONE_X_BOTTOM_SPACE === 0 ? constantsStyles.withFooterMainContainerStyle : constantsStyles.withFooterMainContainerIphoneXStyle}>
 					{/* グループ一覧 */}
 					<GroupAndFriendList groupListProps={{ "groupCount": groupCount, "setOpenGroupList": setOpenGroupList, "openGroupList": openGroupList, "groupList": groupList }} friendListProps={null} type={"Group"} />
 					{/* 友達一覧 */}
 					<GroupAndFriendList friendListProps={{ "friendCount": friendCount, "setOpenFriendList": setOpenFriendList, "openFriendList": openFriendList, "friendList": friendList }} groupListProps={null} type={"Friend"} />
-				</ScrollView>
+					{/* </ScrollView> */}
+				</View>
 				{/*フッター */}
-				<Footer navigation={navigation}/>
+				<Footer navigation={navigation} />
 			</SafeAreaView>
 		</KeyboardAvoidingView>
 	);

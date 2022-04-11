@@ -46,54 +46,57 @@
 // 	asami: {
 // 		backgroundColor: "red",
 // 	},
-	// listWrapperStyle: {
-	// 	height: 60,
-	// 	width: CONTENT_WIDTH,
-	// 	display: "flex",
-	// 	justifyContent: "center",
-	// 	marginBottom: 5,
-	// },
-	// listItemContainerStyle: {
-	// 	display: "flex",
-	// 	flexDirection: "row",
-	// 	alignItems: "center",
-	// },
-	// profileImageStyle: {
-	// 	width: 50,
-	// 	height: 50,
-	// 	borderRadius: 50
-	// },
-	// listItemNameStyle: {
-	// 	fontFamily: "ABeeZee_400Regular",
-	// 	marginLeft: 12,
-	// }
+// listWrapperStyle: {
+// 	height: 60,
+// 	width: CONTENT_WIDTH,
+// 	display: "flex",
+// 	justifyContent: "center",
+// 	marginBottom: 5,
+// },
+// listItemContainerStyle: {
+// 	display: "flex",
+// 	flexDirection: "row",
+// 	alignItems: "center",
+// },
+// profileImageStyle: {
+// 	width: 50,
+// 	height: 50,
+// 	borderRadius: 50
+// },
+// listItemNameStyle: {
+// 	fontFamily: "ABeeZee_400Regular",
+// 	marginLeft: 12,
+// }
 // });
 
 
 import React, { useState } from 'react';
 import {
-    StyleSheet,
-    View,
-		Text
+	StyleSheet,
+	View
 } from 'react-native';
 
 import Basic from './examples/basic';
 
 export function ListItem({ groupListProps, friendListProps, type }) {
-
-    return (
-        <View style={styles.container}>
-					{groupListProps?.groupList.length !== 0 &&  groupListProps?.groupList !== undefined && (
-						<Basic groupList={groupListProps?.groupList}/>
-					)}
-						<Text>きてよ</Text>
-        </View>
-    );
+	return (
+		<View style={styles.container}>
+			{/* groupの場合 */}
+			{groupListProps?.groupList.length !== 0 && groupListProps?.groupList !== undefined && (
+				<Basic groupList={groupListProps?.groupList} friendList={null} type={type} />
+			)}
+			{/* friendの場合 */}
+			{friendListProps?.friendList.length !== 0 && friendListProps?.friendList !== undefined && (
+				<Basic groupList={null} friendList={friendListProps?.friendList} type={type} />
+			)}
+		</View>
+	);
 }
 
 const styles = StyleSheet.create({
-    container: {
-        backgroundColor: 'white',
-        flex: 1,
-    },
+	container: {
+		backgroundColor: "red",
+		// backgroundColor: '#feffff',
+		// flex: 1,
+	},
 });

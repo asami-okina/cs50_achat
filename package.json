@@ -32,7 +32,7 @@
     "react-native-keyboard-spacer": "^0.4.1",
     "react-native-reanimated": "~2.3.1",
     "react-native-safe-area-context": "3.3.2",
-    "react-native-swipe-list-view": "^3.2.9",
+    "react-native-swipe-list-view": "^2.0.0",
     "react-native-swipe-out": "^2.0.14",
     "react-native-swipeout": "^2.3.6",
     "react-native-swiper": "^1.6.0",
