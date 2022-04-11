@@ -8,12 +8,18 @@ import {
 	Image,
 } from 'react-native';
 
+// api.js
+import {leaveGroup} from '../../../../api/api'
+
 // constantsLayout
 import { CONTENT_WIDTH, PROFILE_IMAGE_SIZE } from '../../../../constants/layout'
 
 import { SwipeListView } from 'react-native-swipe-list-view';
 
 export default function Basic({ groupList, friendList, type }) {
+	// ユーザーID(今後は認証から取得するようにする)
+	const userId = "asami11"
+
 	// 一覧のリストを作成
 	const [listData, setListData] = useState(
 		type === "Group" ? groupList.map((_, i) => ({ ..._, key: `${i}` }))
@@ -77,7 +83,12 @@ export default function Basic({ groupList, friendList, type }) {
 			{/* deleteボタン */}
 			<TouchableOpacity
 				style={[styles.backRightBtn, styles.backRightBtnRight]}
-				onPress={() => deleteRow(rowMap, data.item.key)}
+				onPress={() => {
+					deleteRow(rowMap, data.item.key)
+					// グループ脱退関数実行
+					const groupChatRoomId =  data.item.group_chat_room_id
+					leaveGroup(userId, groupChatRoomId)
+				}}
 			>
 				<Text style={styles.backTextWhite}>Delete</Text>
 			</TouchableOpacity>
