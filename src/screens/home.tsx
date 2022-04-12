@@ -1,9 +1,14 @@
+// libs
 import React, { useEffect, useState } from 'react';
 import { View, SafeAreaView, ScrollView, KeyboardAvoidingView, Text } from 'react-native';
-import { fetchNickNameOrGroupNameBySearchForm, fetchGroupList, fetGroupCount, fetchFriendList, fetchFriendCount } from '../api/api'
+
+// components
 import { Footer } from '../components/common/footer'
 import { TopAreaContainer } from '../components/common/topAreaContainer'
 import { GroupAndFriendList } from '../components/home/groupAndFriendList'
+
+// apis
+import { fetchNickNameOrGroupNameBySearchForm, fetchGroupList, fetGroupCount, fetchFriendList, fetchFriendCount } from '../api/api'
 
 // constantsStyles
 import { constantsStyles } from '../constants/styles'

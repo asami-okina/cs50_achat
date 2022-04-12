@@ -1,13 +1,18 @@
+// libs
 import React, { useState } from 'react';
 import { View, SafeAreaView, ScrollView, KeyboardAvoidingView } from 'react-native';
-import { MailForm } from '../components/logIn/mailForm';
-import { PasswordForm } from '../components/logIn/passwordForm';
-import { postLoginAuthentication } from '../api/api';
+
+// components
 import { TopAreaContainer } from '../components/common/topAreaContainer'
 import { ToSignUpOrLoginTextArea } from '../components/common/toSignUpOrLoginTextArea'
 import { Button } from '../components/common/button'
 import { AuthErrorText } from '../components/logIn/authErrorText';
 import { ForgotPassword } from '../components/logIn/forgotPasseword';
+import { MailForm } from '../components/logIn/mailForm';
+import { PasswordForm } from '../components/logIn/passwordForm';
+
+// apis
+import { postLoginAuthentication } from '../api/api';
 
 // constantsStyles
 import { constantsStyles } from '../constants/styles'

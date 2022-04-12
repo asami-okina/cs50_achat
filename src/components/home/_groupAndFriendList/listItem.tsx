@@ -1,82 +1,19 @@
-// // libs
-// import React from 'react';
-// import { Text, View, Pressable, Image, StyleSheet,ScrollView } from 'react-native';
-
-// // constantsLayout
-// import { CONTENT_WIDTH } from '../../../constants/layout'
-
-// export function ListItem({ groupListProps, friendListProps, type }) {
-// 	return (
-// 		<>
-// 			{type === "Group" && (
-// 				<>
-// 					{groupListProps.openGroupList && groupListProps.groupList.length != 0 && groupListProps.groupList.map((list) => {
-// 						return (
-// 							<>
-// 								{/* <View style={styles.listWrapperStyle} key={list.group_chat_room_id}>
-// 									<Pressable style={styles.listItemContainerStyle}>
-// 										<Image source={list.group_image} style={styles.profileImageStyle} />
-// 										<Text style={styles.listItemNameStyle}>{list.group_name}</Text>
-// 									</Pressable>
-// 								</View > */}
-// 							</>
-// 						)
-// 					})}
-// 				</>
-// 			)}
-// 			{type === "Friend" && (
-// 				<>
-// 					{friendListProps?.openFriendList && friendListProps?.friendList.length != 0 && friendListProps?.friendList.map((list) => {
-// 						return (
-// 							<View style={styles.listWrapperStyle} key={list.direct_chat_room_id}>
-// 								<Pressable style={styles.listItemContainerStyle}>
-// 									<Image source={list.friend_profile_image} style={styles.profileImageStyle} />
-// 									<Text style={styles.listItemNameStyle}>{list.friend_nickname}</Text>
-// 								</Pressable>
-// 							</View>
-// 						)
-// 					})}
-// 				</>
-// 			)}
-// 			</>
-// 	);
-// }
-
-// export const styles = StyleSheet.create({
-// 	asami: {
-// 		backgroundColor: "red",
-// 	},
-// listWrapperStyle: {
-// 	height: 60,
-// 	width: CONTENT_WIDTH,
-// 	display: "flex",
-// 	justifyContent: "center",
-// 	marginBottom: 5,
-// },
-// listItemContainerStyle: {
-// 	display: "flex",
-// 	flexDirection: "row",
-// 	alignItems: "center",
-// },
-// profileImageStyle: {
-// 	width: 50,
-// 	height: 50,
-// 	borderRadius: 50
-// },
-// listItemNameStyle: {
-// 	fontFamily: "ABeeZee_400Regular",
-// 	marginLeft: 12,
-// }
-// });
-
-
+// libs
 import React, { useState } from 'react';
 import {
 	StyleSheet,
-	View
+	View,
+	Pressable,
+	Image,
+	Text,
+	ScrollView
 } from 'react-native';
 
+// childComponents
 import Basic from './examples/basic';
+
+// constantsLayout
+import { CONTENT_WIDTH, PROFILE_IMAGE_SIZE } from '../../../constants/layout'
 
 export function ListItem({ groupListProps, friendListProps, type }) {
 	return (
@@ -86,8 +23,21 @@ export function ListItem({ groupListProps, friendListProps, type }) {
 				<Basic groupList={groupListProps?.groupList} friendList={null} type={type} />
 			)}
 			{/* friendの場合 */}
-			{friendListProps?.friendList.length !== 0 && friendListProps?.friendList !== undefined && (
-				<Basic groupList={null} friendList={friendListProps?.friendList} type={type} />
+			{type === "Friend" && (
+				<>
+											<ScrollView>
+					{friendListProps?.openFriendList && friendListProps?.friendList.length != 0 && friendListProps?.friendList.map((list) => {
+						return (
+							<View style={styles.listWrapperStyle} key={list.direct_chat_room_id}>
+								<Pressable style={styles.listItemContainerStyle}>
+									<Image source={list.friend_profile_image} style={styles.profileImageStyle} />
+									<Text style={styles.listItemNameStyle}>{list.friend_nickname}</Text>
+								</Pressable>
+							</View>
+						)
+					})}
+									</ScrollView>
+				</>
 			)}
 		</View>
 	);
@@ -95,8 +45,27 @@ export function ListItem({ groupListProps, friendListProps, type }) {
 
 const styles = StyleSheet.create({
 	container: {
-		backgroundColor: "red",
-		// backgroundColor: '#feffff',
-		// flex: 1,
+		backgroundColor: '#feffff',
 	},
+	listWrapperStyle: {
+		height: 60,
+		width: CONTENT_WIDTH,
+		display: "flex",
+		justifyContent: "center",
+		marginBottom: 5,
+	},
+	listItemContainerStyle: {
+		display: "flex",
+		flexDirection: "row",
+		alignItems: "center",
+	},
+	profileImageStyle: {
+		width: PROFILE_IMAGE_SIZE,
+		height: PROFILE_IMAGE_SIZE,
+		borderRadius: 50
+	},
+	listItemNameStyle: {
+		fontFamily: "ABeeZee_400Regular",
+		marginLeft: 12,
+	}
 });
