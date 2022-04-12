@@ -70,6 +70,9 @@ export const MAIN_WHITE_COLOR = "#feffff"
 // ピンク
 export const MAIN_PINK_COLOR = "#ED195E"
 
+// グレー
+export const MAIN_GRAY_COLOR = "#C4C4C4"
+
 // ------------------------------------------------------------------------------------------------
 // borderRadius(丸み)
 export const TOP_AREA_LEFT_RADIUS = 50

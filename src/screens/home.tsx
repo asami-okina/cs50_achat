@@ -5,7 +5,8 @@ import { View, SafeAreaView, ScrollView, KeyboardAvoidingView, Text } from 'reac
 // components
 import { Footer } from '../components/common/footer'
 import { TopAreaContainer } from '../components/common/topAreaContainer'
-import { GroupAndFriendList } from '../components/home/groupAndFriendList'
+import { FriendAndGroupList } from '../components/home/friendAndgroupList'
+import { FriendOrGroupSelectTab } from '../components/common/friendOrGroupSelectTab'
 
 // apis
 import { fetchNickNameOrGroupNameBySearchForm, fetchGroupList, fetGroupCount, fetchFriendList, fetchFriendCount } from '../api/api'
@@ -32,7 +33,7 @@ export function Home({ navigation }) {
 	// グループ一覧リスト
 	const [groupList, setGroupList] = useState([])
 	// グループ一覧を開くかどうか
-	const [openGroupList, setOpenGroupList] = useState(true)
+	const [openGroupList, setOpenGroupList] = useState(false)
 	// 所属グループ数
 	const [groupCount, setGroupCount] = useState(0)
 
@@ -101,13 +102,17 @@ export function Home({ navigation }) {
 				{/* 丸みを帯びている白いトップ部分 */}
 				<TopAreaContainer title={null} searchForm={true} searchFormProps={{ "setSearchText": setSearchText, "searchText": searchText, "textInputSearch": textInputSearch, "_searchName": _searchName }} />
 				{/* トップ部分を除くメイン部分: iphoneXの場合は、底のマージンを考慮 */}
-				{/* <ScrollView style={IPHONE_X_BOTTOM_SPACE === 0 ? constantsStyles.withFooterMainContainerStyle: constantsStyles.withFooterMainContainerIphoneXStyle}> */}
 				<View style={IPHONE_X_BOTTOM_SPACE === 0 ? constantsStyles.withFooterMainContainerStyle : constantsStyles.withFooterMainContainerIphoneXStyle}>
-					{/* グループ一覧 */}
-					<GroupAndFriendList groupListProps={{ "groupCount": groupCount, "setOpenGroupList": setOpenGroupList, "openGroupList": openGroupList, "groupList": groupList }} friendListProps={null} type={"Group"} />
+					{/* FriendとGroupの選択タブ */}
+					<FriendOrGroupSelectTab setOpenFriendList={setOpenFriendList} setOpenGroupList={setOpenGroupList} openFriendList={openFriendList} openGroupList={openGroupList} friendCount={friendCount} groupCount={groupCount} />
 					{/* 友達一覧 */}
-					<GroupAndFriendList friendListProps={{ "friendCount": friendCount, "setOpenFriendList": setOpenFriendList, "openFriendList": openFriendList, "friendList": friendList }} groupListProps={null} type={"Friend"} />
-					{/* </ScrollView> */}
+					{openFriendList && (
+						<FriendAndGroupList friendListProps={{ "friendCount": friendCount, "setOpenFriendList": setOpenFriendList, "openFriendList": openFriendList, "friendList": friendList }} groupListProps={null} type={"Friend"} />
+					)}
+					{/* グループ一覧 */}
+					{openGroupList && (
+						<FriendAndGroupList groupListProps={{ "groupCount": groupCount, "setOpenGroupList": setOpenGroupList, "openGroupList": openGroupList, "groupList": groupList }} friendListProps={null} type={"Group"} />
+					)}
 				</View>
 				{/*フッター */}
 				<Footer navigation={navigation} />
