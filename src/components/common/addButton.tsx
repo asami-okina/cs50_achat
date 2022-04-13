@@ -3,7 +3,7 @@ import React from 'react';
 import { StyleSheet, TouchableOpacity, View, Image } from 'react-native';
 
 // layouts
-import { MAIN_NAVY_COLOR, MAIN_WHITE_COLOR, ADD_BUTTON_SIZE, CONTENT_WIDTH, BUTTON_BORDER_RADIUS } from '../../constants/layout'
+import { MAIN_NAVY_COLOR, MAIN_WHITE_COLOR, ADD_BUTTON_SIZE, CONTENT_WIDTH, BUTTON_BORDER_RADIUS,MAIN_BLACK_COLOR } from '../../constants/layout'
 
 export function AddButton({ }) {
 	return (
@@ -46,13 +46,13 @@ const styles = StyleSheet.create({
 		borderRadius: BUTTON_BORDER_RADIUS,
 		backgroundColor: MAIN_NAVY_COLOR,
 		textAlign: "center",
-		shadowColor: "black",
+		shadowColor: MAIN_BLACK_COLOR,
 		shadowOffset: {
 			width: 0,
 			height: 2,
 		},
 		shadowOpacity: 0.5,
-		shadowRadius: 4,
+		shadowRadius: 2,
 		elevation: 1,
 	},
 });
