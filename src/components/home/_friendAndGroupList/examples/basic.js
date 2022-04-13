@@ -16,7 +16,7 @@ import { CONTENT_WIDTH, PROFILE_IMAGE_SIZE } from '../../../../constants/layout'
 
 import { SwipeListView } from 'react-native-swipe-list-view';
 
-export default function Basic({ groupList, friendList, type }) {
+export default function Basic({ groupList, friendList, type, setModalVisible }) {
 	// ユーザーID(今後は認証から取得するようにする)
 	const userId = "asami11"
 
@@ -84,10 +84,12 @@ export default function Basic({ groupList, friendList, type }) {
 			<TouchableOpacity
 				style={[styles.backRightBtn, styles.backRightBtnRight]}
 				onPress={() => {
-					deleteRow(rowMap, data.item.key)
-					// グループ脱退関数実行
-					const groupChatRoomId =  data.item.group_chat_room_id
-					leaveGroup(userId, groupChatRoomId)
+					// モーダル出力し、OKだったら、以下実行
+					setModalVisible(true)
+					// deleteRow(rowMap, data.item.key)
+					// // グループ脱退関数実行
+					// const groupChatRoomId =  data.item.group_chat_room_id
+					// leaveGroup(userId, groupChatRoomId)
 				}}
 			>
 				<Text style={styles.backTextWhite}>Delete</Text>
@@ -96,6 +98,7 @@ export default function Basic({ groupList, friendList, type }) {
 	);
 	return (
 		<View style={styles.container}>
+			{type === "Group" && (
 			<SwipeListView
 				data={listData}
 				renderItem={renderItem}
@@ -103,6 +106,15 @@ export default function Basic({ groupList, friendList, type }) {
 				rightOpenValue={-75}
 				disableRightSwipe={true}
 			/>
+			)}
+			{
+				type === "Friend" && (
+					<SwipeListView
+						data={listData}
+						renderItem={renderItem}
+					/>
+				)
+			}
 		</View>
 	);
 }

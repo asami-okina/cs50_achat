@@ -11,16 +11,16 @@ import Basic from './examples/basic';
 // constantsLayout
 import { CONTENT_WIDTH, PROFILE_IMAGE_SIZE } from '../../../constants/layout'
 
-export function ListItem({ groupListProps, friendListProps, type }) {
+export function ListItem({ groupListProps, friendListProps, type, setModalVisible }) {
 	return (
 		<View style={styles.containerStyle}>
 			{/* groupの場合 */}
 			{groupListProps?.groupList.length !== 0 && groupListProps?.groupList !== undefined && (
-				<Basic groupList={groupListProps?.groupList} friendList={null} type={type} />
+				<Basic groupList={groupListProps?.groupList} friendList={null} type={type} setModalVisible={setModalVisible} />
 			)}
 			{/* friendの場合 */}
 			{friendListProps?.friendList.length !== 0 && friendListProps?.friendList !== undefined && (
-				<Basic groupList={null} friendList={friendListProps?.friendList} type={type} />
+				<Basic groupList={null} friendList={friendListProps?.friendList} type={type} setModalVisible={setModalVisible}/>
 			)}
 		</View>
 	);
