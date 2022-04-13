@@ -96,9 +96,6 @@ export const MORDAL_WIDTH = CONTENT_WIDTH - 100
 // モーダルのテキストコンテンツ表示幅
 export const MORDAL_TEXT_CONTENT_WIDTH = CONTENT_WIDTH - 150
 
-// タブの幅
-export const TAB_WIDTH = 85
-
 
 // ------------------------------------------------------------------------------------------------
 // 色
