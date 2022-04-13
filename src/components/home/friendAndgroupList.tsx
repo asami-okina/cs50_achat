@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, StyleSheet } from 'react-native';
-import { CONTENT_WIDTH, MAIN_WHITE_COLOR, MAIN_NAVY_COLOR } from '../../constants/layout'
+import { CONTENT_WIDTH, MAIN_WHITE_COLOR } from '../../constants/layout'
 
 import { ListItem } from './_friendAndGroupList/listItem'
 
@@ -39,13 +39,5 @@ export const styles = StyleSheet.create({
 	topContainerStyle: {
 		flexDirection: "row",
 		alignItems: "center",
-	},
-	titleStyle: {
-		fontFamily: "MPLUS1p_700Bold",
-		color: MAIN_NAVY_COLOR,
-		fontSize: 18,
-		marginRight: 12,
-		marginTop: 5,
-		height: "100%",
 	},
 });

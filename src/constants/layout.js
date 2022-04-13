@@ -86,6 +86,12 @@ export const MAIN_PINK_COLOR = "#ED195E"
 // グレー
 export const MAIN_GRAY_COLOR = "#C4C4C4"
 
+// 検索フォームの背景の薄グレー
+export const LIGHT_GRAY_COLOR = "#F6F7FB"
+
+// 黒
+export const MAIN_BLACK_COLOR = "#262626"
+
 // ------------------------------------------------------------------------------------------------
 // borderRadius(丸み)
 export const TOP_AREA_LEFT_RADIUS = 50
@@ -96,7 +102,10 @@ export const TOP_AREA_LEFT_RADIUS = 50
 export const MAIN_TITLE_FONT = "AlfaSlabOne_400Regular"
 
 // 標準文字
-export const STANDARD_FONT = "ABeeZee_400Regular_Italic"
+export const STANDARD_FONT = "ABeeZee_400Regular"
+
+// タブのタイトル
+export const TAB_FONT = "MPLUS1p_700Bold"
 
 // ------------------------------------------------------------------------------------------------
 // マージン

@@ -8,6 +8,8 @@ import {
 // childComponents
 import Basic from './examples/basic';
 
+import {MAIN_WHITE_COLOR} from '../../../constants/layout'
+
 export function ListItem({ groupListProps, friendListProps, type, setModalVisible,clickedCancelMordal,setClickedCancelMordal, clickedOkMordal,setClickedOkMordal}) {
 	return (
 		<View style={styles.containerStyle}>
@@ -25,7 +27,7 @@ export function ListItem({ groupListProps, friendListProps, type, setModalVisibl
 
 const styles = StyleSheet.create({
 	containerStyle: {
-		backgroundColor: '#feffff',
+		backgroundColor: MAIN_WHITE_COLOR,
 		marginTop: 12,
 	}
 });

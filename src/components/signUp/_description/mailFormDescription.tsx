@@ -1,6 +1,6 @@
 import React from 'react';
 import { Text, View, Image, StyleSheet } from 'react-native';
-import { MAIN_WHITE_COLOR, CONTENT_WIDTH } from '../../../constants/layout';
+import { MAIN_WHITE_COLOR, CONTENT_WIDTH,MAIN_BLACK_COLOR } from '../../../constants/layout';
 
 
 export function MailFormDescription({
@@ -40,7 +40,7 @@ export const styles = StyleSheet.create({
 		width: CONTENT_WIDTH,
 	},
 	descriptionTextStyle: {
-		color: "#262626",
+		color: MAIN_BLACK_COLOR,
 		fontSize: 12,
 		overflow: "visible"
 	},

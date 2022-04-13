@@ -12,7 +12,7 @@ import {
 import { leaveGroup } from '../../../../api/api'
 
 // constantsLayout
-import { CONTENT_WIDTH, PROFILE_IMAGE_SIZE } from '../../../../constants/layout'
+import { CONTENT_WIDTH, PROFILE_IMAGE_SIZE,STANDARD_FONT,MAIN_WHITE_COLOR,MAIN_PINK_COLOR } from '../../../../constants/layout'
 
 import { SwipeListView } from 'react-native-swipe-list-view';
 
@@ -153,20 +153,20 @@ export default function Basic({ groupList, friendList, type, setModalVisible, cl
 
 const styles = StyleSheet.create({
 	container: {
-		backgroundColor: '#feffff',
+		backgroundColor: MAIN_WHITE_COLOR,
 	},
 	backTextWhite: {
-		color: '#FFF',
+		color: MAIN_WHITE_COLOR,
 	},
 	rowFront: {
 		alignItems: 'center',
-		backgroundColor: '#feffff',
+		backgroundColor: MAIN_WHITE_COLOR,
 		justifyContent: 'center',
 		height: 50,
 	},
 	rowBack: {
 		alignItems: 'center',
-		backgroundColor: '#feffff',
+		backgroundColor: MAIN_WHITE_COLOR,
 		flex: 1,
 		flexDirection: 'row',
 		justifyContent: 'space-between',
@@ -180,12 +180,8 @@ const styles = StyleSheet.create({
 		top: 0,
 		width: 75,
 	},
-	backRightBtnLeft: {
-		backgroundColor: 'blue',
-		right: 75,
-	},
 	backRightBtnRight: {
-		backgroundColor: 'red',
+		backgroundColor: MAIN_PINK_COLOR,
 		right: 0,
 	},
 	profileImageStyle: {
@@ -206,7 +202,7 @@ const styles = StyleSheet.create({
 		alignItems: "center",
 	},
 	listItemNameStyle: {
-		fontFamily: "ABeeZee_400Regular",
+		fontFamily: STANDARD_FONT,
 		marginLeft: 12,
 	}
 });

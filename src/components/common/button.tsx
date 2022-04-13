@@ -1,6 +1,6 @@
 import React from 'react';
 import { Text, StyleSheet, TouchableOpacity } from 'react-native';
-import { MAIN_NAVY_COLOR, MAIN_WHITE_COLOR, BUTTON_HEIGHT, CONTENT_WIDTH, STANDARD_FONT, BUTTON_TEXT_SIZE } from '../../constants/layout'
+import { MAIN_NAVY_COLOR, MAIN_WHITE_COLOR, BUTTON_HEIGHT, CONTENT_WIDTH, STANDARD_FONT, BUTTON_TEXT_SIZE,MAIN_GRAY_COLOR } from '../../constants/layout'
 
 export function Button({ navigation, link, buttonText, enable, scene, loginProps }) {
 	return (
@@ -50,7 +50,7 @@ const styles = StyleSheet.create({
 		fontFamily: STANDARD_FONT,
 	},
 	buttonContainerInvalidStyle: {
-		backgroundColor: "#C5C5C7",
+		backgroundColor: MAIN_GRAY_COLOR,
 	},
 });
 

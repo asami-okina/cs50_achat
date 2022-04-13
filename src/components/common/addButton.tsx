@@ -1,20 +1,20 @@
 import React from 'react';
 import { StyleSheet, TouchableOpacity, View, Image } from 'react-native';
-import { MAIN_NAVY_COLOR, MAIN_WHITE_COLOR, ADD_BUTTON_SIZE, SCREEN_WIDTH,CONTENT_WIDTH } from '../../constants/layout'
+import { MAIN_NAVY_COLOR, MAIN_WHITE_COLOR, ADD_BUTTON_SIZE, CONTENT_WIDTH } from '../../constants/layout'
 
 export function AddButton({ }) {
 	return (
 		<View style={styles.boxStyle}>
-		<View style={styles.wrapperStyle}>
-			<View style={styles.containerStyle}>
-				<TouchableOpacity
-					style={styles.buttonStyle}
-					onPress={() => { console.log('追加ボタンだよ')}}
-				>
-					<Image source={require('../../../assets/images/white_plus.png')} />
-				</TouchableOpacity>
+			<View style={styles.wrapperStyle}>
+				<View style={styles.containerStyle}>
+					<TouchableOpacity
+						style={styles.buttonStyle}
+						onPress={() => { console.log('追加ボタンだよ') }}
+					>
+						<Image source={require('../../../assets/images/white_plus.png')} />
+					</TouchableOpacity>
+				</View>
 			</View>
-		</View>
 		</View>
 	);
 }

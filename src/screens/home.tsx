@@ -1,6 +1,6 @@
 // libs
 import React, { useEffect, useState } from 'react';
-import { View, SafeAreaView, ScrollView, KeyboardAvoidingView, Text,Modal,Pressable,StyleSheet } from 'react-native';
+import { View, SafeAreaView, KeyboardAvoidingView } from 'react-native';
 
 // components
 import { Footer } from '../components/common/footer'
@@ -8,6 +8,7 @@ import { TopAreaContainer } from '../components/common/topAreaContainer'
 import { FriendAndGroupList } from '../components/home/friendAndgroupList'
 import { FriendOrGroupSelectTab } from '../components/common/friendOrGroupSelectTab'
 import { AddButton } from '../components/common/addButton'
+import {ConfirmModal} from '../components/common/confirmModal'
 
 // apis
 import { fetchNickNameOrGroupNameBySearchForm, fetchGroupList, fetGroupCount, fetchFriendList, fetchFriendCount } from '../api/api'
@@ -16,7 +17,7 @@ import { fetchNickNameOrGroupNameBySearchForm, fetchGroupList, fetGroupCount, fe
 import { constantsStyles } from '../constants/styles'
 
 // constantsLayout
-import { IPHONE_X_BOTTOM_SPACE,CONTENT_WIDTH,MAIN_NAVY_COLOR,MAIN_PINK_COLOR, MAIN_GRAY_COLOR,MORDAL_WIDTH,MORDAL_TEXT_CONTENT_WIDTH } from '../constants/layout'
+import { IPHONE_X_BOTTOM_SPACE } from '../constants/layout'
 
 export function Home({ navigation }) {
 	// ユーザーID(今後は認証から取得するようにする)
@@ -42,10 +43,9 @@ export function Home({ navigation }) {
 	// 所属グループ数
 	const [groupCount, setGroupCount] = useState(0)
 
-	// 削除時のモーダルでCancelを押したかどうか
+	// 削除時の確認モーダルでCancelを押したかどうか
 	const [clickedCancelMordal, setClickedCancelMordal] = useState(false)
-
-	// 削除時のモーダルでOkを押したかどうか
+	// 削除時の確認モーダルでOkを押したかどうか
 	const [clickedOkMordal, setClickedOkMordal] = useState(false)
 
 	// ニックネームまたはグループ名の検索でヒットするユーザーまたはグループ情報の取得
@@ -109,44 +109,7 @@ export function Home({ navigation }) {
 		<KeyboardAvoidingView behavior="padding" style={constantsStyles.screenContainerStyle}>
 			<SafeAreaView style={constantsStyles.screenContainerStyle}>
 				{/* Delete確認モーダル */}
-				<Modal
-        animationType="slide"
-        transparent={true}
-        visible={modalVisible}
-        onRequestClose={() => {
-          setModalVisible(!modalVisible);
-        }}
-      >
-        <View style={styles.centeredView}>
-          <View style={styles.modalView}>
-            <Text style={styles.modalText}>When you leave a group, the group member list and all group talk history will be deleted. Do you want to leave the group?</Text>
-            <View style={styles.borderStyle}>
-
-						</View>
-						<View style={styles.buttonContainerStyle}>
-							<Pressable
-								style={[styles.button, styles.cancelButtonStyle]}
-								onPress={() => {
-									setModalVisible(false)
-									setClickedCancelMordal(true)
-									console.log('cancel')
-								}}
-							>
-								<Text style={styles.cancelTextStyle}>Cancel</Text>
-							</Pressable>
-							<Pressable
-								style={[styles.button, styles.okButtonStyle]}
-								onPress={() => {
-									setModalVisible(!modalVisible)
-									setClickedOkMordal(true)
-								}}
-							>
-								<Text style={styles.okTextStyle}>Ok</Text>
-							</Pressable>
-						</View>
-          </View>
-        </View>
-      </Modal>
+				<ConfirmModal modalVisible={modalVisible} setModalVisible={setModalVisible} setClickedCancelMordal={setClickedCancelMordal} setClickedOkMordal={setClickedOkMordal} modalText={"When you leave a group, the group member list and all group talk history will be deleted. Do you want to leave the group?"}/>
 				{/* 画面一番上にある青色の余白部分 */}
 				<View style={constantsStyles.topMarginViewStyle}></View>
 				{/* 丸みを帯びている白いトップ部分 */}
@@ -157,7 +120,7 @@ export function Home({ navigation }) {
 					<FriendOrGroupSelectTab setOpenFriendList={setOpenFriendList} setOpenGroupList={setOpenGroupList} openFriendList={openFriendList} openGroupList={openGroupList} friendCount={friendCount} groupCount={groupCount} />
 					{/* 友達一覧 */}
 					{openFriendList && (
-						<FriendAndGroupList friendListProps={{ "friendCount": friendCount, "setOpenFriendList": setOpenFriendList, "openFriendList": openFriendList, "friendList": friendList }} groupListProps={null} type={"Friend"} setModalVisible={setModalVisible} clickedCancelMordal={clickedCancelMordal} setClickedCancelMordal={setClickedCancelMordal} clickedOkMordal={clickedOkMordal} setClickedOkMordal={setClickedOkMordal}/>
+						<FriendAndGroupList friendListProps={{ "friendCount": friendCount, "setOpenFriendList": setOpenFriendList, "openFriendList": openFriendList, "friendList": friendList }} groupListProps={null} type={"Friend"} setModalVisible={setModalVisible} clickedCancelMordal={clickedCancelMordal} setClickedCancelMordal={setClickedCancelMordal} clickedOkMordal={clickedOkMordal} setClickedOkMordal={setClickedOkMordal} />
 					)}
 					{/* グループ一覧 */}
 					{openGroupList && (
@@ -172,74 +135,3 @@ export function Home({ navigation }) {
 		</KeyboardAvoidingView>
 	);
 }
-
-const styles = StyleSheet.create({
-  centeredView: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-    marginTop: 22,
-  },
-  modalView: {
-    backgroundColor: "#feffff",
-    borderRadius: 20,
-    alignItems: "center",
-    shadowColor: "#000",
-    shadowOffset: {
-      width: 0,
-      height: 2
-    },
-    shadowOpacity: 0.25,
-    shadowRadius: 4,
-    elevation: 5,
-		width: MORDAL_WIDTH,
-  },
-  button: {
-    padding: 10,
-    elevation: 2,
-		width: "50%",
-  },
-  buttonOpen: {
-    backgroundColor: "#F194FF",
-  },
-  cancelButtonStyle: {
-    borderBottomLeftRadius: 20,
-  },
-	okButtonStyle: {
-    borderBottomRightRadius: 20,
-		borderLeftColor: MAIN_GRAY_COLOR,
-		borderLeftWidth: 0.5,
-	},
-	cancelTextStyle: {
-		color: MAIN_NAVY_COLOR,
-    fontWeight: "bold",
-    textAlign: "center",
-		fontFamily: "ABeeZee_400Regular"
-	},
-  okTextStyle: {
-    color: MAIN_PINK_COLOR,
-    fontWeight: "bold",
-    textAlign: "center",
-		fontFamily: "ABeeZee_400Regular",
-  },
-  modalText: {
-    textAlign: "center",
-		width: MORDAL_TEXT_CONTENT_WIDTH,
-		marginTop: ((MORDAL_WIDTH) - (MORDAL_TEXT_CONTENT_WIDTH)) / 2,
-		marginBottom: ((MORDAL_WIDTH) - (MORDAL_TEXT_CONTENT_WIDTH)) / 2,
-		fontFamily: "ABeeZee_400Regular"
-  },
-	buttonContainerStyle:{
-		flexDirection: "row",
-		alignItems: "center",
-		justifyContent: "center",
-		height: 50,
-	},
-	borderStyle: {
-		// bordeBottomrColor: MAIN_GRAY_COLOR,
-		// borderBottomWidth: 0.5,
-		borderBottomColor: MAIN_GRAY_COLOR,
-		borderBottomWidth: 0.5,
-		width: MORDAL_WIDTH,
-	}
-});

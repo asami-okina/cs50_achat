@@ -1,6 +1,6 @@
 import React from 'react';
 import { Text, View, Pressable, Image, StyleSheet } from 'react-native';
-import { FOOTER_HEIGHT, MAIN_NAVY_COLOR, MAIN_WHITE_COLOR } from '../../constants/layout'
+import { FOOTER_HEIGHT, MAIN_NAVY_COLOR, MAIN_WHITE_COLOR,STANDARD_FONT } from '../../constants/layout'
 
 export function Footer({navigation}) {
 	return (
@@ -35,7 +35,7 @@ const styles = StyleSheet.create({
 		alignItems: "center"
 	},
 	footerTextStyle: {
-		fontFamily: "ABeeZee_400Regular",
+		fontFamily: STANDARD_FONT,
 		color: MAIN_WHITE_COLOR
 	}
 })

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Text, View, Image, TextInput, Pressable, StyleSheet } from 'react-native';
 import { MailFormDescription } from './_description/mailFormDescription';
-import { MAIN_WHITE_COLOR, CONTENT_WIDTH, MAIN_PINK_COLOR,STANDARD_FONT } from '../../constants/layout'
+import { MAIN_WHITE_COLOR, CONTENT_WIDTH, MAIN_PINK_COLOR,STANDARD_FONT,LIGHT_GRAY_COLOR,MAIN_BLACK_COLOR} from '../../constants/layout'
 
 
 export function MailForm({
@@ -93,7 +93,7 @@ export const styles = StyleSheet.create({
 	},
 	searchTitleStyle: {
 		fontFamily: STANDARD_FONT,
-		color: "#262626",
+		color: MAIN_BLACK_COLOR,
 		marginBottom: 5,
 	},
 	searchIconStyle: {
@@ -105,12 +105,12 @@ export const styles = StyleSheet.create({
 	searchViewStyle: {
 		flexDirection: 'row',
 		alignItems: 'center',
-		backgroundColor: '#F6F7FB',
+		backgroundColor: LIGHT_GRAY_COLOR,
 		borderWidth: 0.5,
 		height: 60,
 		borderRadius: 5,
 		width: CONTENT_WIDTH,
-		borderColor: "#F6F7FB",
+		borderColor: LIGHT_GRAY_COLOR,
 	},
 	searchContentStyle: {
 		flex: 1

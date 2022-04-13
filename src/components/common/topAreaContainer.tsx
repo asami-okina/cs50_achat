@@ -5,7 +5,7 @@ import { Text, View, SafeAreaView, ScrollView, KeyboardAvoidingView, Pressable, 
 // constantsStyles
 import {constantsStyles} from '../../constants/styles'
 
-import { WITH_FOOTER_OPERATION_SCREEN_HEIGHT, HEAD_CONTAINER_HEIGHT, TOP_AREA_STYLE, SEARCH_FORM_HEIGHT, CONTENT_WIDTH, ICON_SIZE, MAIN_NAVY_COLOR, MAIN_WHITE_COLOR } from '../../constants/layout'
+import {SEARCH_FORM_HEIGHT, CONTENT_WIDTH, ICON_SIZE,STANDARD_FONT,LIGHT_GRAY_COLOR } from '../../constants/layout'
 
 // 丸みを帯びている白いトップ部分
 export function TopAreaContainer({ title,searchForm,searchFormProps }) {
@@ -54,15 +54,14 @@ export const styles = StyleSheet.create({
 	searchViewStyle: {
 		flexDirection: 'row',
 		alignItems: 'center',
-		backgroundColor: '#F6F7FB',
-		borderWidth: 0.5,
+		backgroundColor: LIGHT_GRAY_COLOR,
 		height: SEARCH_FORM_HEIGHT,
 		borderRadius: 5,
 		width: CONTENT_WIDTH,
-		borderColor: "#F6F7FB",
 	},
 	searchContentStyle: {
 		paddingLeft: 10,
-		flex: 1
+		flex: 1,
+		fontFamily:STANDARD_FONT
 	},
 });

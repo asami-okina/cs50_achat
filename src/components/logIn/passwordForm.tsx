@@ -2,7 +2,7 @@ import React from 'react';
 import { Text, View, Image, TextInput, Pressable, StyleSheet } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { useTogglePasswordVisibility } from '../../hooks/useTogglePasswordVisibility';
-import { MAIN_WHITE_COLOR, CONTENT_WIDTH,MAIN_PINK_COLOR,STANDARD_FONT } from '../../constants/layout';
+import { MAIN_WHITE_COLOR, CONTENT_WIDTH,MAIN_PINK_COLOR,STANDARD_FONT,MAIN_GRAY_COLOR ,MAIN_BLACK_COLOR} from '../../constants/layout';
 
 
 export function PasswordForm({
@@ -48,7 +48,7 @@ export function PasswordForm({
 								}}
 							/>
 							<Pressable onPress={handlePasswordVisibility}>
-								<MaterialCommunityIcons image={rightIcon} size={22} color="#C5C5C7" style={styles.passwordIconStyle} />
+								<MaterialCommunityIcons image={rightIcon} size={22} color={MAIN_GRAY_COLOR} style={styles.passwordIconStyle} />
 							</Pressable>
 						</View>
 					</Pressable>
@@ -74,7 +74,7 @@ export const styles = StyleSheet.create({
 	},
 	searchTitleStyle: {
 		fontFamily: STANDARD_FONT,
-		color: "#262626",
+		color: MAIN_BLACK_COLOR,
 		marginBottom: 5,
 	},
 	searchIconStyle: {
@@ -86,12 +86,12 @@ export const styles = StyleSheet.create({
 	searchViewStyle: {
 		flexDirection: 'row',
 		alignItems: 'center',
-		backgroundColor: '#F6F7FB',
+		backgroundColor: MAIN_GRAY_COLOR,
 		borderWidth: 0.5,
 		height: 60,
 		borderRadius: 5,
 		width: CONTENT_WIDTH,
-		borderColor: "#F6F7FB",
+		borderColor: MAIN_GRAY_COLOR,
 	},
 	searchContentStyle: {
 		flex: 1

@@ -1,12 +1,12 @@
 import React from 'react';
-import {View, StyleSheet, Image} from 'react-native';
+import { View, StyleSheet, Image } from 'react-native';
 import { MAIN_WHITE_COLOR, A_CHAT_LOG_SIZE } from '../../constants/layout'
 
 export function AChatLogo() {
 	return (
-	<View style={styles.logoContainerStyle}>
-		<Image style={styles.logoStyle} source={require("../../../assets/images/a-chat-logo-after.png")} />
-	</View>
+		<View style={styles.logoContainerStyle}>
+			<Image style={styles.logoStyle} source={require("../../../assets/images/a-chat-logo-after.png")} />
+		</View>
 	);
 }
 

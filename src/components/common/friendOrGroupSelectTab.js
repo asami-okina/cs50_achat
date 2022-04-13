@@ -1,6 +1,6 @@
 import React from 'react';
 import { Text, View, Pressable, StyleSheet } from 'react-native';
-import { MAIN_NAVY_COLOR, CONTENT_WIDTH, MAIN_GRAY_COLOR } from '../../constants/layout'
+import { MAIN_NAVY_COLOR, CONTENT_WIDTH, MAIN_GRAY_COLOR,TAB_FONT,MAIN_WHITE_COLOR } from '../../constants/layout'
 
 export function FriendOrGroupSelectTab({ setOpenFriendList, setOpenGroupList, openFriendList, openGroupList, friendCount, groupCount }) {
 	return (
@@ -37,7 +37,7 @@ const styles = StyleSheet.create({
 		flexDirection: "row",
 	},
 	tabStyle: {
-		backgroundColor: "#feffff",
+		backgroundColor: MAIN_WHITE_COLOR,
 		width: 85,
 		alignItems: "center",
 		borderBottomWidth: 1,
@@ -55,7 +55,7 @@ const styles = StyleSheet.create({
 	},
 	textStyle: {
 		fontSize: 16,
-		fontFamily: "MPLUS1p_700Bold",
+		fontFamily: TAB_FONT,
 		color: MAIN_NAVY_COLOR,
 	},
 	countStyle: {
