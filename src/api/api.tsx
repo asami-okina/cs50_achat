@@ -1,17 +1,17 @@
 // 登録するユーザーIDが使用可能かどうか(すでに存在していないか)
 export const fetchIsAvailableUserId = (userId) => {
-    let result = {
-        "isAvailableUserId": true
-    }
-    return result
+	let result = {
+		"isAvailableUserId": true
+	}
+	return result
 };
 
 // ログイン認証
 export const postLoginAuthentication = (mail, password) => {
-    let result = {
-        "certificationResult": true
-    }
-    return result
+	let result = {
+		"certificationResult": true
+	}
+	return result
 }
 
 // ニックネームまたはグループ名の検索でヒットするユーザーまたはグループ情報の取得
@@ -39,15 +39,15 @@ export const fetchNickNameOrGroupNameBySearchForm = (keyword) => {
 				]
 			}
 		];
-		// 検索にヒットしない場合
-		// let result = [
-		// 	{
-		// 		"friend": []
-		// 	},
-		// 	{"group": []
-		// 	}
-		// ]
-		return result
+	// 検索にヒットしない場合
+	// let result = [
+	// 	{
+	// 		"friend": []
+	// 	},
+	// 	{"group": []
+	// 	}
+	// ]
+	return result
 }
 
 // ユーザが所属するグループ一覧

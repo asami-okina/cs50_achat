@@ -1,15 +1,31 @@
+// libs
 import { Dimensions } from 'react-native';
 import { getStatusBarHeight, getBottomSpace } from 'react-native-iphone-x-helper'
 
 // ------------------------------------------------------------------------------------------------
+// タイトル
+// libs
+// layouts
+// components
+// api
+// constantsCommonStyles
+// constantsSearchStyles
+// constantsFormDescriptionStyles
+// hooks
+// fonts
+
+// ------------------------------------------------------------------------------------------------
 // 大きさ
-// アイコンの大きさ
+// 標準のアイコンの大きさ
 export const ICON_SIZE = 24
+
+// 小さいアイコンの大きさ
+export const SMALL_ICON_SIZE = ICON_SIZE / 2
 
 // A-Chatロゴの大きさ
 export const A_CHAT_LOG_SIZE = 250
 
-// メインタイトルの大きさ
+// メインタイトルの文字の大きさ
 export const MAIN_TITLE_SIZE = 50
 
 // ボタンの文字の大きさ
@@ -20,6 +36,12 @@ export const PROFILE_IMAGE_SIZE = 40
 
 // 友達、グループ追加ボタンの大きさ
 export const ADD_BUTTON_SIZE = 65
+
+// タブのタイトルの文字の大きさ
+export const TAB_TITLE_TEXT_SIZE = 16
+
+// 検索フォームの説明文の文字の大きさ
+export const FORM_DESCRIPTION_TEXT_SIZE = 12
 
 // ------------------------------------------------------------------------------------------------
 // 高さ
@@ -59,6 +81,9 @@ export const SEARCH_FORM_HEIGHT = 60
 // ボタンの高さ
 export const BUTTON_HEIGHT = 60
 
+// タブの高さ
+export const TAB_HEIGHT = 40
+
 // ------------------------------------------------------------------------------------------------
 // 幅
 // コンテンツ表示幅
@@ -70,6 +95,9 @@ export const MORDAL_WIDTH = CONTENT_WIDTH - 100
 
 // モーダルのテキストコンテンツ表示幅
 export const MORDAL_TEXT_CONTENT_WIDTH = CONTENT_WIDTH - 150
+
+// タブの幅
+export const TAB_WIDTH = 85
 
 
 // ------------------------------------------------------------------------------------------------
@@ -94,7 +122,14 @@ export const MAIN_BLACK_COLOR = "#262626"
 
 // ------------------------------------------------------------------------------------------------
 // borderRadius(丸み)
+// 画面上位の白色の丸み部分
 export const TOP_AREA_LEFT_RADIUS = 50
+
+// ボタン
+export const BUTTON_BORDER_RADIUS = 10
+
+// 検索フォーム
+export const SEARCH_FORM_BORDER_RADIUS = 5
 
 // ------------------------------------------------------------------------------------------------
 // フォント

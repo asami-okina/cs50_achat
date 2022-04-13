@@ -7,10 +7,10 @@ import { Button } from '../components/common/button'
 import { HeadTitle } from '../components/common/headTitle';
 import { AChatLogo } from '../components/common/aChatLogo'
 import { ToSignUpOrLoginTextArea } from '../components/common/toSignUpOrLoginTextArea'
-import {TopAreaContainer} from '../components/common/topAreaContainer'
+import { TopAreaContainer } from '../components/common/topAreaContainer'
 
 // constantsCommonStyles
-import {constantsCommonStyles} from '../constants/styles/commonstyles'
+import { constantsCommonStyles } from '../constants/styles/commonStyles'
 
 export function Welcome({ navigation }) {
 	return (

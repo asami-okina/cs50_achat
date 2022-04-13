@@ -1,7 +1,9 @@
+// libs
 import React from 'react';
-import { Text, View, Image, StyleSheet } from 'react-native';
-import { MAIN_WHITE_COLOR, CONTENT_WIDTH,MAIN_BLACK_COLOR } from '../../../constants/layout';
+import { Text, View, Image } from 'react-native';
 
+// constantsFormDescriptionStyles
+import { formDescriptionStyles } from '../../../constants/styles/formDescriptionStyles';
 
 export function MailFormDescription({
 	isCorrectMail,
@@ -12,11 +14,11 @@ export function MailFormDescription({
 		<View>
 			{/* メールアドレスの説明文 */}
 			{displayMailDescription ? !isCorrectMail ? (
-				<View style={styles.descriptionBoxStyle}>
-					<View style={styles.descriptionWrapperStyle}>
-						<View style={styles.descriptionContainerStyle}>
-							{!defaultDisplayMailIcons ? isCorrectMail ? null : <Image source={require("../../../../assets/images/incorrect.png")} style={styles.descriptionIconStyle} /> : null}
-							<Text style={styles.descriptionTextStyle}>Email address format is incorrect.</Text>
+				<View style={formDescriptionStyles.descriptionBoxStyle}>
+					<View style={formDescriptionStyles.descriptionWrapperStyle}>
+						<View style={formDescriptionStyles.descriptionContainerStyle}>
+							{!defaultDisplayMailIcons ? isCorrectMail ? null : <Image source={require("../../../../assets/images/incorrect.png")} style={formDescriptionStyles.descriptionIconStyle} /> : null}
+							<Text style={formDescriptionStyles.descriptionTextStyle}>Email address format is incorrect.</Text>
 						</View>
 					</View>
 				</View>
@@ -24,30 +26,3 @@ export function MailFormDescription({
 		</View>
 	)
 }
-
-export const styles = StyleSheet.create({
-	// 説明文
-	descriptionBoxStyle: {
-		display: "flex",
-		alignItems: "center",
-		backgroundColor: MAIN_WHITE_COLOR,
-		paddingBottom: 10,
-	},
-	descriptionWrapperStyle: {
-	},
-	descriptionContainerStyle: {
-		flexDirection: "row",
-		width: CONTENT_WIDTH,
-	},
-	descriptionTextStyle: {
-		color: MAIN_BLACK_COLOR,
-		fontSize: 12,
-		overflow: "visible"
-	},
-	// 共通説明文のアイコンの大きさ
-	descriptionIconStyle: {
-		marginRight: 10,
-		width: 12,
-		height: 12,
-	},
-});

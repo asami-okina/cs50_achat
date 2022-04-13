@@ -1,6 +1,8 @@
+// libs
+import { StyleSheet } from 'react-native';
 
-import { StyleSheet} from 'react-native';
-import { MAIN_NAVY_COLOR, MAIN_WHITE_COLOR,  HEAD_CONTAINER_HEIGHT, TOP_AREA_STYLE, TOP_AREA_LEFT_RADIUS, MAIN_TITLE_FONT, OPERATION_SCREEN_HEIGHT,WITH_FOOTER_OPERATION_SCREEN_HEIGHT, WITH_FOOTER_OPERATION_SCREEN_HEIGHT_IPHONE_X } from '../layout'
+// layouts
+import { MAIN_NAVY_COLOR, MAIN_WHITE_COLOR, HEAD_CONTAINER_HEIGHT, TOP_AREA_STYLE, TOP_AREA_LEFT_RADIUS, MAIN_TITLE_FONT, OPERATION_SCREEN_HEIGHT, WITH_FOOTER_OPERATION_SCREEN_HEIGHT, WITH_FOOTER_OPERATION_SCREEN_HEIGHT_IPHONE_X,MAIN_TITLE_SIZE } from '../layout'
 
 export const constantsCommonStyles = StyleSheet.create({
 	// 全画面共通
@@ -17,7 +19,7 @@ export const constantsCommonStyles = StyleSheet.create({
 	},
 	// 全画面共通
 	// 丸みを帯びている白いトップ部分
-	topAreaContainerStyle:{
+	topAreaContainerStyle: {
 		height: TOP_AREA_STYLE,
 		backgroundColor: MAIN_WHITE_COLOR,
 		borderTopLeftRadius: TOP_AREA_LEFT_RADIUS,
@@ -35,7 +37,7 @@ export const constantsCommonStyles = StyleSheet.create({
 	// Welcome,SignUp,LogIn画面共通
 	// 丸みを帯びている白いトップ部分のタイトル
 	topAreaTitleStyle: {
-		fontSize: 50,
+		fontSize: MAIN_TITLE_SIZE,
 		fontFamily: MAIN_TITLE_FONT,
 		color: MAIN_NAVY_COLOR,
 		marginBottom: 32,

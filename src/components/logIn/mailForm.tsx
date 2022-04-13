@@ -1,8 +1,9 @@
+// libs
 import React from 'react';
-import { Text, View, Image, TextInput, Pressable, StyleSheet } from 'react-native';
+import { Text, View, Image, TextInput, Pressable } from 'react-native';
 
 // constantsSearchStyles
-import {searchStyles} from '../../constants/styles/searchStyles'
+import { searchStyles } from '../../constants/styles/searchStyles'
 
 export function MailForm({
 	inputAccessoryViewID,
@@ -25,7 +26,7 @@ export function MailForm({
 							<Image source={require("../../../assets/images/email.png")} style={searchStyles.searchIconStyle} />
 							<TextInput
 								onChangeText={setEmailText}
-								style={searchStyles.searchContentStyle}
+								style={searchStyles.searchContentWithIconStyle}
 								value={emailText}
 								placeholder="a-chat@test.com"
 								inputAccessoryViewID={inputAccessoryViewID}

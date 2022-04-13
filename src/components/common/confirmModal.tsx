@@ -2,12 +2,16 @@
 import React from 'react';
 import { View, Text, Modal, Pressable, StyleSheet } from 'react-native';
 
-// constantsLayout
-import { MAIN_NAVY_COLOR, MAIN_PINK_COLOR, MAIN_GRAY_COLOR, MORDAL_WIDTH, MORDAL_TEXT_CONTENT_WIDTH,STANDARD_FONT,MAIN_WHITE_COLOR } from '../../constants/layout'
+// layouts
+import { MAIN_NAVY_COLOR, MAIN_PINK_COLOR, MAIN_GRAY_COLOR, MORDAL_WIDTH, MORDAL_TEXT_CONTENT_WIDTH, STANDARD_FONT, MAIN_WHITE_COLOR } from '../../constants/layout'
 
-export function ConfirmModal({ modalVisible, setModalVisible, setClickedCancelMordal, setClickedOkMordal, modalText }) {
-
-
+export function ConfirmModal({
+	modalVisible,
+	setModalVisible,
+	setClickedCancelMordal,
+	setClickedOkMordal,
+	modalText
+}) {
 	return (
 		<Modal
 			animationType="slide"

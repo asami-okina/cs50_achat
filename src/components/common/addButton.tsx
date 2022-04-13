@@ -1,6 +1,9 @@
+// libs
 import React from 'react';
 import { StyleSheet, TouchableOpacity, View, Image } from 'react-native';
-import { MAIN_NAVY_COLOR, MAIN_WHITE_COLOR, ADD_BUTTON_SIZE, CONTENT_WIDTH } from '../../constants/layout'
+
+// layouts
+import { MAIN_NAVY_COLOR, MAIN_WHITE_COLOR, ADD_BUTTON_SIZE, CONTENT_WIDTH, BUTTON_BORDER_RADIUS } from '../../constants/layout'
 
 export function AddButton({ }) {
 	return (
@@ -40,7 +43,7 @@ const styles = StyleSheet.create({
 		justifyContent: "center",
 		width: ADD_BUTTON_SIZE - 10, // containerStyleのpaddingBottom分引く
 		height: ADD_BUTTON_SIZE - 10, // containerStyleのpaddingBottom分引く
-		borderRadius: 10,
+		borderRadius: BUTTON_BORDER_RADIUS,
 		backgroundColor: MAIN_NAVY_COLOR,
 		textAlign: "center",
 		shadowColor: "black",

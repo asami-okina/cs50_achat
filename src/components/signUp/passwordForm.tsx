@@ -1,12 +1,13 @@
+// libs
 import React, { useState } from 'react';
-import { Text, View, Image, TextInput, Pressable, StyleSheet } from 'react-native';
+import { Text, View, Image, TextInput, Pressable } from 'react-native';
 import { useTogglePasswordVisibility } from '../../hooks/useTogglePasswordVisibility';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { PasswordFormDescription } from './_description/passwordFormDescription';
-import { MAIN_WHITE_COLOR, CONTENT_WIDTH, MAIN_PINK_COLOR,STANDARD_FONT,MAIN_GRAY_COLOR,LIGHT_GRAY_COLOR,MAIN_BLACK_COLOR,MAIN_NAVY_COLOR } from '../../constants/layout'
+import { MAIN_GRAY_COLOR } from '../../constants/layout'
 
 // constantsSearchStyles
-import {searchStyles} from '../../constants/styles/searchStyles'
+import { searchStyles } from '../../constants/styles/searchStyles'
 
 export function PasswordForm({
 	inputAccessoryViewID,
@@ -59,7 +60,7 @@ export function PasswordForm({
 							<Image source={require("../../../assets/images/lock.png")} style={searchStyles.searchIconStyle} />
 							<TextInput
 								placeholder="Password"
-								style={searchStyles.searchContentStyle}
+								style={searchStyles.searchContentWithIconStyle}
 								autoCapitalize="none"
 								autoCorrect={false}
 								textContentType="newPassword"

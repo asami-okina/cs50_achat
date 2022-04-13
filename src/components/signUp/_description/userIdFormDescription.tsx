@@ -1,6 +1,9 @@
+// libs
 import React from 'react';
-import { Text, View, Image, StyleSheet } from 'react-native';
-import { MAIN_WHITE_COLOR, CONTENT_WIDTH,MAIN_BLACK_COLOR } from '../../../constants/layout';
+import { Text, View, Image } from 'react-native';
+
+// constantsFormDescriptionStyles
+import { formDescriptionStyles } from '../../../constants/styles/formDescriptionStyles';
 
 export function UserIdFormDescription({
 	displayUserIdDescription,
@@ -13,19 +16,19 @@ export function UserIdFormDescription({
 		<View>
 			{/* ユーザーIDの説明文 */}
 			{displayUserIdDescription ? !isCorrectUserIdSymbol || !isCorrectUserIdStringCount || !isAvailableUserId ? (
-				<View style={styles.descriptionBoxStyle}>
-					<View style={styles.descriptionWrapperStyle}>
-						<View style={styles.descriptionContainerStyle}>
-							{!defaultDisplayUserIcons ? isCorrectUserIdSymbol ? <Image source={require("../../../../assets/images/correct.png")} style={styles.descriptionIconStyle} /> : <Image source={require("../../../../assets/images/incorrect.png")} style={styles.descriptionIconStyle} /> : null}
-							<Text style={styles.descriptionTextStyle}>Half-width alphanumeric characters only.</Text>
+				<View style={formDescriptionStyles.descriptionBoxStyle}>
+					<View style={formDescriptionStyles.descriptionWrapperStyle}>
+						<View style={formDescriptionStyles.descriptionContainerStyle}>
+							{!defaultDisplayUserIcons ? isCorrectUserIdSymbol ? <Image source={require("../../../../assets/images/correct.png")} style={formDescriptionStyles.descriptionIconStyle} /> : <Image source={require("../../../../assets/images/incorrect.png")} style={formDescriptionStyles.descriptionIconStyle} /> : null}
+							<Text style={formDescriptionStyles.descriptionTextStyle}>Half-width alphanumeric characters only.</Text>
 						</View>
-						<View style={styles.descriptionContainerStyle}>
-							{!defaultDisplayUserIcons ? isCorrectUserIdStringCount ? <Image source={require("../../../../assets/images/correct.png")} style={styles.descriptionIconStyle} /> : <Image source={require("../../../../assets/images/incorrect.png")} style={styles.descriptionIconStyle} /> : null}
-							<Text style={styles.descriptionTextStyle} >More than 4 words and less than 100 words.</Text>
+						<View style={formDescriptionStyles.descriptionContainerStyle}>
+							{!defaultDisplayUserIcons ? isCorrectUserIdStringCount ? <Image source={require("../../../../assets/images/correct.png")} style={formDescriptionStyles.descriptionIconStyle} /> : <Image source={require("../../../../assets/images/incorrect.png")} style={formDescriptionStyles.descriptionIconStyle} /> : null}
+							<Text style={formDescriptionStyles.descriptionTextStyle} >More than 4 words and less than 100 words.</Text>
 						</View>
-						<View style={styles.descriptionContainerStyle}>
-							{!defaultDisplayUserIcons ? isAvailableUserId ? <Image source={require("../../../../assets/images/correct.png")} style={styles.descriptionIconStyle} /> : <Image source={require("../../../../assets/images/incorrect.png")} style={styles.descriptionIconStyle} /> : null}
-							<Text style={styles.descriptionTextStyle} >Available.</Text>
+						<View style={formDescriptionStyles.descriptionContainerStyle}>
+							{!defaultDisplayUserIcons ? isAvailableUserId ? <Image source={require("../../../../assets/images/correct.png")} style={formDescriptionStyles.descriptionIconStyle} /> : <Image source={require("../../../../assets/images/incorrect.png")} style={formDescriptionStyles.descriptionIconStyle} /> : null}
+							<Text style={formDescriptionStyles.descriptionTextStyle} >Available.</Text>
 						</View>
 					</View>
 				</View>
@@ -33,30 +36,3 @@ export function UserIdFormDescription({
 		</View>
 	)
 }
-
-export const styles = StyleSheet.create({
-	// 説明文
-	descriptionBoxStyle: {
-		display: "flex",
-		alignItems: "center",
-		backgroundColor: MAIN_WHITE_COLOR,
-		paddingBottom: 10,
-	},
-	descriptionWrapperStyle: {
-	},
-	descriptionContainerStyle: {
-		flexDirection: "row",
-		width: CONTENT_WIDTH,
-	},
-	descriptionTextStyle: {
-		color: MAIN_BLACK_COLOR,
-		fontSize: 12,
-		overflow: "visible"
-	},
-	// 共通説明文のアイコンの大きさ
-	descriptionIconStyle: {
-		marginRight: 10,
-		width: 12,
-		height: 12,
-	},
-});

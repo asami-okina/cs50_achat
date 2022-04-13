@@ -1,8 +1,19 @@
+
+// libs
 import React from 'react';
 import { Text, StyleSheet, TouchableOpacity } from 'react-native';
-import { MAIN_NAVY_COLOR, MAIN_WHITE_COLOR, BUTTON_HEIGHT, CONTENT_WIDTH, STANDARD_FONT, BUTTON_TEXT_SIZE,MAIN_GRAY_COLOR } from '../../constants/layout'
 
-export function Button({ navigation, link, buttonText, enable, scene, loginProps }) {
+// layouts
+import { MAIN_NAVY_COLOR, MAIN_WHITE_COLOR, BUTTON_HEIGHT, CONTENT_WIDTH, STANDARD_FONT, BUTTON_TEXT_SIZE, MAIN_GRAY_COLOR, BUTTON_BORDER_RADIUS } from '../../constants/layout'
+
+export function Button({
+	navigation,
+	link,
+	buttonText,
+	enable,
+	scene,
+	loginProps
+}) {
 	return (
 		<>
 			{
@@ -41,7 +52,7 @@ const styles = StyleSheet.create({
 		justifyContent: "center",
 		width: CONTENT_WIDTH,
 		height: BUTTON_HEIGHT,
-		borderRadius: 10,
+		borderRadius: BUTTON_BORDER_RADIUS,
 		fontSize: BUTTON_TEXT_SIZE,
 		backgroundColor: MAIN_NAVY_COLOR
 	},

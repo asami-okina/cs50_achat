@@ -1,5 +1,8 @@
+// libs
 import { StyleSheet } from 'react-native';
-import { MAIN_WHITE_COLOR, CONTENT_WIDTH, MAIN_PINK_COLOR, STANDARD_FONT, LIGHT_GRAY_COLOR, MAIN_BLACK_COLOR, MAIN_NAVY_COLOR,ICON_SIZE,SEARCH_FORM_HEIGHT,IN_SEARCH_FORM_SIDE_MARGIN } from '../layout'
+
+// layouts
+import { MAIN_WHITE_COLOR, CONTENT_WIDTH, MAIN_PINK_COLOR, STANDARD_FONT, LIGHT_GRAY_COLOR, MAIN_NAVY_COLOR, ICON_SIZE, SEARCH_FORM_HEIGHT, IN_SEARCH_FORM_SIDE_MARGIN, SEARCH_FORM_BORDER_RADIUS } from '../layout'
 
 export const searchStyles = StyleSheet.create({
 	// 検索フォーム
@@ -30,14 +33,20 @@ export const searchStyles = StyleSheet.create({
 		flexDirection: 'row',
 		alignItems: 'center',
 		backgroundColor: LIGHT_GRAY_COLOR,
-		borderWidth: 0.5,
 		height: SEARCH_FORM_HEIGHT,
-		borderRadius: 5,
+		borderRadius: SEARCH_FORM_BORDER_RADIUS,
 		width: CONTENT_WIDTH,
-		borderColor: LIGHT_GRAY_COLOR,
 	},
-	searchContentStyle: {
-		flex: 1
+	// 左側にアイコンがある検索フォーム
+	searchContentWithIconStyle: {
+		flex: 1,
+		fontFamily: STANDARD_FONT,
+	},
+	// 左側にアイコンがない検索フォーム
+	searchContentNoneLeftIconStyle: {
+		paddingLeft: IN_SEARCH_FORM_SIDE_MARGIN,
+		flex: 1,
+		fontFamily: STANDARD_FONT
 	},
 	// 入力が間違っている場合のフォーム枠線の色
 	inputIncorrectBorderColorStyle: {

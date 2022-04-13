@@ -6,12 +6,15 @@ import { View, SafeAreaView, ScrollView, KeyboardAvoidingView } from 'react-nati
 import { MailForm } from '../components/signUp/mailForm';
 import { PasswordForm } from '../components/signUp/passwordForm';
 import { UserIdForm } from '../components/signUp/userIdForm';
-import {TopAreaContainer} from '../components/common/topAreaContainer'
+import { TopAreaContainer } from '../components/common/topAreaContainer'
+// libs
 import { ToSignUpOrLoginTextArea } from '../components/common/toSignUpOrLoginTextArea'
+
+// components
 import { Button } from '../components/common/button'
 
 // constantsCommonStyles
-import {constantsCommonStyles} from '../constants/styles/commonstyles'
+import { constantsCommonStyles } from '../constants/styles/commonStyles'
 
 export function SignUp({ navigation }) {
 	// キーボードに完了ボタンを表示
@@ -39,7 +42,7 @@ export function SignUp({ navigation }) {
 				{/* 画面一番上にある青色の余白部分 */}
 				<View style={constantsCommonStyles.topMarginViewStyle}></View>
 				{/* 丸みを帯びている白いトップ部分 */}
-				<TopAreaContainer  title={'SignUp'} searchForm={false} searchFormProps={null}/>
+				<TopAreaContainer title={'SignUp'} searchForm={false} searchFormProps={null} />
 				{/* トップ部分を除くメイン部分 */}
 				<ScrollView style={constantsCommonStyles.mainContainerStyle}>
 					{/* Email */}
@@ -75,8 +78,8 @@ export function SignUp({ navigation }) {
 							) : (
 								<Button navigation={navigation} link={'Home'} buttonText={'Sign Up'} enable={false} scene={'SignUp'} loginProps={null} />
 							)}
-					{/* サインアップまたはログインへのリンク */}
-					<ToSignUpOrLoginTextArea navigation={navigation} description={'Do you have an account?'} link={'LogIn'} />
+						{/* サインアップまたはログインへのリンク */}
+						<ToSignUpOrLoginTextArea navigation={navigation} description={'Do you have an account?'} link={'LogIn'} />
 					</View>
 				</ScrollView>
 			</SafeAreaView>

@@ -1,20 +1,13 @@
+// libs
 import React, { useEffect, useState } from 'react';
-import {
-	StyleSheet,
-	Text,
-	TouchableOpacity,
-	TouchableHighlight,
-	View,
-	Image,
-} from 'react-native';
+import { StyleSheet, Text, TouchableOpacity, TouchableHighlight, View, Image } from 'react-native';
+import { SwipeListView } from 'react-native-swipe-list-view';
 
-// api.js
+// api
 import { leaveGroup } from '../../../../api/api'
 
-// constantsLayout
-import { CONTENT_WIDTH, PROFILE_IMAGE_SIZE,STANDARD_FONT,MAIN_WHITE_COLOR,MAIN_PINK_COLOR } from '../../../../constants/layout'
-
-import { SwipeListView } from 'react-native-swipe-list-view';
+// layouts
+import { CONTENT_WIDTH, PROFILE_IMAGE_SIZE, STANDARD_FONT, MAIN_WHITE_COLOR, MAIN_PINK_COLOR } from '../../../../constants/layout'
 
 export default function Basic({ groupList, friendList, type, setModalVisible, clickedCancelMordal, setClickedCancelMordal, clickedOkMordal, setClickedOkMordal }) {
 	// ユーザーID(今後は認証から取得するようにする)
@@ -55,7 +48,7 @@ export default function Basic({ groupList, friendList, type, setModalVisible, cl
 			{type === "Group" && (
 				<TouchableHighlight
 					onPress={() => console.log('You touched me')}
-					style={styles.rowFront}
+					style={styles.rowFrontStyle}
 					underlayColor={'#feffff'}
 				>
 					<View style={styles.listWrapperStyle}>
@@ -69,7 +62,7 @@ export default function Basic({ groupList, friendList, type, setModalVisible, cl
 			{type === "Friend" && (
 				<TouchableHighlight
 					onPress={() => console.log('You touched me')}
-					style={styles.rowFront}
+					style={styles.rowFrontStyle}
 					underlayColor={'#feffff'}
 				>
 					<View style={styles.listWrapperStyle}>
@@ -85,10 +78,10 @@ export default function Basic({ groupList, friendList, type, setModalVisible, cl
 
 	// スワップできるようにする
 	const renderHiddenItem = (data, rowMap) => (
-		<View style={styles.rowBack}>
+		<View style={styles.rowBackStyle}>
 			{/* deleteボタン */}
 			<TouchableOpacity
-				style={[styles.backRightBtn, styles.backRightBtnRight]}
+				style={[styles.backRightBtnStyle, styles.backRightBtnRightStyle]}
 				onPress={() => {
 					// 確認モーダルを表示
 					setModalVisible(true)
@@ -98,7 +91,7 @@ export default function Basic({ groupList, friendList, type, setModalVisible, cl
 					setGroupChatRoomId(data.item.group_chat_room_id)
 				}}
 			>
-				<Text style={styles.backTextWhite}>Delete</Text>
+				<Text style={styles.backTextWhiteStyle}>Delete</Text>
 			</TouchableOpacity>
 		</View>
 	);
@@ -129,7 +122,7 @@ export default function Basic({ groupList, friendList, type, setModalVisible, cl
 	}, [clickedCancelMordal, clickedOkMordal])
 
 	return (
-		<View style={styles.container}>
+		<View style={styles.containerStyle}>
 			{type === "Group" && (
 				<SwipeListView
 					data={listData}
@@ -152,19 +145,19 @@ export default function Basic({ groupList, friendList, type, setModalVisible, cl
 }
 
 const styles = StyleSheet.create({
-	container: {
+	containerStyle: {
 		backgroundColor: MAIN_WHITE_COLOR,
 	},
-	backTextWhite: {
+	backTextWhiteStyle: {
 		color: MAIN_WHITE_COLOR,
 	},
-	rowFront: {
+	rowFrontStyle: {
 		alignItems: 'center',
 		backgroundColor: MAIN_WHITE_COLOR,
 		justifyContent: 'center',
 		height: 50,
 	},
-	rowBack: {
+	rowBackStyle: {
 		alignItems: 'center',
 		backgroundColor: MAIN_WHITE_COLOR,
 		flex: 1,
@@ -172,7 +165,7 @@ const styles = StyleSheet.create({
 		justifyContent: 'space-between',
 		paddingLeft: 15,
 	},
-	backRightBtn: {
+	backRightBtnStyle: {
 		alignItems: 'center',
 		bottom: 0,
 		justifyContent: 'center',
@@ -180,7 +173,7 @@ const styles = StyleSheet.create({
 		top: 0,
 		width: 75,
 	},
-	backRightBtnRight: {
+	backRightBtnRightStyle: {
 		backgroundColor: MAIN_PINK_COLOR,
 		right: 0,
 	},

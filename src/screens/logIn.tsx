@@ -11,11 +11,11 @@ import { ForgotPassword } from '../components/logIn/forgotPasseword';
 import { MailForm } from '../components/logIn/mailForm';
 import { PasswordForm } from '../components/logIn/passwordForm';
 
-// apis
+// api
 import { postLoginAuthentication } from '../api/api';
 
 // constantsCommonStyles
-import { constantsCommonStyles } from '../constants/styles/commonstyles'
+import { constantsCommonStyles } from '../constants/styles/commonStyles'
 
 export function LogIn({ navigation }) {
 	// キーボードに完了ボタンを表示

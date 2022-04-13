@@ -3,7 +3,11 @@ import { Text, View, StyleSheet, TouchableOpacity } from 'react-native';
 import { MAIN_PINK_COLOR, STANDARD_FONT } from '../../constants/layout'
 
 // SignUp,LogIn画面のアカウントを持っているか確認している部分
-export function ToSignUpOrLoginTextArea({ navigation, description, link }) {
+export function ToSignUpOrLoginTextArea({
+	navigation,
+	description,
+	link
+}) {
 	return (
 		<View style={styles.toLoginStyle}>
 			<Text style={styles.toLoginTextStyle}>{description}</Text>

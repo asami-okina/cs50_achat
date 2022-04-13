@@ -1,8 +1,16 @@
+
 import React from 'react';
 import { Text, View, Pressable, StyleSheet } from 'react-native';
-import { MAIN_NAVY_COLOR, CONTENT_WIDTH, MAIN_GRAY_COLOR,TAB_FONT,MAIN_WHITE_COLOR } from '../../constants/layout'
+import { MAIN_NAVY_COLOR, CONTENT_WIDTH, MAIN_GRAY_COLOR, TAB_FONT, MAIN_WHITE_COLOR, TAB_HEIGHT, TAB_WIDTH, TAB_TITLE_TEXT_SIZE } from '../../constants/layout'
 
-export function FriendOrGroupSelectTab({ setOpenFriendList, setOpenGroupList, openFriendList, openGroupList, friendCount, groupCount }) {
+export function FriendOrGroupSelectTab({
+	setOpenFriendList,
+	setOpenGroupList,
+	openFriendList,
+	openGroupList,
+	friendCount,
+	groupCount
+}) {
 	return (
 		<View style={styles.wrapperStyle}>
 			<View style={styles.containerStyle}>
@@ -33,12 +41,12 @@ const styles = StyleSheet.create({
 	containerStyle: {
 		width: CONTENT_WIDTH,
 		marginTop: 5,
-		height: 40,
+		height: TAB_HEIGHT,
 		flexDirection: "row",
 	},
 	tabStyle: {
 		backgroundColor: MAIN_WHITE_COLOR,
-		width: 85,
+		width: TAB_WIDTH,
 		alignItems: "center",
 		borderBottomWidth: 1,
 		borderBottomColor: MAIN_GRAY_COLOR,
@@ -54,7 +62,7 @@ const styles = StyleSheet.create({
 		flex: 1,
 	},
 	textStyle: {
-		fontSize: 16,
+		fontSize: TAB_TITLE_TEXT_SIZE,
 		fontFamily: TAB_FONT,
 		color: MAIN_NAVY_COLOR,
 	},

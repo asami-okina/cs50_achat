@@ -1,6 +1,9 @@
+// libs
 import React from 'react';
-import { Text, View, Image, StyleSheet } from 'react-native';
-import { MAIN_WHITE_COLOR, CONTENT_WIDTH,MAIN_BLACK_COLOR } from '../../../constants/layout';
+import { Text, View, Image } from 'react-native';
+
+// constantsFormDescriptionStyles
+import { formDescriptionStyles } from '../../../constants/styles/formDescriptionStyles';
 
 export function PasswordFormDescription({
 	displayPasswordDescription,
@@ -11,15 +14,15 @@ export function PasswordFormDescription({
 	return (
 		<View>
 			{displayPasswordDescription ? !isCorrectPassewordSymbol || !isCorrectPassewordStringCount ? (
-				<View style={styles.descriptionBoxStyle}>
-					<View style={styles.descriptionWrapperStyle}>
-						<View style={styles.descriptionContainerStyle}>
-							{!defaultDisplayPasswordIcons ? isCorrectPassewordSymbol ? <Image source={require("../../../../assets/images/correct.png")} style={styles.descriptionIconStyle} /> : <Image source={require("../../../../assets/images/incorrect.png")} style={styles.descriptionIconStyle} /> : null}
-							<Text style={styles.descriptionTextStyle}>Half-width alphanumeric symbols only.</Text>
+				<View style={formDescriptionStyles.descriptionBoxStyle}>
+					<View style={formDescriptionStyles.descriptionWrapperStyle}>
+						<View style={formDescriptionStyles.descriptionContainerStyle}>
+							{!defaultDisplayPasswordIcons ? isCorrectPassewordSymbol ? <Image source={require("../../../../assets/images/correct.png")} style={formDescriptionStyles.descriptionIconStyle} /> : <Image source={require("../../../../assets/images/incorrect.png")} style={formDescriptionStyles.descriptionIconStyle} /> : null}
+							<Text style={formDescriptionStyles.descriptionTextStyle}>Half-width alphanumeric symbols only.</Text>
 						</View>
-						<View style={styles.descriptionContainerStyle}>
-							{!defaultDisplayPasswordIcons ? isCorrectPassewordStringCount ? <Image source={require("../../../../assets/images/correct.png")} style={styles.descriptionIconStyle} /> : <Image source={require("../../../../assets/images/incorrect.png")} style={styles.descriptionIconStyle} /> : null}
-							<Text style={styles.descriptionTextStyle} >More than 5 and less than 200 characters.</Text>
+						<View style={formDescriptionStyles.descriptionContainerStyle}>
+							{!defaultDisplayPasswordIcons ? isCorrectPassewordStringCount ? <Image source={require("../../../../assets/images/correct.png")} style={formDescriptionStyles.descriptionIconStyle} /> : <Image source={require("../../../../assets/images/incorrect.png")} style={formDescriptionStyles.descriptionIconStyle} /> : null}
+							<Text style={formDescriptionStyles.descriptionTextStyle} >More than 5 and less than 200 characters.</Text>
 						</View>
 					</View>
 				</View>
@@ -27,30 +30,3 @@ export function PasswordFormDescription({
 		</View>
 	)
 }
-
-export const styles = StyleSheet.create({
-	// 説明文
-	descriptionBoxStyle: {
-		display: "flex",
-		alignItems: "center",
-		backgroundColor: MAIN_WHITE_COLOR,
-		paddingBottom: 10,
-	},
-	descriptionWrapperStyle: {
-	},
-	descriptionContainerStyle: {
-		flexDirection: "row",
-		width: CONTENT_WIDTH,
-	},
-	descriptionTextStyle: {
-		color: MAIN_BLACK_COLOR,
-		fontSize: 12,
-		overflow: "visible"
-	},
-	// 共通説明文のアイコンの大きさ
-	descriptionIconStyle: {
-		marginRight: 10,
-		width: 12,
-		height: 12,
-	},
-});

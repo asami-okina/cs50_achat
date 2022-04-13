@@ -8,15 +8,15 @@ import { TopAreaContainer } from '../components/common/topAreaContainer'
 import { FriendAndGroupList } from '../components/home/friendAndgroupList'
 import { FriendOrGroupSelectTab } from '../components/common/friendOrGroupSelectTab'
 import { AddButton } from '../components/common/addButton'
-import {ConfirmModal} from '../components/common/confirmModal'
+import { ConfirmModal } from '../components/common/confirmModal'
 
-// apis
+// api
 import { fetchNickNameOrGroupNameBySearchForm, fetchGroupList, fetGroupCount, fetchFriendList, fetchFriendCount } from '../api/api'
 
 // constantsCommonStyles
-import { constantsCommonStyles } from '../constants/styles/commonstyles'
+import { constantsCommonStyles } from '../constants/styles/commonStyles'
 
-// constantsLayout
+// layouts
 import { IPHONE_X_BOTTOM_SPACE } from '../constants/layout'
 
 export function Home({ navigation }) {
@@ -109,7 +109,7 @@ export function Home({ navigation }) {
 		<KeyboardAvoidingView behavior="padding" style={constantsCommonStyles.screenContainerStyle}>
 			<SafeAreaView style={constantsCommonStyles.screenContainerStyle}>
 				{/* Delete確認モーダル */}
-				<ConfirmModal modalVisible={modalVisible} setModalVisible={setModalVisible} setClickedCancelMordal={setClickedCancelMordal} setClickedOkMordal={setClickedOkMordal} modalText={"When you leave a group, the group member list and all group talk history will be deleted. Do you want to leave the group?"}/>
+				<ConfirmModal modalVisible={modalVisible} setModalVisible={setModalVisible} setClickedCancelMordal={setClickedCancelMordal} setClickedOkMordal={setClickedOkMordal} modalText={"When you leave a group, the group member list and all group talk history will be deleted. Do you want to leave the group?"} />
 				{/* 画面一番上にある青色の余白部分 */}
 				<View style={constantsCommonStyles.topMarginViewStyle}></View>
 				{/* 丸みを帯びている白いトップ部分 */}

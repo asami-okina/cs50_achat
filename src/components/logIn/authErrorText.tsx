@@ -1,6 +1,9 @@
+// libs
 import React from 'react';
 import { Text, View, StyleSheet } from 'react-native';
-import { MAIN_WHITE_COLOR,MAIN_PINK_COLOR,STANDARD_FONT } from '../../constants/layout'
+
+// layouts
+import { MAIN_WHITE_COLOR, MAIN_PINK_COLOR, STANDARD_FONT } from '../../constants/layout'
 
 // ログイン認証エラー
 export function AuthErrorText() {

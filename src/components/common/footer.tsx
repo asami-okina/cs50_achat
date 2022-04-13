@@ -1,8 +1,11 @@
+// libs
 import React from 'react';
 import { Text, View, Pressable, Image, StyleSheet } from 'react-native';
-import { FOOTER_HEIGHT, MAIN_NAVY_COLOR, MAIN_WHITE_COLOR,STANDARD_FONT } from '../../constants/layout'
 
-export function Footer({navigation}) {
+// layouts
+import { FOOTER_HEIGHT, MAIN_NAVY_COLOR, MAIN_WHITE_COLOR, STANDARD_FONT } from '../../constants/layout'
+
+export function Footer({ navigation }) {
 	return (
 		<View style={styles.footerStyle}>
 			<Pressable style={styles.footerItemStyle} onPress={() => navigation.navigate('Home')}>

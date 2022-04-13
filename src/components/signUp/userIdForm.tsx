@@ -1,10 +1,15 @@
+// libs
 import React, { useState } from 'react';
 import { Text, View, Image, TextInput, Pressable } from 'react-native';
+
+// api
 import { fetchIsAvailableUserId } from "../../api/api";
+
+// components
 import { UserIdFormDescription } from './_description/userIdFormDescription';
 
 // constantsSearchStyles
-import {searchStyles} from '../../constants/styles/searchStyles'
+import { searchStyles } from '../../constants/styles/searchStyles'
 
 export function UserIdForm({
 	inputAccessoryViewID,
@@ -70,7 +75,7 @@ export function UserIdForm({
 							{/* <KeyboardAvoidingView behavior="padding"> */}
 							<TextInput
 								onChangeText={onChangeUserIdText}
-								style={searchStyles.searchContentStyle}
+								style={searchStyles.searchContentWithIconStyle}
 								value={userIdText}
 								placeholder="test1234"
 								inputAccessoryViewID={inputAccessoryViewID}

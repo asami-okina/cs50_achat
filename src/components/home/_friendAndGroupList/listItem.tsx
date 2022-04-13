@@ -1,16 +1,14 @@
 // libs
-import React, { useState } from 'react';
-import {
-	StyleSheet,
-	View,
-} from 'react-native';
+import React from 'react';
+import { StyleSheet, View, } from 'react-native';
 
-// childComponents
+// components
 import Basic from './examples/basic';
 
-import {MAIN_WHITE_COLOR} from '../../../constants/layout'
+// layouts
+import { MAIN_WHITE_COLOR } from '../../../constants/layout'
 
-export function ListItem({ groupListProps, friendListProps, type, setModalVisible,clickedCancelMordal,setClickedCancelMordal, clickedOkMordal,setClickedOkMordal}) {
+export function ListItem({ groupListProps, friendListProps, type, setModalVisible, clickedCancelMordal, setClickedCancelMordal, clickedOkMordal, setClickedOkMordal }) {
 	return (
 		<View style={styles.containerStyle}>
 			{/* groupの場合 */}

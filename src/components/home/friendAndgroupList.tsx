@@ -1,10 +1,23 @@
+// libs
 import React from 'react';
 import { View, StyleSheet } from 'react-native';
+
+// layouts
 import { CONTENT_WIDTH, MAIN_WHITE_COLOR } from '../../constants/layout'
 
+// components
 import { ListItem } from './_friendAndGroupList/listItem'
 
-export function FriendAndGroupList({ groupListProps, friendListProps, type, setModalVisible,clickedCancelMordal,setClickedCancelMordal, clickedOkMordal,setClickedOkMordal }) {
+export function FriendAndGroupList({
+	groupListProps,
+	friendListProps,
+	type,
+	setModalVisible,
+	clickedCancelMordal,
+	setClickedCancelMordal,
+	clickedOkMordal,
+	setClickedOkMordal
+}) {
 	return (
 		<View style={styles.groupAndFriendWrapperStyle}>
 			<View style={styles.groupAndFriendContainerStyle}>
