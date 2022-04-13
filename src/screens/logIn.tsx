@@ -14,8 +14,8 @@ import { PasswordForm } from '../components/logIn/passwordForm';
 // apis
 import { postLoginAuthentication } from '../api/api';
 
-// constantsStyles
-import { constantsStyles } from '../constants/styles'
+// constantsCommonStyles
+import { constantsCommonStyles } from '../constants/styles/commonstyles'
 
 export function LogIn({ navigation }) {
 	// キーボードに完了ボタンを表示
@@ -49,13 +49,13 @@ export function LogIn({ navigation }) {
 	}
 
 	return (
-		<KeyboardAvoidingView behavior="padding" style={constantsStyles.screenContainerStyle}>
-			<SafeAreaView style={constantsStyles.screenContainerStyle}>
+		<KeyboardAvoidingView behavior="padding" style={constantsCommonStyles.screenContainerStyle}>
+			<SafeAreaView style={constantsCommonStyles.screenContainerStyle}>
 				{/* 画面一番上にある青色の余白部分 */}
-				<View style={constantsStyles.topMarginViewStyle}></View>
+				<View style={constantsCommonStyles.topMarginViewStyle}></View>
 				{/* 丸みを帯びている白いトップ部分 */}
 				<TopAreaContainer title={'Log In'} searchForm={null} searchFormProps={null} />
-				<ScrollView style={constantsStyles.mainContainerStyle}>
+				<ScrollView style={constantsCommonStyles.mainContainerStyle}>
 					{/* ログイン認証エラー */}
 					{executedLoginAuthentication ? onFocusInputMailOrPasseword ? null : (
 						<AuthErrorText />
@@ -81,7 +81,7 @@ export function LogIn({ navigation }) {
 					{/* パスワードを忘れた場合 */}
 					<ForgotPassword />
 					{/* 画面下 */}
-					<View style={constantsStyles.bottomStyleByWelcomeAndSignUpAndLogin}>
+					<View style={constantsCommonStyles.bottomStyleByWelcomeAndSignUpAndLogin}>
 						<Button navigation={navigation} link={'Home'} buttonText={'Log In'} scene={'LogIn'} loginProps={{ 'emailText': emailText, 'passwordText': passwordText, 'executedLoginAuthentication': executedLoginAuthentication, 'onFocusInputMailOrPasseword': onFocusInputMailOrPasseword, 'onPressFunction': _loginAuthentication }} enable={false} />
 						{/* サインアップまたはログインへのリンク */}
 						<ToSignUpOrLoginTextArea navigation={navigation} description={`Don't you have an account?`} link={'SignUp'} />

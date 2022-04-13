@@ -13,8 +13,8 @@ import {ConfirmModal} from '../components/common/confirmModal'
 // apis
 import { fetchNickNameOrGroupNameBySearchForm, fetchGroupList, fetGroupCount, fetchFriendList, fetchFriendCount } from '../api/api'
 
-// constantsStyles
-import { constantsStyles } from '../constants/styles'
+// constantsCommonStyles
+import { constantsCommonStyles } from '../constants/styles/commonstyles'
 
 // constantsLayout
 import { IPHONE_X_BOTTOM_SPACE } from '../constants/layout'
@@ -106,16 +106,16 @@ export function Home({ navigation }) {
 	let textInputSearch;
 
 	return (
-		<KeyboardAvoidingView behavior="padding" style={constantsStyles.screenContainerStyle}>
-			<SafeAreaView style={constantsStyles.screenContainerStyle}>
+		<KeyboardAvoidingView behavior="padding" style={constantsCommonStyles.screenContainerStyle}>
+			<SafeAreaView style={constantsCommonStyles.screenContainerStyle}>
 				{/* Delete確認モーダル */}
 				<ConfirmModal modalVisible={modalVisible} setModalVisible={setModalVisible} setClickedCancelMordal={setClickedCancelMordal} setClickedOkMordal={setClickedOkMordal} modalText={"When you leave a group, the group member list and all group talk history will be deleted. Do you want to leave the group?"}/>
 				{/* 画面一番上にある青色の余白部分 */}
-				<View style={constantsStyles.topMarginViewStyle}></View>
+				<View style={constantsCommonStyles.topMarginViewStyle}></View>
 				{/* 丸みを帯びている白いトップ部分 */}
 				<TopAreaContainer title={null} searchForm={true} searchFormProps={{ "setSearchText": setSearchText, "searchText": searchText, "textInputSearch": textInputSearch, "_searchName": _searchName }} />
 				{/* トップ部分を除くメイン部分: iphoneXの場合は、底のマージンを考慮 */}
-				<View style={IPHONE_X_BOTTOM_SPACE === 0 ? constantsStyles.withFooterMainContainerStyle : constantsStyles.withFooterMainContainerIphoneXStyle}>
+				<View style={IPHONE_X_BOTTOM_SPACE === 0 ? constantsCommonStyles.withFooterMainContainerStyle : constantsCommonStyles.withFooterMainContainerIphoneXStyle}>
 					{/* FriendとGroupの選択タブ */}
 					<FriendOrGroupSelectTab setOpenFriendList={setOpenFriendList} setOpenGroupList={setOpenGroupList} openFriendList={openFriendList} openGroupList={openGroupList} friendCount={friendCount} groupCount={groupCount} />
 					{/* 友達一覧 */}

@@ -3,8 +3,8 @@ import { View, SafeAreaView, ScrollView, KeyboardAvoidingView,Text } from 'react
 import { fetchNickNameOrGroupNameBySearchForm, fetchGroupList, fetGroupCount, fetchFriendList, fetchFriendCount } from '../api/api'
 import { Footer } from '../components/common/footer'
 
-// constantsStyles
-import { constantsStyles } from '../constants/styles'
+// constantsCommonStyles
+import { constantsCommonStyles } from '../constants/styles/commonstyles'
 
 export function Chats({navigation}) {
 

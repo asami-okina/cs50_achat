@@ -4,6 +4,8 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { useTogglePasswordVisibility } from '../../hooks/useTogglePasswordVisibility';
 import { MAIN_WHITE_COLOR, CONTENT_WIDTH,MAIN_PINK_COLOR,STANDARD_FONT,MAIN_GRAY_COLOR ,MAIN_BLACK_COLOR} from '../../constants/layout';
 
+// constantsSearchStyles
+import {searchStyles} from '../../constants/styles/searchStyles'
 
 export function PasswordForm({
 	inputAccessoryViewID,
@@ -21,15 +23,15 @@ export function PasswordForm({
 	return (
 		<View>
 			{/* Password */}
-			<View style={styles.searchBoxStyle}>
-				<View style={styles.searchWrapperStyle}>
-					<Pressable style={styles.searchContainerStyle} onPress={() => textInputPassword.focus()}>
-						<Text style={styles.searchTitleStyle}>Password</Text>
-						<View style={executedLoginAuthentication ? onFocusInputMailOrPasseword ? styles.searchViewStyle : [styles.searchViewStyle, styles.inputIncorrectBorderColorStyle] : styles.searchViewStyle}>
-							<Image source={require("../../../assets/images/lock.png")} style={styles.searchIconStyle} />
+			<View style={searchStyles.searchBoxStyle}>
+				<View style={searchStyles.searchWrapperStyle}>
+					<Pressable style={searchStyles.searchContainerStyle} onPress={() => textInputPassword.focus()}>
+						<Text style={searchStyles.searchTitleStyle}>Password</Text>
+						<View style={executedLoginAuthentication ? onFocusInputMailOrPasseword ? searchStyles.searchViewStyle : [searchStyles.searchViewStyle, searchStyles.inputIncorrectBorderColorStyle] : searchStyles.searchViewStyle}>
+							<Image source={require("../../../assets/images/lock.png")} style={searchStyles.searchIconStyle} />
 							<TextInput
 								placeholder="Password"
-								style={styles.searchContentStyle}
+								style={searchStyles.searchContentStyle}
 								autoCapitalize="none"
 								autoCorrect={false}
 								textContentType="newPassword"
@@ -48,7 +50,7 @@ export function PasswordForm({
 								}}
 							/>
 							<Pressable onPress={handlePasswordVisibility}>
-								<MaterialCommunityIcons image={rightIcon} size={22} color={MAIN_GRAY_COLOR} style={styles.passwordIconStyle} />
+								<MaterialCommunityIcons image={rightIcon} size={22} color={MAIN_GRAY_COLOR} style={searchStyles.passwordIconStyle} />
 							</Pressable>
 						</View>
 					</Pressable>
@@ -57,52 +59,3 @@ export function PasswordForm({
 		</View>
 	)
 }
-
-export const styles = StyleSheet.create({
-	// 検索フォーム
-	searchBoxStyle: {
-		flex: 1,
-		backgroundColor: MAIN_WHITE_COLOR,
-	},
-	searchWrapperStyle: {
-		flex: 1,
-		alignItems: "center",
-		paddingBottom: 10,
-
-	},
-	searchContainerStyle: {
-	},
-	searchTitleStyle: {
-		fontFamily: STANDARD_FONT,
-		color: MAIN_BLACK_COLOR,
-		marginBottom: 5,
-	},
-	searchIconStyle: {
-		width: 24,
-		height: 24,
-		marginRight: 10,
-		marginLeft: 10,
-	},
-	searchViewStyle: {
-		flexDirection: 'row',
-		alignItems: 'center',
-		backgroundColor: MAIN_GRAY_COLOR,
-		borderWidth: 0.5,
-		height: 60,
-		borderRadius: 5,
-		width: CONTENT_WIDTH,
-		borderColor: MAIN_GRAY_COLOR,
-	},
-	searchContentStyle: {
-		flex: 1
-	},
-	// 入力が間違っている場合のフォーム枠線の色
-	inputIncorrectBorderColorStyle: {
-		borderWidth: 2,
-		borderColor: MAIN_PINK_COLOR,
-	},
-	// パスワードアイコンの表示/非表示
-	passwordIconStyle: {
-		marginRight: 10
-	},
-});

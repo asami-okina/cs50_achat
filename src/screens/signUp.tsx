@@ -10,8 +10,8 @@ import {TopAreaContainer} from '../components/common/topAreaContainer'
 import { ToSignUpOrLoginTextArea } from '../components/common/toSignUpOrLoginTextArea'
 import { Button } from '../components/common/button'
 
-// constantsStyles
-import {constantsStyles} from '../constants/styles'
+// constantsCommonStyles
+import {constantsCommonStyles} from '../constants/styles/commonstyles'
 
 export function SignUp({ navigation }) {
 	// キーボードに完了ボタンを表示
@@ -34,14 +34,14 @@ export function SignUp({ navigation }) {
 	const [isAvailableUserId, setIsAvailableUserId] = useState(false)
 
 	return (
-		<KeyboardAvoidingView behavior="padding" style={constantsStyles.screenContainerStyle}>
-			<SafeAreaView style={constantsStyles.screenContainerStyle}>
+		<KeyboardAvoidingView behavior="padding" style={constantsCommonStyles.screenContainerStyle}>
+			<SafeAreaView style={constantsCommonStyles.screenContainerStyle}>
 				{/* 画面一番上にある青色の余白部分 */}
-				<View style={constantsStyles.topMarginViewStyle}></View>
+				<View style={constantsCommonStyles.topMarginViewStyle}></View>
 				{/* 丸みを帯びている白いトップ部分 */}
 				<TopAreaContainer  title={'SignUp'} searchForm={false} searchFormProps={null}/>
 				{/* トップ部分を除くメイン部分 */}
-				<ScrollView style={constantsStyles.mainContainerStyle}>
+				<ScrollView style={constantsCommonStyles.mainContainerStyle}>
 					{/* Email */}
 					<MailForm
 						inputAccessoryViewID={inputAccessoryViewID}
@@ -68,7 +68,7 @@ export function SignUp({ navigation }) {
 						pageType={"SignUp"}
 					/>
 					{/* 画面下 */}
-					<View style={constantsStyles.bottomStyleByWelcomeAndSignUpAndLogin}>
+					<View style={constantsCommonStyles.bottomStyleByWelcomeAndSignUpAndLogin}>
 						{isCorrectMail && isCorrectPassewordSymbol && isCorrectPassewordStringCount && isCorrectUserIdSymbol && isCorrectUserIdStringCount && isAvailableUserId ?
 							(
 								<Button navigation={navigation} link={'Home'} buttonText={'Sign Up'} enable={true} scene={'SignUp'} loginProps={null} />

@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
-import { Text, View, Image, TextInput, Pressable, StyleSheet } from 'react-native';
+import { Text, View, Image, TextInput, Pressable } from 'react-native';
 import { fetchIsAvailableUserId } from "../../api/api";
 import { UserIdFormDescription } from './_description/userIdFormDescription';
-import { MAIN_WHITE_COLOR, CONTENT_WIDTH, MAIN_PINK_COLOR,STANDARD_FONT,LIGHT_GRAY_COLOR,MAIN_BLACK_COLOR} from '../../constants/layout'
 
+// constantsSearchStyles
+import {searchStyles} from '../../constants/styles/searchStyles'
 
 export function UserIdForm({
 	inputAccessoryViewID,
@@ -59,17 +60,17 @@ export function UserIdForm({
 
 	return (
 		<View>
-			<View style={styles.searchBoxStyle}>
-				<View style={styles.searchWrapperStyle}>
-					<Pressable style={styles.searchContainerStyle} onPress={() => textInputUserId.focus()}>
-						<Text style={styles.searchTitleStyle}>UserId</Text>
+			<View style={searchStyles.searchBoxStyle}>
+				<View style={searchStyles.searchWrapperStyle}>
+					<Pressable style={searchStyles.searchContainerStyle} onPress={() => textInputUserId.focus()}>
+						<Text style={searchStyles.searchTitleStyle}>UserId</Text>
 						{/* <KeyboardAvoidingView behavior="padding"> */}
-						<View style={defaultUserIdBorderColor ? isCorrectUserIdSymbol && isCorrectUserIdStringCount ? styles.searchViewStyle : [styles.searchViewStyle, styles.inputIncorrectBorderColorStyle] : styles.searchViewStyle}>
-							<Image source={require("../../../assets/images/profile.png")} style={styles.searchIconStyle} />
+						<View style={defaultUserIdBorderColor ? isCorrectUserIdSymbol && isCorrectUserIdStringCount ? searchStyles.searchViewStyle : [searchStyles.searchViewStyle, searchStyles.inputIncorrectBorderColorStyle] : searchStyles.searchViewStyle}>
+							<Image source={require("../../../assets/images/profile.png")} style={searchStyles.searchIconStyle} />
 							{/* <KeyboardAvoidingView behavior="padding"> */}
 							<TextInput
 								onChangeText={onChangeUserIdText}
-								style={styles.searchContentStyle}
+								style={searchStyles.searchContentStyle}
 								value={userIdText}
 								placeholder="test1234"
 								inputAccessoryViewID={inputAccessoryViewID}
@@ -110,48 +111,3 @@ export function UserIdForm({
 		</View>
 	)
 }
-
-export const styles = StyleSheet.create({
-	// 検索フォーム
-	searchBoxStyle: {
-		flex: 1,
-		backgroundColor: MAIN_WHITE_COLOR,
-	},
-	searchWrapperStyle: {
-		flex: 1,
-		alignItems: "center",
-		paddingBottom: 10,
-
-	},
-	searchContainerStyle: {
-	},
-	searchTitleStyle: {
-		fontFamily: STANDARD_FONT,
-		color: MAIN_BLACK_COLOR,
-		marginBottom: 5,
-	},
-	searchIconStyle: {
-		width: 24,
-		height: 24,
-		marginRight: 10,
-		marginLeft: 10,
-	},
-	searchViewStyle: {
-		flexDirection: 'row',
-		alignItems: 'center',
-		backgroundColor: LIGHT_GRAY_COLOR,
-		borderWidth: 0.5,
-		height: 60,
-		borderRadius: 5,
-		width: CONTENT_WIDTH,
-		borderColor: LIGHT_GRAY_COLOR,
-	},
-	searchContentStyle: {
-		flex: 1
-	},
-	// 入力が間違っている場合のフォーム枠線の色
-	inputIncorrectBorderColorStyle: {
-		borderWidth: 2,
-		borderColor: MAIN_PINK_COLOR,
-	},
-});

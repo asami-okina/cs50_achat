@@ -2,18 +2,18 @@
 import React from 'react';
 import { Text, View, SafeAreaView, ScrollView, KeyboardAvoidingView, Pressable, Image, TextInput, StyleSheet } from 'react-native';
 
-// constantsStyles
-import {constantsStyles} from '../../constants/styles'
+// constantsCommonStyles
+import {constantsCommonStyles} from '../../constants/styles/commonstyles'
 
 import {SEARCH_FORM_HEIGHT, CONTENT_WIDTH, ICON_SIZE,STANDARD_FONT,LIGHT_GRAY_COLOR } from '../../constants/layout'
 
 // 丸みを帯びている白いトップ部分
 export function TopAreaContainer({ title,searchForm,searchFormProps }) {
 	return (
-			<View style={constantsStyles.topAreaContainerStyle}>
+			<View style={constantsCommonStyles.topAreaContainerStyle}>
 				{/* タイトルがあれば表示 */}
 				{title !== 0 && (
-					<Text style={constantsStyles.topAreaTitleStyle}>{title}</Text>
+					<Text style={constantsCommonStyles.topAreaTitleStyle}>{title}</Text>
 				)}
 				{searchForm && (
 					<Pressable onPress={() => searchFormProps.textInputSearch.focus()} >
