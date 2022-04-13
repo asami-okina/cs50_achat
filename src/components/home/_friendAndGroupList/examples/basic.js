@@ -9,16 +9,21 @@ import {
 } from 'react-native';
 
 // api.js
-import {leaveGroup} from '../../../../api/api'
+import { leaveGroup } from '../../../../api/api'
 
 // constantsLayout
 import { CONTENT_WIDTH, PROFILE_IMAGE_SIZE } from '../../../../constants/layout'
 
 import { SwipeListView } from 'react-native-swipe-list-view';
 
-export default function Basic({ groupList, friendList, type, setModalVisible }) {
+export default function Basic({ groupList, friendList, type, setModalVisible, clickedCancelMordal, setClickedCancelMordal, clickedOkMordal, setClickedOkMordal }) {
 	// ユーザーID(今後は認証から取得するようにする)
 	const userId = "asami11"
+
+	// 削除時の確認モーダルでCancleの時は該当リストをデフォルト状態に戻す、Okの場合は該当リストを削除する甩に使用
+	const [rowMap, setRowMap] = useState('')
+	const [key, setkey] = useState('')
+	const [groupChatRoomId, setGroupChatRoomId] = useState('')
 
 	// 一覧のリストを作成
 	const [listData, setListData] = useState(
@@ -26,6 +31,7 @@ export default function Basic({ groupList, friendList, type, setModalVisible }) 
 			: friendList.map((_, i) => ({ ..._, key: `${i}` }))
 	);
 
+	// スワップされた該当行をデフォルト状態に戻す
 	const closeRow = (rowMap, rowKey) => {
 		if (rowMap[rowKey]) {
 			rowMap[rowKey].closeRow();
@@ -84,28 +90,54 @@ export default function Basic({ groupList, friendList, type, setModalVisible }) 
 			<TouchableOpacity
 				style={[styles.backRightBtn, styles.backRightBtnRight]}
 				onPress={() => {
-					// モーダル出力し、OKだったら、以下実行
+					// 確認モーダルを表示
 					setModalVisible(true)
-					// deleteRow(rowMap, data.item.key)
-					// // グループ脱退関数実行
-					// const groupChatRoomId =  data.item.group_chat_room_id
-					// leaveGroup(userId, groupChatRoomId)
+					// 削除時のモーダルでCancleの時は該当リストをデフォルト状態に戻す、Okの場合は該当リストを削除する甩に使用
+					setRowMap(rowMap)
+					setkey(data.item.key)
+					setGroupChatRoomId(data.item.group_chat_room_id)
 				}}
 			>
 				<Text style={styles.backTextWhite}>Delete</Text>
 			</TouchableOpacity>
 		</View>
 	);
+
+	// 削除時の確認モーダルでCancleの時は該当リストをデフォルト状態に戻す、Okの場合は該当リストを削除する甩に使用
+	useEffect(() => {
+		// Cancelを押された場合
+		if (clickedCancelMordal) {
+			// スワイプされた行をデフォルト状態に戻す
+			rowMap[key].closeRow();
+			// 初期化
+			setRowMap('')
+			setkey('')
+			setClickedCancelMordal(false)
+			setGroupChatRoomId('')
+		}
+		if (clickedOkMordal) {
+			// スワイプされた行を削除
+			deleteRow(rowMap, key)
+			// グループ脱退関数実行
+			leaveGroup(userId, groupChatRoomId)
+			// 初期化
+			setRowMap('')
+			setkey('')
+			setClickedOkMordal(false)
+			setGroupChatRoomId('')
+		}
+	}, [clickedCancelMordal, clickedOkMordal])
+
 	return (
 		<View style={styles.container}>
 			{type === "Group" && (
-			<SwipeListView
-				data={listData}
-				renderItem={renderItem}
-				renderHiddenItem={renderHiddenItem}
-				rightOpenValue={-75}
-				disableRightSwipe={true}
-			/>
+				<SwipeListView
+					data={listData}
+					renderItem={renderItem}
+					renderHiddenItem={renderHiddenItem}
+					rightOpenValue={-75}
+					disableRightSwipe={true}
+				/>
 			)}
 			{
 				type === "Friend" && (

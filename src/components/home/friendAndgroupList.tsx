@@ -1,10 +1,10 @@
 import React from 'react';
-import { Text, View, Pressable, Image, StyleSheet } from 'react-native';
-import { CONTENT_WIDTH, ICON_SIZE, MAIN_WHITE_COLOR, MAIN_NAVY_COLOR } from '../../constants/layout'
+import { View, StyleSheet } from 'react-native';
+import { CONTENT_WIDTH, MAIN_WHITE_COLOR, MAIN_NAVY_COLOR } from '../../constants/layout'
 
 import { ListItem } from './_friendAndGroupList/listItem'
 
-export function FriendAndGroupList({ groupListProps, friendListProps, type, setModalVisible }) {
+export function FriendAndGroupList({ groupListProps, friendListProps, type, setModalVisible,clickedCancelMordal,setClickedCancelMordal, clickedOkMordal,setClickedOkMordal }) {
 	return (
 		<View style={styles.groupAndFriendWrapperStyle}>
 			<View style={styles.groupAndFriendContainerStyle}>
@@ -12,11 +12,11 @@ export function FriendAndGroupList({ groupListProps, friendListProps, type, setM
 				</View>
 				{/* グループ一覧をmapで回して表示 */}
 				{type === "Group" && groupListProps.openGroupList && (
-					<ListItem groupListProps={{ "openGroupList": groupListProps?.openGroupList, "groupList": groupListProps?.groupList }} friendListProps={null} type={"Group"} setModalVisible={setModalVisible}/>
+					<ListItem groupListProps={{ "openGroupList": groupListProps?.openGroupList, "groupList": groupListProps?.groupList }} friendListProps={null} type={"Group"} setModalVisible={setModalVisible} clickedCancelMordal={clickedCancelMordal} setClickedCancelMordal={setClickedCancelMordal} clickedOkMordal={clickedOkMordal} setClickedOkMordal={setClickedOkMordal} />
 				)}
 				{/* 友達一覧をmapで回して表示 */}
 				{type === "Friend" && friendListProps.openFriendList && (
-					<ListItem friendListProps={{ "openFriendList": friendListProps?.openFriendList, "friendList": friendListProps?.friendList }} groupListProps={null} type={"Friend"} setModalVisible={setModalVisible} />
+					<ListItem friendListProps={{ "openFriendList": friendListProps?.openFriendList, "friendList": friendListProps?.friendList }} groupListProps={null} type={"Friend"} setModalVisible={setModalVisible} clickedCancelMordal={clickedCancelMordal} setClickedCancelMordal={setClickedCancelMordal} clickedOkMordal={clickedOkMordal} setClickedOkMordal={setClickedOkMordal} />
 				)}
 			</View>
 		</View>

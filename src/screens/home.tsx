@@ -42,6 +42,12 @@ export function Home({ navigation }) {
 	// 所属グループ数
 	const [groupCount, setGroupCount] = useState(0)
 
+	// 削除時のモーダルでCancelを押したかどうか
+	const [clickedCancelMordal, setClickedCancelMordal] = useState(false)
+
+	// 削除時のモーダルでOkを押したかどうか
+	const [clickedOkMordal, setClickedOkMordal] = useState(false)
+
 	// ニックネームまたはグループ名の検索でヒットするユーザーまたはグループ情報の取得
 	function _searchName(searchText) {
 		let result = fetchNickNameOrGroupNameBySearchForm(searchText);
@@ -122,13 +128,18 @@ export function Home({ navigation }) {
 								style={[styles.button, styles.cancelButtonStyle]}
 								onPress={() => {
 									setModalVisible(false)
+									setClickedCancelMordal(true)
+									console.log('cancel')
 								}}
 							>
 								<Text style={styles.cancelTextStyle}>Cancel</Text>
 							</Pressable>
 							<Pressable
 								style={[styles.button, styles.okButtonStyle]}
-								onPress={() => setModalVisible(!modalVisible)}
+								onPress={() => {
+									setModalVisible(!modalVisible)
+									setClickedOkMordal(true)
+								}}
 							>
 								<Text style={styles.okTextStyle}>Ok</Text>
 							</Pressable>
@@ -146,11 +157,11 @@ export function Home({ navigation }) {
 					<FriendOrGroupSelectTab setOpenFriendList={setOpenFriendList} setOpenGroupList={setOpenGroupList} openFriendList={openFriendList} openGroupList={openGroupList} friendCount={friendCount} groupCount={groupCount} />
 					{/* 友達一覧 */}
 					{openFriendList && (
-						<FriendAndGroupList friendListProps={{ "friendCount": friendCount, "setOpenFriendList": setOpenFriendList, "openFriendList": openFriendList, "friendList": friendList }} groupListProps={null} type={"Friend"} setModalVisible={setModalVisible}/>
+						<FriendAndGroupList friendListProps={{ "friendCount": friendCount, "setOpenFriendList": setOpenFriendList, "openFriendList": openFriendList, "friendList": friendList }} groupListProps={null} type={"Friend"} setModalVisible={setModalVisible} clickedCancelMordal={clickedCancelMordal} setClickedCancelMordal={setClickedCancelMordal} clickedOkMordal={clickedOkMordal} setClickedOkMordal={setClickedOkMordal}/>
 					)}
 					{/* グループ一覧 */}
 					{openGroupList && (
-						<FriendAndGroupList groupListProps={{ "groupCount": groupCount, "setOpenGroupList": setOpenGroupList, "openGroupList": openGroupList, "groupList": groupList }} friendListProps={null} type={"Group"} setModalVisible={setModalVisible} />
+						<FriendAndGroupList groupListProps={{ "groupCount": groupCount, "setOpenGroupList": setOpenGroupList, "openGroupList": openGroupList, "groupList": groupList }} friendListProps={null} type={"Group"} setModalVisible={setModalVisible} clickedCancelMordal={clickedCancelMordal} setClickedCancelMordal={setClickedCancelMordal} clickedOkMordal={clickedOkMordal} setClickedOkMordal={setClickedOkMordal} />
 					)}
 				</View>
 				{/* 友達またはグループ追加ボタン */}

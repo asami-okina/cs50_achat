@@ -3,8 +3,6 @@ import { StyleSheet, TouchableOpacity, View, Image } from 'react-native';
 import { MAIN_NAVY_COLOR, MAIN_WHITE_COLOR, ADD_BUTTON_SIZE, SCREEN_WIDTH,CONTENT_WIDTH } from '../../constants/layout'
 
 export function AddButton({ }) {
-	console.log('SCREEN_WIDTH', SCREEN_WIDTH)
-	const buttonSize = SCREEN_WIDTH - CONTENT_WIDTH / 8
 	return (
 		<View style={styles.boxStyle}>
 		<View style={styles.wrapperStyle}>
