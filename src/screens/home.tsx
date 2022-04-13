@@ -7,6 +7,7 @@ import { Footer } from '../components/common/footer'
 import { TopAreaContainer } from '../components/common/topAreaContainer'
 import { FriendAndGroupList } from '../components/home/friendAndgroupList'
 import { FriendOrGroupSelectTab } from '../components/common/friendOrGroupSelectTab'
+import { AddButton } from '../components/common/addButton'
 
 // apis
 import { fetchNickNameOrGroupNameBySearchForm, fetchGroupList, fetGroupCount, fetchFriendList, fetchFriendCount } from '../api/api'
@@ -114,6 +115,8 @@ export function Home({ navigation }) {
 						<FriendAndGroupList groupListProps={{ "groupCount": groupCount, "setOpenGroupList": setOpenGroupList, "openGroupList": openGroupList, "groupList": groupList }} friendListProps={null} type={"Group"} />
 					)}
 				</View>
+				{/* 友達またはグループ追加ボタン */}
+				<AddButton />
 				{/*フッター */}
 				<Footer navigation={navigation} />
 			</SafeAreaView>
