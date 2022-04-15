@@ -1,11 +1,11 @@
 // libs
 import React from 'react';
-import { StyleSheet, TouchableOpacity, View, Image } from 'react-native';
+import { StyleSheet, TouchableOpacity, View, Text } from 'react-native';
 
 // layouts
-import { MAIN_NAVY_COLOR, MAIN_WHITE_COLOR, ADD_BUTTON_SIZE, CONTENT_WIDTH, BUTTON_BORDER_RADIUS, MAIN_BLACK_COLOR } from '../../constants/layout'
+import { MAIN_NAVY_COLOR, MAIN_WHITE_COLOR, ADD_BUTTON_SIZE, CONTENT_WIDTH, BUTTON_BORDER_RADIUS, MAIN_BLACK_COLOR, SMALL_BUTTON_WIDTH } from '../../constants/layout'
 
-export function AddButton({ navigation, openFriendList, openGroupList }) {
+export function SmallButton({ text }) {
 	return (
 		<View style={styles.boxStyle}>
 			<View style={styles.wrapperStyle}>
@@ -13,15 +13,9 @@ export function AddButton({ navigation, openFriendList, openGroupList }) {
 					<TouchableOpacity
 						style={styles.buttonStyle}
 						onPress={() => {
-							if (openFriendList) {
-								// navigation.navigate('')
-							}
-							if (openGroupList) {
-								navigation.navigate('AddGroup')
-							}
 						}}
 					>
-						<Image source={require('../../../assets/images/white_plus.png')} />
+						<Text style={styles.textStyle}>{text}</Text>
 					</TouchableOpacity>
 				</View>
 			</View>
@@ -40,16 +34,14 @@ const styles = StyleSheet.create({
 		width: CONTENT_WIDTH,
 	},
 	containerStyle: {
-		backgroundColor: MAIN_WHITE_COLOR,
 		height: ADD_BUTTON_SIZE,
 		alignItems: "flex-end",
-		paddingBottom: 10,
 	},
 	buttonStyle: {
 		alignItems: "center",
 		justifyContent: "center",
-		width: ADD_BUTTON_SIZE - 10, // containerStyleのpaddingBottom分引く
-		height: ADD_BUTTON_SIZE - 10, // containerStyleのpaddingBottom分引く
+		width: SMALL_BUTTON_WIDTH,
+		height: 50,
 		borderRadius: BUTTON_BORDER_RADIUS,
 		backgroundColor: MAIN_NAVY_COLOR,
 		textAlign: "center",
@@ -62,5 +54,8 @@ const styles = StyleSheet.create({
 		shadowRadius: 2,
 		elevation: 1,
 	},
+	textStyle: {
+		color: MAIN_WHITE_COLOR,
+	}
 });
 

@@ -44,6 +44,24 @@ export const TAB_TITLE_TEXT_SIZE = 16
 export const FORM_DESCRIPTION_TEXT_SIZE = 12
 
 // ------------------------------------------------------------------------------------------------
+// 幅
+// コンテンツ表示幅
+export const CONTENT_WIDTH = 350
+
+
+// モーダルの親幅
+export const MORDAL_WIDTH = CONTENT_WIDTH - 100
+
+// モーダルのテキストコンテンツ表示幅
+export const MORDAL_TEXT_CONTENT_WIDTH = CONTENT_WIDTH - 150
+
+// 小さいボタンの幅
+export const SMALL_BUTTON_WIDTH = 100
+
+// グループに追加するために選択された友達部分の表示幅
+export const ADD_FRIEND_WIDTH = 70
+
+// ------------------------------------------------------------------------------------------------
 // 高さ
 // 画面の高さ
 export const SCREEN_HEIGHT = Dimensions.get('screen').height
@@ -84,18 +102,8 @@ export const BUTTON_HEIGHT = 60
 // タブの高さ
 export const TAB_HEIGHT = 40
 
-// ------------------------------------------------------------------------------------------------
-// 幅
-// コンテンツ表示幅
-export const CONTENT_WIDTH = 350
-
-
-// モーダルの親幅
-export const MORDAL_WIDTH = CONTENT_WIDTH - 100
-
-// モーダルのテキストコンテンツ表示幅
-export const MORDAL_TEXT_CONTENT_WIDTH = CONTENT_WIDTH - 150
-
+// 小さいボタンの高さ
+export const SMALL_BUTTON_HEIGHT = (SMALL_BUTTON_WIDTH / 2)
 
 // ------------------------------------------------------------------------------------------------
 // 色

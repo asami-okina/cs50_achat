@@ -128,7 +128,7 @@ export function Home({ navigation }) {
 					)}
 				</View>
 				{/* 友達またはグループ追加ボタン */}
-				<AddButton />
+				<AddButton navigation={navigation} openFriendList={openFriendList} openGroupList={openGroupList} />
 				{/*フッター */}
 				<Footer navigation={navigation} />
 			</SafeAreaView>

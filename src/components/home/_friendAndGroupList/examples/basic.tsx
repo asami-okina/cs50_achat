@@ -91,7 +91,7 @@ export default function Basic({ groupList, friendList, type, setModalVisible, cl
 					setGroupChatRoomId(data.item.group_chat_room_id)
 				}}
 			>
-				<Text style={styles.backTextWhiteStyle}>Delete</Text>
+				<Text style={styles.backTextWhiteStyle}>Leave</Text>
 			</TouchableOpacity>
 		</View>
 	);
