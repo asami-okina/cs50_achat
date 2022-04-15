@@ -1,6 +1,6 @@
 // libs
 import React, { useState } from 'react';
-import { View, StyleSheet, Image, Text } from 'react-native';
+import { View, StyleSheet, Image, Text,Pressable, FlatList } from 'react-native';
 
 
 // layouts
@@ -11,7 +11,7 @@ export function AddFriendListItem({
 	list,
 }) {
 	return (
-		<View style={styles.containerStyle} key={list.key}>
+		<View style={styles.containerStyle} key={list.key} >
 			<Image source={list.friend_profile_image} style={styles.profileImageStyle} />
 			<Text style={styles.listItemNameStyle} numberOfLines={1} ellipsizeMode="tail">{list.friend_nickname}</Text>
 		</View>

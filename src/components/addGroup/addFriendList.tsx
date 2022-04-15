@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useRef, useLayoutEffect } from 'react';
 import { View, StyleSheet, ScrollView } from 'react-native';
 import { CONTENT_WIDTH } from '../../constants/layout'
 
@@ -10,7 +10,8 @@ export function AddFriendList({
 	return (
 		<View style={styles.wrapperStyle}>
 			<View style={styles.containerStyle}>
-				<ScrollView horizontal={true}>
+				{/* 横スクロールで常に右端に自動スクロール */}
+				<ScrollView horizontal={true} ref={ref => { this.scrollView = ref }} onContentSizeChange={() => this.scrollView.scrollToEnd({ animated: true })}>
 					{selectedFriendList.length !== 0 && selectedFriendList !== undefined && selectedFriendList.map((list) => {
 						return <AddFriendListItem list={list} key={list.key} />
 					})}
