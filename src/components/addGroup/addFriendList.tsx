@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useLayoutEffect } from 'react';
+import React, { useRef } from 'react';
 import { View, StyleSheet, ScrollView } from 'react-native';
 import { CONTENT_WIDTH } from '../../constants/layout'
 
@@ -7,11 +7,17 @@ import { AddFriendListItem } from './_addFriendList/addFriendListItem'
 export function AddFriendList({
 	selectedFriendList
 }) {
+	// refの生成
+	const scrollViewRef = useRef<any>();
 	return (
 		<View style={styles.wrapperStyle}>
 			<View style={styles.containerStyle}>
 				{/* 横スクロールで常に右端に自動スクロール */}
-				<ScrollView horizontal={true} ref={ref => { this.scrollView = ref }} onContentSizeChange={() => this.scrollView.scrollToEnd({ animated: true })}>
+				<ScrollView
+					ref={scrollViewRef}
+					onContentSizeChange={() => scrollViewRef.current.scrollToEnd({ animated: true })}
+					horizontal={true}
+				>
 					{selectedFriendList.length !== 0 && selectedFriendList !== undefined && selectedFriendList.map((list) => {
 						return <AddFriendListItem list={list} key={list.key} />
 					})}
