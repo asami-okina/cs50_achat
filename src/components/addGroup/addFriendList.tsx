@@ -17,7 +17,7 @@ export function AddFriendList({
 					ref={scrollViewRef}
 					onContentSizeChange={() => scrollViewRef.current.scrollToEnd({ animated: true })}
 					horizontal={true} // スクロールバーを水平方向にする
-					showsVerticalScrollIndicator={false} // スクロールバー非表示
+					showsHorizontalScrollIndicator={false} // 水平スクロールバー非表示
 				>
 					{selectedFriendList.length !== 0 && selectedFriendList !== undefined && selectedFriendList.map((list) => {
 						return <AddFriendListItem list={list} key={list.key} />
