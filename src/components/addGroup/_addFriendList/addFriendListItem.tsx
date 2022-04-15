@@ -21,7 +21,6 @@ export function AddFriendListItem({
 export const styles = StyleSheet.create({
 	containerStyle: {
 		width: ADD_FRIEND_WIDTH,
-		backgroundColor: "blue",
 		justifyContent: "center",
 		alignItems: "center",
 
@@ -34,7 +33,6 @@ export const styles = StyleSheet.create({
 	listItemNameStyle: {
 		fontFamily: STANDARD_FONT,
 		width: ADD_FRIEND_WIDTH,
-		backgroundColor: "yellow",
 		textAlign: "center"
 	},
 });
