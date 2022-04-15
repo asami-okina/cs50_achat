@@ -69,7 +69,9 @@ export function AddGroup({ navigation }) {
 				{/* トップ部分を除くメイン部分: iphoneXの場合は、底のマージンを考慮 */}
 				<View style={IPHONE_X_BOTTOM_SPACE === 0 ? constantsCommonStyles.withFooterMainContainerStyle : constantsCommonStyles.withFooterMainContainerIphoneXStyle}>
 					{/* 選択された友達一覧 */}
+					{selectedFriendList.length !== 0 && (
 					<AddFriendList selectedFriendList={selectedFriendList} />
+					)}
 					{/* タイトル */}
 					<AddGroupTitle text={"Friend"} />
 					{/* 友達一覧 */}
