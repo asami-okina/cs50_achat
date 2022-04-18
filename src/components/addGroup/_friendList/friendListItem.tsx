@@ -1,10 +1,10 @@
 // libs
-import React, { useEffect, useState } from 'react';
-import { View, StyleSheet, TouchableHighlight, Image, Text, Pressable } from 'react-native';
+import React, { useState } from 'react';
+import { View, StyleSheet, TouchableHighlight, Image, Text } from 'react-native';
 
 
 // layouts
-import { CONTENT_WIDTH, MAIN_WHITE_COLOR, MAIN_PINK_COLOR, PROFILE_IMAGE_SIZE, STANDARD_FONT, ICON_SIZE } from '../../../constants/layout'
+import { CONTENT_WIDTH, MAIN_WHITE_COLOR, PROFILE_IMAGE_SIZE, STANDARD_FONT, ICON_SIZE } from '../../../constants/layout'
 
 
 export function FriendListItem({

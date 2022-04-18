@@ -21,6 +21,7 @@ const styles = StyleSheet.create({
 		alignItems: "center",
 		marginBottom: 10,
 		minHeight: 40,
+		maxHeight: 40,
 	},
 	containerStyle: {
 		width: CONTENT_WIDTH,

@@ -5,7 +5,8 @@ import { CONTENT_WIDTH } from '../../constants/layout'
 import { AddFriendListItem } from './_addFriendList/addFriendListItem'
 
 export function AddFriendList({
-	selectedFriendList
+	selectedFriendList,
+	deleteFriendList
 }) {
 	// refの生成
 	const scrollViewRef = useRef<any>();
@@ -20,7 +21,7 @@ export function AddFriendList({
 					showsHorizontalScrollIndicator={false} // 水平スクロールバー非表示
 				>
 					{selectedFriendList.length !== 0 && selectedFriendList !== undefined && selectedFriendList.map((list) => {
-						return <AddFriendListItem list={list} key={list.key} />
+						return <AddFriendListItem list={list} key={list.key} deleteFriendList={deleteFriendList} />
 					})}
 				</ScrollView>
 			</View>
@@ -34,6 +35,7 @@ const styles = StyleSheet.create({
 		alignItems: "center",
 		marginBottom: 10,
 		minHeight: 80,
+		maxHeight: 80,
 	},
 	containerStyle: {
 		width: CONTENT_WIDTH,

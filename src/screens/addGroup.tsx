@@ -1,6 +1,6 @@
 // libs
 import React, { useEffect, useState } from 'react';
-import { View, SafeAreaView, KeyboardAvoidingView, ScrollView } from 'react-native';
+import { View, SafeAreaView, KeyboardAvoidingView } from 'react-native';
 
 // components
 import { Footer } from '../components/common/footer'
@@ -59,6 +59,38 @@ export function AddGroup({ navigation }) {
 	// 検索フォームのラベル化
 	let textInputSearch;
 
+	// 該当listが選択されたかどうか
+	const [selectedList, setSelectedList] = useState(false)
+
+	// グループに追加する友達一覧のリストを作成
+	const [listData, setListData] = useState([]);
+
+	// 選択された友達リストの追加
+	const addFriendList = (rowKey) => {
+		// Reactの差異を比較するのは、オブジェクト同士。そのため、新しくオブジェクトを作成する必要がある
+		const newData = [...selectedFriendList]
+		// findIndex: 配列内の指定されたテスト関数に合格する要素がない場合を含め、それ以外は-1を返す
+		const prevIndex = listData.findIndex(item => item.key === rowKey);
+		newData.push(listData[prevIndex]);
+		setSelectedFriendList(newData)
+	}
+
+	// 選択された友達リストの削除
+	const deleteFriendList = (rowKey) => {
+		// Reactの差異を比較するのは、オブジェクト同士。そのため、新しくオブジェクトを作成する必要がある
+		const newData = [...selectedFriendList];
+		// findIndex: 配列内の指定されたテスト関数に合格する要素がない場合を含め、それ以外は-1を返す
+		const prevIndex = selectedFriendList.findIndex(item => item.key === rowKey);
+		newData.splice(prevIndex, 1);
+		setSelectedFriendList(newData);
+	}
+
+	useEffect(() => {
+		if (friendList.length !== 0 && friendList !== undefined) {
+			setListData(friendList.map((_, i) => ({ ..._, key: `${i}` })))
+		}
+	}, [friendList])
+
 	return (
 		<KeyboardAvoidingView behavior="padding" style={constantsCommonStyles.screenContainerStyle}>
 			<SafeAreaView style={constantsCommonStyles.screenContainerStyle}>
@@ -70,12 +102,12 @@ export function AddGroup({ navigation }) {
 				<View style={IPHONE_X_BOTTOM_SPACE === 0 ? constantsCommonStyles.withFooterMainContainerStyle : constantsCommonStyles.withFooterMainContainerIphoneXStyle}>
 					{/* 選択された友達一覧 */}
 					{selectedFriendList.length !== 0 && (
-						<AddFriendList selectedFriendList={selectedFriendList} />
+						<AddFriendList selectedFriendList={selectedFriendList} deleteFriendList={deleteFriendList} />
 					)}
 					{/* タイトル */}
 					<AddGroupTitle text={"Friend"} />
 					{/* 友達一覧 */}
-					<FriendList friendList={friendList} selectedFriendList={selectedFriendList} setSelectedFriendList={setSelectedFriendList} />
+					<FriendList listData={listData} addFriendList={addFriendList} deleteFriendList={deleteFriendList} />
 				</View>
 				{/* 右下のボタン(Next, Create) */}
 				<SmallButton text={"Next"} />
