@@ -90,6 +90,22 @@ export function AddGroup({ navigation }) {
 			const newData = [...beforeData, ...after]
 			setMergerdSelectedFriendList(newData)
 		}
+		if (type === "after") {
+			// Reactの差異を比較するのは、オブジェクト同士。そのため、新しくオブジェクトを作成する必要がある
+			const afterNewData = [...afterSelectedFriendList]
+			// findIndex: 配列内の指定されたテスト関数に合格する要素がない場合を含め、それ以外は-1を返す
+			const prevIndex = afterFriendListSearch.findIndex(item => item.key === rowKey);
+			afterNewData.push(afterFriendListSearch[prevIndex]);
+			setAfterSelectedFriendList(afterNewData)
+
+			// beforeとafterをマージする
+			// afterを展開
+			const afterData = [...afterNewData]
+			// beforeを展開
+			const before = [...beforeSelectedFriendList]
+			const newData = [...afterData, ...before]
+			setMergerdSelectedFriendList(newData)
+		}
 	}
 
 	// 選択された友達リストの削除
@@ -110,6 +126,23 @@ export function AddGroup({ navigation }) {
 			const prev2Index = mergedSelectedFriendList.findIndex(item => item.key === rowKey);
 			beforeNewData.splice(prev2Index, 1);
 			setBeforeSelectedFriendList(beforeNewData);
+		}
+		if (type === "after") {
+			// mergeリストから該当リストを削除
+			// Reactの差異を比較するのは、オブジェクト同士。そのため、新しくオブジェクトを作成する必要がある
+			const mergedNewData = [...mergedSelectedFriendList];
+			// findIndex: 配列内の指定されたテスト関数に合格する要素がない場合を含め、それ以外は-1を返す
+			const prev1Index = mergedSelectedFriendList.findIndex(item => item.key === rowKey);
+			mergedNewData.splice(prev1Index, 1);
+			setMergerdSelectedFriendList(mergedNewData);
+
+			// afterリストから該当リストを削除
+			// Reactの差異を比較するのは、オブジェクト同士。そのため、新しくオブジェクトを作成する必要がある
+			const afterNewData = [...afterSelectedFriendList];
+			// findIndex: 配列内の指定されたテスト関数に合格する要素がない場合を含め、それ以外は-1を返す
+			const prev2Index = mergedSelectedFriendList.findIndex(item => item.key === rowKey);
+			afterNewData.splice(prev2Index, 1);
+			setAfterSelectedFriendList(afterNewData);
 		}
 	}
 
