@@ -47,7 +47,7 @@ export function FriendListItem({
 						<Image source={require("../../../../assets/images/checked-circle.png")} style={styles.circleStyle} />
 					) :
 						(
-							<Image source={require("../../../../assets/images/gray-circle.png")} style={styles.circleStyle} />
+							<Image source={require("../../../../assets/images/gray_circle.png")} style={styles.circleStyle} />
 						)}
 				</View>
 			</View>
