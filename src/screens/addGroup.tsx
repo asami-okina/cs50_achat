@@ -95,6 +95,7 @@ export function AddGroup({ navigation }) {
 	// 選択された友達リストの削除
 	const _deleteFriendList = (rowKey, type) => {
 		if (type === "before") {
+			// mergeリストから該当リストを削除
 			// Reactの差異を比較するのは、オブジェクト同士。そのため、新しくオブジェクトを作成する必要がある
 			const mergedNewData = [...mergedSelectedFriendList];
 			// findIndex: 配列内の指定されたテスト関数に合格する要素がない場合を含め、それ以外は-1を返す
