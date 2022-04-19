@@ -1,5 +1,5 @@
 // libs
-import React from 'react';
+import React, { useState } from 'react';
 import { View, StyleSheet, ScrollView } from 'react-native';
 
 // layouts
@@ -20,14 +20,8 @@ export function FriendList({
 			</View>
 			<View style={styles.containerStyle}>
 				{listData.length !== 0 && listData !== undefined && listData.map((list) => {
-					// 該当友達が選択されているかどうかの判定
-					const prevIndex = selectedFriendList.findIndex(item => item.key === list.key);
-					let clecked = false
-					if (prevIndex !== -1) {
-						clecked = true
-					}
 					return (
-						<FriendListItem list={list} key={list.key} addFriendList={addFriendList} deleteFriendList={deleteFriendList} clecked={clecked} />
+						<FriendListItem list={list} key={list.key} addFriendList={addFriendList} deleteFriendList={deleteFriendList} selectedFriendList={selectedFriendList} />
 					)
 				})
 				}

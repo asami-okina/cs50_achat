@@ -14,7 +14,7 @@ export function AddFriendListItem({
 	return (
 		<View style={styles.containerStyle} key={list.key} >
 			<Pressable style={styles.closeImageContainerStyle} onPress={() => {
-				deleteFriendList(list.key)
+				deleteFriendList(list.key, list.type)
 			}}>
 				<Image source={require('../../../../assets/images/close-icon.png')} style={styles.closeImageStyle} />
 			</Pressable>

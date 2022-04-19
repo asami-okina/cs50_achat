@@ -35,6 +35,11 @@ export function TopAreaContainer({
 							}}
 							onEndEditing={() => {
 								searchFormProps._searchName(searchFormProps.searchText)
+
+								// 検索中フラグをtrueにする
+								if(searchFormProps.setIsDuringSearch){
+									searchFormProps.setIsDuringSearch(true)
+								}
 							}}
 							clearButtonMode="while-editing"
 							clearTextOnFocus={true}

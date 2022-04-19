@@ -1,5 +1,5 @@
 // libs
-import React from 'react';
+import React, { useState } from 'react';
 import { View, StyleSheet, TouchableHighlight, Image, Text } from 'react-native';
 
 
@@ -11,19 +11,24 @@ export function FriendListItem({
 	list,
 	addFriendList,
 	deleteFriendList,
-	clecked,
+	selectedFriendList,
 }) {
-
+	let clicked = false
+	// 該当友達が選択されているかどうかの判定
+	const prevIndex = selectedFriendList.findIndex(item => item.key === list.key);
+	if (prevIndex !== -1) {
+		clicked = true
+	}
 	return (
 		<TouchableHighlight
 			onPress={() => {
 				// clickedがtrueの場合(この時点ではtrueに変わっていないので、falseで判定)
-				if (!clecked) {
-					addFriendList(list.key)
+				if (!clicked) {
+					addFriendList(list.key, list.type)
 				}
 				// clickedがfalseの場合(この時点ではfalseに変わっていないので、trueで判定)
-				if (clecked) {
-					deleteFriendList(list.key)
+				if (clicked) {
+					deleteFriendList(list.key, list.type)
 				}
 
 			}}
@@ -38,7 +43,7 @@ export function FriendListItem({
 					</View>
 				</View>
 				<View style={styles.circleContainerStyle}>
-					{clecked ? (
+					{clicked ? (
 						<Image source={require("../../../../assets/images/checked-circle.png")} style={styles.circleStyle} />
 					) :
 						(
