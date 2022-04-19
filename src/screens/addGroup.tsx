@@ -59,9 +59,6 @@ export function AddGroup({ navigation }) {
 	// 検索フォームのラベル化
 	let textInputSearch;
 
-	// 該当listが選択されたかどうか
-	const [selectedList, setSelectedList] = useState(false)
-
 	// グループに追加する友達一覧のリストを作成
 	const [listData, setListData] = useState([]);
 
@@ -110,7 +107,7 @@ export function AddGroup({ navigation }) {
 					<FriendList listData={listData} addFriendList={addFriendList} deleteFriendList={deleteFriendList} />
 				</View>
 				{/* 右下のボタン(Next, Create) */}
-				<SmallButton text={"Next"} />
+				<SmallButton text={"Next"} onPressFunction={() => navigation.navigate('AddGroupSetting')} />
 				{/*フッター */}
 				<Footer navigation={navigation} />
 			</SafeAreaView>

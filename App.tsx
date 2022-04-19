@@ -16,7 +16,8 @@ import { TopAreaContainer } from './src/components/common/topAreaContainer'
 import { AuthErrorText } from './src/components/logIn/authErrorText';
 import { ForgotPassword } from './src/components/logIn/forgotPasseword';
 import { Chats } from './src/screens/chats';
-import { AddGroup } from './src/screens/addGroup';
+import { AddGroup } from './src/screens/addGroup'
+import { AddGroupSetting } from './src/screens/addGroupSetting'
 
 // fonts
 import { useFonts, AlfaSlabOne_400Regular } from '@expo-google-fonts/alfa-slab-one';
@@ -61,6 +62,7 @@ function App() {
 					<Stack.Screen name="ForgotPassword" component={ForgotPassword} options={{ headerShown: false }} />
 					<Stack.Screen name="Chats" component={Chats} options={{ headerShown: false }} /> */}
 					<Stack.Screen name="AddGroup" component={AddGroup} options={{ headerShown: false }} />
+					<Stack.Screen name="AddGroupSetting" component={AddGroupSetting} options={{ headerShown: false }} />
 				</Stack.Navigator>
 			</NavigationContainer>
 		);
