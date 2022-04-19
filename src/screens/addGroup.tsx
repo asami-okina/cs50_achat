@@ -123,7 +123,7 @@ export function AddGroup({ navigation }) {
 			// Reactの差異を比較するのは、オブジェクト同士。そのため、新しくオブジェクトを作成する必要がある
 			const beforeNewData = [...beforeSelectedFriendList];
 			// findIndex: 配列内の指定されたテスト関数に合格する要素がない場合を含め、それ以外は-1を返す
-			const prev2Index = mergedSelectedFriendList.findIndex(item => item.key === rowKey);
+			const prev2Index = beforeSelectedFriendList.findIndex(item => item.key === rowKey);
 			beforeNewData.splice(prev2Index, 1);
 			setBeforeSelectedFriendList(beforeNewData);
 		}
@@ -140,7 +140,7 @@ export function AddGroup({ navigation }) {
 			// Reactの差異を比較するのは、オブジェクト同士。そのため、新しくオブジェクトを作成する必要がある
 			const afterNewData = [...afterSelectedFriendList];
 			// findIndex: 配列内の指定されたテスト関数に合格する要素がない場合を含め、それ以外は-1を返す
-			const prev2Index = mergedSelectedFriendList.findIndex(item => item.key === rowKey);
+			const prev2Index = afterSelectedFriendList.findIndex(item => item.key === rowKey);
 			afterNewData.splice(prev2Index, 1);
 			setAfterSelectedFriendList(afterNewData);
 		}

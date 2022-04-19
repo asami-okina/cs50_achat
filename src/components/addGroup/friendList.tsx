@@ -1,5 +1,5 @@
 // libs
-import React, { useState } from 'react';
+import React from 'react';
 import { View, StyleSheet, ScrollView } from 'react-native';
 
 // layouts
@@ -12,7 +12,7 @@ export function FriendList({
 	listData,
 	addFriendList,
 	deleteFriendList,
-	selectedFriendList
+	selectedFriendList,
 }) {
 	return (
 		<ScrollView>
