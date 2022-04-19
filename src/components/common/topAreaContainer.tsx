@@ -17,6 +17,7 @@ export function TopAreaContainer({
 	searchForm,
 	searchFormProps
 }) {
+	// 検索フォームの削除アイコン表示/非表示
 	const [deleteIconDisplay, setDeleteIconDisplay] = useState(false)
 	return (
 		<View style={constantsCommonStyles.topAreaContainerStyle}>
@@ -70,6 +71,7 @@ export const styles = StyleSheet.create({
 	searchIconStyle: {
 		width: ICON_SIZE,
 		height: ICON_SIZE,
-
+		marginLeft: 0,
+		marginRight: 0
 	},
 });
