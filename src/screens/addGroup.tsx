@@ -32,6 +32,9 @@ export function AddGroup({ navigation }) {
 	// どの友達を選択したか
 	const [selectedFriendList, setSelectedFriendList] = useState([])
 
+	// グループに追加する友達一覧のリストを作成
+	const [listData, setListData] = useState([]);
+
 	// ニックネームまたはグループ名の検索でヒットするユーザーまたはグループ情報の取得
 	function _searchName(searchText) {
 		let result = fetchNickNameOrGroupNameBySearchForm(searchText);
@@ -58,9 +61,6 @@ export function AddGroup({ navigation }) {
 
 	// 検索フォームのラベル化
 	let textInputSearch;
-
-	// グループに追加する友達一覧のリストを作成
-	const [listData, setListData] = useState([]);
 
 	// 選択された友達リストの追加
 	const addFriendList = (rowKey) => {
@@ -104,7 +104,7 @@ export function AddGroup({ navigation }) {
 					{/* タイトル */}
 					<AddGroupTitle text={"Friend"} />
 					{/* 友達一覧 */}
-					<FriendList listData={listData} addFriendList={addFriendList} deleteFriendList={deleteFriendList} />
+					<FriendList listData={listData} addFriendList={addFriendList} deleteFriendList={deleteFriendList} selectedFriendList={selectedFriendList} />
 				</View>
 				{/* 右下のボタン(Next, Create) */}
 				<SmallButton text={"Next"} onPressFunction={() => navigation.navigate('AddGroupSetting')} />

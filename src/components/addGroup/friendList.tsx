@@ -12,16 +12,24 @@ export function FriendList({
 	listData,
 	addFriendList,
 	deleteFriendList,
+	selectedFriendList
 }) {
-
 	return (
 		<ScrollView>
 			<View style={styles.wrapperStyle}>
 			</View>
 			<View style={styles.containerStyle}>
-				{listData.length !== 0 && listData !== undefined && listData.map((list) => (
-					<FriendListItem list={list} key={list.key} addFriendList={addFriendList} deleteFriendList={deleteFriendList} />
-				))
+				{listData.length !== 0 && listData !== undefined && listData.map((list) => {
+					// 該当友達が選択されているかどうかの判定
+					const prevIndex = selectedFriendList.findIndex(item => item.key === list.key);
+					let clecked = false
+					if (prevIndex !== -1) {
+						clecked = true
+					}
+					return (
+						<FriendListItem list={list} key={list.key} addFriendList={addFriendList} deleteFriendList={deleteFriendList} clecked={clecked} />
+					)
+				})
 				}
 			</View>
 		</ScrollView>
