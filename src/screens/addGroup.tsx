@@ -9,7 +9,7 @@ import { SmallButton } from '../components/common/smallButton';
 import { AddGroupTitle } from '../components/addGroup/addGroupTitle'
 import { FriendList } from '../components/addGroup/friendList'
 import { AddFriendList } from '../components/addGroup/addFriendList'
-
+import { AddGroupSetting } from "../screens/addGroupSetting"
 // api
 import { fetchNickNameOrGroupNameBySearchForm, fetchFriendList } from '../api/api'
 
@@ -152,7 +152,7 @@ export function AddGroup({ navigation }) {
 				{/* 画面一番上にある青色の余白部分 */}
 				<View style={constantsCommonStyles.topMarginViewStyle}></View>
 				{/* 丸みを帯びている白いトップ部分 */}
-				<TopAreaContainer title={null} searchForm={true} searchFormProps={{ "setSearchText": setSearchText, "searchText": searchText, "textInputSearch": textInputSearch, "_searchName": _searchName, "setIsDuringSearch": setIsDuringSearch }} />
+				<TopAreaContainer title={null} type={"searchForm"} searchFormProps={{ "setSearchText": setSearchText, "searchText": searchText, "textInputSearch": textInputSearch, "_searchName": _searchName, "setIsDuringSearch": setIsDuringSearch }} />
 				{/* トップ部分を除くメイン部分: iphoneXの場合は、底のマージンを考慮 */}
 				<View style={IPHONE_X_BOTTOM_SPACE === 0 ? constantsCommonStyles.withFooterMainContainerStyle : constantsCommonStyles.withFooterMainContainerIphoneXStyle}>
 					{/* 選択された友達一覧 */}
@@ -172,7 +172,7 @@ export function AddGroup({ navigation }) {
 					)}
 				</View>
 				{/* 右下のボタン(Next, Create) */}
-				<SmallButton text={"Next"} onPressFunction={() => navigation.navigate('AddGroupSetting')} />
+				<SmallButton text={"Next"} navigation={navigation} friendList={mergedSelectedFriendList} />
 				{/*フッター */}
 				<Footer navigation={navigation} />
 			</SafeAreaView>

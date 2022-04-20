@@ -5,7 +5,7 @@ import { StyleSheet, TouchableOpacity, View, Text } from 'react-native';
 // layouts
 import { MAIN_NAVY_COLOR, MAIN_WHITE_COLOR, ADD_BUTTON_SIZE, CONTENT_WIDTH, BUTTON_BORDER_RADIUS, MAIN_BLACK_COLOR, SMALL_BUTTON_WIDTH } from '../../constants/layout'
 
-export function SmallButton({ text, onPressFunction }) {
+export function SmallButton({ text,navigation,friendList }) {
 	return (
 		<View style={styles.boxStyle}>
 			<View style={styles.wrapperStyle}>
@@ -13,7 +13,7 @@ export function SmallButton({ text, onPressFunction }) {
 					<TouchableOpacity
 						style={styles.buttonStyle}
 						onPress={() => {
-							onPressFunction()
+							navigation.navigate('AddGroupSetting', {friendList: friendList})
 						}}
 					>
 						<Text style={styles.textStyle}>{text}</Text>

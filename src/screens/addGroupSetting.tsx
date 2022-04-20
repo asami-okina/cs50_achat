@@ -19,9 +19,10 @@ import { constantsCommonStyles } from '../constants/styles/commonStyles'
 // layouts
 import { IPHONE_X_BOTTOM_SPACE } from '../constants/layout'
 
-export function AddGroupSetting({ friendList }) {
+export function AddGroupSetting({ route }) {
 	// ユーザーID(今後は認証から取得するようにする)
 	const userId = "asami11"
+	const friendList = route.params.friendList
 
 	return (
 		<KeyboardAvoidingView behavior="padding" style={constantsCommonStyles.screenContainerStyle}>
@@ -29,7 +30,7 @@ export function AddGroupSetting({ friendList }) {
 				{/* 画面一番上にある青色の余白部分 */}
 				<View style={constantsCommonStyles.topMarginViewStyle}></View>
 				{/* 丸みを帯びている白いトップ部分 */}
-				{/* <TopAreaContainer title={null} searchForm={true} searchFormProps={{ "setSearchText": setSearchText, "searchText": searchText, "textInputSearch": textInputSearch, "_searchName": _searchName }} /> */}
+				<TopAreaContainer title={null} type={"addGroupSeswtting"} searchFormProps={{ "setSearchText": null, "searchText": null, "textInputSearch": null, "_searchName": null }} />
 				{/* トップ部分を除くメイン部分: iphoneXの場合は、底のマージンを考慮 */}
 				<View style={IPHONE_X_BOTTOM_SPACE === 0 ? constantsCommonStyles.withFooterMainContainerStyle : constantsCommonStyles.withFooterMainContainerIphoneXStyle}>
 					{/* 選択された友達一覧 */}

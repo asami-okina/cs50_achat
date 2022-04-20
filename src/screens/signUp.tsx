@@ -42,7 +42,7 @@ export function SignUp({ navigation }) {
 				{/* 画面一番上にある青色の余白部分 */}
 				<View style={constantsCommonStyles.topMarginViewStyle}></View>
 				{/* 丸みを帯びている白いトップ部分 */}
-				<TopAreaContainer title={'SignUp'} searchForm={false} searchFormProps={null} />
+				<TopAreaContainer title={'SignUp'} type={"signUp"} searchFormProps={null} />
 				{/* トップ部分を除くメイン部分 */}
 				<ScrollView style={constantsCommonStyles.mainContainerStyle}>
 					{/* Email */}
