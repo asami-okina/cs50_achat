@@ -4,12 +4,16 @@ import { Text, View, StyleSheet } from 'react-native';
 import { MAIN_NAVY_COLOR, CONTENT_WIDTH, TAB_FONT, TAB_HEIGHT, TAB_TITLE_TEXT_SIZE } from '../../constants/layout'
 
 export function AddGroupTitle({
-	text
+	text,
+	groupMemberCount
 }) {
 	return (
 		<View style={styles.wrapperStyle}>
 			<View style={styles.containerStyle}>
 				<Text style={styles.textStyle}>{text}</Text>
+				{groupMemberCount !== null && (
+					<Text style={styles.countStyle}>{groupMemberCount}</Text>
+				)}
 			</View>
 		</View>
 	);
@@ -35,4 +39,10 @@ const styles = StyleSheet.create({
 		fontFamily: TAB_FONT,
 		color: MAIN_NAVY_COLOR,
 	},
+	countStyle: {
+		fontSize: TAB_TITLE_TEXT_SIZE,
+		fontFamily: TAB_FONT,
+		color: MAIN_NAVY_COLOR,
+		marginLeft: 10,
+	}
 })

@@ -2,7 +2,7 @@
 import { StyleSheet } from 'react-native';
 
 // layouts
-import { MAIN_NAVY_COLOR, MAIN_WHITE_COLOR, HEAD_CONTAINER_HEIGHT, TOP_AREA_STYLE, TOP_AREA_LEFT_RADIUS, MAIN_TITLE_FONT, OPERATION_SCREEN_HEIGHT, WITH_FOOTER_OPERATION_SCREEN_HEIGHT, WITH_FOOTER_OPERATION_SCREEN_HEIGHT_IPHONE_X, MAIN_TITLE_SIZE } from '../layout'
+import { MAIN_NAVY_COLOR, MAIN_WHITE_COLOR, HEAD_CONTAINER_HEIGHT, TOP_AREA_HEIGHT, TOP_AREA_LEFT_RADIUS, MAIN_TITLE_FONT, OPERATION_SCREEN_HEIGHT, WITH_FOOTER_OPERATION_SCREEN_HEIGHT, WITH_FOOTER_OPERATION_SCREEN_HEIGHT_IPHONE_X, MAIN_TITLE_SIZE,TOP_AREA_GROUP_SETTING_HEIGHT } from '../layout'
 
 export const constantsCommonStyles = StyleSheet.create({
 	// 全画面共通
@@ -20,7 +20,15 @@ export const constantsCommonStyles = StyleSheet.create({
 	// 全画面共通
 	// 丸みを帯びている白いトップ部分
 	topAreaContainerStyle: {
-		height: TOP_AREA_STYLE,
+		height: TOP_AREA_HEIGHT,
+		backgroundColor: MAIN_WHITE_COLOR,
+		borderTopLeftRadius: TOP_AREA_LEFT_RADIUS,
+		alignItems: 'center',
+	},
+	// 全画面共通
+	// 丸みを帯びている白いトップ部分(グループ作成設定画面)
+	topAreaContainerGroupSettingStyle: {
+		height: TOP_AREA_GROUP_SETTING_HEIGHT,
 		backgroundColor: MAIN_WHITE_COLOR,
 		borderTopLeftRadius: TOP_AREA_LEFT_RADIUS,
 		alignItems: 'center',

@@ -23,14 +23,14 @@ export function AddGroupSetting({ route }) {
 	// ユーザーID(今後は認証から取得するようにする)
 	const userId = "asami11"
 	const friendList = route.params.friendList
-
+	const groupMemberCount = friendList.length
 	return (
 		<KeyboardAvoidingView behavior="padding" style={constantsCommonStyles.screenContainerStyle}>
 			<SafeAreaView style={constantsCommonStyles.screenContainerStyle}>
 				{/* 画面一番上にある青色の余白部分 */}
 				<View style={constantsCommonStyles.topMarginViewStyle}></View>
 				{/* 丸みを帯びている白いトップ部分 */}
-				<TopAreaContainer title={null} type={"addGroupSeswtting"} searchFormProps={{ "setSearchText": null, "searchText": null, "textInputSearch": null, "_searchName": null }} />
+				<TopAreaContainer title={null} type={"addGroupSetting"} searchFormProps={{ "setSearchText": null, "searchText": null, "textInputSearch": null, "_searchName": null }} />
 				{/* トップ部分を除くメイン部分: iphoneXの場合は、底のマージンを考慮 */}
 				<View style={IPHONE_X_BOTTOM_SPACE === 0 ? constantsCommonStyles.withFooterMainContainerStyle : constantsCommonStyles.withFooterMainContainerIphoneXStyle}>
 					{/* 選択された友達一覧 */}
@@ -38,7 +38,7 @@ export function AddGroupSetting({ route }) {
 						<AddFriendList selectedFriendList={selectedFriendList} deleteFriendList={deleteFriendList} />
 					)} */}
 					{/* タイトル */}
-					<AddGroupTitle text={"Friend"} />
+					<AddGroupTitle text={"Member"} groupMemberCount={groupMemberCount} />
 					{/* 友達一覧 */}
 					{/* <FriendList listData={listData} addFriendList={addFriendList} deleteFriendList={deleteFriendList} /> */}
 				</View>

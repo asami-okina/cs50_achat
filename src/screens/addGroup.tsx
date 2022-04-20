@@ -160,7 +160,7 @@ export function AddGroup({ navigation }) {
 						<AddFriendList selectedFriendList={mergedSelectedFriendList} deleteFriendList={_deleteFriendList} />
 					)}
 					{/* タイトル */}
-					<AddGroupTitle text={"Friend"} />
+					<AddGroupTitle text={"Friend"} groupMemberCount={null} />
 					{/* 友達一覧 */}
 					{/* 検索中ではない場合 */}
 					{!isDuringSearch && (

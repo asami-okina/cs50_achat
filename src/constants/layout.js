@@ -82,16 +82,19 @@ export const STATUS_BAR_HEIGHT = getStatusBarHeight()
 export const IPHONE_X_BOTTOM_SPACE = getBottomSpace()
 
 // トップ領域の高さ
-export const TOP_AREA_STYLE = 100
+export const TOP_AREA_HEIGHT = 100
+
+// トップ領域の高さ(グループ作成設定画面)
+export const TOP_AREA_GROUP_SETTING_HEIGHT = 150
 
 // フッター有画面の操作画面の高さ:iphoneX以外 　(画面の高さ - (全画面共通の青色のヘッド部分の高さ + フッターの高さ + ステータスバーの高さ + トップ領域の高さ + 友達、グループ追加ボタンの大きさ))
-export const WITH_FOOTER_OPERATION_SCREEN_HEIGHT = SCREEN_HEIGHT - (HEAD_CONTAINER_HEIGHT + FOOTER_HEIGHT + STATUS_BAR_HEIGHT + TOP_AREA_STYLE + ADD_BUTTON_SIZE)
+export const WITH_FOOTER_OPERATION_SCREEN_HEIGHT = SCREEN_HEIGHT - (HEAD_CONTAINER_HEIGHT + FOOTER_HEIGHT + STATUS_BAR_HEIGHT + TOP_AREA_HEIGHT + ADD_BUTTON_SIZE)
 
 // フッター有画面の操作画面の高さ:iphoneX 　(画面の高さ - (全画面共通の青色のヘッド部分の高さ + フッターの高さ + ステータスバーの高さ + トップ領域の高さ + iphoeXの底の高さ + 友達、グループ追加ボタンの大きさ))
-export const WITH_FOOTER_OPERATION_SCREEN_HEIGHT_IPHONE_X = SCREEN_HEIGHT - (HEAD_CONTAINER_HEIGHT + FOOTER_HEIGHT + STATUS_BAR_HEIGHT + TOP_AREA_STYLE + IPHONE_X_BOTTOM_SPACE + ADD_BUTTON_SIZE)
+export const WITH_FOOTER_OPERATION_SCREEN_HEIGHT_IPHONE_X = SCREEN_HEIGHT - (HEAD_CONTAINER_HEIGHT + FOOTER_HEIGHT + STATUS_BAR_HEIGHT + TOP_AREA_HEIGHT + IPHONE_X_BOTTOM_SPACE + ADD_BUTTON_SIZE)
 
 // フッター無画面の操作画面の高さ　(画面の高さ - (全画面共通の青色のヘッド部分の高さ + ステータスバーの高さ + トップ領域の高さ))
-export const OPERATION_SCREEN_HEIGHT = SCREEN_HEIGHT - (HEAD_CONTAINER_HEIGHT + STATUS_BAR_HEIGHT + TOP_AREA_STYLE)
+export const OPERATION_SCREEN_HEIGHT = SCREEN_HEIGHT - (HEAD_CONTAINER_HEIGHT + STATUS_BAR_HEIGHT + TOP_AREA_HEIGHT)
 
 // 検索フォームの高さ
 export const SEARCH_FORM_HEIGHT = 60
