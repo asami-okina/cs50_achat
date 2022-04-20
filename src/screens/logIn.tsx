@@ -33,6 +33,28 @@ export function LogIn({ navigation }) {
 	// ログインボタンをしたかどうか
 	const [executedLoginAuthentication, setExecutedLoginAuthentication] = useState(false)
 
+	async function asami () {
+		console.log('かいし')
+		try {
+				const res = await fetch("https://asami.dev/api/asami", {
+				method: "GET",
+				headers: {
+					"Content-Type": "application/json"
+				}
+			})
+			console.error(await res.text())
+			// .then((json)=>{
+				// console.log('json', json)
+				// ここに何らかの処理
+			// });
+		} catch(e) {
+			console.error('えらー', e)
+		}
+	}
+	console.log("test")
+	asami()
+
+
 
 	// ログイン認証
 	function _loginAuthentication() {

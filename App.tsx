@@ -28,6 +28,14 @@ import {
 
 const Stack = createNativeStackNavigator();
 
+// mock service
+import 'react-native-url-polyfill/auto';
+const { native } = require('./src/mocks/native');
+// bypass: デフォルトの設定だと、モックされていないAPIリクエストに対してコンソールに警告が表示される。
+// 消したいときは、onUnhandledRequestの設定値をbypassに変更する
+native.listen({ onUnhandledRequest: 'bypass' })
+
+
 function App() {
 	// フォントがダウンロードできていなかったら、ローディング画面を出す
 	let [fontsLoaded] = useFonts({
@@ -52,7 +60,7 @@ function App() {
 					{/* あとで更新 */}
 					{/* <Stack.Screen name="Welcome" component={Welcome} options={{ headerShown: false }} /> */}
 					{/* <Stack.Screen name="SignUp" component={SignUp} options={{ headerShown: false }} /> */}
-					{/* <Stack.Screen name="LogIn" component={LogIn} options={{ headerShown: false }} /> */}
+					<Stack.Screen name="LogIn" component={LogIn} options={{ headerShown: false }} />
 					{/* <Stack.Screen name="Home" component={Home} options={{ headerShown: false }} />
 					<Stack.Screen name="Footer" component={Footer} options={{ headerShown: false }} />
 					<Stack.Screen name="Button" component={Button} options={{ headerShown: false }} />
