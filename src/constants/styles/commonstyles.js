@@ -20,20 +20,24 @@ export const constantsCommonStyles = StyleSheet.create({
 	// 全画面共通
 	// 丸みを帯びている白いトップ部分
 	topAreaContainerStyle: {
+		display: "flex",
 		height: TOP_AREA_HEIGHT,
 		backgroundColor: MAIN_WHITE_COLOR,
 		borderTopLeftRadius: TOP_AREA_LEFT_RADIUS,
 		justifyContent: "center",
 		alignItems: "center",
+		paddingTop: 35,
 	},
 	// 全画面共通
 	// 丸みを帯びている白いトップ部分(グループ作成設定画面)
 	topAreaContainerGroupSettingStyle: {
+		display: "flex",
 		height: TOP_AREA_GROUP_SETTING_HEIGHT,
 		backgroundColor: MAIN_WHITE_COLOR,
 		borderTopLeftRadius: TOP_AREA_LEFT_RADIUS,
 		justifyContent: "center",
 		alignItems: "center",
+		paddingTop: 35,
 	},
 	// 全画面共通
 	// Welcome,SignUp,LogIn画面共通
@@ -50,7 +54,6 @@ export const constantsCommonStyles = StyleSheet.create({
 		fontSize: MAIN_TITLE_SIZE,
 		fontFamily: MAIN_TITLE_FONT,
 		color: MAIN_NAVY_COLOR,
-		marginBottom: 32,
 	},
 	// フッター無画面の操作画面の高さ
 	mainContainerStyle: {
