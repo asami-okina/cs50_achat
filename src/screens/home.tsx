@@ -11,7 +11,7 @@ import { AddButton } from '../components/common/addButton'
 import { ConfirmModal } from '../components/common/confirmModal'
 
 // api
-import { fetchGroupList, fetGroupCount, fetchFriendList, fetchFriendCount } from '../api/api'
+import { fetchFriendList, fetchFriendCount } from '../api/api'
 
 // constantsCommonStyles
 import { constantsCommonStyles } from '../constants/styles/commonStyles'
@@ -74,17 +74,46 @@ export function Home({ navigation }) {
 	}
 
 	// ユーザが所属するグループ一覧を取得
-	function _fetchGroupList(userId) {
-		let result = fetchGroupList(userId)
-		if (result.length !== 0) {
-			setGroupList(result)
+	async function _fetchGroupList(userId) {
+		try {
+			// paramsを生成
+			const params = { "userId": userId }
+			const query_params = new URLSearchParams(params);
+
+			// APIリクエスト
+			const response = await fetch(`https://a-chat/api/groups?${query_params}`, {
+				method: "GET",
+				headers: {
+					"Content-Type": "application/json"
+				},
+			})
+			// レスポンスをJSONにする
+			const parse_response = await response.json()
+			setGroupList(parse_response)
+		} catch (e) {
+			console.error(e)
 		}
 	}
 
-	// ユーザが所属するグループ数を取得
-	function _fetGroupCount(userId) {
-		let result = fetGroupCount(userId)
-		setGroupCount(result)
+	async function _fetGroupCount(userId) {
+		try {
+			// paramsを生成
+			const params = { "userId": userId }
+			const query_params = new URLSearchParams(params);
+
+			// APIリクエスト
+			const response = await fetch(`https://a-chat/api/group-count?${query_params}`, {
+				method: "GET",
+				headers: {
+					"Content-Type": "application/json"
+				},
+			})
+			// レスポンスをJSONにする
+			const parse_response = await response.json()
+			setGroupCount(parse_response)
+		} catch (e) {
+			console.error(e)
+		}
 	}
 
 	// 友達一覧を取得
@@ -136,7 +165,8 @@ export function Home({ navigation }) {
 					)}
 					{/* グループ一覧 */}
 					{openGroupList && (
-						<FriendAndGroupList groupListProps={{ "groupCount": groupCount, "setOpenGroupList": setOpenGroupList, "openGroupList": openGroupList, "groupList": groupList }} friendListProps={null} type={"Group"} setModalVisible={setModalVisible} clickedCancelMordal={clickedCancelMordal} setClickedCancelMordal={setClickedCancelMordal} clickedOkMordal={clickedOkMordal} setClickedOkMordal={setClickedOkMordal} />
+						<FriendAndGroupList groupListProps={{ "groupCount": groupCount, "setOpenGroupList": setOpenGroupList, "openGroupList": openGroupList, "groupList": groupList }} friendListProps={null} type={"Group"} setModalVisible={setModalVisible} clickedCancelMordal={clickedCancelMordal} setClickedCancelMordal={setClickedCancelMordal} clickedOkMordal={clickedOkMordal} setClickedOkMordal={setClickedOkMordal}
+						 />
 					)}
 				</View>
 				{/* 友達またはグループ追加ボタン */}

@@ -1,38 +1,3 @@
-// ユーザが所属するグループ一覧
-export const fetchGroupList = (userId) => {
-	let result = [
-		{
-			"group_chat_room_id": "1",
-			"group_name": "group 1",
-			"group_image": require("../../assets/images/group_image_1.jpg")
-		},
-		{
-			"group_chat_room_id": "2",
-			"group_name": "group 2",
-			"group_image": require("../../assets/images/group_image_2.jpg")
-		},
-		{
-			"group_chat_room_id": "3",
-			"group_name": "group 3",
-			"group_image": require("../../assets/images/group_image_2.jpg")
-		},
-		{
-			"group_chat_room_id": "4",
-			"group_name": "group 4",
-			"group_image": require("../../assets/images/group_image_2.jpg")
-		},
-	]
-	// 検索にヒットしない場合
-	// let result = []
-	return result
-}
-
-// ユーザーの所属するグループ数
-export const fetGroupCount = (userId) => {
-	let result = 4
-	return result
-}
-
 // ユーザーの友達一覧
 export const fetchFriendList = (userId) => {
 	let result = [

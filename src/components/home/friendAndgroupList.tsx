@@ -16,7 +16,7 @@ export function FriendAndGroupList({
 	clickedCancelMordal,
 	setClickedCancelMordal,
 	clickedOkMordal,
-	setClickedOkMordal
+	setClickedOkMordal,
 }) {
 	return (
 		<View style={styles.groupAndFriendWrapperStyle}>

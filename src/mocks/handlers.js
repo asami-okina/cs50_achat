@@ -88,4 +88,45 @@ export const handlers = [
 			),
 		)
 	}),
+// ユーザが所属するグループ一覧
+		rest.get('https://a-chat/api/groups', (req, res, ctx) => {
+			const parsedUrl = new URL(req.url)
+			const userId = parsedUrl.searchParams.get("userId")
+			return res(
+				ctx.status(200),
+				ctx.json(
+					[
+						{
+							"group_chat_room_id": "1",
+							"group_name": "group 1",
+							"group_image": require("../../assets/images/group_image_1.jpg")
+						},
+						{
+							"group_chat_room_id": "2",
+							"group_name": "group 2",
+							"group_image": require("../../assets/images/group_image_2.jpg")
+						},
+						{
+							"group_chat_room_id": "3",
+							"group_name": "group 3",
+							"group_image": require("../../assets/images/group_image_2.jpg")
+						},
+						{
+							"group_chat_room_id": "4",
+							"group_name": "group 4",
+							"group_image": require("../../assets/images/group_image_2.jpg")
+						},
+					]
+				),
+			)
+		}),
+		// ユーザーの所属するグループ数
+		rest.get('https://a-chat/api/group-count', (req, res, ctx) => {
+			const parsedUrl = new URL(req.url)
+			const userId = parsedUrl.searchParams.get("userId")
+			return res(
+				ctx.status(200),
+				ctx.text(4),
+			)
+		}),
 ]
