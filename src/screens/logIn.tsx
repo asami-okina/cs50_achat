@@ -67,7 +67,7 @@ export function LogIn({ navigation }) {
 				{/* 画面一番上にある青色の余白部分 */}
 				<View style={constantsCommonStyles.topMarginViewStyle}></View>
 				{/* 丸みを帯びている白いトップ部分 */}
-				<TopAreaContainer title={'Log In'} type={"login"} searchFormProps={null} />
+				<TopAreaContainer title={'Log In'} type={"login"} setSearchText={null} searchText={null} textInputSearch={null} searchName={null} fetchGroupCount={null} fetchFriendCount={null} setIsDuringSearch={null} />
 				<ScrollView style={constantsCommonStyles.mainContainerStyle}>
 					{/* ログイン認証エラー */}
 					{executedLoginAuthentication ? onFocusInputMailOrPasseword ? null : (

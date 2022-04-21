@@ -3,9 +3,6 @@ import React, { useEffect, useState } from 'react';
 import { StyleSheet, Text, TouchableOpacity, TouchableHighlight, View, Image } from 'react-native';
 import { SwipeListView } from 'react-native-swipe-list-view';
 
-// api
-import { leaveGroup } from '../../../../api/api'
-
 // layouts
 import { CONTENT_WIDTH, PROFILE_IMAGE_SIZE, STANDARD_FONT, MAIN_WHITE_COLOR, MAIN_PINK_COLOR } from '../../../../constants/layout'
 
@@ -127,7 +124,7 @@ export default function Basic({ groupList, friendList, type, setModalVisible, cl
 			// スワイプされた行を削除
 			deleteRow(rowMap, key)
 			// グループ脱退関数実行
-			leaveGroup(userId, groupChatRoomId)
+			_leaveGroup(userId, groupChatRoomId)
 			// 初期化
 			setRowMap('')
 			setkey('')
@@ -135,6 +132,25 @@ export default function Basic({ groupList, friendList, type, setModalVisible, cl
 			setGroupChatRoomId('')
 		}
 	}, [clickedCancelMordal, clickedOkMordal])
+
+	// グループから脱退
+	async function _leaveGroup(userId, groupChatRoomId) {
+		try {
+			// APIリクエスト
+			const bodyData = {
+				"groupChatRoomId": groupChatRoomId
+			}
+			const response = await fetch(`https://a-chat/api/users/${userId}/groups`, {
+				method: "DELETE",
+				headers: {
+					"Content-Type": "application/json"
+				},
+				body: JSON.stringify(bodyData),
+			})
+		} catch (e) {
+			console.error(e)
+		}
+	}
 
 	return (
 		<View style={styles.containerStyle}>

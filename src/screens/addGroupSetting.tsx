@@ -27,7 +27,7 @@ export function AddGroupSetting({ route }) {
 				{/* 画面一番上にある青色の余白部分 */}
 				<View style={constantsCommonStyles.topMarginViewStyle}></View>
 				{/* 丸みを帯びている白いトップ部分 */}
-				<TopAreaContainer title={null} type={"addGroupSetting"} searchFormProps={{ "setSearchText": null, "searchText": null, "textInputSearch": null, "_searchName": null }} />
+				<TopAreaContainer title={null} type={"addGroupSetting"} setSearchText={null} searchText={null} textInputSearch={null} searchName={null} fetchGroupCount={null} fetchFriendCount={null} setIsDuringSearch={null} />
 				{/* トップ部分を除くメイン部分: iphoneXの場合は、底のマージンを考慮 */}
 				<View style={IPHONE_X_BOTTOM_SPACE === 0 ? constantsCommonStyles.withFooterMainContainerStyle : constantsCommonStyles.withFooterMainContainerIphoneXStyle}>
 					{/* 選択された友達一覧 */}

@@ -209,4 +209,13 @@ export const handlers = [
 			),
 		)
 	}),
+	// グループから脱退
+	rest.delete('https://a-chat/api/users/:userId/groups', (req, res, ctx) => {
+		const { userId } = req.params
+		const { groupChatRoomId } = req.body
+		return res(
+			// 200のステータスコードで応答する
+			ctx.status(200)
+		)
+	}),
 ]
