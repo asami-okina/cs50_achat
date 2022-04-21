@@ -11,35 +11,41 @@ import { ICON_SIZE } from '../../../constants/layout'
 
 // 丸みを帯びている白いトップ部分
 export function SearchForm({
-	searchFormProps
+	setSearchText,
+	searchText,
+	textInputSearch,
+	_searchName,
+	_fetchGroupCount,
+	_fetchFriendCount,
+	setIsDuringSearch
 }) {
 	// 検索フォームの削除アイコン表示/非表示
 	const [deleteIconDisplay, setDeleteIconDisplay] = useState(false)
 	const userId = "asami11"
 	return (
-				<Pressable onPress={() => searchFormProps.textInputSearch.focus()} >
+				<Pressable onPress={() => textInputSearch.focus()} >
 					<View style={searchStyles.searchViewStyle}>
 						<TextInput
-							onChangeText={searchFormProps.setSearchText}
+							onChangeText={setSearchText}
 							style={searchStyles.searchContentNoneLeftIconStyle}
-							value={searchFormProps.searchText}
+							value={searchText}
 							placeholder="Search by name"
-							ref={(input) => searchFormProps.textInputSearch = input}
+							ref={(input) => textInputSearch = input}
 							autoCapitalize="none"
 							textContentType="username"
 							onFocus={() => {
 								setDeleteIconDisplay(true)
 							}}
 							onEndEditing={() => {
-								searchFormProps._searchName(searchFormProps.searchText)
+								_searchName(searchText)
 								// グループ数の再取得
-								searchFormProps._fetchGroupCount(userId)
+								_fetchGroupCount(userId)
 								// 友達数の再取得
-								searchFormProps._fetchFriendCount(userId)
+								_fetchFriendCount(userId)
 
 								// 検索中フラグをtrueにする
-								if (searchFormProps.setIsDuringSearch) {
-									searchFormProps.setIsDuringSearch(true)
+								if (setIsDuringSearch) {
+									setIsDuringSearch(true)
 								}
 
 								// 削除アイコンの表示/非表示切り替え
@@ -48,10 +54,10 @@ export function SearchForm({
 						/>
 						{deleteIconDisplay && (
 							<Pressable onPress={() => {
-								searchFormProps.textInputSearch.clear();
+								textInputSearch.clear();
 								// 検索中フラグをfalseにする
-								if (searchFormProps.setIsDuringSearch) {
-									searchFormProps.setIsDuringSearch(false)
+								if (setIsDuringSearch) {
+									setIsDuringSearch(false)
 								}
 							}} >
 								<Image source={require("../../../../assets/images/close_gray.png")} style={[searchStyles.searchIconStyle, styles.searchIconStyle]} />

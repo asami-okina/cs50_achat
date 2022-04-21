@@ -14,7 +14,13 @@ import {GroupImageAndGroupName} from "../common/_topAreaContainer/groupImageAndG
 export function TopAreaContainer({
 	title,
 	type,
-	searchFormProps
+	setSearchText,
+	searchText,
+	textInputSearch,
+	_searchName,
+	_fetchGroupCount,
+	_fetchFriendCount,
+	setIsDuringSearch
 }) {
 	return (
 		<View style={type === "addGroupSetting" ? constantsCommonStyles.topAreaContainerGroupSettingStyle : constantsCommonStyles.topAreaContainerStyle}>
@@ -23,7 +29,7 @@ export function TopAreaContainer({
 				<Text style={constantsCommonStyles.topAreaTitleStyle}>{title}</Text>
 			)}
 			{type === "searchForm" && (
-				<SearchForm searchFormProps={searchFormProps} />
+				<SearchForm setSearchText={setSearchText} searchText={searchText} textInputSearch={textInputSearch} _searchName={_searchName} _fetchGroupCount={_fetchGroupCount} _fetchFriendCount={_fetchFriendCount} setIsDuringSearch={setIsDuringSearch} />
 			)}
 			{type == "addGroupSetting" && (
 				<GroupImageAndGroupName />
