@@ -1,8 +1,13 @@
+// libs
 import React, { useRef } from 'react';
-import { View, StyleSheet, ScrollView } from 'react-native';
-import { CONTENT_WIDTH } from '../../constants/layout'
+import { View, ScrollView } from 'react-native';
 
+
+// components
 import { AddFriendListItem } from './_addFriendList/addFriendListItem'
+
+// constantsSelectedFriendStyles
+import { selectedFriendStyles } from "../../constants/styles/selectedFriendStyles"
 
 export function AddFriendList({
 	selectedFriendList,
@@ -11,8 +16,8 @@ export function AddFriendList({
 	// refの生成
 	const scrollViewRef = useRef<any>();
 	return (
-		<View style={styles.wrapperStyle}>
-			<View style={styles.containerStyle}>
+		<View style={selectedFriendStyles.wrapperStyle}>
+			<View style={selectedFriendStyles.containerStyle}>
 				{/* 横スクロールで常に右端に自動スクロール */}
 				<ScrollView
 					ref={scrollViewRef}
@@ -28,20 +33,3 @@ export function AddFriendList({
 		</View>
 	);
 }
-
-const styles = StyleSheet.create({
-	wrapperStyle: {
-		flex: 1,
-		alignItems: "center",
-		marginBottom: 10,
-		minHeight: 80,
-		maxHeight: 80,
-	},
-	containerStyle: {
-		width: CONTENT_WIDTH,
-		marginTop: 5,
-		height: 80,
-		flexDirection: "row",
-		alignItems: "center",
-	},
-})

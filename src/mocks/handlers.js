@@ -228,7 +228,7 @@ export const handlers = [
 				{
 					"userId": "asami11",
 					"nickName": "asaminn",
-					"profileImage": "https://image.png"
+					"profileImage": require("../../assets/images/friend_profile_image_1.jpg")
 				}
 			),
 		)
