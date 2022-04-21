@@ -10,9 +10,6 @@ import { AddGroupTitle } from '../components/addGroup/addGroupTitle'
 import { FriendList } from '../components/addGroup/friendList'
 import { AddFriendList } from '../components/addGroup/addFriendList'
 import { AddGroupSetting } from "../screens/addGroupSetting"
-// api
-import { fetchFriendList } from '../api/api'
-
 // constantsCommonStyles
 import { constantsCommonStyles } from '../constants/styles/commonStyles'
 
@@ -45,34 +42,48 @@ export function AddGroup({ navigation }) {
 	// 検索中かどうか
 	const [isDuringSearch, setIsDuringSearch] = useState(false)
 
-		// ニックネームでヒットするユーザーの取得
-		async function _searchName(searchText) {
-			try {
-				// paramsを生成
-				const params = { "search": searchText }
-				const query_params = new URLSearchParams(params);
+	// ニックネームでヒットするユーザーの取得
+	async function _searchName(searchText) {
+		try {
+			// paramsを生成
+			const params = { "search": searchText }
+			const query_params = new URLSearchParams(params);
 
-				// APIリクエスト
-				const response = await fetch(`https://a-chat/api/home?${query_params}`, {
-					method: "GET",
-					headers: {
-						"Content-Type": "application/json"
-					},
-				})
-				// レスポンスをJSONにする
-				const parse_response = await response.json()
-				// 友達一覧のstateを更新
-				setAfterFriendListSearch(parse_response[0]["friend"].map((_, i) => ({ ..._, key: `${i + "after"}`, type: "after" })))
-			} catch (e) {
-				console.error(e)
-			}
+			// APIリクエスト
+			const response = await fetch(`https://a-chat/api/home?${query_params}`, {
+				method: "GET",
+				headers: {
+					"Content-Type": "application/json"
+				},
+			})
+			// レスポンスをJSONにする
+			const parse_response = await response.json()
+			// 友達一覧のstateを更新
+			setAfterFriendListSearch(parse_response[0]["friend"].map((_, i) => ({ ..._, key: `${i + "after"}`, type: "after" })))
+		} catch (e) {
+			console.error(e)
 		}
+	}
 
 	// 友達一覧を取得
-	function _fetchFriendList(userId) {
-		let result = fetchFriendList(userId)
-		if (result.length !== 0) {
-			setBeforeFriendListSearch(result.map((_, i) => ({ ..._, key: `${i + "before"}`, type: "before" })))
+	async function _fetchFriendList(userId) {
+		try {
+			// paramsを生成
+			const params = { "userId": userId }
+			const query_params = new URLSearchParams(params);
+
+			// APIリクエスト
+			const response = await fetch(`https://a-chat/api/friends?${query_params}`, {
+				method: "GET",
+				headers: {
+					"Content-Type": "application/json"
+				},
+			})
+			// レスポンスをJSONにする
+			const parse_response = await response.json()
+			setBeforeFriendListSearch(parse_response.map((_, i) => ({ ..._, key: `${i + "before"}`, type: "before" })))
+		} catch (e) {
+			console.error(e)
 		}
 	}
 
