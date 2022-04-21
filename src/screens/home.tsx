@@ -10,9 +10,6 @@ import { FriendOrGroupSelectTab } from '../components/common/friendOrGroupSelect
 import { AddButton } from '../components/common/addButton'
 import { ConfirmModal } from '../components/common/confirmModal'
 
-// api
-import { fetchFriendList, fetchFriendCount } from '../api/api'
-
 // constantsCommonStyles
 import { constantsCommonStyles } from '../constants/styles/commonStyles'
 
@@ -95,6 +92,7 @@ export function Home({ navigation }) {
 		}
 	}
 
+	// ユーザが所属するグループ数を取得
 	async function _fetGroupCount(userId) {
 		try {
 			// paramsを生成
@@ -116,19 +114,49 @@ export function Home({ navigation }) {
 		}
 	}
 
-	// 友達一覧を取得
-	function _fetchFriendList(userId) {
-		let result = fetchFriendList(userId)
-		if (result.length !== 0) {
-			setFriendList(result)
+		// 友達一覧を取得
+	async function _fetchFriendList(userId) {
+		try {
+			// paramsを生成
+			const params = { "userId": userId }
+			const query_params = new URLSearchParams(params);
+
+			// APIリクエスト
+			const response = await fetch(`https://a-chat/api/friends?${query_params}`, {
+				method: "GET",
+				headers: {
+					"Content-Type": "application/json"
+				},
+			})
+			// レスポンスをJSONにする
+			const parse_response = await response.json()
+			setFriendList(parse_response)
+		} catch (e) {
+			console.error(e)
 		}
 	}
 
-	// 友達数を取得
-	function _fetchFriendCount(userId) {
-		let result = fetchFriendCount(userId)
-		setFriendCount(result)
-	}
+		// ユーザが所属するグループ数を取得
+		async function _fetchFriendCount(userId) {
+			try {
+				// paramsを生成
+				const params = { "userId": userId }
+				const query_params = new URLSearchParams(params);
+
+				// APIリクエスト
+				const response = await fetch(`https://a-chat/api/friend-count?${query_params}`, {
+					method: "GET",
+					headers: {
+						"Content-Type": "application/json"
+					},
+				})
+				// レスポンスをJSONにする
+				const parse_response = await response.json()
+				setFriendCount(parse_response)
+			} catch (e) {
+				console.error(e)
+			}
+		}
 
 	useEffect(() => {
 		if (userId) {
@@ -154,7 +182,7 @@ export function Home({ navigation }) {
 				{/* 画面一番上にある青色の余白部分 */}
 				<View style={constantsCommonStyles.topMarginViewStyle}></View>
 				{/* 丸みを帯びている白いトップ部分 */}
-				<TopAreaContainer title={null} type={"searchForm"} searchFormProps={{ "setSearchText": setSearchText, "searchText": searchText, "textInputSearch": textInputSearch, "_searchName": _searchName }} />
+				<TopAreaContainer title={null} type={"searchForm"} searchFormProps={{ "setSearchText": setSearchText, "searchText": searchText, "textInputSearch": textInputSearch, "_searchName": _searchName, "_fetGroupCount": _fetGroupCount, "_fetchFriendCount": _fetchFriendCount }} />
 				{/* トップ部分を除くメイン部分: iphoneXの場合は、底のマージンを考慮 */}
 				<View style={IPHONE_X_BOTTOM_SPACE === 0 ? constantsCommonStyles.withFooterMainContainerStyle : constantsCommonStyles.withFooterMainContainerIphoneXStyle}>
 					{/* FriendとGroupの選択タブ */}

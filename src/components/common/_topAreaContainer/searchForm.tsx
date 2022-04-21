@@ -15,6 +15,7 @@ export function SearchForm({
 }) {
 	// 検索フォームの削除アイコン表示/非表示
 	const [deleteIconDisplay, setDeleteIconDisplay] = useState(false)
+	const userId = "asami11"
 	return (
 				<Pressable onPress={() => searchFormProps.textInputSearch.focus()} >
 					<View style={searchStyles.searchViewStyle}>
@@ -31,6 +32,10 @@ export function SearchForm({
 							}}
 							onEndEditing={() => {
 								searchFormProps._searchName(searchFormProps.searchText)
+								// グループ数の再取得
+								searchFormProps._fetGroupCount(userId)
+								// 友達数の再取得
+								searchFormProps._fetchFriendCount(userId)
 
 								// 検索中フラグをtrueにする
 								if (searchFormProps.setIsDuringSearch) {
