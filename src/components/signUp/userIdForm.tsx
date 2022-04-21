@@ -2,9 +2,6 @@
 import React, { useState } from 'react';
 import { Text, View, Image, TextInput, Pressable } from 'react-native';
 
-// api
-import { fetchIsAvailableUserId } from "../../api/api";
-
 // components
 import { UserIdFormDescription } from './_description/userIdFormDescription';
 
@@ -53,15 +50,33 @@ export function UserIdForm({
 	}
 
 	// ユーザーID(使用可能かどうか)のバリデーション
-	function _isAvailableUserIdValidation() {
-		// resultには、APIからの戻り値を入れる
-		let result = fetchIsAvailableUserId(userIdText)
-		if (result.isAvailableUserId) {
-			setIsAvailableUserId(true)
-		} else {
-			setIsAvailableUserId(false)
+	async function _isAvailableUserIdValidation() {
+		try {
+			// paramsを生成
+			const params = { "userId": userIdText }
+			const query_params = new URLSearchParams(params);
+
+			// APIリクエスト
+			const response = await fetch(`https://a-chat/api/signup?${query_params}`, {
+				method: "GET",
+				headers: {
+					"Content-Type": "application/json"
+				},
+			})
+
+			// レスポンスをJSONにする
+			const parse_response = await response.json()
+			if (parse_response.isAvailableUserId) {
+				setIsAvailableUserId(true)
+			} else {
+				setIsAvailableUserId(false)
+			}
+		} catch (e) {
+			console.error(e)
 		}
 	}
+
+
 
 	return (
 		<View>

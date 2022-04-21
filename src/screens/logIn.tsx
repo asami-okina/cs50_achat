@@ -11,9 +11,6 @@ import { ForgotPassword } from '../components/logIn/forgotPasseword';
 import { MailForm } from '../components/logIn/mailForm';
 import { PasswordForm } from '../components/logIn/passwordForm';
 
-// api
-import { postLoginAuthentication } from '../api/api';
-
 // constantsCommonStyles
 import { constantsCommonStyles } from '../constants/styles/commonStyles'
 
@@ -33,42 +30,51 @@ export function LogIn({ navigation }) {
 	// ログインボタンをしたかどうか
 	const [executedLoginAuthentication, setExecutedLoginAuthentication] = useState(false)
 
-	async function asami () {
-		console.log('かいし')
+	// ログイン認証
+	async function _loginAuthentication() {
 		try {
-				const res = await fetch("https://asami.dev/api/asami", {
-				method: "GET",
+			// APIリクエスト
+			const bodyData = {
+				"mail": emailText,
+				"password": passwordText
+			}
+			const response = await fetch(`https://a-chat/api/login`, {
+				method: "POST",
 				headers: {
 					"Content-Type": "application/json"
-				}
+				},
+				body: JSON.stringify(bodyData),
 			})
-			console.error(await res.text())
-			// .then((json)=>{
-				// console.log('json', json)
-				// ここに何らかの処理
-			// });
-		} catch(e) {
-			console.error('えらー', e)
+
+			// レスポンスをJSONにする
+			const parse_response = await response.json()
+			if (parse_response.certificationResult) {
+				// Home画面へ遷移
+				navigation.navigate('Home')
+			} else {
+				// ログインボタンを押した場合
+				setExecutedLoginAuthentication(true)
+				setOnFocusInputMailOrPasseword(false)
+			}
+		} catch (e) {
+			console.error(e)
 		}
 	}
-	console.log("test")
-	asami()
 
 
-
-	// ログイン認証
-	function _loginAuthentication() {
-		// resultには、APIからの戻り値を入れる
-		let result = postLoginAuthentication(emailText, passwordText)
-		if (result.certificationResult) {
-			// Home画面へ遷移
-			navigation.navigate('Home')
-		} else {
-			// ログインボタンを押した場合
-			setExecutedLoginAuthentication(true)
-			setOnFocusInputMailOrPasseword(false)
-		}
-	}
+	// // ログイン認証
+	// function _loginAuthentication() {
+	// 	// resultには、APIからの戻り値を入れる
+	// 	let result = postLoginAuthentication(emailText, passwordText)
+	// if (result.certificationResult) {
+	// 	// Home画面へ遷移
+	// 	navigation.navigate('Home')
+	// } else {
+	// 	// ログインボタンを押した場合
+	// 	setExecutedLoginAuthentication(true)
+	// 	setOnFocusInputMailOrPasseword(false)
+	// }
+	// }
 
 	return (
 		<KeyboardAvoidingView behavior="padding" style={constantsCommonStyles.screenContainerStyle}>
