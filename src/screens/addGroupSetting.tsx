@@ -10,9 +10,6 @@ import { AddGroupTitle } from '../components/addGroup/addGroupTitle'
 import { FriendList } from '../components/addGroup/friendList'
 import { AddFriendList } from '../components/addGroup/addFriendList'
 
-// api
-import { fetchNickNameOrGroupNameBySearchForm, fetchFriendList } from '../api/api'
-
 // constantsCommonStyles
 import { constantsCommonStyles } from '../constants/styles/commonStyles'
 

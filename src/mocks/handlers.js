@@ -57,4 +57,35 @@ export const handlers = [
 			})
 		)
 	}),
+	// ニックネームまたはグループ名の検索でヒットするユーザーまたはグループ情報の取得
+	rest.get('https://a-chat/api/home', (req, res, ctx) => {
+		const parsedUrl = new URL(req.url)
+		const search = parsedUrl.searchParams.get("search")
+		return res(
+			ctx.status(200),
+			ctx.json(
+				[
+					{
+						"friend": [
+							{
+								"direct_chat_room_id": "1",
+								"friend_use_id": "asami111",
+								"friend_profile_image": require("../../assets/images/friend_profile_image_1.jpg"),
+								"friend_nickname": "検索結果name"
+							}
+						]
+					},
+					{
+						"group": [
+							{
+								"group_chat_room_id": "12",
+								"group_name": "検索結果グループ",
+								"group_image": require("../../assets/images/group_image_1.jpg")
+							}
+						]
+					}
+				]
+			),
+		)
+	}),
 ]

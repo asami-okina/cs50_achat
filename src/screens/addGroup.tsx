@@ -11,7 +11,7 @@ import { FriendList } from '../components/addGroup/friendList'
 import { AddFriendList } from '../components/addGroup/addFriendList'
 import { AddGroupSetting } from "../screens/addGroupSetting"
 // api
-import { fetchNickNameOrGroupNameBySearchForm, fetchFriendList } from '../api/api'
+import { fetchFriendList } from '../api/api'
 
 // constantsCommonStyles
 import { constantsCommonStyles } from '../constants/styles/commonStyles'
@@ -45,14 +45,28 @@ export function AddGroup({ navigation }) {
 	// 検索中かどうか
 	const [isDuringSearch, setIsDuringSearch] = useState(false)
 
-	// ニックネームまたはグループ名の検索でヒットするユーザーまたはグループ情報の取得
-	function _searchName(searchText) {
-		let result = fetchNickNameOrGroupNameBySearchForm(searchText);
-		// 友達一覧のstateを更新
-		if (result[0]["friend"].length !== 0) {
-			setAfterFriendListSearch(result[0]["friend"].map((_, i) => ({ ..._, key: `${i + "after"}`, type: "after" })))
+		// ニックネームでヒットするユーザーの取得
+		async function _searchName(searchText) {
+			try {
+				// paramsを生成
+				const params = { "search": searchText }
+				const query_params = new URLSearchParams(params);
+
+				// APIリクエスト
+				const response = await fetch(`https://a-chat/api/home?${query_params}`, {
+					method: "GET",
+					headers: {
+						"Content-Type": "application/json"
+					},
+				})
+				// レスポンスをJSONにする
+				const parse_response = await response.json()
+				// 友達一覧のstateを更新
+				setAfterFriendListSearch(parse_response[0]["friend"].map((_, i) => ({ ..._, key: `${i + "after"}`, type: "after" })))
+			} catch (e) {
+				console.error(e)
+			}
 		}
-	}
 
 	// 友達一覧を取得
 	function _fetchFriendList(userId) {

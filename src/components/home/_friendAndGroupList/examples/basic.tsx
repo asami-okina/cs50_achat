@@ -24,6 +24,21 @@ export default function Basic({ groupList, friendList, type, setModalVisible, cl
 			: friendList.map((_, i) => ({ ..._, key: `${i}` }))
 	);
 
+	// friendListの更新
+	useEffect(() => {
+		if (friendList) {
+			setListData(friendList.map((_, i) => ({ ..._, key: `${i}` })))
+		}
+	}, [friendList])
+
+	// groupListの更新
+	useEffect(() => {
+		if (groupList) {
+			setListData(groupList.map((_, i) => ({ ..._, key: `${i}` })))
+		}
+	}, [groupList])
+
+
 	// スワップされた該当行をデフォルト状態に戻す
 	const closeRow = (rowMap, rowKey) => {
 		if (rowMap[rowKey]) {

@@ -61,21 +61,6 @@ export function LogIn({ navigation }) {
 		}
 	}
 
-
-	// // ログイン認証
-	// function _loginAuthentication() {
-	// 	// resultには、APIからの戻り値を入れる
-	// 	let result = postLoginAuthentication(emailText, passwordText)
-	// if (result.certificationResult) {
-	// 	// Home画面へ遷移
-	// 	navigation.navigate('Home')
-	// } else {
-	// 	// ログインボタンを押した場合
-	// 	setExecutedLoginAuthentication(true)
-	// 	setOnFocusInputMailOrPasseword(false)
-	// }
-	// }
-
 	return (
 		<KeyboardAvoidingView behavior="padding" style={constantsCommonStyles.screenContainerStyle}>
 			<SafeAreaView style={constantsCommonStyles.screenContainerStyle}>

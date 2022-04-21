@@ -11,7 +11,7 @@ import { AddButton } from '../components/common/addButton'
 import { ConfirmModal } from '../components/common/confirmModal'
 
 // api
-import { fetchNickNameOrGroupNameBySearchForm, fetchGroupList, fetGroupCount, fetchFriendList, fetchFriendCount } from '../api/api'
+import { fetchGroupList, fetGroupCount, fetchFriendList, fetchFriendCount } from '../api/api'
 
 // constantsCommonStyles
 import { constantsCommonStyles } from '../constants/styles/commonStyles'
@@ -49,15 +49,27 @@ export function Home({ navigation }) {
 	const [clickedOkMordal, setClickedOkMordal] = useState(false)
 
 	// ニックネームまたはグループ名の検索でヒットするユーザーまたはグループ情報の取得
-	function _searchName(searchText) {
-		let result = fetchNickNameOrGroupNameBySearchForm(searchText);
-		// 友達一覧のstateを更新
-		if (result[0]["friend"].length !== 0) {
-			setFriendList(result[0]["friend"])
-		}
-		// グループ一覧のstateを更新
-		if (result[1]["group"].length !== 0) {
-			setGroupList(result[1]["group"])
+	async function _searchName(searchText) {
+		try {
+			// paramsを生成
+			const params = { "search": searchText }
+			const query_params = new URLSearchParams(params);
+
+			// APIリクエスト
+			const response = await fetch(`https://a-chat/api/home?${query_params}`, {
+				method: "GET",
+				headers: {
+					"Content-Type": "application/json"
+				},
+			})
+			// レスポンスをJSONにする
+			const parse_response = await response.json()
+			// 友達一覧のstateを更新
+			setFriendList(parse_response[0]["friend"])
+			// グループ一覧のstateを更新
+			setGroupList(parse_response[1]["group"])
+		} catch (e) {
+			console.error(e)
 		}
 	}
 
