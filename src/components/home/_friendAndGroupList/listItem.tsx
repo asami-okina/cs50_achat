@@ -8,16 +8,25 @@ import Basic from './examples/basic';
 // layouts
 import { MAIN_WHITE_COLOR } from '../../../constants/layout'
 
-export function ListItem({ groupListProps, friendListProps, type, setModalVisible, clickedCancelMordal, setClickedCancelMordal, clickedOkMordal, setClickedOkMordal }) {
+export function ListItem({
+	type,
+	setModalVisible,
+	clickedCancelMordal,
+	setClickedCancelMordal,
+	clickedOkMordal,
+	setClickedOkMordal,
+	groupList,
+	friendList,
+}) {
 	return (
 		<View style={styles.containerStyle}>
 			{/* groupの場合 */}
-			{groupListProps?.groupList.length !== 0 && groupListProps?.groupList !== undefined && (
-				<Basic groupList={groupListProps?.groupList} friendList={null} type={type} setModalVisible={setModalVisible} clickedCancelMordal={clickedCancelMordal} setClickedCancelMordal={setClickedCancelMordal} clickedOkMordal={clickedOkMordal} setClickedOkMordal={setClickedOkMordal} />
+			{groupList && groupList.length !== 0 && groupList !== undefined && (
+				<Basic groupList={groupList} friendList={null} type={type} setModalVisible={setModalVisible} clickedCancelMordal={clickedCancelMordal} setClickedCancelMordal={setClickedCancelMordal} clickedOkMordal={clickedOkMordal} setClickedOkMordal={setClickedOkMordal} />
 			)}
 			{/* friendの場合 */}
-			{friendListProps?.friendList.length !== 0 && friendListProps?.friendList !== undefined && (
-				<Basic groupList={null} friendList={friendListProps?.friendList} type={type} setModalVisible={setModalVisible} clickedCancelMordal={clickedCancelMordal} setClickedCancelMordal={setClickedCancelMordal} clickedOkMordal={clickedOkMordal} setClickedOkMordal={setClickedOkMordal} />
+			{friendList && friendList.length !== 0 && friendList !== undefined && (
+				<Basic groupList={null} friendList={friendList} type={type} setModalVisible={setModalVisible} clickedCancelMordal={clickedCancelMordal} setClickedCancelMordal={setClickedCancelMordal} clickedOkMordal={clickedOkMordal} setClickedOkMordal={setClickedOkMordal} />
 			)}
 		</View>
 	);

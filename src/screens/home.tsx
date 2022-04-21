@@ -49,7 +49,7 @@ export function Home({ navigation }) {
 	async function _searchName(searchText) {
 		try {
 			// paramsを生成
-			const params_search= { "search": searchText }
+			const params_search = { "search": searchText }
 			const query_params = new URLSearchParams(params_search);
 
 			// APIリクエスト
@@ -162,8 +162,8 @@ export function Home({ navigation }) {
 	// 検索フォームのラベル化
 	let textInputSearch;
 
-		// 検索中かどうか
-		const [isDuringSearch, setIsDuringSearch] = useState(false)
+	// 検索中かどうか
+	const [isDuringSearch, setIsDuringSearch] = useState(false)
 
 	return (
 		<KeyboardAvoidingView behavior="padding" style={constantsCommonStyles.screenContainerStyle}>
@@ -179,12 +179,13 @@ export function Home({ navigation }) {
 					{/* FriendとGroupの選択タブ */}
 					<FriendOrGroupSelectTab setOpenFriendList={setOpenFriendList} setOpenGroupList={setOpenGroupList} openFriendList={openFriendList} openGroupList={openGroupList} friendCount={friendCount} groupCount={groupCount} />
 					{/* 友達一覧 */}
-					{openFriendList && (
-						<FriendAndGroupList friendListProps={{ "friendCount": friendCount, "setOpenFriendList": setOpenFriendList, "openFriendList": openFriendList, "friendList": friendList }} groupListProps={null} type={"Friend"} setModalVisible={setModalVisible} clickedCancelMordal={clickedCancelMordal} setClickedCancelMordal={setClickedCancelMordal} clickedOkMordal={clickedOkMordal} setClickedOkMordal={setClickedOkMordal} />
+					{/* 検索中ではない場合 */}
+					{openFriendList &&(
+						<FriendAndGroupList openFriendList={openFriendList} friendList={friendList} openGroupList={openGroupList} groupList={groupList}  type={"Friend"} setModalVisible={setModalVisible} clickedCancelMordal={clickedCancelMordal} setClickedCancelMordal={setClickedCancelMordal} clickedOkMordal={clickedOkMordal} setClickedOkMordal={setClickedOkMordal} />
 					)}
 					{/* グループ一覧 */}
 					{openGroupList && (
-						<FriendAndGroupList groupListProps={{ "groupCount": groupCount, "setOpenGroupList": setOpenGroupList, "openGroupList": openGroupList, "groupList": groupList }} friendListProps={null} type={"Group"} setModalVisible={setModalVisible} clickedCancelMordal={clickedCancelMordal} setClickedCancelMordal={setClickedCancelMordal} clickedOkMordal={clickedOkMordal} setClickedOkMordal={setClickedOkMordal}
+						<FriendAndGroupList openFriendList={null} friendList={null} openGroupList={openGroupList} groupList={groupList} type={"Group"} setModalVisible={setModalVisible} clickedCancelMordal={clickedCancelMordal} setClickedCancelMordal={setClickedCancelMordal} clickedOkMordal={clickedOkMordal} setClickedOkMordal={setClickedOkMordal}
 						/>
 					)}
 				</View>
@@ -196,3 +197,13 @@ export function Home({ navigation }) {
 		</KeyboardAvoidingView>
 	);
 }
+
+					// {/* 友達一覧 */}
+					// {/* 検索中ではない場合 */}
+					// {!isDuringSearch && (
+					// 	<FriendList listData={beforeFriendListSearch} addFriendList={_addFriendList} deleteFriendList={_deleteFriendList} selectedFriendList={beforeSelectedFriendList} />
+					// )}
+					// {/* 検索中の場合 */}
+					// {isDuringSearch && (
+					// 	<FriendList listData={afterFriendListSearch} addFriendList={_addFriendList} deleteFriendList={_deleteFriendList} selectedFriendList={afterSelectedFriendList} />
+					// )}
