@@ -33,7 +33,7 @@ export function SearchForm({
 							onEndEditing={() => {
 								searchFormProps._searchName(searchFormProps.searchText)
 								// グループ数の再取得
-								searchFormProps._fetGroupCount(userId)
+								searchFormProps._fetchGroupCount(userId)
 								// 友達数の再取得
 								searchFormProps._fetchFriendCount(userId)
 
@@ -49,7 +49,10 @@ export function SearchForm({
 						{deleteIconDisplay && (
 							<Pressable onPress={() => {
 								searchFormProps.textInputSearch.clear();
-								searchFormProps.setIsDuringSearch(false)
+								// 検索中フラグをfalseにする
+								if (searchFormProps.setIsDuringSearch) {
+									searchFormProps.setIsDuringSearch(false)
+								}
 							}} >
 								<Image source={require("../../../../assets/images/close_gray.png")} style={[searchStyles.searchIconStyle, styles.searchIconStyle]} />
 							</Pressable>

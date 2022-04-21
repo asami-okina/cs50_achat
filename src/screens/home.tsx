@@ -93,7 +93,7 @@ export function Home({ navigation }) {
 	}
 
 	// ユーザが所属するグループ数を取得
-	async function _fetGroupCount(userId) {
+	async function _fetchGroupCount(userId) {
 		try {
 			// APIリクエスト
 			const response = await fetch(`https://a-chat/api/users/${userId}/group-count`, {
@@ -151,7 +151,7 @@ export function Home({ navigation }) {
 			// ユーザが所属するグループ一覧を取得
 			_fetchGroupList(userId)
 			// ユーザが所属するグループ数を取得
-			_fetGroupCount(userId)
+			_fetchGroupCount(userId)
 			// 友達一覧を取得
 			_fetchFriendList(userId)
 			// 友達数を取得
@@ -162,6 +162,9 @@ export function Home({ navigation }) {
 	// 検索フォームのラベル化
 	let textInputSearch;
 
+		// 検索中かどうか
+		const [isDuringSearch, setIsDuringSearch] = useState(false)
+
 	return (
 		<KeyboardAvoidingView behavior="padding" style={constantsCommonStyles.screenContainerStyle}>
 			<SafeAreaView style={constantsCommonStyles.screenContainerStyle}>
@@ -170,7 +173,7 @@ export function Home({ navigation }) {
 				{/* 画面一番上にある青色の余白部分 */}
 				<View style={constantsCommonStyles.topMarginViewStyle}></View>
 				{/* 丸みを帯びている白いトップ部分 */}
-				<TopAreaContainer title={null} type={"searchForm"} searchFormProps={{ "setSearchText": setSearchText, "searchText": searchText, "textInputSearch": textInputSearch, "_searchName": _searchName, "_fetGroupCount": _fetGroupCount, "_fetchFriendCount": _fetchFriendCount }} />
+				<TopAreaContainer title={null} type={"searchForm"} searchFormProps={{ "setSearchText": setSearchText, "searchText": searchText, "textInputSearch": textInputSearch, "_searchName": _searchName, "_fetGroupCount": _fetchGroupCount, "_fetchFriendCount": _fetchFriendCount ,"setIsDuringSearch": setIsDuringSearch }} />
 				{/* トップ部分を除くメイン部分: iphoneXの場合は、底のマージンを考慮 */}
 				<View style={IPHONE_X_BOTTOM_SPACE === 0 ? constantsCommonStyles.withFooterMainContainerStyle : constantsCommonStyles.withFooterMainContainerIphoneXStyle}>
 					{/* FriendとGroupの選択タブ */}
