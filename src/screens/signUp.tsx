@@ -1,13 +1,12 @@
 // libs
 import React, { useState } from 'react';
-import { View, SafeAreaView, ScrollView, KeyboardAvoidingView } from 'react-native';
+import { View, SafeAreaView, ScrollView, KeyboardAvoidingView, Text } from 'react-native';
 
 // components
 import { MailForm } from '../components/signUp/mailForm';
 import { PasswordForm } from '../components/signUp/passwordForm';
 import { UserIdForm } from '../components/signUp/userIdForm';
-import { TopAreaContainer } from '../components/common/topAreaContainer'
-// libs
+import { TopAreaWrapper } from "../components/common/topAreaWrapper"
 import { ToSignUpOrLoginTextArea } from '../components/common/toSignUpOrLoginTextArea'
 
 // components
@@ -42,7 +41,9 @@ export function SignUp({ navigation }) {
 				{/* 画面一番上にある青色の余白部分 */}
 				<View style={constantsCommonStyles.topMarginViewStyle}></View>
 				{/* 丸みを帯びている白いトップ部分 */}
-				<TopAreaContainer title={'SignUp'} type={"signUp"} setSearchText={null} searchText={null} textInputSearch={null} searchName={null} fetchGroupCount={null} fetchFriendCount={null} setIsDuringSearch={null} />
+				<TopAreaWrapper type={"signUp"}>
+					<Text style={constantsCommonStyles.topAreaTitleStyle}>Sign Up</Text>
+				</TopAreaWrapper>
 				{/* トップ部分を除くメイン部分 */}
 				<ScrollView style={constantsCommonStyles.mainContainerStyle}>
 					{/* Email */}

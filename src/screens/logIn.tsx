@@ -1,15 +1,15 @@
 // libs
 import React, { useState } from 'react';
-import { View, SafeAreaView, ScrollView, KeyboardAvoidingView } from 'react-native';
+import { View, SafeAreaView, ScrollView, KeyboardAvoidingView, Text } from 'react-native';
 
 // components
-import { TopAreaContainer } from '../components/common/topAreaContainer'
 import { ToSignUpOrLoginTextArea } from '../components/common/toSignUpOrLoginTextArea'
 import { Button } from '../components/common/button'
 import { AuthErrorText } from '../components/logIn/authErrorText';
 import { ForgotPassword } from '../components/logIn/forgotPasseword';
 import { MailForm } from '../components/logIn/mailForm';
 import { PasswordForm } from '../components/logIn/passwordForm';
+import { TopAreaWrapper } from "../components/common/topAreaWrapper"
 
 // constantsCommonStyles
 import { constantsCommonStyles } from '../constants/styles/commonStyles'
@@ -67,7 +67,9 @@ export function LogIn({ navigation }) {
 				{/* 画面一番上にある青色の余白部分 */}
 				<View style={constantsCommonStyles.topMarginViewStyle}></View>
 				{/* 丸みを帯びている白いトップ部分 */}
-				<TopAreaContainer title={'Log In'} type={"login"} setSearchText={null} searchText={null} textInputSearch={null} searchName={null} fetchGroupCount={null} fetchFriendCount={null} setIsDuringSearch={null} />
+				<TopAreaWrapper type={"login"}>
+					<Text style={constantsCommonStyles.topAreaTitleStyle}>Log In</Text>
+				</TopAreaWrapper>
 				<ScrollView style={constantsCommonStyles.mainContainerStyle}>
 					{/* ログイン認証エラー */}
 					{executedLoginAuthentication ? onFocusInputMailOrPasseword ? null : (

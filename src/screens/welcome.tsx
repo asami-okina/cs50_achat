@@ -1,13 +1,13 @@
 // libs
 import React from 'react';
-import { View, SafeAreaView, } from 'react-native';
+import { View, SafeAreaView } from 'react-native';
 
 // components
 import { Button } from '../components/common/button'
 import { HeadTitle } from '../components/common/headTitle';
 import { AChatLogo } from '../components/common/aChatLogo'
 import { ToSignUpOrLoginTextArea } from '../components/common/toSignUpOrLoginTextArea'
-import { TopAreaContainer } from '../components/common/topAreaContainer'
+import { TopAreaWrapper } from "../components/common/topAreaWrapper"
 
 // constantsCommonStyles
 import { constantsCommonStyles } from '../constants/styles/commonStyles'
@@ -18,7 +18,8 @@ export function Welcome({ navigation }) {
 			{/* 画面一番上にある青色の余白部分 */}
 			<View style={constantsCommonStyles.topMarginViewStyle}></View>
 			{/* 丸みを帯びている白いトップ部分 */}
-			<TopAreaContainer title={null} type={"welcome"} setSearchText={null} searchText={null} textInputSearch={null} searchName={null} fetchGroupCount={null} fetchFriendCount={null} setIsDuringSearch={null} />
+			<TopAreaWrapper type={"welcome"}>
+			</TopAreaWrapper>
 			<View style={constantsCommonStyles.mainContainerStyle}>
 				{/* タイトル */}
 				<HeadTitle title={"Welcome"} />

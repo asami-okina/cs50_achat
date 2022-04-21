@@ -12,7 +12,6 @@ import { Home } from './src/screens/home';
 import { Footer } from './src/components/common/footer';
 import { Button } from './src/components/common/button'
 import { ToSignUpOrLoginTextArea } from './src/components/common/toSignUpOrLoginTextArea'
-import { TopAreaContainer } from './src/components/common/topAreaContainer'
 import { AuthErrorText } from './src/components/logIn/authErrorText';
 import { ForgotPassword } from './src/components/logIn/forgotPasseword';
 import { Chats } from './src/screens/chats';
@@ -58,14 +57,13 @@ function App() {
 			<NavigationContainer>
 				<Stack.Navigator>
 					{/* あとで更新 */}
-					{/* <Stack.Screen name="Welcome" component={Welcome} options={{ headerShown: false }} /> */}
-					{/* <Stack.Screen name="SignUp" component={SignUp} options={{ headerShown: false }} /> */}
-					{/* <Stack.Screen name="LogIn" component={LogIn} options={{ headerShown: false }} /> */}
+					<Stack.Screen name="Welcome" component={Welcome} options={{ headerShown: false }} />
+					<Stack.Screen name="SignUp" component={SignUp} options={{ headerShown: false }} />
+					<Stack.Screen name="LogIn" component={LogIn} options={{ headerShown: false }} />
 					<Stack.Screen name="Home" component={Home} options={{ headerShown: false }} />
 					<Stack.Screen name="Footer" component={Footer} options={{ headerShown: false }} />
 					<Stack.Screen name="Button" component={Button} options={{ headerShown: false }} />
 					<Stack.Screen name="ToSignUpOrLoginTextArea" component={ToSignUpOrLoginTextArea} options={{ headerShown: false }} />
-					<Stack.Screen name="TopAreaContainer" component={TopAreaContainer} options={{ headerShown: false }} />
 					<Stack.Screen name="AuthErrorText" component={AuthErrorText} options={{ headerShown: false }} />
 					<Stack.Screen name="ForgotPassword" component={ForgotPassword} options={{ headerShown: false }} />
 					<Stack.Screen name="Chats" component={Chats} options={{ headerShown: false }} />

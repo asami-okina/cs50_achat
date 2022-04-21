@@ -4,12 +4,15 @@ import { View, SafeAreaView, KeyboardAvoidingView } from 'react-native';
 
 // components
 import { Footer } from '../components/common/footer'
-import { TopAreaContainer } from '../components/common/topAreaContainer'
 import { SmallButton } from '../components/common/smallButton';
 import { AddGroupTitle } from '../components/addGroup/addGroupTitle'
 import { FriendList } from '../components/addGroup/friendList'
 import { AddFriendList } from '../components/addGroup/addFriendList'
 import { AddGroupSetting } from "../screens/addGroupSetting"
+import { TopAreaWrapper } from "../components/common/topAreaWrapper"
+import { SearchForm } from "../components/common/_topAreaContainer/searchForm"
+
+
 // constantsCommonStyles
 import { constantsCommonStyles } from '../constants/styles/commonStyles'
 
@@ -175,7 +178,9 @@ export function AddGroup({ navigation }) {
 				{/* 画面一番上にある青色の余白部分 */}
 				<View style={constantsCommonStyles.topMarginViewStyle}></View>
 				{/* 丸みを帯びている白いトップ部分 */}
-				<TopAreaContainer title={null} type={"searchForm"} setSearchText={setSearchText} searchText={searchText} textInputSearch={textInputSearch } searchName={_searchName } fetchGroupCount={null} fetchFriendCount={null} setIsDuringSearch={setIsDuringSearch} />
+				<TopAreaWrapper type={"searchForm"}>
+				<SearchForm setSearchText={setSearchText} searchText={searchText} textInputSearch={textInputSearch} searchName={_searchName} fetchGroupCount={null} fetchFriendCount={null} setIsDuringSearch={setIsDuringSearch} />
+				</TopAreaWrapper>
 				{/* トップ部分を除くメイン部分: iphoneXの場合は、底のマージンを考慮 */}
 				<View style={IPHONE_X_BOTTOM_SPACE === 0 ? constantsCommonStyles.withFooterMainContainerStyle : constantsCommonStyles.withFooterMainContainerIphoneXStyle}>
 					{/* 選択された友達一覧 */}

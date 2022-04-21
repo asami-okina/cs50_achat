@@ -23,7 +23,8 @@ export const constantsCommonStyles = StyleSheet.create({
 		height: TOP_AREA_HEIGHT,
 		backgroundColor: MAIN_WHITE_COLOR,
 		borderTopLeftRadius: TOP_AREA_LEFT_RADIUS,
-		alignItems: 'center',
+		justifyContent: "center",
+		alignItems: "center",
 	},
 	// 全画面共通
 	// 丸みを帯びている白いトップ部分(グループ作成設定画面)
@@ -31,7 +32,8 @@ export const constantsCommonStyles = StyleSheet.create({
 		height: TOP_AREA_GROUP_SETTING_HEIGHT,
 		backgroundColor: MAIN_WHITE_COLOR,
 		borderTopLeftRadius: TOP_AREA_LEFT_RADIUS,
-		alignItems: 'center',
+		justifyContent: "center",
+		alignItems: "center",
 	},
 	// 全画面共通
 	// Welcome,SignUp,LogIn画面共通
