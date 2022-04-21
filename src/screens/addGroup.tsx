@@ -69,12 +69,8 @@ export function AddGroup({ navigation }) {
 	// 友達一覧を取得
 	async function _fetchFriendList(userId) {
 		try {
-			// paramsを生成
-			const params = { "userId": userId }
-			const query_params = new URLSearchParams(params);
-
 			// APIリクエスト
-			const response = await fetch(`https://a-chat/api/users/${userId}/friends?${query_params}`, {
+			const response = await fetch(`https://a-chat/api/users/${userId}/friends`, {
 				method: "GET",
 				headers: {
 					"Content-Type": "application/json"
