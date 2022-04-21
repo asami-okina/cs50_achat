@@ -36,8 +36,8 @@ export const handlers = [
 	// }),
 	// 会員登録
 	rest.get('https://a-chat/api/signup', (req, res, ctx) => {
-		// const parsedUrl = new URL(req.url)
-		// const userId = parsedUrl.searchParams.get("userId")
+		const parsedUrl = new URL(req.url)
+		const userId = parsedUrl.searchParams.get("userId")
 		return res(
 			ctx.status(200),
 			ctx.json({
@@ -58,8 +58,9 @@ export const handlers = [
 		)
 	}),
 	// ニックネームまたはグループ名の検索でヒットするユーザーまたはグループ情報の取得
-	rest.get('https://a-chat/api/home', (req, res, ctx) => {
+	rest.get(`https://a-chat/api/users/:query_params_userid/home`, (req, res, ctx) => {
 		const parsedUrl = new URL(req.url)
+		console.log('parsedUrl', parsedUrl)
 		const search = parsedUrl.searchParams.get("search")
 		return res(
 			ctx.status(200),

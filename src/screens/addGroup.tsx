@@ -46,11 +46,10 @@ export function AddGroup({ navigation }) {
 	async function _searchName(searchText) {
 		try {
 			// paramsを生成
-			const params = { "search": searchText }
+			const params= { "search": searchText }
 			const query_params = new URLSearchParams(params);
-
 			// APIリクエスト
-			const response = await fetch(`https://a-chat/api/home?${query_params}`, {
+			const response = await fetch(`https://a-chat/api/users/${userId}/home?${query_params}`, {
 				method: "GET",
 				headers: {
 					"Content-Type": "application/json"

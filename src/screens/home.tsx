@@ -49,11 +49,11 @@ export function Home({ navigation }) {
 	async function _searchName(searchText) {
 		try {
 			// paramsを生成
-			const params = { "search": searchText }
-			const query_params = new URLSearchParams(params);
+			const params_search= { "search": searchText }
+			const query_params = new URLSearchParams(params_search);
 
 			// APIリクエスト
-			const response = await fetch(`https://a-chat/api/home?${query_params}`, {
+			const response = await fetch(`https://a-chat/api/users/${userId}/home?${query_params}`, {
 				method: "GET",
 				headers: {
 					"Content-Type": "application/json"
@@ -114,7 +114,7 @@ export function Home({ navigation }) {
 		}
 	}
 
-		// 友達一覧を取得
+	// 友達一覧を取得
 	async function _fetchFriendList(userId) {
 		try {
 			// paramsを生成
@@ -136,27 +136,27 @@ export function Home({ navigation }) {
 		}
 	}
 
-		// ユーザが所属するグループ数を取得
-		async function _fetchFriendCount(userId) {
-			try {
-				// paramsを生成
-				const params = { "userId": userId }
-				const query_params = new URLSearchParams(params);
+	// ユーザが所属するグループ数を取得
+	async function _fetchFriendCount(userId) {
+		try {
+			// paramsを生成
+			const params = { "userId": userId }
+			const query_params = new URLSearchParams(params);
 
-				// APIリクエスト
-				const response = await fetch(`https://a-chat/api/friend-count?${query_params}`, {
-					method: "GET",
-					headers: {
-						"Content-Type": "application/json"
-					},
-				})
-				// レスポンスをJSONにする
-				const parse_response = await response.json()
-				setFriendCount(parse_response)
-			} catch (e) {
-				console.error(e)
-			}
+			// APIリクエスト
+			const response = await fetch(`https://a-chat/api/friend-count?${query_params}`, {
+				method: "GET",
+				headers: {
+					"Content-Type": "application/json"
+				},
+			})
+			// レスポンスをJSONにする
+			const parse_response = await response.json()
+			setFriendCount(parse_response)
+		} catch (e) {
+			console.error(e)
 		}
+	}
 
 	useEffect(() => {
 		if (userId) {
@@ -194,7 +194,7 @@ export function Home({ navigation }) {
 					{/* グループ一覧 */}
 					{openGroupList && (
 						<FriendAndGroupList groupListProps={{ "groupCount": groupCount, "setOpenGroupList": setOpenGroupList, "openGroupList": openGroupList, "groupList": groupList }} friendListProps={null} type={"Group"} setModalVisible={setModalVisible} clickedCancelMordal={clickedCancelMordal} setClickedCancelMordal={setClickedCancelMordal} clickedOkMordal={clickedOkMordal} setClickedOkMordal={setClickedOkMordal}
-						 />
+						/>
 					)}
 				</View>
 				{/* 友達またはグループ追加ボタン */}
