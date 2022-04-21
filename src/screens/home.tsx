@@ -171,7 +171,7 @@ export function Home({ navigation }) {
 				{/* 画面一番上にある青色の余白部分 */}
 				<View style={constantsCommonStyles.topMarginViewStyle}></View>
 				{/* 丸みを帯びている白いトップ部分 */}
-				<TopAreaContainer title={null} type={"searchForm"} setSearchText={setSearchText} searchText={searchText} textInputSearch={textInputSearch} _searchName={_searchName} _fetchGroupCount={_fetchGroupCount} _fetchFriendCount={_fetchFriendCount} setIsDuringSearch={setIsDuringSearch} />
+				<TopAreaContainer title={null} type={"searchForm"} setSearchText={setSearchText} searchText={searchText} textInputSearch={textInputSearch} searchName={_searchName} fetchGroupCount={_fetchGroupCount} fetchFriendCount={_fetchFriendCount} setIsDuringSearch={setIsDuringSearch} />
 				{/* トップ部分を除くメイン部分: iphoneXの場合は、底のマージンを考慮 */}
 				<View style={IPHONE_X_BOTTOM_SPACE === 0 ? constantsCommonStyles.withFooterMainContainerStyle : constantsCommonStyles.withFooterMainContainerIphoneXStyle}>
 					{/* FriendとGroupの選択タブ */}

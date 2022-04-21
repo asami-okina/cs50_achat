@@ -17,9 +17,9 @@ export function TopAreaContainer({
 	setSearchText,
 	searchText,
 	textInputSearch,
-	_searchName,
-	_fetchGroupCount,
-	_fetchFriendCount,
+	searchName,
+	fetchGroupCount,
+	fetchFriendCount,
 	setIsDuringSearch
 }) {
 	return (
@@ -29,7 +29,7 @@ export function TopAreaContainer({
 				<Text style={constantsCommonStyles.topAreaTitleStyle}>{title}</Text>
 			)}
 			{type === "searchForm" && (
-				<SearchForm setSearchText={setSearchText} searchText={searchText} textInputSearch={textInputSearch} _searchName={_searchName} _fetchGroupCount={_fetchGroupCount} _fetchFriendCount={_fetchFriendCount} setIsDuringSearch={setIsDuringSearch} />
+				<SearchForm setSearchText={setSearchText} searchText={searchText} textInputSearch={textInputSearch} searchName={searchName} fetchGroupCount={fetchGroupCount} fetchFriendCount={fetchFriendCount} setIsDuringSearch={setIsDuringSearch} />
 			)}
 			{type == "addGroupSetting" && (
 				<GroupImageAndGroupName />

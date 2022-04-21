@@ -38,13 +38,6 @@ export function AddGroup({ navigation }) {
 	// [検索後]選択した友達一覧リスト
 	const [afterSelectedFriendList, setAfterSelectedFriendList] = useState([])
 
-	// 所属グループ数
-	const [groupCount, setGroupCount] = useState(0)
-
-	// 友達数
-	const [friendCount, setFriendCount] = useState(0)
-
-
 	// 検索中かどうか
 	const [isDuringSearch, setIsDuringSearch] = useState(false)
 
@@ -98,43 +91,6 @@ export function AddGroup({ navigation }) {
 			_fetchFriendList(userId)
 		}
 	}, [])
-
-	// ユーザが所属するグループ数を取得
-	async function _fetchGroupCount(userId) {
-		try {
-			// APIリクエスト
-			const response = await fetch(`https://a-chat/api/users/${userId}/group-count`, {
-				method: "GET",
-				headers: {
-					"Content-Type": "application/json"
-				},
-			})
-			// レスポンスをJSONにする
-			const parse_response = await response.json()
-			setGroupCount(parse_response)
-		} catch (e) {
-			console.error(e)
-		}
-	}
-
-	// ユーザが所属するグループ数を取得
-	async function _fetchFriendCount(userId) {
-		try {
-			// APIリクエスト
-			const response = await fetch(`https://a-chat/api/users/${userId}/friend-count`, {
-				method: "GET",
-				headers: {
-					"Content-Type": "application/json"
-				},
-			})
-			// レスポンスをJSONにする
-			const parse_response = await response.json()
-			setFriendCount(parse_response)
-		} catch (e) {
-			console.error(e)
-		}
-	}
-
 
 	// 検索フォームのラベル化
 	let textInputSearch;
@@ -219,7 +175,7 @@ export function AddGroup({ navigation }) {
 				{/* 画面一番上にある青色の余白部分 */}
 				<View style={constantsCommonStyles.topMarginViewStyle}></View>
 				{/* 丸みを帯びている白いトップ部分 */}
-				<TopAreaContainer title={null} type={"searchForm"} setSearchText={setSearchText} searchText={searchText} textInputSearch={textInputSearch } _searchName={_searchName } _fetchGroupCount={_fetchGroupCount} _fetchFriendCount={_fetchFriendCount} setIsDuringSearch={setIsDuringSearch} />
+				<TopAreaContainer title={null} type={"searchForm"} setSearchText={setSearchText} searchText={searchText} textInputSearch={textInputSearch } searchName={_searchName } fetchGroupCount={null} fetchFriendCount={null} setIsDuringSearch={setIsDuringSearch} />
 				{/* トップ部分を除くメイン部分: iphoneXの場合は、底のマージンを考慮 */}
 				<View style={IPHONE_X_BOTTOM_SPACE === 0 ? constantsCommonStyles.withFooterMainContainerStyle : constantsCommonStyles.withFooterMainContainerIphoneXStyle}>
 					{/* 選択された友達一覧 */}
