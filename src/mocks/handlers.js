@@ -59,9 +59,9 @@ export const handlers = [
 	}),
 	// ニックネームまたはグループ名の検索でヒットするユーザーまたはグループ情報の取得
 	rest.get(`https://a-chat/api/users/:userId/home`, (req, res, ctx) => {
-		// // userIdの取得
+		// userIdの取得
 		const { userId } = req.params
-		// // search文言の取得
+		// search文言の取得
 		const parsedUrl = new URL(req.url)
 		const searchText = parsedUrl.searchParams.get("search")
 		return res(
@@ -216,6 +216,21 @@ export const handlers = [
 		return res(
 			// 200のステータスコードで応答する
 			ctx.status(200)
+		)
+	}),
+	// ユーザーIDに紐づくニックネーム、プロフィール画像の取得
+	rest.get(`https://a-chat/api/users/:userId/profile`, (req, res, ctx) => {
+		// userIdの取得
+		const { userId } = req.params
+		return res(
+			ctx.status(200),
+			ctx.json(
+				{
+					"userId": "asami11",
+					"nickName": "asaminn",
+					"profileImage": "https://image.png"
+				}
+			),
 		)
 	}),
 ]
