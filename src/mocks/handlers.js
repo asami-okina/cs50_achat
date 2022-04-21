@@ -58,10 +58,12 @@ export const handlers = [
 		)
 	}),
 	// ニックネームまたはグループ名の検索でヒットするユーザーまたはグループ情報の取得
-	rest.get(`https://a-chat/api/users/:query_params_userid/home`, (req, res, ctx) => {
+	rest.get(`https://a-chat/api/users/:user-id/home`, (req, res, ctx) => {
+		// userIdの取得
+		const { userId } = req.params
+		// search文言の取得
 		const parsedUrl = new URL(req.url)
-		console.log('parsedUrl', parsedUrl)
-		const search = parsedUrl.searchParams.get("search")
+		const searchText = parsedUrl.searchParams.get("search")
 		return res(
 			ctx.status(200),
 			ctx.json(
@@ -90,9 +92,8 @@ export const handlers = [
 		)
 	}),
 	// ユーザが所属するグループ一覧
-	rest.get('https://a-chat/api/groups', (req, res, ctx) => {
-		const parsedUrl = new URL(req.url)
-		const userId = parsedUrl.searchParams.get("userId")
+	rest.get('https://a-chat/api/users/:userId/groups', (req, res, ctx) => {
+		const { userId } = req.params
 		return res(
 			ctx.status(200),
 			ctx.json(
@@ -122,27 +123,24 @@ export const handlers = [
 		)
 	}),
 	// ユーザーの所属するグループ数
-	rest.get('https://a-chat/api/group-count', (req, res, ctx) => {
-		const parsedUrl = new URL(req.url)
-		const userId = parsedUrl.searchParams.get("userId")
+	rest.get('https://a-chat/api/users/:userId/group-count', (req, res, ctx) => {
+		const { userId } = req.params
 		return res(
 			ctx.status(200),
 			ctx.text(1),
 		)
 	}),
 	// ユーザの友達数
-	rest.get('https://a-chat/api/friend-count', (req, res, ctx) => {
-		const parsedUrl = new URL(req.url)
-		const userId = parsedUrl.searchParams.get("userId")
+	rest.get('https://a-chat/api/users/:userId/friend-count', (req, res, ctx) => {
+		const { userId } = req.params
 		return res(
 			ctx.status(200),
-			ctx.text(1),
+			ctx.text(4),
 		)
 	}),
 	// ユーザーの友達一覧
-	rest.get('https://a-chat/api/friends', (req, res, ctx) => {
-		const parsedUrl = new URL(req.url)
-		const userId = parsedUrl.searchParams.get("userId")
+	rest.get('https://a-chat/api/users/:userId/friends', (req, res, ctx) => {
+		const { userId } = req.params
 		return res(
 			ctx.status(200),
 			ctx.json(

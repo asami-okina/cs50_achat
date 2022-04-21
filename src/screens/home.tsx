@@ -74,11 +74,11 @@ export function Home({ navigation }) {
 	async function _fetchGroupList(userId) {
 		try {
 			// paramsを生成
-			const params = { "userId": userId }
-			const query_params = new URLSearchParams(params);
+			// const params = { "userId": userId }
+			// const query_params = new URLSearchParams(params);
 
 			// APIリクエスト
-			const response = await fetch(`https://a-chat/api/groups?${query_params}`, {
+			const response = await fetch(`https://a-chat/api/users/${userId}/groups`, {
 				method: "GET",
 				headers: {
 					"Content-Type": "application/json"
@@ -95,12 +95,8 @@ export function Home({ navigation }) {
 	// ユーザが所属するグループ数を取得
 	async function _fetGroupCount(userId) {
 		try {
-			// paramsを生成
-			const params = { "userId": userId }
-			const query_params = new URLSearchParams(params);
-
 			// APIリクエスト
-			const response = await fetch(`https://a-chat/api/group-count?${query_params}`, {
+			const response = await fetch(`https://a-chat/api/users/${userId}/group-count`, {
 				method: "GET",
 				headers: {
 					"Content-Type": "application/json"
@@ -117,12 +113,8 @@ export function Home({ navigation }) {
 	// 友達一覧を取得
 	async function _fetchFriendList(userId) {
 		try {
-			// paramsを生成
-			const params = { "userId": userId }
-			const query_params = new URLSearchParams(params);
-
 			// APIリクエスト
-			const response = await fetch(`https://a-chat/api/friends?${query_params}`, {
+			const response = await fetch(`https://a-chat/api/users/${userId}/friends`, {
 				method: "GET",
 				headers: {
 					"Content-Type": "application/json"
@@ -139,12 +131,8 @@ export function Home({ navigation }) {
 	// ユーザが所属するグループ数を取得
 	async function _fetchFriendCount(userId) {
 		try {
-			// paramsを生成
-			const params = { "userId": userId }
-			const query_params = new URLSearchParams(params);
-
 			// APIリクエスト
-			const response = await fetch(`https://a-chat/api/friend-count?${query_params}`, {
+			const response = await fetch(`https://a-chat/api/users/${userId}/friend-count`, {
 				method: "GET",
 				headers: {
 					"Content-Type": "application/json"
