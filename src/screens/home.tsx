@@ -22,28 +22,33 @@ export function Home({ navigation }) {
 
 	// 検索フォーム
 	const [searchText, setSearchText] = useState('')
+	// 検索中かどうか
+	const [isDuringSearch, setIsDuringSearch] = useState(false)
 
 	// グループ削除確認モーダル
 	const [modalVisible, setModalVisible] = useState(false);
+	// 削除時の確認モーダルでCancelを押したかどうか
+	const [clickedCancelMordal, setClickedCancelMordal] = useState(false)
+	// 削除時の確認モーダルでOkを押したかどうか
+	const [clickedOkMordal, setClickedOkMordal] = useState(false)
 
-	// 友達一覧リスト
-	const [friendList, setFriendList] = useState([])
+	// [検索前]APIから取得した友達一覧リスト
+	const [beforeFriendListSearch, setBeforeFriendListSearch] = useState([])
+	// [検索後]APIから取得した友達一覧リスト
+	const [afterFriendListSearch, setAfterFriendListSearch] = useState([])
 	// 友達一覧を開くかどうか
 	const [openFriendList, setOpenFriendList] = useState(true)
 	// 友達数
 	const [friendCount, setFriendCount] = useState(0)
 
-	// グループ一覧リスト
-	const [groupList, setGroupList] = useState([])
+	// [検索前]APIから取得したグループ一覧リスト
+	const [beforeGroupListSearch, setBeforeGroupListSearch] = useState([])
+	// [検索後]APIから取得したグループ一覧リスト
+	const [afterGroupListSearch, setAfterGroupListSearch] = useState([])
 	// グループ一覧を開くかどうか
 	const [openGroupList, setOpenGroupList] = useState(false)
 	// 所属グループ数
 	const [groupCount, setGroupCount] = useState(0)
-
-	// 削除時の確認モーダルでCancelを押したかどうか
-	const [clickedCancelMordal, setClickedCancelMordal] = useState(false)
-	// 削除時の確認モーダルでOkを押したかどうか
-	const [clickedOkMordal, setClickedOkMordal] = useState(false)
 
 	// ニックネームまたはグループ名の検索でヒットするユーザーまたはグループ情報の取得
 	async function _searchName(searchText) {
@@ -62,9 +67,9 @@ export function Home({ navigation }) {
 			// レスポンスをJSONにする
 			const parse_response = await response.json()
 			// 友達一覧のstateを更新
-			setFriendList(parse_response[0]["friend"])
+			setAfterFriendListSearch(parse_response[0]["friend"])
 			// グループ一覧のstateを更新
-			setGroupList(parse_response[1]["group"])
+			setAfterGroupListSearch(parse_response[1]["group"])
 		} catch (e) {
 			console.error(e)
 		}
@@ -73,10 +78,6 @@ export function Home({ navigation }) {
 	// ユーザが所属するグループ一覧を取得
 	async function _fetchGroupList(userId) {
 		try {
-			// paramsを生成
-			// const params = { "userId": userId }
-			// const query_params = new URLSearchParams(params);
-
 			// APIリクエスト
 			const response = await fetch(`https://a-chat/api/users/${userId}/groups`, {
 				method: "GET",
@@ -86,7 +87,7 @@ export function Home({ navigation }) {
 			})
 			// レスポンスをJSONにする
 			const parse_response = await response.json()
-			setGroupList(parse_response)
+			setBeforeGroupListSearch(parse_response)
 		} catch (e) {
 			console.error(e)
 		}
@@ -122,7 +123,7 @@ export function Home({ navigation }) {
 			})
 			// レスポンスをJSONにする
 			const parse_response = await response.json()
-			setFriendList(parse_response)
+			setBeforeFriendListSearch(parse_response)
 		} catch (e) {
 			console.error(e)
 		}
@@ -162,9 +163,6 @@ export function Home({ navigation }) {
 	// 検索フォームのラベル化
 	let textInputSearch;
 
-	// 検索中かどうか
-	const [isDuringSearch, setIsDuringSearch] = useState(false)
-
 	return (
 		<KeyboardAvoidingView behavior="padding" style={constantsCommonStyles.screenContainerStyle}>
 			<SafeAreaView style={constantsCommonStyles.screenContainerStyle}>
@@ -180,12 +178,22 @@ export function Home({ navigation }) {
 					<FriendOrGroupSelectTab setOpenFriendList={setOpenFriendList} setOpenGroupList={setOpenGroupList} openFriendList={openFriendList} openGroupList={openGroupList} friendCount={friendCount} groupCount={groupCount} />
 					{/* 友達一覧 */}
 					{/* 検索中ではない場合 */}
-					{openFriendList &&(
-						<FriendAndGroupList openFriendList={openFriendList} friendList={friendList} openGroupList={openGroupList} groupList={groupList}  type={"Friend"} setModalVisible={setModalVisible} clickedCancelMordal={clickedCancelMordal} setClickedCancelMordal={setClickedCancelMordal} clickedOkMordal={clickedOkMordal} setClickedOkMordal={setClickedOkMordal} />
+					{!isDuringSearch && openFriendList && (
+						<FriendAndGroupList openFriendList={openFriendList} friendList={beforeFriendListSearch} openGroupList={null} groupList={null} type={"Friend"} setModalVisible={setModalVisible} clickedCancelMordal={clickedCancelMordal} setClickedCancelMordal={setClickedCancelMordal} clickedOkMordal={clickedOkMordal} setClickedOkMordal={setClickedOkMordal} />
+					)}
+					{/* 検索中の場合 */}
+					{isDuringSearch && openFriendList && (
+						<FriendAndGroupList openFriendList={openFriendList} friendList={afterFriendListSearch} openGroupList={null} groupList={null} type={"Friend"} setModalVisible={setModalVisible} clickedCancelMordal={clickedCancelMordal} setClickedCancelMordal={setClickedCancelMordal} clickedOkMordal={clickedOkMordal} setClickedOkMordal={setClickedOkMordal} />
 					)}
 					{/* グループ一覧 */}
-					{openGroupList && (
-						<FriendAndGroupList openFriendList={null} friendList={null} openGroupList={openGroupList} groupList={groupList} type={"Group"} setModalVisible={setModalVisible} clickedCancelMordal={clickedCancelMordal} setClickedCancelMordal={setClickedCancelMordal} clickedOkMordal={clickedOkMordal} setClickedOkMordal={setClickedOkMordal}
+					{/* 検索中ではない場合 */}
+					{!isDuringSearch && openGroupList && (
+						<FriendAndGroupList openFriendList={null} friendList={null} openGroupList={openGroupList} groupList={beforeGroupListSearch} type={"Group"} setModalVisible={setModalVisible} clickedCancelMordal={clickedCancelMordal} setClickedCancelMordal={setClickedCancelMordal} clickedOkMordal={clickedOkMordal} setClickedOkMordal={setClickedOkMordal}
+						/>
+					)}
+					{/* 検索中の場合 */}
+					{isDuringSearch && openGroupList && (
+						<FriendAndGroupList openFriendList={null} friendList={null} openGroupList={openGroupList} groupList={afterGroupListSearch} type={"Group"} setModalVisible={setModalVisible} clickedCancelMordal={clickedCancelMordal} setClickedCancelMordal={setClickedCancelMordal} clickedOkMordal={clickedOkMordal} setClickedOkMordal={setClickedOkMordal}
 						/>
 					)}
 				</View>
@@ -197,13 +205,3 @@ export function Home({ navigation }) {
 		</KeyboardAvoidingView>
 	);
 }
-
-					// {/* 友達一覧 */}
-					// {/* 検索中ではない場合 */}
-					// {!isDuringSearch && (
-					// 	<FriendList listData={beforeFriendListSearch} addFriendList={_addFriendList} deleteFriendList={_deleteFriendList} selectedFriendList={beforeSelectedFriendList} />
-					// )}
-					// {/* 検索中の場合 */}
-					// {isDuringSearch && (
-					// 	<FriendList listData={afterFriendListSearch} addFriendList={_addFriendList} deleteFriendList={_deleteFriendList} selectedFriendList={afterSelectedFriendList} />
-					// )}
