@@ -17,7 +17,8 @@ export function SearchForm({
 	searchName,
 	fetchGroupCount,
 	fetchFriendCount,
-	setIsDuringSearch
+	setIsDuringSearch,
+	placeholder
 }) {
 	// 検索フォームの削除アイコン表示/非表示
 	const [deleteIconDisplay, setDeleteIconDisplay] = useState(false)
@@ -29,7 +30,7 @@ export function SearchForm({
 					onChangeText={setSearchText}
 					style={searchStyles.searchContentNoneLeftIconStyle}
 					value={searchText}
-					placeholder="Search by name"
+					placeholder={placeholder}
 					ref={(input) => textInputSearch = input}
 					autoCapitalize="none"
 					textContentType="username"

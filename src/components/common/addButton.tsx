@@ -14,7 +14,7 @@ export function AddButton({ navigation, openFriendList, openGroupList }) {
 						style={styles.buttonStyle}
 						onPress={() => {
 							if (openFriendList) {
-								// navigation.navigate('')
+								navigation.navigate('AddFriend')
 							}
 							if (openGroupList) {
 								navigation.navigate('AddGroup')

@@ -17,6 +17,7 @@ import { ForgotPassword } from './src/components/logIn/forgotPasseword';
 import { Chats } from './src/screens/chats';
 import { AddGroup } from './src/screens/addGroup'
 import { AddGroupSetting } from './src/screens/addGroupSetting'
+import { AddFriend } from './src/screens/addFriend';
 
 // fonts
 import { useFonts, AlfaSlabOne_400Regular } from '@expo-google-fonts/alfa-slab-one';
@@ -69,6 +70,7 @@ function App() {
 					<Stack.Screen name="Chats" component={Chats} options={{ headerShown: false }} />
 					<Stack.Screen name="AddGroup" component={AddGroup} options={{ headerShown: false }} />
 					<Stack.Screen name="AddGroupSetting" component={AddGroupSetting} options={{ headerShown: false }} />
+					<Stack.Screen name="AddFriend" component={AddFriend} options={{ headerShown: false }} />
 				</Stack.Navigator>
 			</NavigationContainer>
 		);
