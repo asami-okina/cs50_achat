@@ -113,8 +113,8 @@ export function AddFriend({ navigation }) {
 					{/* 検索結果が存在しない場合 */}
 					{!existUserId && (
 						<View style={styles.notExistContainerStyle}>
-							<Text style={styles.notExistStyle}>The user with the entered ID does not exist</Text>
-							<Text style={styles.notExistStyle}>or is not allowed to search.</Text>
+							<Text style={styles.errorTextStyle}>The user with the entered ID does not exist</Text>
+							<Text style={styles.errorTextStyle}>or is not allowed to search.</Text>
 						</View>
 					)}
 				</View>
@@ -175,9 +175,4 @@ const styles = StyleSheet.create({
 	notExistContainerStyle: {
 		marginTop: 32
 	},
-	notExistStyle: {
-		fontFamily: STANDARD_FONT,
-		color: MAIN_PINK_COLOR,
-		textAlign: "center",
-	}
 })
