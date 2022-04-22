@@ -255,9 +255,26 @@ export const handlers = [
 				ctx.status(400),
 				ctx.json(
 					{
+						"already_follow_requested": true,
+						"exist" : true,
 						"friend_use_id": "friend 9",
 						"friend_profile_image": require("../../assets/images/friend_profile_image_2.jpg"),
 						"friend_nickname": "asami9"
+					}
+				),
+
+			)
+		} else if(searchUserId === "bb"){
+			// 該当ユーザーIDが存在しない場合
+			return res(
+				ctx.status(400),
+				ctx.json(
+					{
+						"already_follow_requested": false,
+						"exist" : false,
+						"friend_use_id": null,
+						"friend_profile_image": null,
+						"friend_nickname": null
 					}
 				),
 
@@ -268,6 +285,8 @@ export const handlers = [
 				ctx.status(200),
 				ctx.json(
 					{
+						"already_follow_requested": false,
+						"exist" : true,
 						"friend_use_id": "friend 9",
 						"friend_profile_image": require("../../assets/images/friend_profile_image_2.jpg"),
 						"friend_nickname": "asami9"

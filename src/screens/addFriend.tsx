@@ -16,7 +16,7 @@ import { selectedFriendStyles } from '../constants/styles/selectedFriendStyles'
 import { constantsCommonStyles } from '../constants/styles/commonStyles'
 
 // layouts
-import { IPHONE_X_BOTTOM_SPACE, TAB_TITLE_TEXT_SIZE, TAB_FONT, MAIN_NAVY_COLOR, CONTENT_WIDTH, BIG_PROFILE_IMAGE_SIZE, STANDARD_FONT, MAIN_PINK_COLOR,PROFILE_IMAGE_BORDER_RADIUS } from '../constants/layout'
+import { IPHONE_X_BOTTOM_SPACE, TAB_TITLE_TEXT_SIZE, TAB_FONT, MAIN_NAVY_COLOR, CONTENT_WIDTH, BIG_PROFILE_IMAGE_SIZE, STANDARD_FONT, MAIN_PINK_COLOR,PROFILE_IMAGE_BORDER_RADIUS,MAIN_BLACK_COLOR } from '../constants/layout'
 
 export function AddFriend({ navigation }) {
 	// ユーザーID(今後は認証から取得するようにする)
@@ -30,6 +30,9 @@ export function AddFriend({ navigation }) {
 
 	// すでに友達になっているか
 	const [alreadyFriend, setAlreadyFriend] = useState(false)
+
+	// 該当ユーザーIDが存在する場合
+	const [existUserId, setExistUserId] = useState(true)
 
 	// ニックネームでヒットするユーザーの取得
 	async function _searchId(searchText) {
@@ -48,11 +51,20 @@ export function AddFriend({ navigation }) {
 			const parse_response_code = await response.status
 			// レスポンスをJSONにする
 			const parse_response = await response.json()
+			// 成功した場合
 			if (parse_response_code === 200) {
 				setAlreadyFriend(false)
+				setExistUserId(true)
 			}
-			if (parse_response_code === 400) {
+			// 既に友達になっている場合
+			if (parse_response_code === 400 && parse_response.already_follow_requested) {
 				setAlreadyFriend(true)
+				setExistUserId(true)
+			}
+			// 該当のユーザーIDが存在しない場合
+			if (parse_response_code === 400 && !parse_response.exist){
+				setAlreadyFriend(false)
+				setExistUserId(false)
 			}
 			// 友達一覧のstateを更新
 			setFriendInfo(parse_response)
@@ -85,8 +97,8 @@ export function AddFriend({ navigation }) {
 					<View style={styles.searchFormContainerStyle}>
 						<SearchForm setSearchText={setSearchText} searchText={searchText} textInputSearch={textInputSearch} searchName={_searchId} fetchGroupCount={null} fetchFriendCount={null} setIsDuringSearch={null} placeholder={"Search by frinend's userID"} />
 					</View>
-					{/* 検索結果 */}
-					{friendInfo && (
+					{/* 検索結果が存在する場合 */}
+					{friendInfo && existUserId && (
 						<View style={styles.searchInfoWrapperStyle}>
 							<View style={styles.searchInfoContainerStyle}>
 								<Image source={friendInfo.friend_profile_image} style={styles.profileImageStyle} />
@@ -96,6 +108,13 @@ export function AddFriend({ navigation }) {
 							{alreadyFriend && (
 								<Text style={styles.errorTextStyle}>Already requested.</Text>
 							)}
+						</View>
+					)}
+					{/* 検索結果が存在しない場合 */}
+					{!existUserId && (
+						<View style={styles.notExistContainerStyle}>
+							<Text style={styles.notExistStyle}>The user with the entered ID does not exist</Text>
+							<Text style={styles.notExistStyle}>or is not allowed to search.</Text>
 						</View>
 					)}
 				</View>
@@ -153,4 +172,12 @@ const styles = StyleSheet.create({
 		color: MAIN_PINK_COLOR,
 		textAlign: "center",
 	},
+	notExistContainerStyle: {
+		marginTop: 32
+	},
+	notExistStyle: {
+		fontFamily: STANDARD_FONT,
+		color: MAIN_PINK_COLOR,
+		textAlign: "center",
+	}
 })
