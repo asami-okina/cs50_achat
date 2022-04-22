@@ -62,7 +62,7 @@ export function Profile({ navigation }) {
 			// レスポンスをJSONにする
 			const parse_response = await response.json()
 			// プロフィール画像の登録
-			// setImage(parse_response.profileImage)
+			setImage(parse_response.profileImage)
 			// ニックネームの登録
 			setNickName(parse_response.nickName)
 		} catch (e) {
@@ -103,12 +103,10 @@ export function Profile({ navigation }) {
 				{/* 丸みを帯びている白いトップ部分 */}
 				<TopAreaWrapper type={"addFriend"}>
 					<View style={styles.titleWrapperStyle}>
-						<Pressable onPress={() => { navigation.navigate('Home') }} style={styles.backIconContainerStyle} >
+						<Pressable onPress={() => { navigation.navigate('Home') }} >
 							<Image source={require("../../assets/images/back-icon.png")} style={styles.backIconStyle} />
 						</Pressable>
-						<View style={styles.mainTitleContainerStyle}>
-							<Text style={styles.mainTitleStyle}>Profile Setting</Text>
-						</View>
+						<Text style={styles.mainTitleStyle}>Profile Setting</Text>
 					</View>
 				</TopAreaWrapper>
 				{/* トップ部分を除くメイン部分*/}
@@ -181,6 +179,7 @@ const styles = StyleSheet.create({
 		fontSize: 24,
 		fontFamily: TAB_FONT,
 		color: MAIN_NAVY_COLOR,
+		marginLeft: 12,
 	},
 	titleStyle: {
 		fontSize: TAB_TITLE_TEXT_SIZE,

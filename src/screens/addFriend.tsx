@@ -85,7 +85,7 @@ export function AddFriend({ navigation }) {
 				{/* 丸みを帯びている白いトップ部分 */}
 				<TopAreaWrapper type={"addFriend"}>
 					<View style={styles.titleWrapperStyle}>
-						<Pressable style={styles.backIconContainerStyle} onPress={() => { navigation.navigate('Home') }} >
+						<Pressable onPress={() => { navigation.navigate('Home') }} >
 							<Image source={require("../../assets/images/back-icon.png")} style={styles.backIconStyle} />
 						</Pressable>
 						<Text style={styles.titleStyle}>Friend Search</Text>
@@ -133,16 +133,14 @@ const styles = StyleSheet.create({
 		alignItems: "center",
 	},
 	titleStyle: {
-		fontSize: TAB_TITLE_TEXT_SIZE,
+		fontSize: 24,
 		fontFamily: TAB_FONT,
 		color: MAIN_NAVY_COLOR,
 		marginLeft: 12,
 	},
-	backIconContainerStyle: {
-	},
 	backIconStyle: {
-		width: 20,
-		height: 20,
+		width: 50,
+		height: 50,
 	},
 	searchFormContainerStyle: {
 		display: "flex",
