@@ -16,7 +16,7 @@ export function Footer({ navigation }) {
 				<Image source={require('../../../assets/images/message.png')} />
 				<Text style={styles.footerTextStyle}>Chats</Text>
 			</Pressable>
-			<Pressable style={styles.footerItemStyle}>
+			<Pressable style={styles.footerItemStyle} onPress={() => navigation.navigate('Profile')}>
 				<Image source={require('../../../assets/images/white_profile.png')} />
 				<Text style={styles.footerTextStyle}>Profile</Text>
 			</Pressable>

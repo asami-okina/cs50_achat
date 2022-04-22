@@ -18,6 +18,7 @@ import { Chats } from './src/screens/chats';
 import { AddGroup } from './src/screens/addGroup'
 import { AddGroupSetting } from './src/screens/addGroupSetting'
 import { AddFriend } from './src/screens/addFriend';
+import {Profile} from "./src/screens/profile"
 
 // fonts
 import { useFonts, AlfaSlabOne_400Regular } from '@expo-google-fonts/alfa-slab-one';
@@ -61,16 +62,17 @@ function App() {
 					{/* <Stack.Screen name="Welcome" component={Welcome} options={{ headerShown: false }} /> */}
 					{/* <Stack.Screen name="SignUp" component={SignUp} options={{ headerShown: false }} /> */}
 					{/* <Stack.Screen name="LogIn" component={LogIn} options={{ headerShown: false }} /> */}
-					<Stack.Screen name="Home" component={Home} options={{ headerShown: false }} />
-					<Stack.Screen name="Footer" component={Footer} options={{ headerShown: false }} />
-					<Stack.Screen name="Button" component={Button} options={{ headerShown: false }} />
-					<Stack.Screen name="ToSignUpOrLoginTextArea" component={ToSignUpOrLoginTextArea} options={{ headerShown: false }} />
-					<Stack.Screen name="AuthErrorText" component={AuthErrorText} options={{ headerShown: false }} />
-					<Stack.Screen name="ForgotPassword" component={ForgotPassword} options={{ headerShown: false }} />
-					<Stack.Screen name="Chats" component={Chats} options={{ headerShown: false }} />
-					<Stack.Screen name="AddGroup" component={AddGroup} options={{ headerShown: false }} />
-					<Stack.Screen name="AddGroupSetting" component={AddGroupSetting} options={{ headerShown: false }} />
-					<Stack.Screen name="AddFriend" component={AddFriend} options={{ headerShown: false }} />
+					{/* <Stack.Screen name="Home" component={Home} options={{ headerShown: false }} /> */}
+					{/* <Stack.Screen name="Footer" component={Footer} options={{ headerShown: false }} /> */}
+					{/* <Stack.Screen name="Button" component={Button} options={{ headerShown: false }} /> */}
+					{/* <Stack.Screen name="ToSignUpOrLoginTextArea" component={ToSignUpOrLoginTextArea} options={{ headerShown: false }} /> */}
+					{/* <Stack.Screen name="AuthErrorText" component={AuthErrorText} options={{ headerShown: false }} /> */}
+					{/* <Stack.Screen name="ForgotPassword" component={ForgotPassword} options={{ headerShown: false }} /> */}
+					{/* <Stack.Screen name="Chats" component={Chats} options={{ headerShown: false }} /> */}
+					{/* <Stack.Screen name="AddGroup" component={AddGroup} options={{ headerShown: false }} /> */}
+					{/* <Stack.Screen name="AddGroupSetting" component={AddGroupSetting} options={{ headerShown: false }} /> */}
+					{/* <Stack.Screen name="AddFriend" component={AddFriend} options={{ headerShown: false }} /> */}
+					<Stack.Screen name="Profile" component={Profile} options={{ headerShown: false }} />
 				</Stack.Navigator>
 			</NavigationContainer>
 		);

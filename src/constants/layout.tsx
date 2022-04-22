@@ -139,6 +139,9 @@ export const LIGHT_GRAY_COLOR = "#F6F7FB"
 // 黒
 export const MAIN_BLACK_COLOR = "#262626"
 
+// 黄緑
+export const MAIN_YELLOW_GREEN = "#66E33A"
+
 // ------------------------------------------------------------------------------------------------
 // borderRadius(丸み)
 // 画面上位の白色の丸み部分

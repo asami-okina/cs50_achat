@@ -8,7 +8,6 @@ import { SmallButton } from '../components/common/smallButton';
 import { AddGroupTitle } from '../components/addGroup/addGroupTitle'
 import { FriendList } from '../components/addGroup/friendList'
 import { AddFriendList } from '../components/addGroup/addFriendList'
-import { AddGroupSetting } from "../screens/addGroupSetting"
 import { TopAreaWrapper } from "../components/common/topAreaWrapper"
 import { SearchForm } from "../components/common/_topAreaContainer/searchForm"
 

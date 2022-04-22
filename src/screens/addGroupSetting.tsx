@@ -91,7 +91,7 @@ export function AddGroupSetting({ route, navigation }) {
 				</View>
 				{/* 右下のボタン(Create) */}
 				{friendListNames.length !== 0 && (
-					<SmallButton text={"Create"} navigation={navigation} friendList={friendList} groupSetting={{ "groupName": groupName, "image": image }} type={"addGroupSetting"} friendListNames={friendListNames} />
+					<SmallButton text={"Create"} navigation={navigation} friendList={friendList} groupSetting={{ "groupName": groupName, "image": image }} type={"addGroupSetting"} friendListNames={friendListNames} alreadyFriend={null} />
 				)}
 			</SafeAreaView>
 		</KeyboardAvoidingView>

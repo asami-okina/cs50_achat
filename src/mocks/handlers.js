@@ -228,7 +228,8 @@ export const handlers = [
 				{
 					"userId": "asami11",
 					"nickName": "asaminn",
-					"profileImage": require("../../assets/images/friend_profile_image_1.jpg")
+					"profileImage": require("../../assets/images/friend_profile_image_1.jpg"),
+					"searchFlag": true
 				}
 			),
 		)
@@ -299,6 +300,14 @@ export const handlers = [
 	rest.post('https://a-chat/api/users/:userId/friends', (req, res, ctx) => {
 		const { friendUserId } = req.body
 		const { ownUserId } = req.body
+		return res(
+			// 200のステータスコードで応答する
+			ctx.status(200)
+		)
+	}),
+	// ニックネームの更新
+	rest.post('https://a-chat/api/users/:userId/nick-name', (req, res, ctx) => {
+		const { nickName } = req.body
 		return res(
 			// 200のステータスコードで応答する
 			ctx.status(200)
