@@ -123,21 +123,6 @@ export function AddFriend({ navigation }) {
 
 
 const styles = StyleSheet.create({
-	titleWrapperStyle: {
-		width: CONTENT_WIDTH,
-		flexDirection: "row",
-		alignItems: "center",
-	},
-	titleStyle: {
-		fontSize: 24,
-		fontFamily: TAB_FONT,
-		color: MAIN_NAVY_COLOR,
-		marginLeft: 12,
-	},
-	backIconStyle: {
-		width: 50,
-		height: 50,
-	},
 	searchFormContainerStyle: {
 		display: "flex",
 		justifyContent: "center",
