@@ -6,7 +6,6 @@ import { StyleSheet, TouchableOpacity, View, Text } from 'react-native';
 import { MAIN_NAVY_COLOR, MAIN_WHITE_COLOR, ADD_BUTTON_SIZE, CONTENT_WIDTH, BUTTON_BORDER_RADIUS, MAIN_BLACK_COLOR, SMALL_BUTTON_WIDTH } from '../../constants/layout'
 
 export function SmallButton({ text, navigation, friendList, groupSetting, type, friendListNames }) {
-	// console.log('groupName', groupSetting.groupName)
 	// ユーザーID(今後は認証から取得するようにする)
 	const userId = "asami11"
 	// 自分を含めたグループメンバーのuserId
@@ -15,14 +14,10 @@ export function SmallButton({ text, navigation, friendList, groupSetting, type, 
 	// グループ追加
 	async function _addGroup() {
 		try {
-			// グループ名が設定されていなかったら、デフォルトの名前を代入
-			if (!groupSetting.groupName) {
-				groupSetting.groupName = friendListNames
-			}
 			// APIリクエスト
 			const bodyData = {
 				"groupImage": groupSetting.image,
-				"groupName": groupSetting.groupName,
+				"groupName": groupSetting.groupName || friendListNames,
 				"groupMemberUserIds": groupMemberUserIds,
 			}
 			const response = await fetch(`https://a-chat/api/users/${userId}/groups`, {
