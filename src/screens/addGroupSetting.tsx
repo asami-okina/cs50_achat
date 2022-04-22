@@ -7,6 +7,7 @@ import { AddGroupTitle } from '../components/addGroup/addGroupTitle'
 import { TopAreaWrapper } from "../components/common/topAreaWrapper"
 import { GroupImageAndGroupName } from "../components/common/_topAreaContainer/groupImageAndGroupName"
 import { AddFriendList } from '../components/addGroup/addFriendList'
+import { SmallButton } from "../components/common/smallButton"
 
 // constantsCommonStyles
 import { constantsCommonStyles } from '../constants/styles/commonStyles'
@@ -17,7 +18,7 @@ import { IPHONE_X_BOTTOM_SPACE } from '../constants/layout'
 // constantsSelectedFriendStyles
 import { selectedFriendStyles } from '../constants/styles/selectedFriendStyles'
 
-export function AddGroupSetting({ route }) {
+export function AddGroupSetting({ route, navigation }) {
 	// ユーザーID(今後は認証から取得するようにする)
 	const userId = "asami11"
 	const [friendList, setFriendList] = useState(route.params.friendList)
@@ -27,6 +28,23 @@ export function AddGroupSetting({ route }) {
 	const [ownNickName, setOwnNickName] = useState('')
 	// 自分のプロフィール画像
 	const [ownProfileImage, setOwnProfileImage] = useState('')
+
+	// グループ画像
+	const [image, setImage] = useState(null)
+
+	// グループ名のplaceholderを生成
+	let friendListNames = ''
+	if (ownNickName && friendList) {
+		// 一番最初に選んだメンバーの名前を取得
+		friendListNames = `${ownNickName}`
+		// 選択された友達リストからニックネームだけを取り出す
+		for (let i = 0; i < friendList.length; i++) {
+			friendListNames = friendListNames + ', ' + friendList[i].friend_nickname
+		}
+	}
+
+	// グループ名
+	const [groupName, setGroupName] = useState(friendListNames)
 
 	// 選択された友達リストの削除
 	const _deleteFriendList = (rowKey) => {
@@ -79,7 +97,7 @@ export function AddGroupSetting({ route }) {
 				<View style={constantsCommonStyles.topMarginViewStyle}></View>
 				{/* 丸みを帯びている白いトップ部分 */}
 				<TopAreaWrapper type={"addGroupSetting"}>
-					<GroupImageAndGroupName friendList={friendList} ownNickName={ownNickName} />
+					<GroupImageAndGroupName image={image} setImage={setImage} groupName={groupName} setGroupName={setGroupName} friendListNames={friendListNames} />
 				</TopAreaWrapper>
 				{/* トップ部分を除くメイン部分: iphoneXの場合は、底のマージンを考慮 */}
 				<View style={IPHONE_X_BOTTOM_SPACE === 0 ? constantsCommonStyles.withFooterMainContainerStyle : constantsCommonStyles.withFooterMainContainerIphoneXStyle}>
@@ -90,7 +108,7 @@ export function AddGroupSetting({ route }) {
 							{/* 自分 */}
 							<ScrollView
 								ref={scrollViewRef}
-								onContentSizeChange={() => console.log('いいね')}
+								onContentSizeChange={() => { }}
 								horizontal={true} // スクロールバーを水平方向にする
 								showsHorizontalScrollIndicator={false} // 水平スクロールバー非表示
 								style={styles.scrollViewStyle}
@@ -111,7 +129,9 @@ export function AddGroupSetting({ route }) {
 					</View>
 				</View>
 				{/* 右下のボタン(Next, Create) */}
-				{/* <SmallButton text={"Next"} onPressFunction={() => navigation.navigate('AddGroupSetting')}  /> */}
+				{friendListNames.length !== 0 && (
+					<SmallButton text={"Create"} navigation={navigation} friendList={friendList} groupSetting={{ "groupName": groupName, "image": image }} type={"addGroupSetting"} friendListNames={friendListNames} />
+				)}
 				{/*フッター */}
 				{/* <Footer navigation={navigation} /> */}
 			</SafeAreaView>

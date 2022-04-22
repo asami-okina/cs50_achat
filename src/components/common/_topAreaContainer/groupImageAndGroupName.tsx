@@ -1,6 +1,7 @@
 // libs
-import React, { useEffect, useState } from 'react';
-import { View, Pressable, Image, TextInput, StyleSheet, Text } from 'react-native';
+import React from 'react';
+import { View, Pressable, Image, TextInput, StyleSheet } from 'react-native';
+import * as ImagePicker from 'expo-image-picker';
 
 
 // layouts
@@ -9,43 +10,45 @@ import { ICON_SIZE, MAIN_NAVY_COLOR, CONTENT_WIDTH } from '../../../constants/la
 
 // 丸みを帯びている白いトップ部分
 export function GroupImageAndGroupName({
-	friendList,
-	ownNickName
+	image,
+	setImage,
+	groupName,
+	setGroupName,
+	friendListNames
 }) {
 	// ユーザーID(今後は認証から取得するようにする)
 	const userId = "asami11"
-	// グループ画像が設定されているか
-	const [isImageSaved, setIsImageSaved] = useState(false)
-
-	// グループ名が設定されているか
-	const [isNameSaved, setIsNameSaved] = useState(false)
-
-	// グループ名フォーム
-	const [groupName, setGroupName] = useState('')
 
 	// グループ名のラベル化
 	let groupNameLabel;
 
-	// グループ名のplaceholderを生成
-	let friendListNames = ''
-	if (ownNickName && friendList) {
-		// 一番最初に選んだメンバーの名前を取得
-		friendListNames = `${ownNickName}`
-		// 選択された友達リストからニックネームだけを取り出す
-		for (let i = 0; i < friendList.length; i++) {
-			friendListNames = friendListNames + ', ' + friendList[i].friend_nickname
+	const pickImage = async () => {
+		// No permissions request is necessary for launching the image library
+		let result: any = await ImagePicker.launchImageLibraryAsync({
+			mediaTypes: ImagePicker.MediaTypeOptions.All,
+			allowsEditing: true,
+			aspect: [1, 1],
+			quality: 1,
+		});
+		if (!result.cancelled) {
+			setImage(result.uri);
 		}
-	}
+	};
+
 
 	return (
 		<View style={styles.wrapperStyle}>
 			<View style={styles.groupImageContainerStyle}>
-				{/* <Pressable onPress={() => {}} > */}
-				<View>
-					<View style={styles.circleStyle}></View>
-					<Image source={require("../../../../assets/images/camera.png")} style={styles.cameraStyle} />
-				</View>
-				{/* </Pressable> */}
+				<Pressable onPress={() => { pickImage() }} >
+					<View>
+						{image ? (
+							<Image source={{ uri: image }} style={{ width: 80, height: 80, borderRadius: 50, }} />
+						) :
+							<View style={styles.circleStyle}></View>
+						}
+						<Image source={require("../../../../assets/images/camera.png")} style={styles.cameraStyle} />
+					</View>
+				</Pressable>
 			</View>
 			<View style={styles.groupNameContainertyle}>
 				<Pressable onPress={() => groupNameLabel.focus()} >

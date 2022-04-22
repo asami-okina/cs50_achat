@@ -233,4 +233,18 @@ export const handlers = [
 			),
 		)
 	}),
+	// グループ追加
+	rest.post('https://a-chat/api/users/:userId/groups', (req, res, ctx) => {
+		const { groupImage } = req.body
+		const { groupName } = req.body
+		const { groupMemberUserIds } = req.body
+		console.log('groupImage', groupImage)
+		console.log('groupName', groupName)
+		console.log('groupMemberUserIds', groupMemberUserIds)
+
+		return res(
+			// 200のステータスコードで応答する
+			ctx.status(200)
+		)
+	}),
 ]

@@ -196,7 +196,7 @@ export function AddGroup({ navigation }) {
 					)}
 				</View>
 				{/* 右下のボタン(Next, Create) */}
-				<SmallButton text={"Next"} navigation={navigation} friendList={mergedSelectedFriendList} />
+				<SmallButton text={"Next"} navigation={navigation} friendList={mergedSelectedFriendList} groupSetting={null} type={"addGroup"} />
 				{/*フッター */}
 				<Footer navigation={navigation} />
 			</SafeAreaView>
