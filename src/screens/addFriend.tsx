@@ -8,6 +8,7 @@ import { SmallButton } from '../components/common/smallButton';
 import { TopAreaWrapper } from "../components/common/topAreaWrapper"
 import { SearchForm } from "../components/common/_topAreaContainer/searchForm"
 import { AddButton } from "../components/common/addButton"
+import { MainTitle } from "../components/common/_topAreaContainer/mainTitle"
 
 // constantsSelectedFriendStyles
 import { selectedFriendStyles } from '../constants/styles/selectedFriendStyles'
@@ -16,7 +17,7 @@ import { selectedFriendStyles } from '../constants/styles/selectedFriendStyles'
 import { constantsCommonStyles } from '../constants/styles/commonStyles'
 
 // layouts
-import { IPHONE_X_BOTTOM_SPACE, TAB_TITLE_TEXT_SIZE, TAB_FONT, MAIN_NAVY_COLOR, CONTENT_WIDTH, BIG_PROFILE_IMAGE_SIZE, STANDARD_FONT, MAIN_PINK_COLOR,PROFILE_IMAGE_BORDER_RADIUS,MAIN_BLACK_COLOR } from '../constants/layout'
+import { IPHONE_X_BOTTOM_SPACE, TAB_TITLE_TEXT_SIZE, TAB_FONT, MAIN_NAVY_COLOR, CONTENT_WIDTH, BIG_PROFILE_IMAGE_SIZE, STANDARD_FONT, MAIN_PINK_COLOR, PROFILE_IMAGE_BORDER_RADIUS, MAIN_BLACK_COLOR } from '../constants/layout'
 
 export function AddFriend({ navigation }) {
 	// ユーザーID(今後は認証から取得するようにする)
@@ -62,7 +63,7 @@ export function AddFriend({ navigation }) {
 				setExistUserId(true)
 			}
 			// 該当のユーザーIDが存在しない場合
-			if (parse_response_code === 400 && !parse_response.exist){
+			if (parse_response_code === 400 && !parse_response.exist) {
 				setAlreadyFriend(false)
 				setExistUserId(false)
 			}
@@ -84,12 +85,7 @@ export function AddFriend({ navigation }) {
 				<View style={constantsCommonStyles.topMarginViewStyle}></View>
 				{/* 丸みを帯びている白いトップ部分 */}
 				<TopAreaWrapper type={"addFriend"}>
-					<View style={styles.titleWrapperStyle}>
-						<Pressable onPress={() => { navigation.navigate('Home') }} >
-							<Image source={require("../../assets/images/back-icon.png")} style={styles.backIconStyle} />
-						</Pressable>
-						<Text style={styles.titleStyle}>Friend Search</Text>
-					</View>
+					<MainTitle navigation={navigation} title={"Friend Search"} />
 				</TopAreaWrapper>
 				{/* トップ部分を除くメイン部分: iphoneXの場合は、底のマージンを考慮 */}
 				<View style={IPHONE_X_BOTTOM_SPACE === 0 ? constantsCommonStyles.withFooterMainContainerNoneBottomButtonStyle : constantsCommonStyles.withFooterMainContainerIphoneXNoneBottomButtonStyle}>

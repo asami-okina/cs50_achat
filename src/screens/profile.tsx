@@ -1,16 +1,17 @@
 // libs
 import React, { useEffect, useState } from 'react';
-import { View, SafeAreaView, KeyboardAvoidingView, Text, StyleSheet, Image, Pressable, TextInput, TouchableOpacity, Switch } from 'react-native';
+import { View, SafeAreaView, KeyboardAvoidingView, Text, StyleSheet, Image, Pressable, Switch } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
 
 // components
 import { TopAreaWrapper } from "../components/common/topAreaWrapper"
+import { MainTitle } from "../components/common/_topAreaContainer/mainTitle"
 
 // constantsCommonStyles
 import { constantsCommonStyles } from '../constants/styles/commonStyles'
 
 // layouts
-import { TAB_TITLE_TEXT_SIZE, TAB_FONT, MAIN_NAVY_COLOR, CONTENT_WIDTH, BIG_PROFILE_IMAGE_SIZE, STANDARD_FONT, PROFILE_IMAGE_BORDER_RADIUS, MAIN_WHITE_COLOR, MAIN_GRAY_COLOR, MAIN_YELLOW_GREEN } from '../constants/layout'
+import { TAB_TITLE_TEXT_SIZE, TAB_FONT, MAIN_NAVY_COLOR, CONTENT_WIDTH, STANDARD_FONT, PROFILE_IMAGE_BORDER_RADIUS, MAIN_WHITE_COLOR, MAIN_GRAY_COLOR, MAIN_YELLOW_GREEN } from '../constants/layout'
 
 export function Profile({ navigation }) {
 	// ユーザーID(今後は認証から取得するようにする)
@@ -89,12 +90,6 @@ export function Profile({ navigation }) {
 		}
 	};
 
-	// 検索フォームのラベル化
-	let textInputSearch;
-
-	// キーボードに完了ボタンを表示
-	const inputAccessoryViewID = 'uniqueID';
-
 	return (
 		<KeyboardAvoidingView behavior="padding" style={constantsCommonStyles.screenContainerStyle}>
 			<SafeAreaView style={constantsCommonStyles.screenContainerStyle}>
@@ -102,12 +97,7 @@ export function Profile({ navigation }) {
 				<View style={constantsCommonStyles.topMarginViewStyle}></View>
 				{/* 丸みを帯びている白いトップ部分 */}
 				<TopAreaWrapper type={"addFriend"}>
-					<View style={styles.titleWrapperStyle}>
-						<Pressable onPress={() => { navigation.navigate('Home') }} >
-							<Image source={require("../../assets/images/back-icon.png")} style={styles.backIconStyle} />
-						</Pressable>
-						<Text style={styles.mainTitleStyle}>Profile Setting</Text>
-					</View>
+				<MainTitle navigation={navigation} title={"Profile Setting"} />
 				</TopAreaWrapper>
 				{/* トップ部分を除くメイン部分*/}
 				<View style={constantsCommonStyles.mainContainerStyle}>
@@ -159,28 +149,6 @@ export function Profile({ navigation }) {
 
 
 const styles = StyleSheet.create({
-	titleWrapperStyle: {
-		width: CONTENT_WIDTH,
-		flexDirection: "row",
-		alignItems: "center",
-	},
-	backIconContainerStyle: {
-		width: 20,
-	},
-	backIconStyle: {
-		width: 50,
-		height: 50,
-	},
-	mainTitleContainerStyle: {
-		width: CONTENT_WIDTH - 50, // backIconStyleのwidthを引く
-		alignItems: "center",
-	},
-	mainTitleStyle: {
-		fontSize: 24,
-		fontFamily: TAB_FONT,
-		color: MAIN_NAVY_COLOR,
-		marginLeft: 12,
-	},
 	titleStyle: {
 		fontSize: TAB_TITLE_TEXT_SIZE,
 		fontFamily: TAB_FONT,
