@@ -34,6 +34,27 @@ export function SmallButton({ text, navigation, friendList, groupSetting, type, 
 		}
 	}
 
+	// 友達追加
+	async function _addFriend() {
+		try {
+			// APIリクエスト
+			const bodyData = {
+				"friendUserId": friendList.friend_use_id,
+				"ownUserId": userId,
+			}
+			const response = await fetch(`https://a-chat/api/users/${userId}/friends`, {
+				method: "POST",
+				headers: {
+					"Content-Type": "application/json"
+				},
+				body: JSON.stringify(bodyData),
+			})
+			// 友達チャットに遷移
+		} catch (e) {
+			console.error(e)
+		}
+	}
+
 	// friendListからuserIdだけ取り出し、自分のuserIdも追加
 	useEffect(() => {
 		if (friendList && type === "addGroupSetting") {
@@ -49,7 +70,7 @@ export function SmallButton({ text, navigation, friendList, groupSetting, type, 
 	return (
 		<View style={styles.boxStyle}>
 			<View style={styles.wrapperStyle}>
-				<View style={styles.containerStyle}>
+				<View style={type === "addFriend" ? styles.addFriendContainerStyle: styles.containerStyle}>
 					<TouchableOpacity
 						style={styles.buttonStyle}
 						onPress={() => {
@@ -60,6 +81,10 @@ export function SmallButton({ text, navigation, friendList, groupSetting, type, 
 							if (type === "addGroupSetting") {
 								// グループ追加API実行
 								_addGroup()
+							}
+							if(type === "addFriend"){
+								// 友達追加API実行
+								_addFriend()
 							}
 						}}
 					>
@@ -84,6 +109,10 @@ const styles = StyleSheet.create({
 	containerStyle: {
 		height: ADD_BUTTON_SIZE,
 		alignItems: "flex-end",
+	},
+	addFriendContainerStyle: {
+		height: ADD_BUTTON_SIZE,
+		alignItems: "center"
 	},
 	buttonStyle: {
 		alignItems: "center",

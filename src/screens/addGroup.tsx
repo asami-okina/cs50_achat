@@ -195,7 +195,7 @@ export function AddGroup({ navigation }) {
 						<FriendList listData={afterFriendListSearch} addFriendList={_addFriendList} deleteFriendList={_deleteFriendList} selectedFriendList={afterSelectedFriendList} />
 					)}
 				</View>
-				{/* 右下のボタン(Next, Create) */}
+				{/* 右下のボタン(Next) */}
 				<SmallButton text={"Next"} navigation={navigation} friendList={mergedSelectedFriendList} groupSetting={null} type={"addGroup"} friendListNames={null} />
 				{/*フッター */}
 				<Footer navigation={navigation} />

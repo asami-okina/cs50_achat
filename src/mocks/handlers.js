@@ -238,10 +238,31 @@ export const handlers = [
 		const { groupImage } = req.body
 		const { groupName } = req.body
 		const { groupMemberUserIds } = req.body
-		console.log('groupImage', groupImage)
-		console.log('groupName', groupName)
-		console.log('groupMemberUserIds', groupMemberUserIds)
 
+		return res(
+			// 200のステータスコードで応答する
+			ctx.status(200)
+		)
+	}),
+	rest.get('https://a-chat/api/users/:userId/user', (req, res, ctx) => {
+		const parsedUrl = new URL(req.url)
+		const searchUserId = parsedUrl.searchParams.get("searchUserId")
+		const { userId } = req.params
+		return res(
+			ctx.status(200),
+			ctx.json(
+				{
+					"friend_use_id": "friend 9",
+					"friend_profile_image": require("../../assets/images/friend_profile_image_2.jpg"),
+					"friend_nickname": "asami9"
+				}
+			),
+		)
+	}),
+	// 友達追加
+	rest.post('https://a-chat/api/users/:userId/friends', (req, res, ctx) => {
+		const { friendUserId } = req.body
+		const { ownUserId } = req.body
 		return res(
 			// 200のステータスコードで応答する
 			ctx.status(200)
