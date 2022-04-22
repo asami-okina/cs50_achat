@@ -24,6 +24,7 @@ export const selectedFriendStyles = StyleSheet.create({
 		fontFamily: STANDARD_FONT,
 		width: ADD_FRIEND_WIDTH,
 		textAlign: "center",
+		paddingTop: 5
 	},
 	closeImageContainerStyle: {
 		position: "relative",
