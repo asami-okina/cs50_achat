@@ -1,6 +1,6 @@
 // libs
 import React, { useState, useEffect, useRef } from 'react';
-import { View, SafeAreaView, KeyboardAvoidingView, StyleSheet, Image, Text, ScrollView } from 'react-native';
+import { View, SafeAreaView, KeyboardAvoidingView, StyleSheet, Image, Text, ScrollView, Pressable } from 'react-native';
 
 // components
 import { AddGroupTitle } from '../components/addGroup/addGroupTitle'
@@ -13,7 +13,7 @@ import { SmallButton } from "../components/common/smallButton"
 import { constantsCommonStyles } from '../constants/styles/commonStyles'
 
 // layouts
-import { IPHONE_X_BOTTOM_SPACE } from '../constants/layout'
+import { IPHONE_X_BOTTOM_SPACE, PROFILE_IMAGE_SIZE } from '../constants/layout'
 
 // constantsSelectedFriendStyles
 import { selectedFriendStyles } from '../constants/styles/selectedFriendStyles'
@@ -105,7 +105,20 @@ export function AddGroupSetting({ route, navigation }) {
 					<AddGroupTitle text={"Member"} groupMemberCount={groupMemberCount} />
 					<View style={selectedFriendStyles.wrapperStyle}>
 						<View style={selectedFriendStyles.containerStyle} >
+							{/* 追加ボタン */}
+							<Pressable style={styles.ownWrapperStyle} onPress={() => navigation.navigate('AddGroup', { friendList: friendList })}>
+								<View style={selectedFriendStyles.closeImageStyle}></View>
+								<Image source={require("../../assets/images/add-circle.png")} style={selectedFriendStyles.profileImageStyle} />
+								<Text style={selectedFriendStyles.listItemNameStyle} numberOfLines={1} ellipsizeMode="tail"></Text>
+							</Pressable>
 							{/* 自分 */}
+							{ownNickName.length !== 0 && ownProfileImage.length !== 0 && (
+								<View style={styles.ownWrapperStyle}>
+									<View style={selectedFriendStyles.closeImageStyle}></View>
+									<Image source={require("../../assets/images/friend_profile_image_1.jpg")} style={selectedFriendStyles.profileImageStyle} />
+									<Text style={selectedFriendStyles.listItemNameStyle} numberOfLines={1} ellipsizeMode="tail">{ownNickName}</Text>
+								</View>
+							)}
 							<ScrollView
 								ref={scrollViewRef}
 								onContentSizeChange={() => { }}
@@ -113,13 +126,6 @@ export function AddGroupSetting({ route, navigation }) {
 								showsHorizontalScrollIndicator={false} // 水平スクロールバー非表示
 								style={styles.scrollViewStyle}
 							>
-								{ownNickName.length !== 0 && ownProfileImage.length !== 0 && (
-									<View style={styles.ownWrapperStyle}>
-										<View style={selectedFriendStyles.closeImageStyle}></View>
-										<Image source={require("../../assets/images/friend_profile_image_1.jpg")} style={selectedFriendStyles.profileImageStyle} />
-										<Text style={selectedFriendStyles.listItemNameStyle} numberOfLines={1} ellipsizeMode="tail">{ownNickName}</Text>
-									</View>
-								)}
 								{/* 選択された友達一覧 */}
 								{friendList.length !== 0 && (
 									<AddFriendList selectedFriendList={friendList} deleteFriendList={_deleteFriendList} />
@@ -128,12 +134,10 @@ export function AddGroupSetting({ route, navigation }) {
 						</View>
 					</View>
 				</View>
-				{/* 右下のボタン(Next, Create) */}
+				{/* 右下のボタン(Create) */}
 				{friendListNames.length !== 0 && (
 					<SmallButton text={"Create"} navigation={navigation} friendList={friendList} groupSetting={{ "groupName": groupName, "image": image }} type={"addGroupSetting"} friendListNames={friendListNames} />
 				)}
-				{/*フッター */}
-				{/* <Footer navigation={navigation} /> */}
 			</SafeAreaView>
 		</KeyboardAvoidingView>
 	);
@@ -147,5 +151,14 @@ const styles = StyleSheet.create({
 	scrollViewStyle: {
 		flex: 1,
 	},
+	addCircleContainerStyle: {
+		display: "flex",
+		justifyContent: "center",
+		alignItems: "center",
+	},
+	addCircleStyle: {
+		width: PROFILE_IMAGE_SIZE,
+		height: PROFILE_IMAGE_SIZE,
+	}
 })
 

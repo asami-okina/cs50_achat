@@ -7,18 +7,13 @@ import { CONTENT_WIDTH, STANDARD_FONT, PROFILE_IMAGE_SIZE, ADD_FRIEND_WIDTH } fr
 export const selectedFriendStyles = StyleSheet.create({
 	// 選択された友達の部分
 	wrapperStyle: {
-		flex: 1,
+		display: "flex",
 		alignItems: "center",
-		marginBottom: 10,
-		minHeight: 80,
-		maxHeight: 80,
+		justifyContent: "center",
 	},
 	containerStyle: {
 		width: CONTENT_WIDTH,
-		marginTop: 5,
-		height: 80,
 		flexDirection: "row",
-		alignItems: "center",
 	},
 	profileImageStyle: {
 		width: PROFILE_IMAGE_SIZE,

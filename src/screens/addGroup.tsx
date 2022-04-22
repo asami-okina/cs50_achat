@@ -175,7 +175,7 @@ export function AddGroup({ navigation }) {
 				<View style={constantsCommonStyles.topMarginViewStyle}></View>
 				{/* 丸みを帯びている白いトップ部分 */}
 				<TopAreaWrapper type={"searchForm"}>
-				<SearchForm setSearchText={setSearchText} searchText={searchText} textInputSearch={textInputSearch} searchName={_searchName} fetchGroupCount={null} fetchFriendCount={null} setIsDuringSearch={setIsDuringSearch} />
+					<SearchForm setSearchText={setSearchText} searchText={searchText} textInputSearch={textInputSearch} searchName={_searchName} fetchGroupCount={null} fetchFriendCount={null} setIsDuringSearch={setIsDuringSearch} />
 				</TopAreaWrapper>
 				{/* トップ部分を除くメイン部分: iphoneXの場合は、底のマージンを考慮 */}
 				<View style={IPHONE_X_BOTTOM_SPACE === 0 ? constantsCommonStyles.withFooterMainContainerStyle : constantsCommonStyles.withFooterMainContainerIphoneXStyle}>
@@ -196,7 +196,7 @@ export function AddGroup({ navigation }) {
 					)}
 				</View>
 				{/* 右下のボタン(Next, Create) */}
-				<SmallButton text={"Next"} navigation={navigation} friendList={mergedSelectedFriendList} groupSetting={null} type={"addGroup"} />
+				<SmallButton text={"Next"} navigation={navigation} friendList={mergedSelectedFriendList} groupSetting={null} type={"addGroup"} friendListNames={null} />
 				{/*フッター */}
 				<Footer navigation={navigation} />
 			</SafeAreaView>
