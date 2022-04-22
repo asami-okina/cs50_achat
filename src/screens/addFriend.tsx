@@ -102,7 +102,7 @@ export function AddFriend({ navigation }) {
 						<View style={styles.searchInfoWrapperStyle}>
 							<View style={styles.searchInfoContainerStyle}>
 								<Image source={friendInfo.friend_profile_image} style={styles.profileImageStyle} />
-								<Text style={selectedFriendStyles.listItemNameStyle}>{friendInfo.friend_nickname}</Text>
+								<Text style={selectedFriendStyles.bigProfilelistItemNameStyle}>{friendInfo.friend_nickname}</Text>
 							</View>
 							<SmallButton text={"Add"} navigation={navigation} friendList={friendInfo} groupSetting={null} type={"addFriend"} friendListNames={null} alreadyFriend={alreadyFriend} />
 							{alreadyFriend && (

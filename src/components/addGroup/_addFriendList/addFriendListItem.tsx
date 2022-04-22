@@ -15,13 +15,15 @@ export function AddFriendListItem({
 }) {
 	return (
 		<View style={styles.containerStyle} key={list.key} >
-			<Pressable style={selectedFriendStyles.closeImageContainerStyle} onPress={() => {
+			<Pressable onPress={() => {
 				deleteFriendList(list.key, list.type)
 			}}>
+				<View style={selectedFriendStyles.closeImageContainerStyle}>
 				<Image source={require('../../../../assets/images/close-icon.png')} style={selectedFriendStyles.closeImageStyle} />
-			</Pressable>
-			<Image source={list.friend_profile_image} style={selectedFriendStyles.profileImageStyle} />
+				</View>
+				<Image source={list.friend_profile_image} style={selectedFriendStyles.profileImageStyle} />
 			<Text style={selectedFriendStyles.listItemNameStyle} numberOfLines={1} ellipsizeMode="tail">{list.friend_nickname}</Text>
+			</Pressable>
 		</View>
 	);
 }
