@@ -6,6 +6,7 @@ import * as ImagePicker from 'expo-image-picker';
 // components
 import { TopAreaWrapper } from "../components/common/topAreaWrapper"
 import { MainTitle } from "../components/common/_topAreaContainer/mainTitle"
+import { ProfileInfo } from "../components/profile/profileInfo"
 
 // constantsCommonStyles
 import { constantsCommonStyles } from '../constants/styles/commonStyles'
@@ -19,12 +20,6 @@ export function Profile({ navigation }) {
 
 	// ニックネーム
 	const [nickName, setNickName] = useState("")
-
-	// 検索可能トグル
-	const [isEnabled, setIsEnabled] = useState(false);
-
-	// 検索可能トグルの変更関数
-	const toggleSwitch = () => setIsEnabled(previousState => !previousState);
 
 	// プロフィール画像
 	const [image, setImage] = useState(null)
@@ -97,7 +92,7 @@ export function Profile({ navigation }) {
 				<View style={constantsCommonStyles.topMarginViewStyle}></View>
 				{/* 丸みを帯びている白いトップ部分 */}
 				<TopAreaWrapper type={"addFriend"}>
-				<MainTitle navigation={navigation} title={"Profile Setting"} />
+					<MainTitle navigation={navigation} title={"Profile Setting"} />
 				</TopAreaWrapper>
 				{/* トップ部分を除くメイン部分*/}
 				<View style={constantsCommonStyles.mainContainerStyle}>
@@ -112,34 +107,8 @@ export function Profile({ navigation }) {
 								<View style={styles.circleStyle}></View>
 							}
 						</Pressable>
-						<View style={styles.profileContainerStyle}>
-							{/* ユーザーID */}
-							<View style={styles.listContainerStyle}>
-								<Text style={styles.titleStyle}>User ID</Text>
-								<Text style={styles.textStyle}>{userId}</Text>
-							</View>
-							{/* ニックネーム */}
-							<View style={styles.listContainerStyle}>
-								<Text style={styles.titleStyle}>NickName</Text>
-								<View style={styles.nickNameContainerStyle}>
-									<Text style={styles.textStyle}>{nickName}</Text>
-									<Image source={require('../../assets/images/back-arrow-icon.png')} style={styles.nextIconStyle} />
-								</View>
-							</View>
-							{/* 検索許可トグル */}
-							<View style={styles.listContainerStyle}>
-								<Text style={styles.searchTitleStyle}>Search for friends by ID</Text>
-								<View style={styles.searchContainerStyle}>
-									<Switch
-										trackColor={{ false: MAIN_GRAY_COLOR, true: MAIN_YELLOW_GREEN }}
-										thumbColor={MAIN_WHITE_COLOR}
-										ios_backgroundColor={MAIN_GRAY_COLOR}
-										onValueChange={toggleSwitch}
-										value={isEnabled}
-									/>
-								</View>
-							</View>
-						</View>
+						{/* プロフィール */}
+						<ProfileInfo nickName={nickName} />
 					</View>
 				</View>
 			</SafeAreaView>
@@ -149,12 +118,6 @@ export function Profile({ navigation }) {
 
 
 const styles = StyleSheet.create({
-	titleStyle: {
-		fontSize: TAB_TITLE_TEXT_SIZE,
-		fontFamily: TAB_FONT,
-		color: MAIN_NAVY_COLOR,
-		width: 120,
-	},
 	profileImageWrapperStyle: {
 		justifyContent: "center",
 		alignItems: "center",
@@ -171,38 +134,6 @@ const styles = StyleSheet.create({
 	addImageStyle: {
 		width: 40,
 		height: 40,
-	},
-	profileContainerStyle: {
-		marginTop: 64
-	},
-	listContainerStyle: {
-		width: CONTENT_WIDTH,
-		marginBottom: 30,
-		flexDirection: "row",
-	},
-	nickNameContainerStyle: {
-		flex: 1,
-		justifyContent: "space-between",
-		alignItems: "center",
-		flexDirection: "row"
-	},
-	nextIconStyle: {
-		width: 25,
-		height: 25
-	},
-	textStyle: {
-		fontFamily: STANDARD_FONT,
-		fontSize: 16,
-	},
-	searchContainerStyle: {
-		flex: 1,
-		justifyContent: "center",
-		alignItems: "flex-end",
-	},
-	searchTitleStyle: {
-		fontSize: TAB_TITLE_TEXT_SIZE,
-		fontFamily: TAB_FONT,
-		color: MAIN_NAVY_COLOR,
 	},
 	circleStyle: {
 		width: 80,
