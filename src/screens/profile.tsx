@@ -1,50 +1,32 @@
 // libs
 import React, { useEffect, useState } from 'react';
 import { View, SafeAreaView, KeyboardAvoidingView, Text, StyleSheet, Image, Pressable, TextInput, TouchableOpacity, Switch } from 'react-native';
+import * as ImagePicker from 'expo-image-picker';
 
 // components
-import { Footer } from '../components/common/footer'
-import { SmallButton } from '../components/common/smallButton';
 import { TopAreaWrapper } from "../components/common/topAreaWrapper"
-import { SearchForm } from "../components/common/_topAreaContainer/searchForm"
-import { AddButton } from "../components/common/addButton"
-
-// constantsSelectedFriendStyles
-import { selectedFriendStyles } from '../constants/styles/selectedFriendStyles'
 
 // constantsCommonStyles
 import { constantsCommonStyles } from '../constants/styles/commonStyles'
 
-// constantsSearchStyles
-import { searchStyles } from '../constants/styles/searchStyles'
-
 // layouts
-import { IPHONE_X_BOTTOM_SPACE, TAB_TITLE_TEXT_SIZE, TAB_FONT, MAIN_NAVY_COLOR, CONTENT_WIDTH, BIG_PROFILE_IMAGE_SIZE, STANDARD_FONT, MAIN_PINK_COLOR, PROFILE_IMAGE_BORDER_RADIUS, MAIN_BLACK_COLOR, ADD_FRIEND_WIDTH, PROFILE_IMAGE_SIZE, ICON_SIZE, MAIN_WHITE_COLOR, ADD_BUTTON_SIZE, SMALL_BUTTON_WIDTH, BUTTON_BORDER_RADIUS, MAIN_GRAY_COLOR, LIGHT_GRAY_COLOR, SEARCH_FORM_HEIGHT, SEARCH_FORM_BORDER_RADIUS, MAIN_YELLOW_GREEN } from '../constants/layout'
+import { TAB_TITLE_TEXT_SIZE, TAB_FONT, MAIN_NAVY_COLOR, CONTENT_WIDTH, BIG_PROFILE_IMAGE_SIZE, STANDARD_FONT, PROFILE_IMAGE_BORDER_RADIUS, MAIN_WHITE_COLOR, MAIN_GRAY_COLOR, MAIN_YELLOW_GREEN } from '../constants/layout'
 
 export function Profile({ navigation }) {
 	// ユーザーID(今後は認証から取得するようにする)
 	const userId = "asami11"
 
-	// ユーザーのプロフィール情報
-	const [profile, setProfile] = useState<any>([])
-
 	// ニックネーム
 	const [nickName, setNickName] = useState("")
-
-	// ニックネーム入力中かどうか
-	const [inEntryNickName, setInEntryNickName] = useState(false)
-
-	// ニックネーム更新フォームの削除アイコン表示/非表示
-	const [deleteIconDisplay, setDeleteIconDisplay] = useState(false)
-
-	// 検索中かどうか
-	const [isDuringSearch, setIsDuringSearch] = useState(false)
 
 	// 検索可能トグル
 	const [isEnabled, setIsEnabled] = useState(false);
 
 	// 検索可能トグルの変更関数
 	const toggleSwitch = () => setIsEnabled(previousState => !previousState);
+
+	// プロフィール画像
+	const [image, setImage] = useState(null)
 
 	// ニックネームの更新
 	async function _postNickName() {
@@ -79,8 +61,10 @@ export function Profile({ navigation }) {
 			})
 			// レスポンスをJSONにする
 			const parse_response = await response.json()
-			// 自分のニックネームの設定
-			setProfile(parse_response)
+			// プロフィール画像の登録
+			// setImage(parse_response.profileImage)
+			// ニックネームの登録
+			setNickName(parse_response.nickName)
 		} catch (e) {
 			console.error(e)
 		}
@@ -91,6 +75,19 @@ export function Profile({ navigation }) {
 			_fetchProfileByUserId()
 		}
 	}, [])
+
+	const pickImage = async () => {
+		// No permissions request is necessary for launching the image library
+		let result: any = await ImagePicker.launchImageLibraryAsync({
+			mediaTypes: ImagePicker.MediaTypeOptions.All,
+			allowsEditing: true,
+			aspect: [1, 1],
+			quality: 1,
+		});
+		if (!result.cancelled) {
+			setImage(result.uri);
+		}
+	};
 
 	// 検索フォームのラベル化
 	let textInputSearch;
@@ -110,30 +107,34 @@ export function Profile({ navigation }) {
 							<Image source={require("../../assets/images/back-icon.png")} style={styles.backIconStyle} />
 						</Pressable>
 						<View style={styles.mainTitleContainerStyle}>
-						<Text style={styles.mainTitleStyle}>Profile Setting</Text>
+							<Text style={styles.mainTitleStyle}>Profile Setting</Text>
 						</View>
 					</View>
 				</TopAreaWrapper>
 				{/* トップ部分を除くメイン部分*/}
 				<View style={constantsCommonStyles.mainContainerStyle}>
 					<View style={styles.profileImageWrapperStyle} >
-						<Pressable onPress={() => { }} style={styles.profileImageContainerStyle}>
+						<Pressable onPress={() => { pickImage() }} style={styles.profileImageContainerStyle}>
 							<View style={styles.addImageContainerStyle}>
 								<Image source={require('../../assets/images/add-circle.png')} style={styles.addImageStyle} />
 							</View>
-							<Image source={profile.profileImage} style={styles.bigProfileImageStyle} />
+							{image ? (
+								<Image source={{ uri: image }} style={{ width: 80, height: 80, borderRadius: PROFILE_IMAGE_BORDER_RADIUS, }} />
+							) :
+								<View style={styles.circleStyle}></View>
+							}
 						</Pressable>
 						<View style={styles.profileContainerStyle}>
 							{/* ユーザーID */}
 							<View style={styles.listContainerStyle}>
 								<Text style={styles.titleStyle}>User ID</Text>
-								<Text style={styles.textStyle}>{profile.userId}</Text>
+								<Text style={styles.textStyle}>{userId}</Text>
 							</View>
 							{/* ニックネーム */}
 							<View style={styles.listContainerStyle}>
 								<Text style={styles.titleStyle}>NickName</Text>
 								<View style={styles.nickNameContainerStyle}>
-									<Text style={styles.textStyle}>{profile.nickName}</Text>
+									<Text style={styles.textStyle}>{nickName}</Text>
 									<Image source={require('../../assets/images/back-arrow-icon.png')} style={styles.nextIconStyle} />
 								</View>
 							</View>
@@ -204,12 +205,6 @@ const styles = StyleSheet.create({
 		width: 40,
 		height: 40,
 	},
-	bigProfileImageStyle: {
-		width: BIG_PROFILE_IMAGE_SIZE,
-		height: BIG_PROFILE_IMAGE_SIZE,
-		borderRadius: PROFILE_IMAGE_BORDER_RADIUS,
-		position: "relative",
-	},
 	profileContainerStyle: {
 		marginTop: 64
 	},
@@ -241,5 +236,11 @@ const styles = StyleSheet.create({
 		fontSize: TAB_TITLE_TEXT_SIZE,
 		fontFamily: TAB_FONT,
 		color: MAIN_NAVY_COLOR,
-	}
+	},
+	circleStyle: {
+		width: 80,
+		height: 80,
+		borderRadius: PROFILE_IMAGE_BORDER_RADIUS,
+		backgroundColor: MAIN_NAVY_COLOR,
+	},
 })
