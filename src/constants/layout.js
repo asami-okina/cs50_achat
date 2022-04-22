@@ -150,6 +150,9 @@ export const BUTTON_BORDER_RADIUS = 10
 // 検索フォーム
 export const SEARCH_FORM_BORDER_RADIUS = 5
 
+// プロフィール画像の丸み
+export const PROFILE_IMAGE_BORDER_RADIUS = 50
+
 // ------------------------------------------------------------------------------------------------
 // フォント
 // メインタイトル

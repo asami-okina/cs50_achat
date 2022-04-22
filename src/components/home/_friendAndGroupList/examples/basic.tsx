@@ -4,7 +4,7 @@ import { StyleSheet, Text, TouchableOpacity, TouchableHighlight, View, Image } f
 import { SwipeListView } from 'react-native-swipe-list-view';
 
 // layouts
-import { CONTENT_WIDTH, PROFILE_IMAGE_SIZE, STANDARD_FONT, MAIN_WHITE_COLOR, MAIN_PINK_COLOR } from '../../../../constants/layout'
+import { CONTENT_WIDTH, PROFILE_IMAGE_SIZE, STANDARD_FONT, MAIN_WHITE_COLOR, MAIN_PINK_COLOR,PROFILE_IMAGE_BORDER_RADIUS } from '../../../../constants/layout'
 
 export default function Basic({ groupList, friendList, type, setModalVisible, clickedCancelMordal, setClickedCancelMordal, clickedOkMordal, setClickedOkMordal }) {
 	// ユーザーID(今後は認証から取得するようにする)
@@ -211,7 +211,7 @@ const styles = StyleSheet.create({
 	profileImageStyle: {
 		width: PROFILE_IMAGE_SIZE,
 		height: PROFILE_IMAGE_SIZE,
-		borderRadius: 50
+		borderRadius: PROFILE_IMAGE_BORDER_RADIUS
 	},
 	listWrapperStyle: {
 		height: 60,

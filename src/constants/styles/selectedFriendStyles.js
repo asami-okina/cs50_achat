@@ -2,7 +2,7 @@
 import { StyleSheet } from 'react-native';
 
 // layouts
-import { CONTENT_WIDTH, STANDARD_FONT, PROFILE_IMAGE_SIZE, ADD_FRIEND_WIDTH } from '../layout'
+import { CONTENT_WIDTH, STANDARD_FONT, PROFILE_IMAGE_SIZE, ADD_FRIEND_WIDTH,PROFILE_IMAGE_BORDER_RADIUS } from '../layout'
 
 export const selectedFriendStyles = StyleSheet.create({
 	// 選択された友達の部分
@@ -18,12 +18,12 @@ export const selectedFriendStyles = StyleSheet.create({
 	profileImageStyle: {
 		width: PROFILE_IMAGE_SIZE,
 		height: PROFILE_IMAGE_SIZE,
-		borderRadius: 50,
+		borderRadius: PROFILE_IMAGE_BORDER_RADIUS,
 	},
 	listItemNameStyle: {
 		fontFamily: STANDARD_FONT,
 		width: ADD_FRIEND_WIDTH,
-		textAlign: "center"
+		textAlign: "center",
 	},
 	closeImageContainerStyle: {
 		position: "relative",

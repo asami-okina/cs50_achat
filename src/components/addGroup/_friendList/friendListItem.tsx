@@ -4,7 +4,7 @@ import { View, StyleSheet, TouchableHighlight, Image, Text } from 'react-native'
 
 
 // layouts
-import { CONTENT_WIDTH, MAIN_WHITE_COLOR, PROFILE_IMAGE_SIZE, STANDARD_FONT, ICON_SIZE } from '../../../constants/layout'
+import { CONTENT_WIDTH, MAIN_WHITE_COLOR, PROFILE_IMAGE_SIZE, STANDARD_FONT, ICON_SIZE,PROFILE_IMAGE_BORDER_RADIUS } from '../../../constants/layout'
 
 
 export function FriendListItem({
@@ -65,7 +65,7 @@ export const styles = StyleSheet.create({
 	profileImageStyle: {
 		width: PROFILE_IMAGE_SIZE,
 		height: PROFILE_IMAGE_SIZE,
-		borderRadius: 50
+		borderRadius: PROFILE_IMAGE_BORDER_RADIUS
 	},
 	listBoxStyle: {
 		flexDirection: "row",

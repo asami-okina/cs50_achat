@@ -3,9 +3,9 @@ import React, { useEffect, useState } from 'react';
 import { StyleSheet, TouchableOpacity, View, Text } from 'react-native';
 
 // layouts
-import { MAIN_NAVY_COLOR, MAIN_WHITE_COLOR, ADD_BUTTON_SIZE, CONTENT_WIDTH, BUTTON_BORDER_RADIUS, MAIN_BLACK_COLOR, SMALL_BUTTON_WIDTH } from '../../constants/layout'
+import { MAIN_NAVY_COLOR, MAIN_WHITE_COLOR, ADD_BUTTON_SIZE, CONTENT_WIDTH, BUTTON_BORDER_RADIUS, MAIN_BLACK_COLOR, SMALL_BUTTON_WIDTH,MAIN_GRAY_COLOR } from '../../constants/layout'
 
-export function SmallButton({ text, navigation, friendList, groupSetting, type, friendListNames }) {
+export function SmallButton({ text, navigation, friendList, groupSetting, type, friendListNames,alreadyFriend }) {
 	// ユーザーID(今後は認証から取得するようにする)
 	const userId = "asami11"
 	// 自分を含めたグループメンバーのuserId
@@ -70,9 +70,9 @@ export function SmallButton({ text, navigation, friendList, groupSetting, type, 
 	return (
 		<View style={styles.boxStyle}>
 			<View style={styles.wrapperStyle}>
-				<View style={type === "addFriend" ? styles.addFriendContainerStyle: styles.containerStyle}>
+				<View style={type === "addFriend" ? styles.addFriendContainerStyle : styles.containerStyle}>
 					<TouchableOpacity
-						style={styles.buttonStyle}
+						style={alreadyFriend ? [styles.buttonStyle, styles.buttonGrayStyle] :styles.buttonStyle}
 						onPress={() => {
 							// グループ追加画面からグループ設定画面への遷移
 							if (type === "addGroup") {
@@ -82,7 +82,7 @@ export function SmallButton({ text, navigation, friendList, groupSetting, type, 
 								// グループ追加API実行
 								_addGroup()
 							}
-							if(type === "addFriend"){
+							if (type === "addFriend" && !alreadyFriend) {
 								// 友達追加API実行
 								_addFriend()
 							}
@@ -130,6 +130,9 @@ const styles = StyleSheet.create({
 		shadowOpacity: 0.5,
 		shadowRadius: 2,
 		elevation: 1,
+	},
+	buttonGrayStyle: {
+		backgroundColor: MAIN_GRAY_COLOR,
 	},
 	textStyle: {
 		color: MAIN_WHITE_COLOR,

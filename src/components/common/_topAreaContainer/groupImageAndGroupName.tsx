@@ -5,7 +5,7 @@ import * as ImagePicker from 'expo-image-picker';
 
 
 // layouts
-import { ICON_SIZE, MAIN_NAVY_COLOR, CONTENT_WIDTH } from '../../../constants/layout'
+import { ICON_SIZE, MAIN_NAVY_COLOR, CONTENT_WIDTH,PROFILE_IMAGE_BORDER_RADIUS } from '../../../constants/layout'
 
 
 // 丸みを帯びている白いトップ部分
@@ -42,7 +42,7 @@ export function GroupImageAndGroupName({
 				<Pressable onPress={() => { pickImage() }} >
 					<View>
 						{image ? (
-							<Image source={{ uri: image }} style={{ width: 80, height: 80, borderRadius: 50, }} />
+							<Image source={{ uri: image }} style={{ width: 80, height: 80, borderRadius: PROFILE_IMAGE_BORDER_RADIUS, }} />
 						) :
 							<View style={styles.circleStyle}></View>
 						}
@@ -81,7 +81,7 @@ export const styles = StyleSheet.create({
 	circleStyle: {
 		width: 80,
 		height: 80,
-		borderRadius: 50,
+		borderRadius: PROFILE_IMAGE_BORDER_RADIUS,
 		backgroundColor: MAIN_NAVY_COLOR,
 	},
 	cameraStyle: {

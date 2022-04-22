@@ -16,7 +16,7 @@ import { selectedFriendStyles } from '../constants/styles/selectedFriendStyles'
 import { constantsCommonStyles } from '../constants/styles/commonStyles'
 
 // layouts
-import { IPHONE_X_BOTTOM_SPACE, TAB_TITLE_TEXT_SIZE, TAB_FONT, MAIN_NAVY_COLOR, CONTENT_WIDTH, BIG_PROFILE_IMAGE_SIZE } from '../constants/layout'
+import { IPHONE_X_BOTTOM_SPACE, TAB_TITLE_TEXT_SIZE, TAB_FONT, MAIN_NAVY_COLOR, CONTENT_WIDTH, BIG_PROFILE_IMAGE_SIZE, STANDARD_FONT, MAIN_PINK_COLOR,PROFILE_IMAGE_BORDER_RADIUS } from '../constants/layout'
 
 export function AddFriend({ navigation }) {
 	// ユーザーID(今後は認証から取得するようにする)
@@ -28,6 +28,8 @@ export function AddFriend({ navigation }) {
 	// ユーザーIDを条件にAPIから取得した友達情報
 	const [friendInfo, setFriendInfo] = useState<any>(null)
 
+	// すでに友達になっているか
+	const [alreadyFriend, setAlreadyFriend] = useState(false)
 
 	// ニックネームでヒットするユーザーの取得
 	async function _searchId(searchText) {
@@ -42,8 +44,16 @@ export function AddFriend({ navigation }) {
 					"Content-Type": "application/json"
 				},
 			})
+			// ステータスコードを取得
+			const parse_response_code = await response.status
 			// レスポンスをJSONにする
 			const parse_response = await response.json()
+			if (parse_response_code === 200) {
+				setAlreadyFriend(false)
+			}
+			if (parse_response_code === 400) {
+				setAlreadyFriend(true)
+			}
 			// 友達一覧のstateを更新
 			setFriendInfo(parse_response)
 		} catch (e) {
@@ -82,7 +92,10 @@ export function AddFriend({ navigation }) {
 								<Image source={friendInfo.friend_profile_image} style={styles.profileImageStyle} />
 								<Text style={selectedFriendStyles.listItemNameStyle}>{friendInfo.friend_nickname}</Text>
 							</View>
-							<SmallButton text={"Add"} navigation={navigation} friendList={friendInfo} groupSetting={null} type={"addFriend"} friendListNames={null} />
+							<SmallButton text={"Add"} navigation={navigation} friendList={friendInfo} groupSetting={null} type={"addFriend"} friendListNames={null} alreadyFriend={alreadyFriend} />
+							{alreadyFriend && (
+								<Text style={styles.errorTextStyle}>Already requested.</Text>
+							)}
 						</View>
 					)}
 				</View>
@@ -133,6 +146,11 @@ const styles = StyleSheet.create({
 	profileImageStyle: {
 		width: BIG_PROFILE_IMAGE_SIZE,
 		height: BIG_PROFILE_IMAGE_SIZE,
-		borderRadius: 50,
+		borderRadius: PROFILE_IMAGE_BORDER_RADIUS,
+	},
+	errorTextStyle: {
+		fontFamily: STANDARD_FONT,
+		color: MAIN_PINK_COLOR,
+		textAlign: "center",
 	},
 })
