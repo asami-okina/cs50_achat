@@ -11,7 +11,7 @@ export function ProfileImage({ image, setImage }) {
 		const userId = "asami11"
 
 	// プロフィール画像の更新
-	async function _updateNickName() {
+	async function _updateProfileImage() {
 		try {
 			// APIリクエスト
 			const bodyData = {
@@ -40,7 +40,7 @@ export function ProfileImage({ image, setImage }) {
 		if (!result.cancelled) {
 			setImage(result.uri);
 			// プロフィール画像更新APIを実行
-			_updateNickName()
+			_updateProfileImage()
 		}
 	};
 

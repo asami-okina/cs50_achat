@@ -12,7 +12,7 @@ export function Button({
 	buttonText,
 	enable,
 	scene,
-	loginProps
+	propsList
 }) {
 	return (
 		<>
@@ -20,20 +20,25 @@ export function Button({
 				// ログイン画面の場合
 				scene === 'LogIn' ? (
 					<TouchableOpacity
-						style={loginProps.emailText.length !== 0 && loginProps.passwordText.length !== 0 ? loginProps.executedLoginAuthentication ? loginProps.onFocusInputMailOrPasseword ? styles.buttonContainerStyle : [styles.buttonContainerStyle, styles.buttonContainerInvalidStyle] : styles.buttonContainerStyle : [styles.buttonContainerStyle, styles.buttonContainerInvalidStyle]}
+						style={propsList.emailText.length !== 0 && propsList.passwordText.length !== 0 ? propsList.executedLoginAuthentication ? propsList.onFocusInputMailOrPasseword ? styles.buttonContainerStyle : [styles.buttonContainerStyle, styles.buttonContainerInvalidStyle] : styles.buttonContainerStyle : [styles.buttonContainerStyle, styles.buttonContainerInvalidStyle]}
 						onPress={() => {
-							if (loginProps.emailText.length !== 0 && loginProps.passwordText.length !== 0) {
-								loginProps.onPressFunction()
+							if (propsList.emailText.length !== 0 && propsList.passwordText.length !== 0) {
+								propsList.onPressFunction()
 							}
 						}}>
 						<Text style={styles.buttonTextStyle}>Log In</Text>
 					</TouchableOpacity>
 				) : (
-					// ログイン以外の画面の場合(scene === 'Welcome' || scene === 'SignUp')
+					// ログイン以外の画面の場合(scene === 'Welcome' || scene === 'SignUp')等
 					<TouchableOpacity
 						style={enable ? styles.buttonContainerStyle : [styles.buttonContainerStyle, styles.buttonContainerInvalidStyle]}
 						onPress={() => {
-							if (enable) {
+							// プロフィール設定画面にてニックネームの更新
+							if (enable && scene === "ProfileSettingNickName" && propsList.nickName.length !== 0 && link) {
+								propsList._updateNickName()
+								navigation.navigate(link)
+							}
+							if (enable && link && scene !== "ProfileSettingNickName") {
 								navigation.navigate(link)
 							}
 						}}

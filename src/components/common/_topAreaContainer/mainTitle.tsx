@@ -5,10 +5,10 @@ import { View,  Text, StyleSheet, Image, Pressable } from 'react-native';
 // layouts
 import {  TAB_FONT, MAIN_NAVY_COLOR, CONTENT_WIDTH } from '../../../constants/layout'
 
-export function MainTitle({ navigation, title }) {
+export function MainTitle({ navigation, title, link }) {
 	return (
 		<View style={styles.titleWrapperStyle}>
-		<Pressable onPress={() => { navigation.navigate('Home') }} >
+		<Pressable onPress={() => { navigation.navigate(link) }} >
 			<Image source={require("../../../../assets/images/back-icon.png")} style={styles.backIconStyle} />
 		</Pressable>
 		<Text style={styles.titleStyle}>{title}</Text>

@@ -7,6 +7,7 @@ import { TopAreaWrapper } from "../components/common/topAreaWrapper"
 import { MainTitle } from "../components/common/_topAreaContainer/mainTitle"
 import { ProfileInfo } from "../components/profile/profileInfo"
 import { ProfileImage } from "../components/profile/profileImage"
+import {EditNickName} from "../components/profile/_profileInfo/editNickName"
 
 // constantsCommonStyles
 import { constantsCommonStyles } from '../constants/styles/commonStyles'
@@ -60,11 +61,12 @@ export function Profile({ navigation }) {
 			})
 			// レスポンスをJSONにする
 			const parse_response = await response.json()
-			// プロフィール画像の登録
+			// console.log('parse_response',parse_response)
+			// // プロフィール画像の登録
 			setProfileImage(parse_response.profileImage)
-			// ニックネームの登録
+			// // ニックネームの登録
 			setNickName(parse_response.nickName)
-			// 検索可能フラグの登録
+			// // 検索可能フラグの登録
 			setIsEnabled(parse_response.searchFlag)
 		} catch (e) {
 			console.error(e)
@@ -84,7 +86,7 @@ export function Profile({ navigation }) {
 				<View style={constantsCommonStyles.topMarginViewStyle}></View>
 				{/* 丸みを帯びている白いトップ部分 */}
 				<TopAreaWrapper type={"addFriend"}>
-					<MainTitle navigation={navigation} title={"Profile Setting"} />
+					<MainTitle navigation={navigation} title={"Profile Setting"} link={"Home"} />
 				</TopAreaWrapper>
 				{/* トップ部分を除くメイン部分*/}
 				<View style={constantsCommonStyles.mainContainerStyle}>
@@ -92,7 +94,7 @@ export function Profile({ navigation }) {
 						{/* プロフィール画像 */}
 						<ProfileImage image={profileImage} setImage={setProfileImage} />
 						{/* プロフィール */}
-						<ProfileInfo nickName={nickName} isEnabled={isEnabled} setIsEnabled={setIsEnabled}  />
+						<ProfileInfo navigation={navigation} setNickName={setNickName} nickName={nickName} isEnabled={isEnabled} setIsEnabled={setIsEnabled} fetchProfileByUserId={_fetchProfileByUserId}  />
 					</View>
 				</View>
 			</SafeAreaView>

@@ -27,7 +27,7 @@ export function Welcome({ navigation }) {
 				<AChatLogo />
 				<View style={constantsCommonStyles.bottomStyleByWelcomeAndSignUpAndLogin}>
 					{/* 遷移ボタン */}
-					<Button navigation={navigation} link={'SignUp'} buttonText={'Sign Up'} enable={true} scene={'Welcome'} loginProps={null} />
+					<Button navigation={navigation} link={'SignUp'} buttonText={'Sign Up'} enable={true} scene={'Welcome'} propsList={null} />
 					{/* サインアップまたはログインへのリンク */}
 					<ToSignUpOrLoginTextArea navigation={navigation} description={'Do you have an account?'} link={'LogIn'} />
 				</View>
