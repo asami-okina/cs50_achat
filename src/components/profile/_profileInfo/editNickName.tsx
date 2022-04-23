@@ -29,25 +29,6 @@ export function EditNickName({ navigation }) {
 	// 未入力状態
 	const [defaultInput, setDefaultInput] = useState(true)
 
-	// ニックネームの更新
-	async function _updateNickName() {
-		try {
-			// APIリクエスト
-			const bodyData = {
-				"nickName": nickName,
-			}
-			const response = await fetch(`https://a-chat/api/users/${userId}/profile`, {
-				method: "POST",
-				headers: {
-					"Content-Type": "application/json"
-				},
-				body: JSON.stringify(bodyData),
-			})
-		} catch (e) {
-			console.error(e)
-		}
-	}
-
 	return (
 		<KeyboardAvoidingView behavior="padding" style={constantsCommonStyles.screenContainerStyle}>
 			<SafeAreaView style={constantsCommonStyles.screenContainerStyle}>
