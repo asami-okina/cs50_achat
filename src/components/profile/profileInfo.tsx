@@ -5,16 +5,37 @@ import { View, Text, StyleSheet, Image, Switch } from 'react-native';
 // layouts
 import { TAB_TITLE_TEXT_SIZE, TAB_FONT, MAIN_NAVY_COLOR, CONTENT_WIDTH, STANDARD_FONT, MAIN_WHITE_COLOR, MAIN_GRAY_COLOR, MAIN_YELLOW_GREEN } from '../../constants/layout'
 
-export function ProfileInfo({ nickName }) {
+export function ProfileInfo({ nickName, isEnabled, setIsEnabled }) {
 	// ユーザーID(今後は認証から取得するようにする)
 	const userId = "asami11"
 
-	// 検索可能トグル
-	const [isEnabled, setIsEnabled] = useState(false);
-
 	// 検索可能トグルの変更関数
-	const toggleSwitch = () => setIsEnabled(previousState => !previousState);
+	const toggleSwitch = () => {
+		// リレンダーするまではisEnabledは変わらないため、反転させた値を変数に保持しておく
+		const newIsEnabled = !isEnabled
+		setIsEnabled(newIsEnabled)
+		_updateSearchFlag(newIsEnabled)
+	}
 
+	// 検索可能トグルの更新
+	async function _updateSearchFlag(newIsEnabled) {
+		try {
+			// APIリクエスト
+			const bodyData = {
+				"isSetSearchFlag": true,
+				"searchFlag": newIsEnabled,
+			}
+			const response = await fetch(`https://a-chat/api/users/${userId}/profile`, {
+				method: "POST",
+				headers: {
+					"Content-Type": "application/json"
+				},
+				body: JSON.stringify(bodyData),
+			})
+		} catch (e) {
+			console.error(e)
+		}
+	}
 
 	return (
 		<View style={styles.profileContainerStyle}>

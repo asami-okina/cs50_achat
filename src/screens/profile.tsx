@@ -22,28 +22,31 @@ export function Profile({ navigation }) {
 	// プロフィール画像
 	const [profileImage, setProfileImage] = useState(null)
 
-		// ニックネームの更新
-		async function _updateProfileImage() {
-			try {
-				// APIリクエスト
-				const bodyData = {
-					"nickName": nickName,
-				}
-				const response = await fetch(`https://a-chat/api/users/${userId}/profile`, {
-					method: "POST",
-					headers: {
-						"Content-Type": "application/json"
-					},
-					body: JSON.stringify(bodyData),
-				})
-				// レスポンスをJSONにする
-				const parse_response = await response.json()
-				// 新しいニックネームに更新
-				setNickName(parse_response.nickName)
-			} catch (e) {
-				console.error(e)
+		// 検索可能トグル
+		const [isEnabled, setIsEnabled] = useState(false);
+
+	// ニックネームの更新
+	async function _updateProfileImage() {
+		try {
+			// APIリクエスト
+			const bodyData = {
+				"nickName": nickName,
 			}
+			const response = await fetch(`https://a-chat/api/users/${userId}/profile`, {
+				method: "POST",
+				headers: {
+					"Content-Type": "application/json"
+				},
+				body: JSON.stringify(bodyData),
+			})
+			// レスポンスをJSONにする
+			const parse_response = await response.json()
+			// 新しいニックネームに更新
+			setNickName(parse_response.nickName)
+		} catch (e) {
+			console.error(e)
 		}
+	}
 
 	// [自分の情報]ユーザーIDに紐づくニックネーム、プロフィール画像の取得
 	async function _fetchProfileByUserId() {
@@ -61,6 +64,8 @@ export function Profile({ navigation }) {
 			setProfileImage(parse_response.profileImage)
 			// ニックネームの登録
 			setNickName(parse_response.nickName)
+			// 検索可能フラグの登録
+			setIsEnabled(parse_response.searchFlag)
 		} catch (e) {
 			console.error(e)
 		}
@@ -87,7 +92,7 @@ export function Profile({ navigation }) {
 						{/* プロフィール画像 */}
 						<ProfileImage image={profileImage} setImage={setProfileImage} />
 						{/* プロフィール */}
-						<ProfileInfo nickName={nickName} />
+						<ProfileInfo nickName={nickName} isEnabled={isEnabled} setIsEnabled={setIsEnabled}  />
 					</View>
 				</View>
 			</SafeAreaView>

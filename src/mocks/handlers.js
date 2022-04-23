@@ -308,7 +308,12 @@ export const handlers = [
 	// プロフィールの更新
 	rest.post('https://a-chat/api/users/:userId/profile', (req, res, ctx) => {
 		const { nickName } = req.body
-		const {profileImage} = req.body
+		const { profileImage } = req.body
+
+		// 検索可能フラグの引数が存在するかどうか
+		const { isSetSearchFlag } = req.body
+		const { searchFlag } = req.body
+
 		//　ニックネームの更新
 		if (nickName) {
 			return res(
@@ -322,13 +327,26 @@ export const handlers = [
 			)
 		}
 		// プロフィール画像の更新
-		if(profileImage){
+		if (profileImage) {
 			return res(
 				// 200のステータスコードで応答する
 				ctx.status(200),
 				ctx.json(
 					{
 						"profileImage": profileImage,
+					}
+				)
+			)
+		}
+		// 検索可能フラグの更新
+		if (isSetSearchFlag) {
+			console.log('searchFlag', searchFlag)
+			return res(
+				// 200のステータスコードで応答する
+				ctx.status(200),
+				ctx.json(
+					{
+						"searchFlag": searchFlag,
 					}
 				)
 			)
