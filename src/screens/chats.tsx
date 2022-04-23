@@ -1,11 +1,123 @@
 // libs
 import React, { useEffect, useState } from 'react';
-import { View,Text } from 'react-native'
+import { View, SafeAreaView, KeyboardAvoidingView, Text, StyleSheet, Pressable, Image, ScrollView } from 'react-native';
+import { useIsFocused } from '@react-navigation/native'
 
-export function Chats({navigation}) {
+// components
+import { Footer } from '../components/common/footer'
+import { ConfirmModal } from '../components/common/confirmModal'
+import { TopAreaWrapper } from "../components/common/topAreaWrapper"
+import { SearchForm } from "../components/common/_topAreaContainer/searchForm"
+import { ChatsList } from "../components/chats/chatsList";
+
+// constantsCommonStyles
+import { constantsCommonStyles } from '../constants/styles/commonStyles'
+
+// layouts
+import { CONTENT_WIDTH, IPHONE_X_BOTTOM_SPACE, PROFILE_IMAGE_BORDER_RADIUS, MAIN_NAVY_COLOR, PROFILE_IMAGE_SIZE, MAIN_GRAY_COLOR, STANDARD_FONT, MAIN_WHITE_COLOR } from '../constants/layout'
+
+export function Chats({ navigation }) {
+	// ユーザーID(今後は認証から取得するようにする)
+	const userId = "asami11"
+
+	// 検索フォーム
+	const [searchText, setSearchText] = useState('')
+	// 検索中かどうか
+	const [isDuringSearch, setIsDuringSearch] = useState(false)
+
+	// グループ削除確認モーダル
+	const [modalVisible, setModalVisible] = useState(false);
+	// 削除時の確認モーダルでCancelを押したかどうか
+	const [clickedCancelMordal, setClickedCancelMordal] = useState(false)
+	// 削除時の確認モーダルでOkを押したかどうか
+	const [clickedOkMordal, setClickedOkMordal] = useState(false)
+
+	// [検索前]APIから取得したグループ一覧リスト
+	const [beforeChatRoomListSearch, setBeforeChatRoomListSearch] = useState([])
+	// [検索後]APIから取得したグループ一覧リスト
+	const [afterChatRoomListSearch, setAfterChatRoomListSearch] = useState([])
+
+	// 現在画面がフォーカスされているかをbooleanで保持
+	const isFocused = useIsFocused()
+
+	// ニックネームまたはグループ名の検索でヒットするユーザーまたはグループ情報の取得
+	async function _searchName(searchText) {
+		try {
+			// paramsを生成
+			const params_search = { "search": searchText }
+			const query_params = new URLSearchParams(params_search);
+
+			// APIリクエスト
+			const response = await fetch(`https://a-chat/api/users/${userId}/home?${query_params}`, {
+				method: "GET",
+				headers: {
+					"Content-Type": "application/json"
+				},
+			})
+			// レスポンスをJSONにする
+			const parse_response = await response.json()
+			// チャットルーム一覧のstateを更新
+			setAfterChatRoomListSearch(parse_response[1]["group"])
+		} catch (e) {
+			console.error(e)
+		}
+	}
+
+
+	// チャットルーム一覧を取得
+	async function _fetchChatsList() {
+		try {
+			// APIリクエスト
+			const response = await fetch(`https://a-chat/api/users/${userId}/chatRoom`, {
+				method: "GET",
+				headers: {
+					"Content-Type": "application/json"
+				},
+			})
+			// レスポンスをJSONにする
+			const parse_response = await response.json()
+			setBeforeChatRoomListSearch(parse_response.map((_, i) => ({ ..._, key: `${i}` })))
+		} catch (e) {
+			console.error(e)
+		}
+	}
+
+	useEffect(() => {
+		// navigationがリレンダーされないので、画面にフォーカスが当たった時に再実行するよう実装
+		if (userId) {
+			_fetchChatsList()
+		}
+	}, [isFocused])
+
+	// chatRoomListの更新
+	// useEffect(() => {
+	// 	if (beforeChatRoomListSearch) {
+	// 		setBeforeChatRoomListSearch(beforeChatRoomListSearch.map((_, i) => ({ ..._, key: `${i}` })))
+	// 	}
+	// }, [beforeChatRoomListSearch])
+
+	// 検索フォームのラベル化
+	let textInputSearch;
+
 	return (
-		<View>
-			<Text>Chats</Text>
-		</View>
+		<KeyboardAvoidingView behavior="padding" style={constantsCommonStyles.screenContainerStyle}>
+			<SafeAreaView style={constantsCommonStyles.screenContainerStyle}>
+				{/* Delete確認モーダル */}
+				<ConfirmModal modalVisible={modalVisible} setModalVisible={setModalVisible} setClickedCancelMordal={setClickedCancelMordal} setClickedOkMordal={setClickedOkMordal} modalText={"When you leave a group, the group member list and all group talk history will be deleted. Do you want to leave the group?"} />
+				{/* 画面一番上にある青色の余白部分 */}
+				<View style={constantsCommonStyles.topMarginViewStyle}></View>
+				{/* 丸みを帯びている白いトップ部分 */}
+				<TopAreaWrapper type={"searchForm"}>
+					<SearchForm setSearchText={setSearchText} searchText={searchText} textInputSearch={textInputSearch} searchName={_searchName} fetchGroupCount={null} fetchFriendCount={null} setIsDuringSearch={setIsDuringSearch} placeholder={"Search by name"} />
+				</TopAreaWrapper>
+				{/* トップ部分を除くメイン部分: iphoneXの場合は、底のマージンを考慮 */}
+				<View style={IPHONE_X_BOTTOM_SPACE === 0 ? constantsCommonStyles.withFooterMainContainerNoneBottomButtonStyle : constantsCommonStyles.withFooterMainContainerIphoneXNoneBottomButtonStyle}>
+					{/* チャット一覧 */}
+					<ChatsList navigation={navigation} beforeChatRoomListSearch={beforeChatRoomListSearch}/>
+				</View>
+				{/*フッター */}
+				<Footer navigation={navigation} />
+			</SafeAreaView>
+		</KeyboardAvoidingView>
 	);
 }

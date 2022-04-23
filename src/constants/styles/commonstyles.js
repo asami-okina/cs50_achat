@@ -81,7 +81,7 @@ export const constantsCommonStyles = StyleSheet.create({
 		backgroundColor: MAIN_WHITE_COLOR,
 	},
 	// フッター有かつ下部のボタンない場合の画面の操作画面の高さ(iphoneX)
-	// 友達検索画面
+	// 友達検索、Chats画面
 	withFooterMainContainerIphoneXNoneBottomButtonStyle: {
 		minHeight: WITH_FOOTER_OPERATION_SCREEN_HEIGHT_IPHONE_X_NONE_BOTTOM_BUTTON,
 		maxHeight: WITH_FOOTER_OPERATION_SCREEN_HEIGHT_IPHONE_X_NONE_BOTTOM_BUTTON,
