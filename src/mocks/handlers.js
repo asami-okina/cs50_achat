@@ -5,7 +5,7 @@ import { rest } from 'msw'
 let profileInfo =
 {
 	"userId": "asami11",
-	"nickName": "かひんご",
+	"nickName": "あさみん",
 	"profileImage": "file:///Users/asami/Library/Developer/CoreSimulator/Devices/02928183-1C86-49FB-9F91-B42D0E7553C1/data/Containers/Data/Application/EC802C19-0A27-477A-AE8A-168DF3DEE120/Library/Caches/ExponentExperienceData/%2540asamin8105%252FA-chat/ImagePicker/4A0FF21E-81A4-40B1-9B81-9F168889663E.jpg",
 	"searchFlag": true
 }
@@ -249,7 +249,6 @@ export const handlers = [
 	// ユーザーIDに紐づくニックネーム、プロフィール画像の取得
 	rest.get(`https://a-chat/api/users/:userId/profile`, (req, res, ctx) => {
 		// userIdの取得
-		console.log('きたおおお')
 		const { userId } = req.params
 		return res(
 			ctx.status(200),
@@ -268,9 +267,7 @@ export const handlers = [
 
 		//　ニックネームの更新
 		if (nickName) {
-			console.log('nickName',nickName)
 			profileInfo.nickName = nickName
-			console.log('profileInfo.nickName',profileInfo.nickName)
 			return res(
 				// 200のステータスコードで応答する
 				ctx.status(200),
@@ -283,6 +280,7 @@ export const handlers = [
 		}
 		// プロフィール画像の更新
 		if (profileImage) {
+			profileInfo.profileImage = profileImage
 			return res(
 				// 200のステータスコードで応答する
 				ctx.status(200),
@@ -295,6 +293,7 @@ export const handlers = [
 		}
 		// 検索可能フラグの更新
 		if (isSetSearchFlag) {
+			profileInfo.searchFlag = searchFlag
 			return res(
 				// 200のステータスコードで応答する
 				ctx.status(200),

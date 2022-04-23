@@ -2,6 +2,7 @@
 import React, { useEffect, useState } from 'react';
 import { View, SafeAreaView, KeyboardAvoidingView, StyleSheet, Text, TextInput, Pressable, Image } from 'react-native';
 
+
 // components
 import { TopAreaWrapper } from "../../../components/common/topAreaWrapper"
 import { MainTitle } from "../../../components/common/_topAreaContainer/mainTitle"
@@ -17,8 +18,6 @@ import { searchStyles } from '../../../constants/styles/searchStyles'
 import { TAB_TITLE_TEXT_SIZE, TAB_FONT, MAIN_NAVY_COLOR, CONTENT_WIDTH, STANDARD_FONT, MAIN_WHITE_COLOR, MAIN_PINK_COLOR, MAIN_GRAY_COLOR, MAIN_YELLOW_GREEN, IN_SEARCH_FORM_SIDE_MARGIN, ICON_SIZE } from '../../../constants/layout'
 
 export function EditNickName({ route, navigation }) {
-	// プロフィール情報の取得
-	const { fetchProfileByUserId } = route.params
 
 	// ユーザーID(今後は認証から取得するようにする)
 	const userId = "asami11"
@@ -61,7 +60,6 @@ export function EditNickName({ route, navigation }) {
 				},
 				body: JSON.stringify(bodyData),
 			})
-			fetchProfileByUserId()
 		} catch (e) {
 			console.error(e)
 		}

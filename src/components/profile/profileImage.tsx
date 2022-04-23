@@ -7,15 +7,15 @@ import * as ImagePicker from 'expo-image-picker';
 import { MAIN_NAVY_COLOR, PROFILE_IMAGE_BORDER_RADIUS } from '../../constants/layout'
 
 export function ProfileImage({ image, setImage }) {
-		// ユーザーID(今後は認証から取得するようにする)
-		const userId = "asami11"
+	// ユーザーID(今後は認証から取得するようにする)
+	const userId = "asami11"
 
 	// プロフィール画像の更新
-	async function _updateProfileImage() {
+	async function _updateProfileImage(newImageUri) {
 		try {
 			// APIリクエスト
 			const bodyData = {
-				"profileImage": image,
+				"profileImage": newImageUri,
 			}
 			const response = await fetch(`https://a-chat/api/users/${userId}/profile`, {
 				method: "POST",
@@ -38,9 +38,11 @@ export function ProfileImage({ image, setImage }) {
 			quality: 1,
 		});
 		if (!result.cancelled) {
-			setImage(result.uri);
+			// リレンダーのタイミングまでstateが変わらないので、変更値を変数に保持して、useStateや関数に渡す
+			const newImageUri = result.uri
+			setImage(newImageUri);
 			// プロフィール画像更新APIを実行
-			_updateProfileImage()
+			_updateProfileImage(newImageUri)
 		}
 	};
 

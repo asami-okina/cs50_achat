@@ -5,7 +5,7 @@ import { View, Text, StyleSheet, Image, Switch, Pressable } from 'react-native';
 // layouts
 import { TAB_TITLE_TEXT_SIZE, TAB_FONT, MAIN_NAVY_COLOR, CONTENT_WIDTH, STANDARD_FONT, MAIN_WHITE_COLOR, MAIN_GRAY_COLOR, MAIN_YELLOW_GREEN } from '../../constants/layout'
 
-export function ProfileInfo({ navigation, nickName, setNickName, isEnabled, setIsEnabled, fetchProfileByUserId }) {
+export function ProfileInfo({ navigation, nickName, setNickName, isEnabled, setIsEnabled }) {
 	// ユーザーID(今後は認証から取得するようにする)
 	const userId = "asami11"
 
@@ -45,7 +45,7 @@ export function ProfileInfo({ navigation, nickName, setNickName, isEnabled, setI
 				<Text style={styles.textStyle}>{userId}</Text>
 			</View>
 			{/* ニックネーム */}
-			<Pressable onPress={() => { navigation.navigate('EditNickName', {"fetchProfileByUserId": fetchProfileByUserId}) }}>
+			<Pressable onPress={() => { navigation.navigate('EditNickName') }}>
 				<View style={styles.listContainerStyle}>
 					<Text style={styles.titleStyle}>NickName</Text>
 					<View style={styles.nickNameContainerStyle}>

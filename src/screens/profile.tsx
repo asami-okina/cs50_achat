@@ -1,6 +1,7 @@
 // libs
 import React, { useEffect, useState } from 'react';
 import { View, SafeAreaView, KeyboardAvoidingView, StyleSheet } from 'react-native';
+import { useIsFocused } from '@react-navigation/native'
 
 // components
 import { TopAreaWrapper } from "../components/common/topAreaWrapper"
@@ -11,7 +12,6 @@ import {EditNickName} from "../components/profile/_profileInfo/editNickName"
 
 // constantsCommonStyles
 import { constantsCommonStyles } from '../constants/styles/commonStyles'
-
 
 export function Profile({ navigation }) {
 	// ユーザーID(今後は認証から取得するようにする)
@@ -26,28 +26,9 @@ export function Profile({ navigation }) {
 		// 検索可能トグル
 		const [isEnabled, setIsEnabled] = useState(false);
 
-	// ニックネームの更新
-	async function _updateProfileImage() {
-		try {
-			// APIリクエスト
-			const bodyData = {
-				"nickName": nickName,
-			}
-			const response = await fetch(`https://a-chat/api/users/${userId}/profile`, {
-				method: "POST",
-				headers: {
-					"Content-Type": "application/json"
-				},
-				body: JSON.stringify(bodyData),
-			})
-			// レスポンスをJSONにする
-			const parse_response = await response.json()
-			// 新しいニックネームに更新
-			setNickName(parse_response.nickName)
-		} catch (e) {
-			console.error(e)
-		}
-	}
+		// 現在画面がフォーカスされているかをbooleanで保持
+		const isFocused = useIsFocused()
+		console.log('isFocused',isFocused)
 
 	// [自分の情報]ユーザーIDに紐づくニックネーム、プロフィール画像の取得
 	async function _fetchProfileByUserId() {
@@ -61,7 +42,6 @@ export function Profile({ navigation }) {
 			})
 			// レスポンスをJSONにする
 			const parse_response = await response.json()
-			// console.log('parse_response',parse_response)
 			// // プロフィール画像の登録
 			setProfileImage(parse_response.profileImage)
 			// // ニックネームの登録
@@ -74,10 +54,11 @@ export function Profile({ navigation }) {
 	}
 
 	useEffect(() => {
+		// navigationがリレンダーされないので、画面にフォーカスが当たった時に再実行するよう実装
 		if (userId) {
 			_fetchProfileByUserId()
 		}
-	}, [])
+	},[isFocused])
 
 	return (
 		<KeyboardAvoidingView behavior="padding" style={constantsCommonStyles.screenContainerStyle}>
@@ -94,7 +75,7 @@ export function Profile({ navigation }) {
 						{/* プロフィール画像 */}
 						<ProfileImage image={profileImage} setImage={setProfileImage} />
 						{/* プロフィール */}
-						<ProfileInfo navigation={navigation} setNickName={setNickName} nickName={nickName} isEnabled={isEnabled} setIsEnabled={setIsEnabled} fetchProfileByUserId={_fetchProfileByUserId}  />
+						<ProfileInfo navigation={navigation} setNickName={setNickName} nickName={nickName} isEnabled={isEnabled} setIsEnabled={setIsEnabled}  />
 					</View>
 				</View>
 			</SafeAreaView>
