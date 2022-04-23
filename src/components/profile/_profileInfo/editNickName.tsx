@@ -7,6 +7,7 @@ import { View, SafeAreaView, KeyboardAvoidingView, StyleSheet, Text, TextInput, 
 import { TopAreaWrapper } from "../../../components/common/topAreaWrapper"
 import { MainTitle } from "../../../components/common/_topAreaContainer/mainTitle"
 import { Button } from "../../common/button"
+import {NickNameStringCount} from "../_profileInfo/_editNickName/nickNameStringCount"
 
 // constantsCommonStyles
 import { constantsCommonStyles } from '../../../constants/styles/commonStyles'
@@ -80,9 +81,7 @@ export function EditNickName({ route, navigation }) {
 				{/* トップ部分を除くメイン部分*/}
 				<View style={constantsCommonStyles.mainContainerStyle}>
 					<View style={styles.nickNameWrapperStyle}>
-						<View style={[styles.nickNameContainerStyle, styles.stringCountContainerStyle]}>
-							<Text style={styles.stringCountTextStyle}>{wordCount} / 20</Text>
-						</View>
+						<NickNameStringCount wordCount={wordCount} />
 					</View>
 					<View style={styles.inputTextWrapperStyle}>
 						<Pressable onPress={() => textInputSearch.focus()} style={defaultInput ? styles.inputTextContainerStyle : isValidInput ? styles.inputTextContainerStyle : [styles.inputTextContainerStyle, styles.errorInputTextContainerStyle]} >

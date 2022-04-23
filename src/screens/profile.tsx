@@ -8,7 +8,6 @@ import { TopAreaWrapper } from "../components/common/topAreaWrapper"
 import { MainTitle } from "../components/common/_topAreaContainer/mainTitle"
 import { ProfileInfo } from "../components/profile/profileInfo"
 import { ProfileImage } from "../components/profile/profileImage"
-import {EditNickName} from "../components/profile/_profileInfo/editNickName"
 
 // constantsCommonStyles
 import { constantsCommonStyles } from '../constants/styles/commonStyles'
@@ -23,12 +22,11 @@ export function Profile({ navigation }) {
 	// プロフィール画像
 	const [profileImage, setProfileImage] = useState(null)
 
-		// 検索可能トグル
-		const [isEnabled, setIsEnabled] = useState(false);
+	// 検索可能トグル
+	const [isEnabled, setIsEnabled] = useState(false);
 
-		// 現在画面がフォーカスされているかをbooleanで保持
-		const isFocused = useIsFocused()
-		console.log('isFocused',isFocused)
+	// 現在画面がフォーカスされているかをbooleanで保持
+	const isFocused = useIsFocused()
 
 	// [自分の情報]ユーザーIDに紐づくニックネーム、プロフィール画像の取得
 	async function _fetchProfileByUserId() {
@@ -58,7 +56,7 @@ export function Profile({ navigation }) {
 		if (userId) {
 			_fetchProfileByUserId()
 		}
-	},[isFocused])
+	}, [isFocused])
 
 	return (
 		<KeyboardAvoidingView behavior="padding" style={constantsCommonStyles.screenContainerStyle}>
@@ -75,7 +73,7 @@ export function Profile({ navigation }) {
 						{/* プロフィール画像 */}
 						<ProfileImage image={profileImage} setImage={setProfileImage} />
 						{/* プロフィール */}
-						<ProfileInfo navigation={navigation} setNickName={setNickName} nickName={nickName} isEnabled={isEnabled} setIsEnabled={setIsEnabled}  />
+						<ProfileInfo navigation={navigation} setNickName={setNickName} nickName={nickName} isEnabled={isEnabled} setIsEnabled={setIsEnabled} />
 					</View>
 				</View>
 			</SafeAreaView>
