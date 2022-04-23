@@ -6,7 +6,7 @@ let profileInfo =
 {
 	"userId": "asami11",
 	"nickName": "あさみん",
-	"profileImage": "file:///Users/asami/Library/Developer/CoreSimulator/Devices/02928183-1C86-49FB-9F91-B42D0E7553C1/data/Containers/Data/Application/EC802C19-0A27-477A-AE8A-168DF3DEE120/Library/Caches/ExponentExperienceData/%2540asamin8105%252FA-chat/ImagePicker/4A0FF21E-81A4-40B1-9B81-9F168889663E.jpg",
+	"profileImage": "https://pbs.twimg.com/profile_images/1257586310077796352/XWNIr3Fr_400x400.jpg",
 	"searchFlag": true
 }
 
