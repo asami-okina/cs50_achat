@@ -73,7 +73,7 @@ function App() {
 					{/* <Stack.Screen name="AddGroup" component={AddGroup} options={{ headerShown: false }} /> */}
 					{/* <Stack.Screen name="AddGroupSetting" component={AddGroupSetting} options={{ headerShown: false }} /> */}
 					{/* <Stack.Screen name="AddFriend" component={AddFriend} options={{ headerShown: false }} /> */}
-					{/* <Stack.Screen name="Profile" component={Profile} options={{ headerShown: false }} /> */}
+					<Stack.Screen name="Profile" component={Profile} options={{ headerShown: false }} />
 					<Stack.Screen name="EditNickName" component={EditNickName} options={{ headerShown: false }} />
 				</Stack.Navigator>
 			</NavigationContainer>
