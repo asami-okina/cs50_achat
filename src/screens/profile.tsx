@@ -20,28 +20,30 @@ export function Profile({ navigation }) {
 	const [nickName, setNickName] = useState("")
 
 	// プロフィール画像
-	const [image, setImage] = useState(null)
+	const [profileImage, setProfileImage] = useState(null)
 
-	// ニックネームの更新
-	async function _postNickName() {
-		try {
-			// APIリクエスト
-			const bodyData = {
-				"nickName": nickName,
+		// ニックネームの更新
+		async function _updateProfileImage() {
+			try {
+				// APIリクエスト
+				const bodyData = {
+					"nickName": nickName,
+				}
+				const response = await fetch(`https://a-chat/api/users/${userId}/profile`, {
+					method: "POST",
+					headers: {
+						"Content-Type": "application/json"
+					},
+					body: JSON.stringify(bodyData),
+				})
+				// レスポンスをJSONにする
+				const parse_response = await response.json()
+				// 新しいニックネームに更新
+				setNickName(parse_response.nickName)
+			} catch (e) {
+				console.error(e)
 			}
-			const response = await fetch(`https://a-chat/api/users/${userId}/nick-name`, {
-				method: "POST",
-				headers: {
-					"Content-Type": "application/json"
-				},
-				body: JSON.stringify(bodyData),
-			})
-			// レスポンスをJSONにする
-			// const parse_response = await response.json()
-		} catch (e) {
-			console.error(e)
 		}
-	}
 
 	// [自分の情報]ユーザーIDに紐づくニックネーム、プロフィール画像の取得
 	async function _fetchProfileByUserId() {
@@ -56,7 +58,7 @@ export function Profile({ navigation }) {
 			// レスポンスをJSONにする
 			const parse_response = await response.json()
 			// プロフィール画像の登録
-			setImage(parse_response.profileImage)
+			setProfileImage(parse_response.profileImage)
 			// ニックネームの登録
 			setNickName(parse_response.nickName)
 		} catch (e) {
@@ -83,7 +85,7 @@ export function Profile({ navigation }) {
 				<View style={constantsCommonStyles.mainContainerStyle}>
 					<View style={styles.profileImageWrapperStyle} >
 						{/* プロフィール画像 */}
-						<ProfileImage image={image} setImage={setImage} />
+						<ProfileImage image={profileImage} setImage={setProfileImage} />
 						{/* プロフィール */}
 						<ProfileInfo nickName={nickName} />
 					</View>

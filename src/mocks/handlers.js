@@ -257,7 +257,7 @@ export const handlers = [
 				ctx.json(
 					{
 						"already_follow_requested": true,
-						"exist" : true,
+						"exist": true,
 						"friend_use_id": "friend 9",
 						"friend_profile_image": require("../../assets/images/friend_profile_image_2.jpg"),
 						"friend_nickname": "asami9"
@@ -265,14 +265,14 @@ export const handlers = [
 				),
 
 			)
-		} else if(searchUserId === "bb"){
+		} else if (searchUserId === "bb") {
 			// 該当ユーザーIDが存在しない場合
 			return res(
 				ctx.status(400),
 				ctx.json(
 					{
 						"already_follow_requested": false,
-						"exist" : false,
+						"exist": false,
 						"friend_use_id": null,
 						"friend_profile_image": null,
 						"friend_nickname": null
@@ -287,7 +287,7 @@ export const handlers = [
 				ctx.json(
 					{
 						"already_follow_requested": false,
-						"exist" : true,
+						"exist": true,
 						"friend_use_id": "friend 9",
 						"friend_profile_image": require("../../assets/images/friend_profile_image_2.jpg"),
 						"friend_nickname": "asami9"
@@ -305,9 +305,34 @@ export const handlers = [
 			ctx.status(200)
 		)
 	}),
-	// ニックネームの更新
-	rest.post('https://a-chat/api/users/:userId/nick-name', (req, res, ctx) => {
+	// プロフィールの更新
+	rest.post('https://a-chat/api/users/:userId/profile', (req, res, ctx) => {
 		const { nickName } = req.body
+		const {profileImage} = req.body
+		//　ニックネームの更新
+		if (nickName) {
+			return res(
+				// 200のステータスコードで応答する
+				ctx.status(200),
+				ctx.json(
+					{
+						"nickName": nickName,
+					}
+				)
+			)
+		}
+		// プロフィール画像の更新
+		if(profileImage){
+			return res(
+				// 200のステータスコードで応答する
+				ctx.status(200),
+				ctx.json(
+					{
+						"profileImage": profileImage,
+					}
+				)
+			)
+		}
 		return res(
 			// 200のステータスコードで応答する
 			ctx.status(200)

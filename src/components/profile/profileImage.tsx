@@ -7,6 +7,27 @@ import * as ImagePicker from 'expo-image-picker';
 import { MAIN_NAVY_COLOR, PROFILE_IMAGE_BORDER_RADIUS } from '../../constants/layout'
 
 export function ProfileImage({ image, setImage }) {
+		// ユーザーID(今後は認証から取得するようにする)
+		const userId = "asami11"
+
+	// プロフィール画像の更新
+	async function _updateNickName() {
+		try {
+			// APIリクエスト
+			const bodyData = {
+				"profileImage": image,
+			}
+			const response = await fetch(`https://a-chat/api/users/${userId}/profile`, {
+				method: "POST",
+				headers: {
+					"Content-Type": "application/json"
+				},
+				body: JSON.stringify(bodyData),
+			})
+		} catch (e) {
+			console.error(e)
+		}
+	}
 
 	const pickImage = async () => {
 		// No permissions request is necessary for launching the image library
@@ -18,6 +39,8 @@ export function ProfileImage({ image, setImage }) {
 		});
 		if (!result.cancelled) {
 			setImage(result.uri);
+			// プロフィール画像更新APIを実行
+			_updateNickName()
 		}
 	};
 
