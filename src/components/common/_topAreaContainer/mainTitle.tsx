@@ -1,23 +1,45 @@
 // libs
 import React from 'react';
-import { View,  Text, StyleSheet, Image, Pressable } from 'react-native';
+import { View, Text, StyleSheet, Image, Pressable } from 'react-native';
 
 // layouts
-import {  TAB_FONT, MAIN_NAVY_COLOR, CONTENT_WIDTH } from '../../../constants/layout'
+import { TAB_FONT, MAIN_NAVY_COLOR, CONTENT_WIDTH, PROFILE_IMAGE_BORDER_RADIUS, BACK_ICOM_SIZE } from '../../../constants/layout'
 
-export function MainTitle({ navigation, title, link }) {
+export function MainTitle({ navigation, title, link, props }) {
 	return (
 		<View style={styles.titleWrapperStyle}>
-		<Pressable onPress={() => { navigation.navigate(link) }} >
-			<Image source={require("../../../../assets/images/back-icon.png")} style={styles.backIconStyle} />
-		</Pressable>
-		<Text style={styles.titleStyle}>{title}</Text>
-	</View>
+			<Pressable onPress={() => { navigation.navigate(link) }} >
+				<Image source={require("../../../../assets/images/back-icon.png")} style={styles.backIconStyle} />
+			</Pressable>
+			{title && (
+				<Text style={styles.titleStyle}>{title}</Text>
+			)}
+			{props && (
+				<View style={styles.topAreaContainerStyle}>
+					<View style={styles.imageContainerStyle}>
+						{props.profileImage ? (
+							<Image source={props.profileImage} style={styles.circleStyle} />
+						) :
+							<View style={styles.circleStyle}></View>
+						}
+					</View>
+					<View style={styles.nameAndAddCiecleContainerStyle}>
+						<Text style={styles.nameStyle}>{props.name}</Text>
+						<Image source={require("../../../../assets/images/add-circle.png")} style={styles.addCircleStyle} />
+					</View>
+				</View>
+			)}
+		</View>
 	);
 }
 
 
 const styles = StyleSheet.create({
+	topAreaContainerStyle: {
+		flexDirection: "row",
+		justifyContent: "center",
+		alignItems: "center",
+	},
 	titleWrapperStyle: {
 		width: CONTENT_WIDTH,
 		flexDirection: "row",
@@ -29,8 +51,30 @@ const styles = StyleSheet.create({
 		color: MAIN_NAVY_COLOR,
 		marginLeft: 12,
 	},
-	backIconStyle: {
-		width: 50,
-		height: 50,
+	imageContainerStyle: {
+		marginLeft: 12,
 	},
+	backIconStyle: {
+		width: BACK_ICOM_SIZE,
+		height: BACK_ICOM_SIZE,
+	},
+	addCircleStyle: {
+		width: 40,
+		height: 40,
+	},
+	circleStyle: {
+		width: 40,
+		height: 40,
+		borderRadius: PROFILE_IMAGE_BORDER_RADIUS,
+		backgroundColor: MAIN_NAVY_COLOR,
+	},
+	nameAndAddCiecleContainerStyle: {
+		flexDirection: "row",
+		width: CONTENT_WIDTH - BACK_ICOM_SIZE - 40 - 12, // 全体の幅 - 戻るボタン - 画像 - marginLeft
+		justifyContent: "space-between",
+		alignItems: "center",
+	},
+	nameStyle: {
+		paddingLeft: 12,
+	}
 })

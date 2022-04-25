@@ -200,6 +200,84 @@ let chatsBySearchText = [
 	},
 ]
 
+let directChatRoom = [
+	{
+		"senderId": "asami11",
+		"content": "やっほー",
+		"created_at": "2021/12/1 12:00",
+		"read": true
+	},
+	{
+		"senderId": "kahi",
+		"content": "やっほー",
+		"createdAt": "2021/12/1 12:01",
+		"read": true
+	},
+	{
+		"senderId": "asami11",
+		"content": "ごはんいこうよ",
+		"created_at": "2021/12/1 12:02",
+		"read": true
+	},
+	{
+		"senderId": "kahi",
+		"content": "いいよ",
+		"createdAt": "2021/12/1 12:03",
+		"read": true
+	},
+	{
+		"senderId": "kahi",
+		"content": "どこいく？",
+		"createdAt": "2021/12/2 10:00",
+		"read": true
+	},
+	{
+		"senderId": "kahi",
+		"content": "どこいく？",
+		"createdAt": "2021/12/2 11:00",
+		"read": false
+	},
+]
+
+let groupChatRoom = [
+	{
+		"senderId": "asami11",
+		"content": "やっほー",
+		"created_at": "2021/12/1 12:00",
+		"read": true
+	},
+	{
+		"senderId": "kahi",
+		"content": "やっほー",
+		"createdAt": "2021/12/1 12:01",
+		"read": true
+	},
+	{
+		"senderId": "asami11",
+		"content": "ごはんいこうよ",
+		"created_at": "2021/12/1 12:02",
+		"read": true
+	},
+	{
+		"senderId": "kahi",
+		"content": "いいよ",
+		"createdAt": "2021/12/1 12:03",
+		"read": true
+	},
+	{
+		"senderId": "kahi",
+		"content": "どこいく？",
+		"createdAt": "2021/12/2 10:00",
+		"read": true
+	},
+	{
+		"senderId": "kahi",
+		"content": "どこいく？",
+		"createdAt": "2021/12/2 11:00",
+		"read": false
+	},
+]
+
 export const handlers = [
 	// req: 一致したリクエストに関する情報
 	// res: モックレスポンスを作成するための機能ユーティリティ
@@ -509,6 +587,32 @@ export const handlers = [
 			return res(
 				// 200のステータスコードで応答する
 				ctx.status(200)
+			)
+		}
+	}),
+	// チャット履歴取得
+	rest.get('https://a-chat/api/users/:userId/chats', (req, res, ctx) => {
+		const parsedUrl = new URL(req.url)
+		const groupChatRoomId = parsedUrl.searchParams.get("groupChatRoomId")
+		const directChatRoomId = parsedUrl.searchParams.get("directChatRoomId")
+
+		// 友達とのチャットの場合
+		if (directChatRoomId) {
+			return res(
+				ctx.status(200),
+				ctx.json(
+					directChatRoom
+				),
+			)
+
+		}
+		// グループチャットの場合
+		if (groupChatRoomId) {
+			return res(
+				ctx.status(200),
+				ctx.json(
+					groupChatRoom
+				),
 			)
 		}
 	}),

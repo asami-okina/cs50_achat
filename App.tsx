@@ -18,8 +18,9 @@ import { Chats } from './src/screens/chats';
 import { AddGroup } from './src/screens/addGroup'
 import { AddGroupSetting } from './src/screens/addGroupSetting'
 import { AddFriend } from './src/screens/addFriend';
-import {Profile} from "./src/screens/profile"
-import {EditNickName} from "./src/components/profile/_profileInfo/editNickName"
+import { Profile } from "./src/screens/profile"
+import { EditNickName } from "./src/components/profile/_profileInfo/editNickName"
+import { Chat } from "./src/screens/chat"
 
 // fonts
 import { useFonts, AlfaSlabOne_400Regular } from '@expo-google-fonts/alfa-slab-one';
@@ -75,6 +76,7 @@ function App() {
 					<Stack.Screen name="AddFriend" component={AddFriend} options={{ headerShown: false }} />
 					<Stack.Screen name="Profile" component={Profile} options={{ headerShown: false }} />
 					<Stack.Screen name="EditNickName" component={EditNickName} options={{ headerShown: false }} />
+					<Stack.Screen name="Chat" component={Chat} options={{ headerShown: false }} />
 				</Stack.Navigator>
 			</NavigationContainer>
 		);

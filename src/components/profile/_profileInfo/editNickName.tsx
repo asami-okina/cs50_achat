@@ -36,7 +36,7 @@ export function EditNickName({ navigation }) {
 				<View style={constantsCommonStyles.topMarginViewStyle}></View>
 				{/* 丸みを帯びている白いトップ部分 */}
 				<TopAreaWrapper type={"addFriend"}>
-					<MainTitle navigation={navigation} title={"NickName"} link={"Profile"} />
+					<MainTitle navigation={navigation} title={"NickName"} link={"Profile"} props={null} />
 				</TopAreaWrapper>
 				{/* トップ部分を除くメイン部分*/}
 				<View style={constantsCommonStyles.mainContainerStyle}>

@@ -5,7 +5,7 @@ import { View, StyleSheet, Text, TouchableOpacity } from 'react-native';
 // layouts
 import { MAIN_WHITE_COLOR, MAIN_PINK_COLOR } from '../../../../constants/layout'
 
-export function HiddenListItem({ setDeleteModalVisible, setHiddenModalVisible, setRowMap, setkey, setGroupChatRoomId, setDirectChatRoomId, setClickedType, rowMap, data }) {
+export function HiddenListItem({ setDeleteModalVisible, setHiddenModalVisible, setRowMap, setkey, setClickedType, rowMap, data, setGroupChatRoomId, setDirectChatRoomId }) {
 	// ユーザーID(今後は認証から取得するようにする)
 	const userId = "asami11"
 

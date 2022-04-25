@@ -46,6 +46,9 @@ export const FORM_DESCRIPTION_TEXT_SIZE = 12
 // プロフィール画像の大きさ
 export const BIG_PROFILE_IMAGE_SIZE = 100
 
+// 戻るボタンの大きさ
+export const BACK_ICOM_SIZE = 50
+
 // ------------------------------------------------------------------------------------------------
 // 幅
 // コンテンツ表示幅

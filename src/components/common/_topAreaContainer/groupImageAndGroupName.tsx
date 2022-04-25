@@ -5,7 +5,7 @@ import * as ImagePicker from 'expo-image-picker';
 
 
 // layouts
-import { ICON_SIZE, MAIN_NAVY_COLOR, CONTENT_WIDTH,PROFILE_IMAGE_BORDER_RADIUS } from '../../../constants/layout'
+import { ICON_SIZE, MAIN_NAVY_COLOR, CONTENT_WIDTH, PROFILE_IMAGE_BORDER_RADIUS } from '../../../constants/layout'
 
 
 // 丸みを帯びている白いトップ部分

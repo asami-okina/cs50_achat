@@ -5,12 +5,11 @@ import { View, StyleSheet, Pressable, Image, Text } from 'react-native';
 // layouts
 import { CONTENT_WIDTH, PROFILE_IMAGE_SIZE, STANDARD_FONT, MAIN_WHITE_COLOR, PROFILE_IMAGE_BORDER_RADIUS, MAIN_NAVY_COLOR, MAIN_GRAY_COLOR } from '../../../../constants/layout'
 
-export function ListItem({ profileImage, name, lastMessageCreationDate, lastMessageContent, unreadCount }) {
+export function ListItem({ navigation, profileImage, name, lastMessageCreationDate, lastMessageContent, unreadCount, groupChatRoomId, directChatRoomId }) {
 	// ユーザーID(今後は認証から取得するようにする)
 	const userId = "asami11"
-
 	return (
-		<Pressable style={styles.listWrapperStyle} onPress={() => { console.log("友達押したよ") }}>
+		<Pressable style={styles.listWrapperStyle} onPress={() => { navigation.navigate('Chat', { "groupChatRoomId": groupChatRoomId, "directChatRoomId": directChatRoomId, "profileImage": profileImage, "name": name }) }}>
 			<View style={styles.imageContainerStyle}>
 				{profileImage ? (
 					<Image source={profileImage} style={{ width: PROFILE_IMAGE_SIZE, height: PROFILE_IMAGE_SIZE, borderRadius: PROFILE_IMAGE_BORDER_RADIUS }} />
