@@ -9,7 +9,7 @@ import { HiddenListItem } from "./_chatBasic/hiddenListItem"
 // layouts
 import { MAIN_WHITE_COLOR } from '../../../constants/layout'
 
-export default function ChatBasic({ chatRoomList, setDeleteModalVisible, clickedDeleteCancelMordal, setClickedDeleteCancelMordal, clickedDeleteOkMordal, setClickedDeleteOkMordal, setHiddenModalVisible, clickedHiddenCancelMordal, setClickedHiddenCancelMordal, clickedHiddenOkMordal, setClickedHiddenOkMordal, setGroupChatRoomId, setDirectChatRoomId }) {
+export default function ChatBasic({ chatRoomList, setDeleteModalVisible, clickedDeleteCancelMordal, setClickedDeleteCancelMordal, clickedDeleteOkMordal, setClickedDeleteOkMordal, setHiddenModalVisible, clickedHiddenCancelMordal, setClickedHiddenCancelMordal, clickedHiddenOkMordal, setClickedHiddenOkMordal, setGroupChatRoomId, setDirectChatRoomId,groupChatRoomId,directChatRoomId }) {
 	// ユーザーID(今後は認証から取得するようにする)
 	const userId = "asami11"
 
@@ -70,6 +70,28 @@ export default function ChatBasic({ chatRoomList, setDeleteModalVisible, clicked
 		<	HiddenListItem setDeleteModalVisible={setDeleteModalVisible} setHiddenModalVisible={setHiddenModalVisible} setRowMap={setRowMap} setkey={setkey} setGroupChatRoomId={setGroupChatRoomId} setDirectChatRoomId={setDirectChatRoomId} setClickedType={setClickedType} rowMap={rowMap} data={data} />
 	);
 
+		// チャットの表示/非表示、削除API
+		async function _updateChatRoomHiddenOrDeleteByUserId() {
+			try {
+				// APIリクエスト
+				const bodyData = {
+					"userId": userId,
+					"directChatRoomId": directChatRoomId,
+					"groupChatRoomId": groupChatRoomId,
+					"type": clickedType
+				}
+				const response = await fetch(`https://a-chat/api/users/${userId}/chatRoom`, {
+					method: "POST",
+					headers: {
+						"Content-Type": "application/json"
+					},
+					body: JSON.stringify(bodyData),
+				})
+			} catch (e) {
+				console.error(e)
+			}
+		}
+
 	// 削除時の確認モーダルでCancleの時は該当リストをデフォルト状態に戻す、Okの場合は該当リストを削除する甩に使用
 	useEffect(() => {
 		// Cancelを押された場合
@@ -90,11 +112,13 @@ export default function ChatBasic({ chatRoomList, setDeleteModalVisible, clicked
 				deleteRow(rowMap, key)
 				setClickedDeleteOkMordal(false)
 				// チャットの削除API実行
+				_updateChatRoomHiddenOrDeleteByUserId()
 			}
 			if (clickedType === "Hidden") {
 				deleteRow(rowMap, key)
 				setClickedHiddenOkMordal(false)
 				// チャットの非表示API実行
+				_updateChatRoomHiddenOrDeleteByUserId()
 			}
 			// 初期化
 			setRowMap('')

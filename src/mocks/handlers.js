@@ -493,4 +493,23 @@ export const handlers = [
 			)
 		}
 	}),
+	// チャットの表示/非表示、削除API
+	rest.post('https://a-chat/api/users/:userId/chatRoom', (req, res, ctx) => {
+		const { userId } = req.body
+		const { directChatRoomId } = req.body
+		const { groupChatRoomId } = req.body
+		const { type } = req.body
+		if (type === "Hidden") {
+			return res(
+				// 200のステータスコードで応答する
+				ctx.status(200)
+			)
+		}
+		if (type === "Delete") {
+			return res(
+				// 200のステータスコードで応答する
+				ctx.status(200)
+			)
+		}
+	}),
 ]

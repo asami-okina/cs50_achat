@@ -107,8 +107,8 @@ export function Chats({ navigation }) {
 		<KeyboardAvoidingView behavior="padding" style={constantsCommonStyles.screenContainerStyle}>
 			<SafeAreaView style={constantsCommonStyles.screenContainerStyle}>
 				{/* Delete確認モーダル */}
-				<ConfirmModal modalVisible={deleteModalVisible} setModalVisible={setDeleteModalVisible} setClickedCancelMordal={setClickedDeleteCancelMordal} setClickedOkMordal={setClickedDeleteOkMordal} modalText={"When you leave a group, the group member list and all group talk history will be deleted. Do you want to leave the group?"} />
-				<ConfirmModal modalVisible={hiddenModalVisible} setModalVisible={setHiddenModalVisible} setClickedCancelMordal={setClickedHiddenCancelMordal} setClickedOkMordal={setClickedHiddenOkMordal} modalText={"Talk content will not be deleted."} />
+				<ConfirmModal modalVisible={deleteModalVisible} setModalVisible={setDeleteModalVisible} setClickedCancelMordal={setClickedDeleteCancelMordal} setClickedOkMordal={setClickedDeleteOkMordal} modalText={"Delete chat room.Are you okay?"} />
+				<ConfirmModal modalVisible={hiddenModalVisible} setModalVisible={setHiddenModalVisible} setClickedCancelMordal={setClickedHiddenCancelMordal} setClickedOkMordal={setClickedHiddenOkMordal} modalText={"Chat content will not be deleted."} />
 				{/* 画面一番上にある青色の余白部分 */}
 				<View style={constantsCommonStyles.topMarginViewStyle}></View>
 				{/* 丸みを帯びている白いトップ部分 */}
@@ -120,11 +120,11 @@ export function Chats({ navigation }) {
 					{/* チャット一覧 */}
 					{/* 検索中ではない場合 */}
 					{!isDuringSearch && beforeChatRoomListSearch.length !== 0 && (
-						<ChatsList chatRoomList={beforeChatRoomListSearch} setDeleteModalVisible={setDeleteModalVisible} clickedDeleteCancelMordal={clickedDeleteCancelMordal} setClickedDeleteCancelMordal={setClickedDeleteCancelMordal} clickedDeleteOkMordal={clickedDeleteOkMordal} setClickedDeleteOkMordal={setClickedDeleteOkMordal} setHiddenModalVisible={setHiddenModalVisible} clickedHiddenCancelMordal={clickedHiddenCancelMordal} setClickedHiddenCancelMordal={setClickedHiddenCancelMordal} clickedHiddenOkMordal={clickedHiddenOkMordal} setClickedHiddenOkMordal={setClickedHiddenOkMordal} setGroupChatRoomId={setGroupChatRoomId} setDirectChatRoomId={setDirectChatRoomId} />
+						<ChatsList chatRoomList={beforeChatRoomListSearch} setDeleteModalVisible={setDeleteModalVisible} clickedDeleteCancelMordal={clickedDeleteCancelMordal} setClickedDeleteCancelMordal={setClickedDeleteCancelMordal} clickedDeleteOkMordal={clickedDeleteOkMordal} setClickedDeleteOkMordal={setClickedDeleteOkMordal} setHiddenModalVisible={setHiddenModalVisible} clickedHiddenCancelMordal={clickedHiddenCancelMordal} setClickedHiddenCancelMordal={setClickedHiddenCancelMordal} clickedHiddenOkMordal={clickedHiddenOkMordal} setClickedHiddenOkMordal={setClickedHiddenOkMordal} setGroupChatRoomId={setGroupChatRoomId} setDirectChatRoomId={setDirectChatRoomId} groupChatRoomId={groupChatRoomId} directChatRoomId={directChatRoomId} />
 					)}
 					{/* 検索中の場合 */}
 					{isDuringSearch && afterChatRoomListSearch.length !== 0 && (
-						<ChatsList chatRoomList={afterChatRoomListSearch} setDeleteModalVisible={setDeleteModalVisible} clickedDeleteCancelMordal={clickedDeleteCancelMordal} setClickedDeleteCancelMordal={setClickedDeleteCancelMordal} clickedDeleteOkMordal={clickedDeleteOkMordal} setClickedDeleteOkMordal={setClickedDeleteOkMordal} setHiddenModalVisible={setHiddenModalVisible} clickedHiddenCancelMordal={clickedHiddenCancelMordal} setClickedHiddenCancelMordal={setClickedHiddenCancelMordal} clickedHiddenOkMordal={clickedHiddenOkMordal} setClickedHiddenOkMordal={setClickedHiddenOkMordal} setGroupChatRoomId={setGroupChatRoomId} setDirectChatRoomId={setDirectChatRoomId} />
+						<ChatsList chatRoomList={afterChatRoomListSearch} setDeleteModalVisible={setDeleteModalVisible} clickedDeleteCancelMordal={clickedDeleteCancelMordal} setClickedDeleteCancelMordal={setClickedDeleteCancelMordal} clickedDeleteOkMordal={clickedDeleteOkMordal} setClickedDeleteOkMordal={setClickedDeleteOkMordal} setHiddenModalVisible={setHiddenModalVisible} clickedHiddenCancelMordal={clickedHiddenCancelMordal} setClickedHiddenCancelMordal={setClickedHiddenCancelMordal} clickedHiddenOkMordal={clickedHiddenOkMordal} setClickedHiddenOkMordal={setClickedHiddenOkMordal} setGroupChatRoomId={setGroupChatRoomId} setDirectChatRoomId={setDirectChatRoomId}  groupChatRoomId={groupChatRoomId} directChatRoomId={directChatRoomId} />
 					)}
 				</View>
 				{/*フッター */}
