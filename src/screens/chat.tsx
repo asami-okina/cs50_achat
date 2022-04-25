@@ -1,7 +1,7 @@
 // libs
 import React, { useEffect, useState, useCallback } from 'react';
 import { View, SafeAreaView, KeyboardAvoidingView, StyleSheet, Image } from 'react-native';
-import { GiftedChat, Send, Bubble, InputToolbar } from 'react-native-gifted-chat'
+import { GiftedChat, Send, Bubble, InputToolbar, MessageText } from 'react-native-gifted-chat'
 import uuid from 'react-native-uuid';
 
 // components
@@ -12,7 +12,7 @@ import { MainTitle } from "../components/common/_topAreaContainer/mainTitle"
 import { constantsCommonStyles } from '../constants/styles/commonStyles'
 
 // layouts
-import { MAIN_NAVY_COLOR, MAIN_WHITE_COLOR, FOOTER_HEIGHT, CONTENT_WIDTH, SEARCH_FORM_BORDER_RADIUS, SEND_BUTTON_HEIGHT } from '../constants/layout'
+import { MAIN_NAVY_COLOR, MAIN_WHITE_COLOR, FOOTER_HEIGHT, CONTENT_WIDTH, SEARCH_FORM_BORDER_RADIUS, SEND_BUTTON_HEIGHT, STANDARD_FONT } from '../constants/layout'
 
 export function Chat({ navigation, route }) {
 	// 引数を取得
@@ -102,6 +102,23 @@ export function Chat({ navigation, route }) {
 		)
 	}
 
+	// メッセージのスタイル変更
+	const _changeMessageStyle = (props) => {
+		return (
+			<MessageText
+			{...props}
+			textStyle={{
+				left: {
+					"fontFamily": STANDARD_FONT
+				},
+				right: {
+					"fontFamily": STANDARD_FONT
+				},
+			}}
+		/>
+		)
+	}
+
 	// 画面下のフッター部分
 	const _messengerBarContainer = (props) => {
 		return (
@@ -174,6 +191,8 @@ export function Chat({ navigation, route }) {
 						textInputProps={styles.textInputStyle}
 						// フッターの高さ
 						minInputToolbarHeight={FOOTER_HEIGHT}
+						// メッセージのスタイル変更
+						renderMessageText={(props) => _changeMessageStyle(props)}
 					/>
 				</View>
 			</SafeAreaView>
