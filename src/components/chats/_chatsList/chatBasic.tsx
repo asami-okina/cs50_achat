@@ -1,20 +1,20 @@
 // libs
 import React, { useEffect, useState } from 'react';
-import { StyleSheet, Text, TouchableOpacity, TouchableHighlight, View, Image, Pressable } from 'react-native';
+import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { SwipeListView } from 'react-native-swipe-list-view';
+// components
+import { ListItem } from "./_chatBasic/listItem"
 
 // layouts
-import { CONTENT_WIDTH, PROFILE_IMAGE_SIZE, STANDARD_FONT, MAIN_WHITE_COLOR, MAIN_PINK_COLOR, PROFILE_IMAGE_BORDER_RADIUS, MAIN_NAVY_COLOR, MAIN_GRAY_COLOR } from '../../../constants/layout'
+import { MAIN_WHITE_COLOR, MAIN_PINK_COLOR } from '../../../constants/layout'
 
-export default function ChatBasic({ chatRoomList, setDeleteModalVisible, clickedDeleteCancelMordal, setClickedDeleteCancelMordal, clickedDeleteOkMordal, setClickedDeleteOkMordal, setHiddenModalVisible, clickedHiddenCancelMordal, setClickedHiddenCancelMordal, clickedHiddenOkMordal, setClickedHiddenOkMordal }) {
+export default function ChatBasic({ chatRoomList, setDeleteModalVisible, clickedDeleteCancelMordal, setClickedDeleteCancelMordal, clickedDeleteOkMordal, setClickedDeleteOkMordal, setHiddenModalVisible, clickedHiddenCancelMordal, setClickedHiddenCancelMordal, clickedHiddenOkMordal, setClickedHiddenOkMordal, setGroupChatRoomId, setDirectChatRoomId }) {
 	// ユーザーID(今後は認証から取得するようにする)
 	const userId = "asami11"
 
 	// 削除時の確認モーダルでCancleの時は該当リストをデフォルト状態に戻す、Okの場合は該当リストを削除する甩に使用
 	const [rowMap, setRowMap] = useState('')
 	const [key, setkey] = useState('')
-	const [groupChatRoomId, setGroupChatRoomId] = useState('')
-	const [directChatRoomId, setDirectChatRoomId] = useState('')
 
 	// HiddenかDeleteどちらをクリックされたか
 	const [clickedType, setClickedType] = useState('')
@@ -55,53 +55,11 @@ export default function ChatBasic({ chatRoomList, setDeleteModalVisible, clicked
 		<>
 			{/* 友達の場合 */}
 			{data.item.friends_user_id && (
-				<Pressable style={styles.listWrapperStyle} onPress={() => { console.log("友達押したよ") }}>
-					<View style={styles.imageContainerStyle}>
-						{data.item.friends_profile_image ? (
-							<Image source={data.item.friends_profile_image} style={{ width: PROFILE_IMAGE_SIZE, height: PROFILE_IMAGE_SIZE, borderRadius: PROFILE_IMAGE_BORDER_RADIUS }} />
-						) :
-							<View style={styles.circleStyle}></View>
-						}
-					</View>
-					<View style={styles.listSeparateWrapperStyle}>
-						<View style={[styles.listSeparateContainer, styles.listSeparateTopContainerStyle]}>
-							<Text style={[styles.textStyle, styles.nameStyle]}>{data.item.friends_nick_name}</Text>
-							<Text style={[styles.textStyle, styles.lastMessageCreationDateStyle]}>{data.item.friends_last_message_creation_date}</Text>
-						</View>
-						<View style={styles.listSeparateContainer}>
-							<Text style={styles.textStyle}>{data.item.friends_last_message_content}</Text>
-							<View style={data.item.unread_count !== 0 ? styles.circleWithUnReadCountContainerStyle : null}>
-								<Text style={[styles.textStyle, styles.circleWithUnReadCountStyle]}>{data.item.unread_count}</Text>
-							</View>
-						</View>
-						<View>
-						</View>
-					</View>
-				</Pressable>
+				<ListItem profileImage={data.item.friends_profile_image} name={data.item.friends_nick_name} lastMessageCreationDate={data.item.friends_last_message_creation_date} lastMessageContent={data.item.friends_last_message_content} unreadCount={data.item.unread_count} />
 			)}
 			{/* グループの場合 */}
 			{data.item.group_chat_room_id && (
-				<Pressable style={styles.listWrapperStyle} onPress={() => { console.log("友達押したよ") }}>
-					<View style={styles.imageContainerStyle}>
-						{data.item.group_image ? (
-							<Image source={data.item.group_image} style={{ width: PROFILE_IMAGE_SIZE, height: PROFILE_IMAGE_SIZE, borderRadius: PROFILE_IMAGE_BORDER_RADIUS }} />
-						) :
-							<View style={styles.circleStyle}></View>
-						}
-					</View>
-					<View style={styles.listSeparateWrapperStyle}>
-						<View style={[styles.listSeparateContainer, styles.listSeparateTopContainerStyle]}>
-							<Text style={[styles.textStyle, styles.nameStyle]}>{data.item.group_name}</Text>
-							<Text style={[styles.textStyle, styles.lastMessageCreationDateStyle]}>{data.item.group_last_message_creation_date}</Text>
-						</View>
-						<View style={styles.listSeparateContainer}>
-							<Text style={styles.textStyle}>{data.item.group_last_message_content}</Text>
-							<View style={data.item.unread_count !== 0 ? styles.circleWithUnReadCountContainerStyle : null}>
-								<Text style={[styles.textStyle, styles.circleWithUnReadCountStyle]}>{data.item.unread_count}</Text>
-							</View>
-						</View>
-					</View>
-				</Pressable>
+				<ListItem profileImage={data.item.group_image} name={data.item.group_name} lastMessageCreationDate={data.item.group_last_message_creation_date} lastMessageContent={data.item.group_last_message_content} unreadCount={data.item.unread_count} />
 			)}
 		</>
 	);
@@ -187,25 +145,6 @@ export default function ChatBasic({ chatRoomList, setDeleteModalVisible, clicked
 		}
 	}, [clickedDeleteCancelMordal, clickedDeleteOkMordal, clickedHiddenCancelMordal, clickedHiddenOkMordal])
 
-	// グループから脱退
-	async function _leaveGroup(userId, groupChatRoomId) {
-		try {
-			// APIリクエスト
-			const bodyData = {
-				"groupChatRoomId": groupChatRoomId
-			}
-			const response = await fetch(`https://a-chat/api/users/${userId}/groups`, {
-				method: "DELETE",
-				headers: {
-					"Content-Type": "application/json"
-				},
-				body: JSON.stringify(bodyData),
-			})
-		} catch (e) {
-			console.error(e)
-		}
-	}
-
 	return (
 		<View style={styles.containerStyle}>
 			<SwipeListView
@@ -250,59 +189,6 @@ const styles = StyleSheet.create({
 	backRightBtnRightStyle: {
 		backgroundColor: MAIN_PINK_COLOR,
 		right: 0,
-	},
-	listWrapperStyle: {
-		flexDirection: "row",
-		backgroundColor: MAIN_WHITE_COLOR,
-		height: 60,
-	},
-	circleStyle: {
-		width: PROFILE_IMAGE_SIZE,
-		height: PROFILE_IMAGE_SIZE,
-		borderRadius: PROFILE_IMAGE_BORDER_RADIUS,
-		backgroundColor: MAIN_NAVY_COLOR,
-	},
-	listSeparateWrapperStyle: {
-		marginLeft: 12,
-	},
-	listSeparateContainer: {
-		flexDirection: "row",
-		justifyContent: "space-between",
-		alignItems: "center",
-		height: 50 / 2,
-		width: CONTENT_WIDTH - PROFILE_IMAGE_SIZE - 12, // marginLeftの分引く
-	},
-	listSeparateTopContainerStyle: {
-		alignItems: "flex-end",
-	},
-	textStyle: {
-		fontFamily: STANDARD_FONT,
-		color: MAIN_NAVY_COLOR,
-		fontSize: 10,
-	},
-	nameStyle: {
-		fontSize: 13,
-	},
-	lastMessageCreationDateStyle: {
-		fontSize: 10,
-		color: MAIN_GRAY_COLOR,
-	},
-	circleWithUnReadCountContainerStyle: {
-		height: 20,
-		width: 20,
-		borderRadius: 50,
-		lineHeight: 50,
-		backgroundColor: MAIN_NAVY_COLOR,
-		display: "flex",
-		alignItems: "center",
-		justifyContent: "center",
-	},
-	circleWithUnReadCountStyle: {
-		color: MAIN_WHITE_COLOR,
-	},
-	imageContainerStyle: {
-		justifyContent: "center",
-		alignItems: "center",
 	},
 	backRightBtn: {
 		alignItems: 'center',

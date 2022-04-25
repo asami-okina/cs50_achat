@@ -44,6 +44,10 @@ export function Chats({ navigation }) {
 	// [検索後]APIから取得したグループ一覧リスト
 	const [afterChatRoomListSearch, setAfterChatRoomListSearch] = useState([])
 
+	// チャットルームIDに紐づくチャット履歴のparams甩
+	const [groupChatRoomId, setGroupChatRoomId] = useState('')
+	const [directChatRoomId, setDirectChatRoomId] = useState('')
+
 	// 現在画面がフォーカスされているかをbooleanで保持
 	const isFocused = useIsFocused()
 
@@ -96,13 +100,6 @@ export function Chats({ navigation }) {
 		}
 	}, [isFocused])
 
-	// chatRoomListの更新
-	// useEffect(() => {
-	// 	if (beforeChatRoomListSearch) {
-	// 		setBeforeChatRoomListSearch(beforeChatRoomListSearch.map((_, i) => ({ ..._, key: `${i}` })))
-	// 	}
-	// }, [beforeChatRoomListSearch])
-
 	// 検索フォームのラベル化
 	let textInputSearch;
 
@@ -123,11 +120,11 @@ export function Chats({ navigation }) {
 					{/* チャット一覧 */}
 					{/* 検索中ではない場合 */}
 					{!isDuringSearch && beforeChatRoomListSearch.length !== 0 && (
-						<ChatsList chatRoomList={beforeChatRoomListSearch} setDeleteModalVisible={setDeleteModalVisible} clickedDeleteCancelMordal={clickedDeleteCancelMordal} setClickedDeleteCancelMordal={setClickedDeleteCancelMordal} clickedDeleteOkMordal={clickedDeleteOkMordal} setClickedDeleteOkMordal={setClickedDeleteOkMordal} setHiddenModalVisible={setHiddenModalVisible} clickedHiddenCancelMordal={clickedHiddenCancelMordal} setClickedHiddenCancelMordal={setClickedHiddenCancelMordal} clickedHiddenOkMordal={clickedHiddenOkMordal} setClickedHiddenOkMordal={setClickedHiddenOkMordal} />
+						<ChatsList chatRoomList={beforeChatRoomListSearch} setDeleteModalVisible={setDeleteModalVisible} clickedDeleteCancelMordal={clickedDeleteCancelMordal} setClickedDeleteCancelMordal={setClickedDeleteCancelMordal} clickedDeleteOkMordal={clickedDeleteOkMordal} setClickedDeleteOkMordal={setClickedDeleteOkMordal} setHiddenModalVisible={setHiddenModalVisible} clickedHiddenCancelMordal={clickedHiddenCancelMordal} setClickedHiddenCancelMordal={setClickedHiddenCancelMordal} clickedHiddenOkMordal={clickedHiddenOkMordal} setClickedHiddenOkMordal={setClickedHiddenOkMordal} setGroupChatRoomId={setGroupChatRoomId} setDirectChatRoomId={setDirectChatRoomId} />
 					)}
 					{/* 検索中の場合 */}
 					{isDuringSearch && afterChatRoomListSearch.length !== 0 && (
-						<ChatsList chatRoomList={afterChatRoomListSearch} setDeleteModalVisible={setDeleteModalVisible} clickedDeleteCancelMordal={clickedDeleteCancelMordal} setClickedDeleteCancelMordal={setClickedDeleteCancelMordal} clickedDeleteOkMordal={clickedDeleteOkMordal} setClickedDeleteOkMordal={setClickedDeleteOkMordal} setHiddenModalVisible={setHiddenModalVisible} clickedHiddenCancelMordal={clickedHiddenCancelMordal} setClickedHiddenCancelMordal={setClickedHiddenCancelMordal} clickedHiddenOkMordal={clickedHiddenOkMordal} setClickedHiddenOkMordal={setClickedHiddenOkMordal} />
+						<ChatsList chatRoomList={afterChatRoomListSearch} setDeleteModalVisible={setDeleteModalVisible} clickedDeleteCancelMordal={clickedDeleteCancelMordal} setClickedDeleteCancelMordal={setClickedDeleteCancelMordal} clickedDeleteOkMordal={clickedDeleteOkMordal} setClickedDeleteOkMordal={setClickedDeleteOkMordal} setHiddenModalVisible={setHiddenModalVisible} clickedHiddenCancelMordal={clickedHiddenCancelMordal} setClickedHiddenCancelMordal={setClickedHiddenCancelMordal} clickedHiddenOkMordal={clickedHiddenOkMordal} setClickedHiddenOkMordal={setClickedHiddenOkMordal} setGroupChatRoomId={setGroupChatRoomId} setDirectChatRoomId={setDirectChatRoomId} />
 					)}
 				</View>
 				{/*フッター */}
