@@ -172,6 +172,7 @@ export function Chat({ navigation, route }) {
 						renderBubble={(props) => _renderBubble(props)}
 						// 画面下のTextInputのスタイル変更
 						textInputProps={styles.textInputStyle}
+						// フッターの高さ
 						minInputToolbarHeight={FOOTER_HEIGHT}
 					/>
 				</View>
