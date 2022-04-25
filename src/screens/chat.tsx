@@ -1,11 +1,10 @@
 // libs
 import React, { useEffect, useState, useCallback } from 'react';
-import { View, SafeAreaView, KeyboardAvoidingView, Text, StyleSheet, Image, TextInput } from 'react-native';
-import { GiftedChat, Send, Bubble, InputToolbar, Message, Composer } from 'react-native-gifted-chat'
+import { View, SafeAreaView, KeyboardAvoidingView, StyleSheet, Image } from 'react-native';
+import { GiftedChat, Send, Bubble, InputToolbar } from 'react-native-gifted-chat'
 import uuid from 'react-native-uuid';
 
 // components
-import { Footer } from '../components/common/footer'
 import { TopAreaWrapper } from "../components/common/topAreaWrapper"
 import { MainTitle } from "../components/common/_topAreaContainer/mainTitle"
 
@@ -13,7 +12,7 @@ import { MainTitle } from "../components/common/_topAreaContainer/mainTitle"
 import { constantsCommonStyles } from '../constants/styles/commonStyles'
 
 // layouts
-import { IPHONE_X_BOTTOM_SPACE, MAIN_NAVY_COLOR, MAIN_WHITE_COLOR, MAIN_GRAY_COLOR, STANDARD_FONT, FOOTER_HEIGHT, CONTENT_WIDTH, SEARCH_FORM_BORDER_RADIUS } from '../constants/layout'
+import { MAIN_NAVY_COLOR, MAIN_WHITE_COLOR, FOOTER_HEIGHT, CONTENT_WIDTH, SEARCH_FORM_BORDER_RADIUS, SEND_BUTTON_HEIGHT } from '../constants/layout'
 
 export function Chat({ navigation, route }) {
 	// 引数を取得
@@ -120,9 +119,6 @@ export function Chat({ navigation, route }) {
 					alignItems: "center",
 					color: MAIN_WHITE_COLOR,
 				}}
-				accessoryStyle={{
-					backgroundColor: "red"
-				}}
 			/>
 		)
 	}
@@ -189,18 +185,15 @@ const styles = StyleSheet.create({
 		alignItems: 'center',
 		alignSelf: 'center',
 	},
-	sendButtonTitile: {
-		color: '#4fa9ff',
-		fontWeight: 'bold',
-	},
 	sendButtonStyle: {
-		width: 44,
-		height: 44
+		width: SEND_BUTTON_HEIGHT,
+		height: SEND_BUTTON_HEIGHT
 	},
 	textInputStyle: {
 		"backgroundColor": MAIN_WHITE_COLOR,
 		"width": CONTENT_WIDTH - 44, // Sendアイコン分引く
 		marginRight: 10,
+		height: SEND_BUTTON_HEIGHT, // sendボタンの高さ
 		paddingTop: 14, // sendボタンの高さ 44 - input文字サイズ 16 / 2 = 14
 		paddingBottom: 14,
 		borderRadius: SEARCH_FORM_BORDER_RADIUS,

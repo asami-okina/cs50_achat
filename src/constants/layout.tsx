@@ -122,6 +122,9 @@ export const TAB_HEIGHT = 40
 // 小さいボタンの高さ
 export const SMALL_BUTTON_HEIGHT = (SMALL_BUTTON_WIDTH / 2)
 
+// チャットSendボタンの高さ
+export const SEND_BUTTON_HEIGHT = 44
+
 // ------------------------------------------------------------------------------------------------
 // 色
 // ネイビー
