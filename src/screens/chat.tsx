@@ -1,7 +1,8 @@
 // libs
-import React, { useEffect } from 'react';
-<Text>あさみ</Text>
-import { View, SafeAreaView, KeyboardAvoidingView, Text } from 'react-native';
+import React, { useEffect, useState, useCallback } from 'react';
+import { View, SafeAreaView, KeyboardAvoidingView, Text, StyleSheet, Image, TextInput } from 'react-native';
+import { GiftedChat, Send, Bubble, InputToolbar, Message, Composer } from 'react-native-gifted-chat'
+import uuid from 'react-native-uuid';
 
 // components
 import { Footer } from '../components/common/footer'
@@ -12,12 +13,17 @@ import { MainTitle } from "../components/common/_topAreaContainer/mainTitle"
 import { constantsCommonStyles } from '../constants/styles/commonStyles'
 
 // layouts
-import { IPHONE_X_BOTTOM_SPACE } from '../constants/layout'
+import { IPHONE_X_BOTTOM_SPACE, MAIN_NAVY_COLOR, MAIN_WHITE_COLOR, MAIN_GRAY_COLOR, STANDARD_FONT, FOOTER_HEIGHT, CONTENT_WIDTH, SEARCH_FORM_BORDER_RADIUS } from '../constants/layout'
 
 export function Chat({ navigation, route }) {
+	// 引数を取得
 	const { groupChatRoomId, directChatRoomId, profileImage, name } = route.params
+
 	// ユーザーID(今後は認証から取得するようにする)
 	const userId = "asami11"
+
+	// メッセージ
+	const [messages, setMessages] = useState([]);
 
 	// 画像と名前を取得
 	async function _fetchProfileImageAndName() {
@@ -59,10 +65,86 @@ export function Chat({ navigation, route }) {
 		}
 	}
 
+	// メッセージを送信
+	const _onSendMessage = useCallback((messages = []) => {
+		setMessages(previousMessages => GiftedChat.append(previousMessages, messages))
+		// メッセージ更新API実行
+	}, [])
+
+	// カスタム送信ボタンのスタイル変更
+	const _renderSend = (props) => {
+		// カスタム送信ボタン
+		return (
+			<Send {...props} containerStyle={styles.sendContainer}>
+				<Image source={require("../../assets/images/send-button.png")} style={styles.sendButtonStyle} />
+			</Send>
+		);
+	}
+
+	// 送信メッセージのスタイル変更
+	const _renderBubble = (props) => {
+		return (
+			<Bubble
+				{...props}
+				wrapperStyle={{
+					right: {
+						backgroundColor: MAIN_NAVY_COLOR,
+						color: MAIN_WHITE_COLOR,
+						width: 200,
+						borderBottomRightRadius: 0,
+					},
+					left: {
+						color: MAIN_WHITE_COLOR,
+						width: 200,
+						borderBottomLeftRadius: 0
+					}
+				}}
+			/>
+		)
+	}
+
+	// 画面下のフッター部分
+	const _messengerBarContainer = (props) => {
+		return (
+			<InputToolbar
+				{...props}
+				containerStyle={{
+					backgroundColor: MAIN_NAVY_COLOR,
+					alignContent: "center",
+					justifyContent: "center",
+					height: FOOTER_HEIGHT,
+				}}
+				primaryStyle={{
+					display: "flex",
+					justifyContent: "center",
+					alignItems: "center",
+					color: MAIN_WHITE_COLOR,
+				}}
+				accessoryStyle={{
+					backgroundColor: "red"
+				}}
+			/>
+		)
+	}
+
 	useEffect(() => {
 		_fetchProfileImageAndName()
 	}, [])
 
+	useEffect(() => {
+		setMessages([
+			{
+				_id: uuid.v4(),
+				text: 'Hello developer',
+				createdAt: new Date(),
+				user: {
+					_id: 2,
+					name: 'React Native',
+					avatar: 'https://placeimg.com/140/140/any',
+				},
+			},
+		])
+	}, [])
 
 	// 検索フォームのラベル化
 	let textInputSearch;
@@ -77,19 +159,50 @@ export function Chat({ navigation, route }) {
 					<MainTitle navigation={navigation} title={null} link={"Home"} props={{ "profileImage": profileImage, "name": name }} />
 				</TopAreaWrapper>
 				{/* トップ部分を除くメイン部分: iphoneXの場合は、底のマージンを考慮 */}
-				<View style={IPHONE_X_BOTTOM_SPACE === 0 ? constantsCommonStyles.withFooterMainContainerNoneBottomButtonStyle : constantsCommonStyles.withFooterMainContainerIphoneXNoneBottomButtonStyle}>
-					{/* 検索結果が存在する場合 */}
-					{/* {friendInfo && existUserId && (
-						<ExistFriend navigation={navigation} friendInfo={friendInfo} alreadyFriend={alreadyFriend} />
-					)} */}
-					{/* 検索結果が存在しない場合 */}
-					{/* {!existUserId && (
-						<NotExistFriend />
-					)} */}
+				<View style={constantsCommonStyles.mainContainerStyle}>
+					<GiftedChat
+						messages={messages}
+						onSend={messages => _onSendMessage(messages)}
+						user={{
+							_id: 1,
+						}}
+						// 画面下のフッター部分
+						renderInputToolbar={(props) => _messengerBarContainer(props)}
+						// Sendボタンを常に表示するか
+						alwaysShowSend={true}
+						// カスタム送信ボタンのスタイル変更
+						renderSend={(props) => _renderSend(props)}
+						// 送信メッセージのスタイル変更
+						renderBubble={(props) => _renderBubble(props)}
+						// 画面下のTextInputのスタイル変更
+						textInputProps={styles.textInputStyle}
+					/>
 				</View>
-				{/*フッター */}
-				<Footer navigation={navigation} />
 			</SafeAreaView>
 		</KeyboardAvoidingView>
 	);
 }
+
+const styles = StyleSheet.create({
+	sendContainer: {
+		justifyContent: 'center',
+		alignItems: 'center',
+		alignSelf: 'center',
+	},
+	sendButtonTitile: {
+		color: '#4fa9ff',
+		fontWeight: 'bold',
+	},
+	sendButtonStyle: {
+		width: 44,
+		height: 44
+	},
+	textInputStyle: {
+		"backgroundColor": MAIN_WHITE_COLOR,
+		"width": CONTENT_WIDTH - 44, // Sendアイコン分引く
+		marginRight: 10,
+		paddingTop: 14, // sendボタンの高さ 44 - input文字サイズ 16 / 2 = 14
+		paddingBottom: 14,
+		borderRadius: SEARCH_FORM_BORDER_RADIUS,
+	}
+});
