@@ -1,6 +1,6 @@
 // libs
 import React, { useEffect, useState } from 'react';
-import { View, SafeAreaView, KeyboardAvoidingView, Text } from 'react-native';
+import { View, SafeAreaView, KeyboardAvoidingView } from 'react-native';
 
 // components
 import { Footer } from '../components/common/footer'

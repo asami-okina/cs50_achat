@@ -103,25 +103,28 @@ let groups = [
 
 let chats = [
 	{
+		"direct_chat_room_id": 1,
 		"friends_user_id": 1,
 		"friends_nick_name": "kahi",
-		"friends_profile_image": "https://pbs.twimg.com/profile_images/1257586310077796352/XWNIr3Fr_400x400.jpg",
+		"friends_profile_image": require("../../assets/images/friend_profile_image_2.jpg"),
 		"friends_last_message_content": "元気？",
 		"friends_last_message_creation_date": "2022/3/20",
 		"unread_count": 3
 	},
 	{
+		"direct_chat_room_id": 2,
 		"friends_user_id": 2,
 		"friends_nick_name": "suzuki",
-		"friends_profile_image": "https://pbs.twimg.com/profile_images/1257586310077796352/XWNIr3Fr_400x400.jpg",
+		"friends_profile_image": require("../../assets/images/friend_profile_image_2.jpg"),
 		"friends_last_message_content": "ご飯いこう",
 		"friends_last_message_creation_date": "2022/3/22",
 		"unread_count": 2
 	},
 	{
+		"direct_chat_room_id": 3,
 		"friends_user_id": 3,
 		"friends_nick_name": "kahi",
-		"friends_profile_image": "https://pbs.twimg.com/profile_images/1257586310077796352/XWNIr3Fr_400x400.jpg",
+		"friends_profile_image": require("../../assets/images/friend_profile_image_2.jpg"),
 		"friends_last_message_content": "いいよー",
 		"friends_last_message_creation_date": "13:00",
 		"unread_count": 0
@@ -129,7 +132,7 @@ let chats = [
 	{
 		"group_chat_room_id": 4,
 		"group_name": "いつめん",
-		"group_image": "https://pbs.twimg.com/profile_images/1257586310077796352/XWNIr3Fr_400x400.jpg",
+		"group_image": require("../../assets/images/friend_profile_image_2.jpg"),
 		"group_last_message_content": "暑いね",
 		"group_last_message_creation_date": "2022/3/19",
 		"unread_count": 2
@@ -137,7 +140,7 @@ let chats = [
 	{
 		"group_chat_room_id": 5,
 		"group_name": "smile",
-		"group_image": "https://pbs.twimg.com/profile_images/1257586310077796352/XWNIr3Fr_400x400.jpg",
+		"group_image": require("../../assets/images/friend_profile_image_2.jpg"),
 		"group_last_message_content": "料理会しよう",
 		"group_last_message_creation_date": "2022/3/21",
 		"unread_count": 0
@@ -145,7 +148,7 @@ let chats = [
 	{
 		"group_chat_room_id": 6,
 		"group_name": "happy's",
-		"group_image": "https://pbs.twimg.com/profile_images/1257586310077796352/XWNIr3Fr_400x400.jpg",
+		"group_image": require("../../assets/images/friend_profile_image_2.jpg"),
 		"group_last_message_content": "ランチいこう",
 		"group_last_message_creation_date": "10:00",
 		"unread_count": 2
@@ -153,11 +156,48 @@ let chats = [
 	{
 		"group_chat_room_id": 7,
 		"group_name": "happy's",
-		"group_image": "https://pbs.twimg.com/profile_images/1257586310077796352/XWNIr3Fr_400x400.jpg",
+		"group_image": require("../../assets/images/friend_profile_image_2.jpg"),
 		"group_last_message_content": "夜ご飯いこう",
 		"group_last_message_creation_date": "11:00",
 		"unread_count": 2
 	}
+]
+
+let chatsBySearchText = [
+	{
+		"direct_chat_room_id": 1,
+		"friends_user_id": 1,
+		"friends_nick_name": "after_kahi",
+		"friends_profile_image": require("../../assets/images/friend_profile_image_2.jpg"),
+		"friends_last_message_content": "元気？",
+		"friends_last_message_creation_date": "2022/3/20",
+		"unread_count": 3
+	},
+	{
+		"direct_chat_room_id": 2,
+		"friends_user_id": 2,
+		"friends_nick_name": "after_suzuki",
+		"friends_profile_image": require("../../assets/images/friend_profile_image_2.jpg"),
+		"friends_last_message_content": "ご飯いこう",
+		"friends_last_message_creation_date": "2022/3/22",
+		"unread_count": 2
+	},
+	{
+		"group_chat_room_id": 4,
+		"group_name": "after_いつめん",
+		"group_image": require("../../assets/images/friend_profile_image_2.jpg"),
+		"group_last_message_content": "暑いね",
+		"group_last_message_creation_date": "2022/3/19",
+		"unread_count": 2
+	},
+	{
+		"group_chat_room_id": 5,
+		"group_name": "after_smile",
+		"group_image": require("../../assets/images/friend_profile_image_2.jpg"),
+		"group_last_message_content": "料理会しよう",
+		"group_last_message_creation_date": "2022/3/21",
+		"unread_count": 0
+	},
 ]
 
 export const handlers = [
@@ -429,14 +469,28 @@ export const handlers = [
 		}
 	}),
 	// チャットルーム一覧取得
-	// ユーザーの友達一覧
 	rest.get('https://a-chat/api/users/:userId/chatRoom', (req, res, ctx) => {
+		const parsedUrl = new URL(req.url)
+		const searchText = parsedUrl.searchParams.get("searchText")
 		const { userId } = req.params
-		return res(
-			ctx.status(200),
-			ctx.json(
-				chats
-			),
-		)
+		// ニックネームまたはグループ名の検索でヒットするチャット情報取得
+		if (searchText) {
+			return res(
+				ctx.status(200),
+				ctx.json(
+					chatsBySearchText
+				),
+			)
+
+		}
+		// ユーザーIDに紐づくチャットルーム一覧を取得
+		if (!searchText) {
+			return res(
+				ctx.status(200),
+				ctx.json(
+					chats
+				),
+			)
+		}
 	}),
 ]

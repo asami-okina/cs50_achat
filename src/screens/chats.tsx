@@ -1,6 +1,6 @@
 // libs
 import React, { useEffect, useState } from 'react';
-import { View, SafeAreaView, KeyboardAvoidingView, Text, StyleSheet, Pressable, Image, ScrollView } from 'react-native';
+import { View, SafeAreaView, KeyboardAvoidingView } from 'react-native';
 import { useIsFocused } from '@react-navigation/native'
 
 // components
@@ -14,7 +14,7 @@ import { ChatsList } from "../components/chats/chatsList";
 import { constantsCommonStyles } from '../constants/styles/commonStyles'
 
 // layouts
-import { CONTENT_WIDTH, IPHONE_X_BOTTOM_SPACE, PROFILE_IMAGE_BORDER_RADIUS, MAIN_NAVY_COLOR, PROFILE_IMAGE_SIZE, MAIN_GRAY_COLOR, STANDARD_FONT, MAIN_WHITE_COLOR } from '../constants/layout'
+import { IPHONE_X_BOTTOM_SPACE } from '../constants/layout'
 
 export function Chats({ navigation }) {
 	// ユーザーID(今後は認証から取得するようにする)
@@ -26,11 +26,18 @@ export function Chats({ navigation }) {
 	const [isDuringSearch, setIsDuringSearch] = useState(false)
 
 	// グループ削除確認モーダル
-	const [modalVisible, setModalVisible] = useState(false);
+	const [deleteModalVisible, setDeleteModalVisible] = useState(false);
 	// 削除時の確認モーダルでCancelを押したかどうか
-	const [clickedCancelMordal, setClickedCancelMordal] = useState(false)
+	const [clickedDeleteCancelMordal, setClickedDeleteCancelMordal] = useState(false)
 	// 削除時の確認モーダルでOkを押したかどうか
-	const [clickedOkMordal, setClickedOkMordal] = useState(false)
+	const [clickedDeleteOkMordal, setClickedDeleteOkMordal] = useState(false)
+
+	// グループ非表示確認モーダル
+	const [hiddenModalVisible, setHiddenModalVisible] = useState(false);
+	// 非表示時の確認モーダルでCancelを押したかどうか
+	const [clickedHiddenCancelMordal, setClickedHiddenCancelMordal] = useState(false)
+	// 非表示時の確認モーダルでOkを押したかどうか
+	const [clickedHiddenOkMordal, setClickedHiddenOkMordal] = useState(false)
 
 	// [検索前]APIから取得したグループ一覧リスト
 	const [beforeChatRoomListSearch, setBeforeChatRoomListSearch] = useState([])
@@ -40,15 +47,15 @@ export function Chats({ navigation }) {
 	// 現在画面がフォーカスされているかをbooleanで保持
 	const isFocused = useIsFocused()
 
-	// ニックネームまたはグループ名の検索でヒットするユーザーまたはグループ情報の取得
-	async function _searchName(searchText) {
+	// ニックネームまたはグループ名の検索でヒットするチャット情報取得
+	async function _searchChatByNickNameOrGroupName(searchText) {
 		try {
 			// paramsを生成
-			const params_search = { "search": searchText }
+			const params_search = { "searchText": searchText }
 			const query_params = new URLSearchParams(params_search);
 
 			// APIリクエスト
-			const response = await fetch(`https://a-chat/api/users/${userId}/home?${query_params}`, {
+			const response = await fetch(`https://a-chat/api/users/${userId}/chatRoom?${query_params}`, {
 				method: "GET",
 				headers: {
 					"Content-Type": "application/json"
@@ -57,14 +64,14 @@ export function Chats({ navigation }) {
 			// レスポンスをJSONにする
 			const parse_response = await response.json()
 			// チャットルーム一覧のstateを更新
-			setAfterChatRoomListSearch(parse_response[1]["group"])
+			setAfterChatRoomListSearch(parse_response)
 		} catch (e) {
 			console.error(e)
 		}
 	}
 
 
-	// チャットルーム一覧を取得
+	// ユーザーIDに紐づくチャットルーム一覧を取得
 	async function _fetchChatsList() {
 		try {
 			// APIリクエスト
@@ -76,7 +83,7 @@ export function Chats({ navigation }) {
 			})
 			// レスポンスをJSONにする
 			const parse_response = await response.json()
-			setBeforeChatRoomListSearch(parse_response.map((_, i) => ({ ..._, key: `${i}` })))
+			setBeforeChatRoomListSearch(parse_response)
 		} catch (e) {
 			console.error(e)
 		}
@@ -103,17 +110,25 @@ export function Chats({ navigation }) {
 		<KeyboardAvoidingView behavior="padding" style={constantsCommonStyles.screenContainerStyle}>
 			<SafeAreaView style={constantsCommonStyles.screenContainerStyle}>
 				{/* Delete確認モーダル */}
-				<ConfirmModal modalVisible={modalVisible} setModalVisible={setModalVisible} setClickedCancelMordal={setClickedCancelMordal} setClickedOkMordal={setClickedOkMordal} modalText={"When you leave a group, the group member list and all group talk history will be deleted. Do you want to leave the group?"} />
+				<ConfirmModal modalVisible={deleteModalVisible} setModalVisible={setDeleteModalVisible} setClickedCancelMordal={setClickedDeleteCancelMordal} setClickedOkMordal={setClickedDeleteOkMordal} modalText={"When you leave a group, the group member list and all group talk history will be deleted. Do you want to leave the group?"} />
+				<ConfirmModal modalVisible={hiddenModalVisible} setModalVisible={setHiddenModalVisible} setClickedCancelMordal={setClickedHiddenCancelMordal} setClickedOkMordal={setClickedHiddenOkMordal} modalText={"Talk content will not be deleted."} />
 				{/* 画面一番上にある青色の余白部分 */}
 				<View style={constantsCommonStyles.topMarginViewStyle}></View>
 				{/* 丸みを帯びている白いトップ部分 */}
 				<TopAreaWrapper type={"searchForm"}>
-					<SearchForm setSearchText={setSearchText} searchText={searchText} textInputSearch={textInputSearch} searchName={_searchName} fetchGroupCount={null} fetchFriendCount={null} setIsDuringSearch={setIsDuringSearch} placeholder={"Search by name"} />
+					<SearchForm setSearchText={setSearchText} searchText={searchText} textInputSearch={textInputSearch} searchName={_searchChatByNickNameOrGroupName} fetchGroupCount={null} fetchFriendCount={null} setIsDuringSearch={setIsDuringSearch} placeholder={"Search by name"} />
 				</TopAreaWrapper>
 				{/* トップ部分を除くメイン部分: iphoneXの場合は、底のマージンを考慮 */}
 				<View style={IPHONE_X_BOTTOM_SPACE === 0 ? constantsCommonStyles.withFooterMainContainerNoneBottomButtonStyle : constantsCommonStyles.withFooterMainContainerIphoneXNoneBottomButtonStyle}>
 					{/* チャット一覧 */}
-					<ChatsList navigation={navigation} beforeChatRoomListSearch={beforeChatRoomListSearch}/>
+					{/* 検索中ではない場合 */}
+					{!isDuringSearch && beforeChatRoomListSearch.length !== 0 && (
+						<ChatsList chatRoomList={beforeChatRoomListSearch} setDeleteModalVisible={setDeleteModalVisible} clickedDeleteCancelMordal={clickedDeleteCancelMordal} setClickedDeleteCancelMordal={setClickedDeleteCancelMordal} clickedDeleteOkMordal={clickedDeleteOkMordal} setClickedDeleteOkMordal={setClickedDeleteOkMordal} setHiddenModalVisible={setHiddenModalVisible} clickedHiddenCancelMordal={clickedHiddenCancelMordal} setClickedHiddenCancelMordal={setClickedHiddenCancelMordal} clickedHiddenOkMordal={clickedHiddenOkMordal} setClickedHiddenOkMordal={setClickedHiddenOkMordal} />
+					)}
+					{/* 検索中の場合 */}
+					{isDuringSearch && afterChatRoomListSearch.length !== 0 && (
+						<ChatsList chatRoomList={afterChatRoomListSearch} setDeleteModalVisible={setDeleteModalVisible} clickedDeleteCancelMordal={clickedDeleteCancelMordal} setClickedDeleteCancelMordal={setClickedDeleteCancelMordal} clickedDeleteOkMordal={clickedDeleteOkMordal} setClickedDeleteOkMordal={setClickedDeleteOkMordal} setHiddenModalVisible={setHiddenModalVisible} clickedHiddenCancelMordal={clickedHiddenCancelMordal} setClickedHiddenCancelMordal={setClickedHiddenCancelMordal} clickedHiddenOkMordal={clickedHiddenOkMordal} setClickedHiddenOkMordal={setClickedHiddenOkMordal} />
+					)}
 				</View>
 				{/*フッター */}
 				<Footer navigation={navigation} />
