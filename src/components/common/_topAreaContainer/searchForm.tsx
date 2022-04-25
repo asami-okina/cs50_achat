@@ -20,6 +20,7 @@ export function SearchForm({
 	setIsDuringSearch,
 	placeholder
 }) {
+
 	// 検索フォームの削除アイコン表示/非表示
 	const [deleteIconDisplay, setDeleteIconDisplay] = useState(false)
 	const userId = "asami11"

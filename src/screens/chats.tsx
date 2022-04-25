@@ -93,6 +93,22 @@ export function Chats({ navigation }) {
 		}
 	}
 
+		// 文字追加or削除ごとにヒット(名前またはグループ名)したチャット一覧を表示
+		const _autoSuggestSearchChatByNickNameOrGroupName = (text) => {
+			setSearchText(text)
+			_searchChatByNickNameOrGroupName(searchText)
+			if (setIsDuringSearch) {
+				setIsDuringSearch(true)
+			}
+		}
+
+	useEffect(() => {
+		// サジェスト機能を使うために、searchTextが変わったら、毎回APIを実行する
+		if (userId) {
+			_searchChatByNickNameOrGroupName(searchText)
+		}
+	}, [searchText])
+
 	useEffect(() => {
 		// navigationがリレンダーされないので、画面にフォーカスが当たった時に再実行するよう実装
 		if (userId) {
@@ -113,7 +129,7 @@ export function Chats({ navigation }) {
 				<View style={constantsCommonStyles.topMarginViewStyle}></View>
 				{/* 丸みを帯びている白いトップ部分 */}
 				<TopAreaWrapper type={"searchForm"}>
-					<SearchForm setSearchText={setSearchText} searchText={searchText} textInputSearch={textInputSearch} searchName={_searchChatByNickNameOrGroupName} fetchGroupCount={null} fetchFriendCount={null} setIsDuringSearch={setIsDuringSearch} placeholder={"Search by name"} />
+					<SearchForm setSearchText={_autoSuggestSearchChatByNickNameOrGroupName} searchText={searchText} textInputSearch={textInputSearch} searchName={_searchChatByNickNameOrGroupName} fetchGroupCount={null} fetchFriendCount={null} setIsDuringSearch={setIsDuringSearch} placeholder={"Search by name"} />
 				</TopAreaWrapper>
 				{/* トップ部分を除くメイン部分: iphoneXの場合は、底のマージンを考慮 */}
 				<View style={IPHONE_X_BOTTOM_SPACE === 0 ? constantsCommonStyles.withFooterMainContainerNoneBottomButtonStyle : constantsCommonStyles.withFooterMainContainerIphoneXNoneBottomButtonStyle}>
@@ -124,7 +140,7 @@ export function Chats({ navigation }) {
 					)}
 					{/* 検索中の場合 */}
 					{isDuringSearch && afterChatRoomListSearch.length !== 0 && (
-						<ChatsList chatRoomList={afterChatRoomListSearch} setDeleteModalVisible={setDeleteModalVisible} clickedDeleteCancelMordal={clickedDeleteCancelMordal} setClickedDeleteCancelMordal={setClickedDeleteCancelMordal} clickedDeleteOkMordal={clickedDeleteOkMordal} setClickedDeleteOkMordal={setClickedDeleteOkMordal} setHiddenModalVisible={setHiddenModalVisible} clickedHiddenCancelMordal={clickedHiddenCancelMordal} setClickedHiddenCancelMordal={setClickedHiddenCancelMordal} clickedHiddenOkMordal={clickedHiddenOkMordal} setClickedHiddenOkMordal={setClickedHiddenOkMordal} setGroupChatRoomId={setGroupChatRoomId} setDirectChatRoomId={setDirectChatRoomId}  groupChatRoomId={groupChatRoomId} directChatRoomId={directChatRoomId} />
+						<ChatsList chatRoomList={afterChatRoomListSearch} setDeleteModalVisible={setDeleteModalVisible} clickedDeleteCancelMordal={clickedDeleteCancelMordal} setClickedDeleteCancelMordal={setClickedDeleteCancelMordal} clickedDeleteOkMordal={clickedDeleteOkMordal} setClickedDeleteOkMordal={setClickedDeleteOkMordal} setHiddenModalVisible={setHiddenModalVisible} clickedHiddenCancelMordal={clickedHiddenCancelMordal} setClickedHiddenCancelMordal={setClickedHiddenCancelMordal} clickedHiddenOkMordal={clickedHiddenOkMordal} setClickedHiddenOkMordal={setClickedHiddenOkMordal} setGroupChatRoomId={setGroupChatRoomId} setDirectChatRoomId={setDirectChatRoomId} groupChatRoomId={groupChatRoomId} directChatRoomId={directChatRoomId} />
 					)}
 				</View>
 				{/*フッター */}
