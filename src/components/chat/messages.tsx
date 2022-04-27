@@ -13,114 +13,114 @@ export const temporaryMessages = [
 		sent: true,
 		received: true
 	},
-	{
-		_id: 2,
-		text: 'Hello developer',
-		createdAt: "2022-04-27T02:08:10.189Z",
-		user: {
-			_id: 2,
-			name: 'React Native',
-			avatar: 'https://placeimg.com/140/140/any',
-		},
-		sent: true,
-		received: true
-	},
-	{
-		_id: 3,
-		text: 'Hello developer',
-		createdAt: "2022-04-27T01:00:10.189Z",
-		user: {
-			_id: 2,
-			name: 'React Native',
-			avatar: 'https://placeimg.com/140/140/any',
-		},
-		sent: true,
-		received: true
-	},
-	{
-		_id: 4,
-		text: 'Hello developer',
-		createdAt: "2022-04-27T00:00:10.189Z",
-		user: {
-			_id: 2,
-			name: 'React Native',
-			avatar: "2022-04-26T10:00:10.189Z",
-		},
-		sent: true,
-		received: true
-	},
-	{
-		_id: 5,
-		text: 'Hello developer',
-		createdAt: "2022-04-26T10:00:10.189Z",
-		user: {
-			_id: 2,
-			name: 'React Native',
-			avatar: 'https://placeimg.com/140/140/any',
-		},
-		sent: true,
-		received: true
-	},
-	{
-		_id: 6,
-		text: 'Hello developer',
-		createdAt: "2022-04-26T09:00:10.189Z",
-		user: {
-			_id: 2,
-			name: 'React Native',
-			avatar: 'https://placeimg.com/140/140/any',
-		},
-		sent: true,
-		received: true
-	},
-	{
-		_id: 7,
-		text: 'Hello developer',
-		createdAt: "2022-04-25T12:00:10.189Z",
-		user: {
-			_id: 2,
-			name: 'React Native',
-			avatar: 'https://placeimg.com/140/140/any',
-		},
-		sent: true,
-		received: true
-	},
-	{
-		_id: 8,
-		text: 'Hello developer',
-		createdAt: "2022-04-25T09:00:10.189Z",
-		user: {
-			_id: 2,
-			name: 'React Native',
-			avatar: 'https://placeimg.com/140/140/any',
-		},
-		sent: true,
-		received: true
-	},
-	{
-		_id: 9,
-		text: 'Hello developer',
-		createdAt: "2022-04-24T09:00:10.189Z",
-		user: {
-			_id: 2,
-			name: 'React Native',
-			avatar: 'https://placeimg.com/140/140/any',
-		},
-		sent: true,
-		received: true
-	},
-	{
-		_id: 10,
-		text: 'Hello developer',
-		createdAt: "2022-04-25T09:00:08.189Z",
-		user: {
-			_id: 2,
-			name: 'React Native',
-			avatar: 'https://placeimg.com/140/140/any',
-		},
-		sent: true,
-		received: true
-	},
+	// {
+	// 	_id: 2,
+	// 	text: 'Hello developer',
+	// 	createdAt: "2022-04-27T02:08:10.189Z",
+	// 	user: {
+	// 		_id: 2,
+	// 		name: 'React Native',
+	// 		avatar: 'https://placeimg.com/140/140/any',
+	// 	},
+	// 	sent: true,
+	// 	received: true
+	// },
+	// {
+	// 	_id: 3,
+	// 	text: 'Hello developer',
+	// 	createdAt: "2022-04-27T01:00:10.189Z",
+	// 	user: {
+	// 		_id: 2,
+	// 		name: 'React Native',
+	// 		avatar: 'https://placeimg.com/140/140/any',
+	// 	},
+	// 	sent: true,
+	// 	received: true
+	// },
+	// {
+	// 	_id: 4,
+	// 	text: 'Hello developer',
+	// 	createdAt: "2022-04-27T00:00:10.189Z",
+	// 	user: {
+	// 		_id: 2,
+	// 		name: 'React Native',
+	// 		avatar: "2022-04-26T10:00:10.189Z",
+	// 	},
+	// 	sent: true,
+	// 	received: true
+	// },
+	// {
+	// 	_id: 5,
+	// 	text: 'Hello developer',
+	// 	createdAt: "2022-04-26T10:00:10.189Z",
+	// 	user: {
+	// 		_id: 2,
+	// 		name: 'React Native',
+	// 		avatar: 'https://placeimg.com/140/140/any',
+	// 	},
+	// 	sent: true,
+	// 	received: true
+	// },
+	// {
+	// 	_id: 6,
+	// 	text: 'Hello developer',
+	// 	createdAt: "2022-04-26T09:00:10.189Z",
+	// 	user: {
+	// 		_id: 2,
+	// 		name: 'React Native',
+	// 		avatar: 'https://placeimg.com/140/140/any',
+	// 	},
+	// 	sent: true,
+	// 	received: true
+	// },
+	// {
+	// 	_id: 7,
+	// 	text: 'Hello developer',
+	// 	createdAt: "2022-04-25T12:00:10.189Z",
+	// 	user: {
+	// 		_id: 2,
+	// 		name: 'React Native',
+	// 		avatar: 'https://placeimg.com/140/140/any',
+	// 	},
+	// 	sent: true,
+	// 	received: true
+	// },
+	// {
+	// 	_id: 8,
+	// 	text: 'Hello developer',
+	// 	createdAt: "2022-04-25T09:00:10.189Z",
+	// 	user: {
+	// 		_id: 2,
+	// 		name: 'React Native',
+	// 		avatar: 'https://placeimg.com/140/140/any',
+	// 	},
+	// 	sent: true,
+	// 	received: true
+	// },
+	// {
+	// 	_id: 9,
+	// 	text: 'Hello developer',
+	// 	createdAt: "2022-04-24T09:00:10.189Z",
+	// 	user: {
+	// 		_id: 2,
+	// 		name: 'React Native',
+	// 		avatar: 'https://placeimg.com/140/140/any',
+	// 	},
+	// 	sent: true,
+	// 	received: true
+	// },
+	// {
+	// 	_id: 10,
+	// 	text: 'Hello developer',
+	// 	createdAt: "2022-04-25T09:00:08.189Z",
+	// 	user: {
+	// 		_id: 2,
+	// 		name: 'React Native',
+	// 		avatar: 'https://placeimg.com/140/140/any',
+	// 	},
+	// 	sent: true,
+	// 	received: true
+	// },
 ]
 
 export const addMessages = [
@@ -136,16 +136,16 @@ export const addMessages = [
 		sent: true,
 		received: true
 	},
-	{
-		_id: 102,
-		text: 'add Message',
-		createdAt: "2022-04-24T09:00:10.189Z",
-		user: {
-			_id: 2,
-			name: 'React Native',
-			avatar: 'https://placeimg.com/140/140/any',
-		},
-		sent: true,
-		received: true
-	}
+	// {
+	// 	_id: 102,
+	// 	text: 'add Message',
+	// 	createdAt: "2022-04-24T09:00:10.189Z",
+	// 	user: {
+	// 		_id: 2,
+	// 		name: 'React Native',
+	// 		avatar: 'https://placeimg.com/140/140/any',
+	// 	},
+	// 	sent: true,
+	// 	received: true
+	// }
 ]
