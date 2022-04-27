@@ -129,8 +129,10 @@ export function Chat({ navigation, route }) {
 									color: MAIN_WHITE_COLOR,
 									width: 200,
 									borderBottomLeftRadius: 0,
+									borderTopLeftRadius: 15,
 									height: 50,
 									justifyContent: "center",
+
 								}
 							}}
 						/>
