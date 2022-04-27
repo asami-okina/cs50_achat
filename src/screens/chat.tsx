@@ -273,7 +273,7 @@ export function Chat({ navigation, route }) {
 				<View style={constantsCommonStyles.topMarginViewStyle}></View>
 				{/* 丸みを帯びている白いトップ部分 */}
 				<TopAreaWrapper type={"Chats"}>
-					<MainTitle navigation={navigation} title={null} link={"Home"} props={{ "profileImage": profileImage, "name": name }} />
+					<MainTitle navigation={navigation} title={null} link={"Chats"} props={{ "profileImage": profileImage, "name": name }} />
 				</TopAreaWrapper>
 				{/* トップ部分を除くメイン部分: iphoneXの場合は、底のマージンを考慮 */}
 				<View style={constantsCommonStyles.mainContainerStyle}>
