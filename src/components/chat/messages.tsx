@@ -3,8 +3,8 @@ export const temporaryMessages = [
 	{
 		// _id: uuid.v4(),
 		_id: 1,
-		text: 'Hello developer',
-		createdAt: new Date(),
+		text: 'Hello developer 1',
+		createdAt: "2022-04-27T02:10:29.189Z",
 		user: {
 			_id: 2,
 			name: 'React Native',
@@ -14,7 +14,7 @@ export const temporaryMessages = [
 	{
 		_id: 2,
 		text: 'Hello developer',
-		createdAt: new Date(),
+		createdAt: "2022-04-27T02:08:10.189Z",
 		user: {
 			_id: 2,
 			name: 'React Native',
@@ -24,7 +24,7 @@ export const temporaryMessages = [
 	{
 		_id: 3,
 		text: 'Hello developer',
-		createdAt: new Date(),
+		createdAt: "2022-04-27T01:00:10.189Z",
 		user: {
 			_id: 2,
 			name: 'React Native',
@@ -34,17 +34,17 @@ export const temporaryMessages = [
 	{
 		_id: 4,
 		text: 'Hello developer',
-		createdAt: new Date(),
+		createdAt: "2022-04-27T00:00:10.189Z",
 		user: {
 			_id: 2,
 			name: 'React Native',
-			avatar: 'https://placeimg.com/140/140/any',
+			avatar: "2022-04-26T10:00:10.189Z",
 		},
 	},
 	{
 		_id: 5,
 		text: 'Hello developer',
-		createdAt: new Date(),
+		createdAt: "2022-04-26T10:00:10.189Z",
 		user: {
 			_id: 2,
 			name: 'React Native',
@@ -54,7 +54,7 @@ export const temporaryMessages = [
 	{
 		_id: 6,
 		text: 'Hello developer',
-		createdAt: new Date(),
+		createdAt: "2022-04-26T09:00:10.189Z",
 		user: {
 			_id: 2,
 			name: 'React Native',
@@ -64,7 +64,7 @@ export const temporaryMessages = [
 	{
 		_id: 7,
 		text: 'Hello developer',
-		createdAt: new Date(),
+		createdAt: "2022-04-25T12:00:10.189Z",
 		user: {
 			_id: 2,
 			name: 'React Native',
@@ -74,7 +74,7 @@ export const temporaryMessages = [
 	{
 		_id: 8,
 		text: 'Hello developer',
-		createdAt: new Date(),
+		createdAt: "2022-04-25T09:00:10.189Z",
 		user: {
 			_id: 2,
 			name: 'React Native',
@@ -84,7 +84,7 @@ export const temporaryMessages = [
 	{
 		_id: 9,
 		text: 'Hello developer',
-		createdAt: new Date(),
+		createdAt: "2022-04-24T09:00:10.189Z",
 		user: {
 			_id: 2,
 			name: 'React Native',
@@ -94,7 +94,7 @@ export const temporaryMessages = [
 	{
 		_id: 10,
 		text: 'Hello developer',
-		createdAt: new Date(),
+		createdAt: "2022-04-25T09:00:08.189Z",
 		user: {
 			_id: 2,
 			name: 'React Native',
@@ -107,7 +107,7 @@ export const addMessages = [
 	{
 		_id: 101,
 		text: 'add Message',
-		createdAt: new Date(),
+		createdAt: "2022-04-24T12:00:10.189Z",
 		user: {
 			_id: 2,
 			name: 'React Native',
@@ -117,7 +117,7 @@ export const addMessages = [
 	{
 		_id: 102,
 		text: 'add Message',
-		createdAt: new Date(),
+		createdAt: "2022-04-24T09:00:10.189Z",
 		user: {
 			_id: 2,
 			name: 'React Native',

@@ -1,7 +1,7 @@
 // libs
 import React, { useEffect, useState, useCallback } from 'react';
 import { View, SafeAreaView, KeyboardAvoidingView, StyleSheet, Image } from 'react-native';
-import { GiftedChat, Send, Bubble, InputToolbar, MessageText,LoadEarlier } from 'react-native-gifted-chat'
+import { GiftedChat, Send, Bubble, InputToolbar, MessageText,LoadEarlier,Day } from 'react-native-gifted-chat'
 import uuid from 'react-native-uuid';
 import {temporaryMessages,addMessages} from "../components/chat/messages"
 import _ from 'lodash';
@@ -14,7 +14,7 @@ import { MainTitle } from "../components/common/_topAreaContainer/mainTitle"
 import { constantsCommonStyles } from '../constants/styles/commonStyles'
 
 // layouts
-import { MAIN_NAVY_COLOR, MAIN_WHITE_COLOR, FOOTER_HEIGHT, CONTENT_WIDTH, SEARCH_FORM_BORDER_RADIUS, SEND_BUTTON_HEIGHT, STANDARD_FONT } from '../constants/layout'
+import { MAIN_NAVY_COLOR, MAIN_WHITE_COLOR, FOOTER_HEIGHT, CONTENT_WIDTH, SEARCH_FORM_BORDER_RADIUS, SEND_BUTTON_HEIGHT, STANDARD_FONT,MAIN_YELLOW_COLOR } from '../constants/layout'
 
 export function Chat({ navigation, route }) {
 	// 引数を取得
@@ -124,6 +124,30 @@ export function Chat({ navigation, route }) {
 		)
 	}
 
+	// 日時部分のスタイル変更
+	const _renderDay = (props) => {
+		return (
+			<Day {...props}
+			textStyle={{
+				"fontFamily": STANDARD_FONT,
+				color: MAIN_NAVY_COLOR
+			}}
+			containerStyle={{
+				justifyContent: "center",
+				alignItems: "center",
+			}}
+			wrapperStyle={{
+				backgroundColor: MAIN_YELLOW_COLOR,
+				justifyContent: "center",
+				alignItems: "center",
+				width: 80,
+				height: 20,
+				borderRadius: 5
+			}}
+			/>
+		)
+	}
+
 	// 画面下のフッター部分
 	const _messengerBarContainer = (props) => {
 		return (
@@ -133,7 +157,7 @@ export function Chat({ navigation, route }) {
 					backgroundColor: MAIN_NAVY_COLOR,
 					alignContent: "center",
 					justifyContent: "center",
-					height: FOOTER_HEIGHT,
+					minHeight: FOOTER_HEIGHT,
 				}}
 				primaryStyle={{
 					display: "flex",
@@ -230,6 +254,8 @@ export function Chat({ navigation, route }) {
 							onEndReached: _onEndReached,
 							onEndReachedThreshold: 0.4,
 						}}
+						// 日時部分のスタイル変更
+						renderDay={(props) => _renderDay(props)}
 					/>
 				</View>
 			</SafeAreaView>
@@ -251,7 +277,7 @@ const styles = StyleSheet.create({
 		"backgroundColor": MAIN_WHITE_COLOR,
 		"width": CONTENT_WIDTH - 44, // Sendアイコン分引く
 		marginRight: 10,
-		height: SEND_BUTTON_HEIGHT, // sendボタンの高さ
+		minHeight: SEND_BUTTON_HEIGHT, // sendボタンの高さ
 		paddingTop: 14, // sendボタンの高さ 44 - input文字サイズ 16 / 2 = 14
 		paddingBottom: 14,
 		borderRadius: SEARCH_FORM_BORDER_RADIUS,
