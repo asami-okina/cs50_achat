@@ -224,12 +224,11 @@ export function Chat({ navigation, route }) {
 
 	// 以前のメッセージを取得する
 	const _onEndReached = () => {
-		console.log('こないで')
 		// setTimeoutは時間切れになると関数を実行する(ミリ秒で指定)
 		// テスト段階では、1回だけAPIを取得したいため、initialApiCountを使って1回だけAPIを実行するよう調整。
 		// APIが完成したら、initialApiCountのif文とsetInitialApiCountは削除する
 		// 追加のメッセージがある場合のみ、API実行中のローディングを表示
-		if (addMessages.length !== 0) {
+		if (addMessages.length !== 0 && initialApiCount) {
 			setLoadEarlier(true)
 		}
 		if (initialApiCount) {
