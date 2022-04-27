@@ -1,7 +1,7 @@
 // libs
 import React, { useEffect, useState, useCallback } from 'react';
 import { View, SafeAreaView, KeyboardAvoidingView, StyleSheet, Image, Text } from 'react-native';
-import { GiftedChat, Send, Bubble, InputToolbar, MessageText, LoadEarlier, Day } from 'react-native-gifted-chat'
+import { GiftedChat, Send, Bubble, InputToolbar, MessageText, LoadEarlier, Day, Time } from 'react-native-gifted-chat'
 import uuid from 'react-native-uuid';
 import { temporaryMessages, addMessages } from "../components/chat/messages"
 import _ from 'lodash';
@@ -88,6 +88,7 @@ export function Chat({ navigation, route }) {
 
 	// 送信メッセージのスタイル変更
 	const _renderBubble = (props) => {
+		// 右側
 		if (props.currentMessage.user._id === userId) {
 			return (
 				<View>
@@ -95,8 +96,8 @@ export function Chat({ navigation, route }) {
 						style={styles.readWrapperStyle}
 					>
 						<View style={[styles.readRightContainerStyle, styles.readRightContainerStyle]}>
-							<Text style={styles.readStyle}>{moment(props.currentMessage.createdAt).format("HH:mm")}</Text>
 							<Text style={styles.readStyle}>{props.currentMessage.received ? "Read" : "Unread"}</Text>
+							<Text style={styles.readStyle}>{moment(props.currentMessage.createdAt).format("HH:mm")}</Text>
 						</View>
 						<Bubble
 							{...props}
@@ -106,18 +107,16 @@ export function Chat({ navigation, route }) {
 									color: MAIN_WHITE_COLOR,
 									width: 200,
 									borderBottomRightRadius: 0,
+									height: 50,
+									justifyContent: "center",
 								},
-								left: {
-									color: MAIN_WHITE_COLOR,
-									width: 200,
-									borderBottomLeftRadius: 0
-								}
 							}}
 						/>
 					</View>
 				</View>
 			)
 		} else {
+			// 左側
 			return (
 				<View>
 					<View
@@ -126,16 +125,12 @@ export function Chat({ navigation, route }) {
 						<Bubble
 							{...props}
 							wrapperStyle={{
-								right: {
-									backgroundColor: MAIN_NAVY_COLOR,
-									color: MAIN_WHITE_COLOR,
-									width: 200,
-									borderBottomRightRadius: 0,
-								},
 								left: {
 									color: MAIN_WHITE_COLOR,
 									width: 200,
-									borderBottomLeftRadius: 0
+									borderBottomLeftRadius: 0,
+									height: 50,
+									justifyContent: "center",
 								}
 							}}
 						/>
@@ -210,8 +205,26 @@ export function Chat({ navigation, route }) {
 		)
 	}
 
+	// メッセージ内に時間を表示しない
+	const _renderTime = (props) => {
+		return (
+			<Time
+				{...props}
+				containerStyle={{
+					left: {
+						display: "none"
+					},
+					right: {
+						display: "none"
+					}
+				}}
+			/>
+		)
+	}
+
 	// 以前のメッセージを取得する
 	const _onEndReached = () => {
+		console.log('こないで')
 		// setTimeoutは時間切れになると関数を実行する(ミリ秒で指定)
 		// テスト段階では、1回だけAPIを取得したいため、initialApiCountを使って1回だけAPIを実行するよう調整。
 		// APIが完成したら、initialApiCountのif文とsetInitialApiCountは削除する
@@ -300,6 +313,8 @@ export function Chat({ navigation, route }) {
 						}}
 						// 日時部分のスタイル変更
 						renderDay={(props) => _renderDay(props)}
+						// メッセージ内に時間を表示しない
+						renderTime={(props) => _renderTime(props)}
 					/>
 				</View>
 			</SafeAreaView>
