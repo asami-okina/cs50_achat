@@ -10,6 +10,8 @@ export const temporaryMessages = [
 			name: 'React Native',
 			avatar: 'https://placeimg.com/140/140/any',
 		},
+		sent: true,
+		received: true
 	},
 	{
 		_id: 2,
@@ -20,6 +22,8 @@ export const temporaryMessages = [
 			name: 'React Native',
 			avatar: 'https://placeimg.com/140/140/any',
 		},
+		sent: true,
+		received: true
 	},
 	{
 		_id: 3,
@@ -30,6 +34,8 @@ export const temporaryMessages = [
 			name: 'React Native',
 			avatar: 'https://placeimg.com/140/140/any',
 		},
+		sent: true,
+		received: true
 	},
 	{
 		_id: 4,
@@ -40,6 +46,8 @@ export const temporaryMessages = [
 			name: 'React Native',
 			avatar: "2022-04-26T10:00:10.189Z",
 		},
+		sent: true,
+		received: true
 	},
 	{
 		_id: 5,
@@ -50,6 +58,8 @@ export const temporaryMessages = [
 			name: 'React Native',
 			avatar: 'https://placeimg.com/140/140/any',
 		},
+		sent: true,
+		received: true
 	},
 	{
 		_id: 6,
@@ -60,6 +70,8 @@ export const temporaryMessages = [
 			name: 'React Native',
 			avatar: 'https://placeimg.com/140/140/any',
 		},
+		sent: true,
+		received: true
 	},
 	{
 		_id: 7,
@@ -70,6 +82,8 @@ export const temporaryMessages = [
 			name: 'React Native',
 			avatar: 'https://placeimg.com/140/140/any',
 		},
+		sent: true,
+		received: true
 	},
 	{
 		_id: 8,
@@ -80,6 +94,8 @@ export const temporaryMessages = [
 			name: 'React Native',
 			avatar: 'https://placeimg.com/140/140/any',
 		},
+		sent: true,
+		received: true
 	},
 	{
 		_id: 9,
@@ -90,6 +106,8 @@ export const temporaryMessages = [
 			name: 'React Native',
 			avatar: 'https://placeimg.com/140/140/any',
 		},
+		sent: true,
+		received: true
 	},
 	{
 		_id: 10,
@@ -100,6 +118,8 @@ export const temporaryMessages = [
 			name: 'React Native',
 			avatar: 'https://placeimg.com/140/140/any',
 		},
+		sent: true,
+		received: true
 	},
 ]
 
@@ -113,6 +133,8 @@ export const addMessages = [
 			name: 'React Native',
 			avatar: 'https://placeimg.com/140/140/any',
 		},
+		sent: true,
+		received: true
 	},
 	{
 		_id: 102,
@@ -123,5 +145,7 @@ export const addMessages = [
 			name: 'React Native',
 			avatar: 'https://placeimg.com/140/140/any',
 		},
+		sent: true,
+		received: true
 	}
 ]
