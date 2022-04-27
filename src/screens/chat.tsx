@@ -1,8 +1,10 @@
 // libs
 import React, { useEffect, useState, useCallback } from 'react';
 import { View, SafeAreaView, KeyboardAvoidingView, StyleSheet, Image } from 'react-native';
-import { GiftedChat, Send, Bubble, InputToolbar, MessageText } from 'react-native-gifted-chat'
+import { GiftedChat, Send, Bubble, InputToolbar, MessageText,LoadEarlier } from 'react-native-gifted-chat'
 import uuid from 'react-native-uuid';
+import {temporaryMessages,addMessages} from "../components/chat/messages"
+import _ from 'lodash';
 
 // components
 import { TopAreaWrapper } from "../components/common/topAreaWrapper"
@@ -17,6 +19,9 @@ import { MAIN_NAVY_COLOR, MAIN_WHITE_COLOR, FOOTER_HEIGHT, CONTENT_WIDTH, SEARCH
 export function Chat({ navigation, route }) {
 	// 引数を取得
 	const { groupChatRoomId, directChatRoomId, profileImage, name } = route.params
+
+	const [isLoadingEarlier, setIsLoadingEarlier] =useState(true)
+	const [initialApiCount, setInitialApiCount] = useState(true)
 
 	// ユーザーID(今後は認証から取得するようにする)
 	const userId = "asami11"
@@ -140,23 +145,40 @@ export function Chat({ navigation, route }) {
 		)
 	}
 
+	// 以前のメッセージを取得する
+	const _onEndReached = () => {
+		// setTimeoutは時間切れになると関数を実行する(ミリ秒で指定)
+		// テスト段階では、1回だけAPIを取得したいため、initialApiCountを使って1回だけAPIを実行するよう調整。
+		// APIが完成したら、initialApiCountのif文とsetInitialApiCountは削除する
+		if(initialApiCount) {
+			setTimeout(() => {
+				const newData = [...messages, ...addMessages];
+				setMessages(newData)
+				setIsLoadingEarlier(false)
+				setInitialApiCount(false)
+			}, 2000)
+		}
+	}
+
+	// 「以前のメッセージを読み込む」ボタンのスタイル変更
+	const _renderLoadEarlier = (props) => {
+		return (
+			<LoadEarlier
+			{...props}
+			wrapperStyle={{
+				backgroundColor: MAIN_NAVY_COLOR,
+			}}
+			/>
+		)
+	}
+
 	useEffect(() => {
 		_fetchProfileImageAndName()
 	}, [])
 
 	useEffect(() => {
-		setMessages([
-			{
-				_id: uuid.v4(),
-				text: 'Hello developer',
-				createdAt: new Date(),
-				user: {
-					_id: 2,
-					name: 'React Native',
-					avatar: 'https://placeimg.com/140/140/any',
-				},
-			},
-		])
+		// 仮のメッセージ取得
+		setMessages(temporaryMessages)
 	}, [])
 
 	// 検索フォームのラベル化
@@ -193,6 +215,21 @@ export function Chat({ navigation, route }) {
 						minInputToolbarHeight={FOOTER_HEIGHT}
 						// メッセージのスタイル変更
 						renderMessageText={(props) => _changeMessageStyle(props)}
+						// メッセージコンテナの上部に到達すると無限スクロールアップし、onLoadEarlier関数があれば自動的に呼び出される。loadEarlierプロパティも追加する必要あり
+						infiniteScroll={true}
+						// infiniteScrollに必要な"load earlier messages"ボタンを有効にする
+						loadEarlier={isLoadingEarlier}
+						// 「以前のメッセージを読み込む」ボタンのカスタム
+						renderLoadEarlier={(props) => _renderLoadEarlier(props)}
+						// 以前のメッセージの読み込み時にActivityIndicator(進行状況)を表示する
+						isLoadingEarlier={true}
+						// メッセージ<ListView>に渡される追加のprops。いくつかのpropsはオーバーライドできない。
+						// onEndReachedThresholdで指定した距離までスクロールされたら、onEndReachedに指定された関数が一度だけ実行される
+						// onEndReached内に任意の処理を記述し、以前のメッセージを取得する
+						listViewProps={{
+							onEndReached: _onEndReached,
+							onEndReachedThreshold: 0.4,
+						}}
 					/>
 				</View>
 			</SafeAreaView>
