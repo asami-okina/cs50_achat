@@ -5,6 +5,7 @@ import { GiftedChat, Send, Bubble, InputToolbar, MessageText, LoadEarlier, Day }
 import uuid from 'react-native-uuid';
 import { temporaryMessages, addMessages } from "../components/chat/messages"
 import _ from 'lodash';
+import moment from "moment"
 
 // components
 import { TopAreaWrapper } from "../components/common/topAreaWrapper"
@@ -94,6 +95,7 @@ export function Chat({ navigation, route }) {
 						style={styles.readWrapperStyle}
 					>
 						<View style={styles.readContainerStyle}>
+							<Text style={styles.readStyle}>{moment(props.currentMessage.createdAt).format("HH:mm")}</Text>
 							<Text style={styles.readStyle}>{props.currentMessage.received ? "Read" : "Unread"}</Text>
 						</View>
 						<Bubble
