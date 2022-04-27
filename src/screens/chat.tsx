@@ -1,10 +1,11 @@
 // libs
 import React, { useEffect, useState, useCallback } from 'react';
-import { View, SafeAreaView, KeyboardAvoidingView, StyleSheet, Image } from 'react-native';
-import { GiftedChat, Send, Bubble, InputToolbar, MessageText,LoadEarlier,Day } from 'react-native-gifted-chat'
+import { View, SafeAreaView, KeyboardAvoidingView, StyleSheet, Image, Text } from 'react-native';
+import { GiftedChat, Send, Bubble, InputToolbar, MessageText, LoadEarlier, Day } from 'react-native-gifted-chat'
 import uuid from 'react-native-uuid';
-import {temporaryMessages,addMessages} from "../components/chat/messages"
+import { temporaryMessages, addMessages } from "../components/chat/messages"
 import _ from 'lodash';
+import moment from "moment"
 
 // components
 import { TopAreaWrapper } from "../components/common/topAreaWrapper"
@@ -14,13 +15,13 @@ import { MainTitle } from "../components/common/_topAreaContainer/mainTitle"
 import { constantsCommonStyles } from '../constants/styles/commonStyles'
 
 // layouts
-import { MAIN_NAVY_COLOR, MAIN_WHITE_COLOR, FOOTER_HEIGHT, CONTENT_WIDTH, SEARCH_FORM_BORDER_RADIUS, SEND_BUTTON_HEIGHT, STANDARD_FONT,MAIN_YELLOW_COLOR } from '../constants/layout'
+import { MAIN_NAVY_COLOR, MAIN_WHITE_COLOR, FOOTER_HEIGHT, CONTENT_WIDTH, SEARCH_FORM_BORDER_RADIUS, SEND_BUTTON_HEIGHT, STANDARD_FONT, MAIN_YELLOW_COLOR } from '../constants/layout'
 
 export function Chat({ navigation, route }) {
 	// 引数を取得
 	const { groupChatRoomId, directChatRoomId, profileImage, name } = route.params
 
-	const [isLoadingEarlier, setIsLoadingEarlier] =useState(true)
+	const [isLoadingEarlier, setIsLoadingEarlier] = useState(true)
 	const [initialApiCount, setInitialApiCount] = useState(true)
 
 	// ユーザーID(今後は認証から取得するようにする)
@@ -87,8 +88,37 @@ export function Chat({ navigation, route }) {
 
 	// 送信メッセージのスタイル変更
 	const _renderBubble = (props) => {
-		return (
-			<Bubble
+		if(props.currentMessage.user._id === userId){
+			return (
+				<View>
+					<View
+						style={styles.readWrapperStyle}
+					>
+						<View style={styles.readContainerStyle}>
+							<Text style={styles.readStyle}>{props.currentMessage.received ? "Read" : "Unread"}</Text>
+						</View>
+						<Bubble
+							{...props}
+							wrapperStyle={{
+								right: {
+									backgroundColor: MAIN_NAVY_COLOR,
+									color: MAIN_WHITE_COLOR,
+									width: 200,
+									borderBottomRightRadius: 0,
+								},
+								left: {
+									color: MAIN_WHITE_COLOR,
+									width: 200,
+									borderBottomLeftRadius: 0
+								}
+							}}
+						/>
+					</View>
+				</View>
+			)
+		} else {
+			return (
+				<Bubble
 				{...props}
 				wrapperStyle={{
 					right: {
@@ -104,23 +134,24 @@ export function Chat({ navigation, route }) {
 					}
 				}}
 			/>
-		)
+			)
+		}
 	}
 
 	// メッセージのスタイル変更
 	const _changeMessageStyle = (props) => {
 		return (
 			<MessageText
-			{...props}
-			textStyle={{
-				left: {
-					"fontFamily": STANDARD_FONT
-				},
-				right: {
-					"fontFamily": STANDARD_FONT
-				},
-			}}
-		/>
+				{...props}
+				textStyle={{
+					left: {
+						"fontFamily": STANDARD_FONT
+					},
+					right: {
+						"fontFamily": STANDARD_FONT
+					},
+				}}
+			/>
 		)
 	}
 
@@ -128,22 +159,22 @@ export function Chat({ navigation, route }) {
 	const _renderDay = (props) => {
 		return (
 			<Day {...props}
-			textStyle={{
-				"fontFamily": STANDARD_FONT,
-				color: MAIN_NAVY_COLOR
-			}}
-			containerStyle={{
-				justifyContent: "center",
-				alignItems: "center",
-			}}
-			wrapperStyle={{
-				backgroundColor: MAIN_YELLOW_COLOR,
-				justifyContent: "center",
-				alignItems: "center",
-				width: 80,
-				height: 20,
-				borderRadius: 5
-			}}
+				textStyle={{
+					"fontFamily": STANDARD_FONT,
+					color: MAIN_NAVY_COLOR
+				}}
+				containerStyle={{
+					justifyContent: "center",
+					alignItems: "center",
+				}}
+				wrapperStyle={{
+					backgroundColor: MAIN_YELLOW_COLOR,
+					justifyContent: "center",
+					alignItems: "center",
+					width: 80,
+					height: 20,
+					borderRadius: 5
+				}}
 			/>
 		)
 	}
@@ -174,7 +205,7 @@ export function Chat({ navigation, route }) {
 		// setTimeoutは時間切れになると関数を実行する(ミリ秒で指定)
 		// テスト段階では、1回だけAPIを取得したいため、initialApiCountを使って1回だけAPIを実行するよう調整。
 		// APIが完成したら、initialApiCountのif文とsetInitialApiCountは削除する
-		if(initialApiCount) {
+		if (initialApiCount) {
 			setTimeout(() => {
 				const newData = [...messages, ...addMessages];
 				setMessages(newData)
@@ -188,10 +219,10 @@ export function Chat({ navigation, route }) {
 	const _renderLoadEarlier = (props) => {
 		return (
 			<LoadEarlier
-			{...props}
-			wrapperStyle={{
-				backgroundColor: MAIN_NAVY_COLOR,
-			}}
+				{...props}
+				wrapperStyle={{
+					backgroundColor: MAIN_NAVY_COLOR,
+				}}
 			/>
 		)
 	}
@@ -223,7 +254,7 @@ export function Chat({ navigation, route }) {
 						messages={messages}
 						onSend={messages => _onSendMessage(messages)}
 						user={{
-							_id: 1,
+							_id: userId,
 						}}
 						// 画面下のフッター部分
 						renderInputToolbar={(props) => _messengerBarContainer(props)}
@@ -281,5 +312,21 @@ const styles = StyleSheet.create({
 		paddingTop: 14, // sendボタンの高さ 44 - input文字サイズ 16 / 2 = 14
 		paddingBottom: 14,
 		borderRadius: SEARCH_FORM_BORDER_RADIUS,
+	},
+	readWrapperStyle: {
+		flexDirection: "row",
+		width: 250,
+	},
+	messageTimeAndNameContainerLeft: {
+	},
+	readContainerStyle: {
+		display: "flex",
+		justifyContent: "flex-end",
+		alignItems: "center"
+	},
+	readStyle: {
+		width: 50,
+		"fontFamily": STANDARD_FONT,
+		color: MAIN_NAVY_COLOR,
 	}
 });
