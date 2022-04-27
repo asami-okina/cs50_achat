@@ -94,7 +94,7 @@ export function Chat({ navigation, route }) {
 					<View
 						style={styles.readWrapperStyle}
 					>
-						<View style={styles.readContainerStyle}>
+						<View style={[styles.readRightContainerStyle, styles.readRightContainerStyle]}>
 							<Text style={styles.readStyle}>{moment(props.currentMessage.createdAt).format("HH:mm")}</Text>
 							<Text style={styles.readStyle}>{props.currentMessage.received ? "Read" : "Unread"}</Text>
 						</View>
@@ -119,22 +119,31 @@ export function Chat({ navigation, route }) {
 			)
 		} else {
 			return (
-				<Bubble
-					{...props}
-					wrapperStyle={{
-						right: {
-							backgroundColor: MAIN_NAVY_COLOR,
-							color: MAIN_WHITE_COLOR,
-							width: 200,
-							borderBottomRightRadius: 0,
-						},
-						left: {
-							color: MAIN_WHITE_COLOR,
-							width: 200,
-							borderBottomLeftRadius: 0
-						}
-					}}
-				/>
+				<View>
+					<View
+						style={styles.readWrapperStyle}
+					>
+						<Bubble
+							{...props}
+							wrapperStyle={{
+								right: {
+									backgroundColor: MAIN_NAVY_COLOR,
+									color: MAIN_WHITE_COLOR,
+									width: 200,
+									borderBottomRightRadius: 0,
+								},
+								left: {
+									color: MAIN_WHITE_COLOR,
+									width: 200,
+									borderBottomLeftRadius: 0
+								}
+							}}
+						/>
+						<View style={styles.readLeftContainerStyle}>
+							<Text style={styles.readStyle}>{moment(props.currentMessage.createdAt).format("HH:mm")}</Text>
+						</View>
+					</View>
+				</View>
 			)
 		}
 	}
@@ -321,14 +330,21 @@ const styles = StyleSheet.create({
 		flexDirection: "row",
 		width: 250,
 	},
-	readContainerStyle: {
+	readLeftContainerStyle: {
 		display: "flex",
 		justifyContent: "flex-end",
-		alignItems: "center"
+		alignItems: "center",
+		marginRight: -5
+	},
+	readRightContainerStyle: {
+		display: "flex",
+		justifyContent: "flex-end",
+		alignItems: "center",
+		marginLeft: -5
 	},
 	readStyle: {
 		width: 50,
 		"fontFamily": STANDARD_FONT,
 		color: MAIN_NAVY_COLOR,
-	}
+	},
 });
