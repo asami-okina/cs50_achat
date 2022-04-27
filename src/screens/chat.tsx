@@ -343,6 +343,7 @@ const styles = StyleSheet.create({
 	readWrapperStyle: {
 		flexDirection: "row",
 		width: 250,
+		marginBottom: 5,
 	},
 	readLeftContainerStyle: {
 		display: "flex",
