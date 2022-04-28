@@ -3,7 +3,6 @@ export const temporaryMessages = [
 	{
 		// _id: uuid.v4(),
 		_id: 1,
-		text: '',
 		createdAt: "2022-04-27T02:10:29.189Z",
 		user: {
 			_id: 2,
@@ -232,7 +231,6 @@ export const temporaryMessages = [
 	},
 	{
 		_id: 20,
-		text: '',
 		createdAt: "2022-04-25T09:00:08.189Z",
 		user: {
 			_id: 2,

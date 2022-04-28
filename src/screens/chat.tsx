@@ -1,6 +1,6 @@
 // libs
 import React, { useEffect, useState, useCallback } from 'react';
-import { View, SafeAreaView, KeyboardAvoidingView, StyleSheet, Image, Text, TouchableOpacity } from 'react-native';
+import { View, SafeAreaView, KeyboardAvoidingView, StyleSheet, Image, Text } from 'react-native';
 import { GiftedChat, Send, Bubble, InputToolbar, MessageText, LoadEarlier, Day, Time, Actions } from 'react-native-gifted-chat'
 import uuid from 'react-native-uuid';
 import { temporaryMessages, addMessages } from "../components/chat/messages"
@@ -77,11 +77,27 @@ export function Chat({ navigation, route }) {
 	}
 
 	// メッセージを送信
-	const _onSendMessage = useCallback((messages = [],image) => {
-		if(image){
-			messages[0]["image"] = 'https://placeimg.com/140/140/any'
+	const _onSendMessage = useCallback((messages = [], image) => {
+		// 画像しかない場合
+		if (image && messages.length === 0) {
+			messages = [
+				{
+					"_id": uuid.v4(),
+					"createdAt": new Date(),
+					"text": "",
+					"user": {
+						"_id": userId,
+					},
+				},
+			]
+			messages[0]["image"] = image
+		}
+		// 画像とテスト両方ある場合
+		if (image && messages.length !== 0) {
+			messages[0]["image"] = image
 		}
 		setMessages(previousMessages => GiftedChat.append(previousMessages, messages))
+		setImage('')
 		// メッセージ更新API実行
 	}, [])
 
@@ -89,7 +105,9 @@ export function Chat({ navigation, route }) {
 	const _renderSend = (props) => {
 		// カスタム送信ボタン
 		return (
-			<Send {...props} containerStyle={styles.sendContainer}>
+			<Send {...props}
+				containerStyle={styles.sendContainer}
+			>
 				<Image source={require("../../assets/images/send-button.png")} style={styles.sendButtonStyle} />
 			</Send>
 		);
@@ -271,10 +289,6 @@ export function Chat({ navigation, route }) {
 			<Actions {...props}
 				containerStyle={{ width: 24, height: 24, display: "flex", justifyContent: "center", alignItems: "center", marginLeft: 10, marginBottom: 0 }}
 				icon={() => <FontAwesome name='image' color={MAIN_WHITE_COLOR} size={24} margin={0} />}
-				options={{
-					['Send Image']: image,
-				}}
-				onSend={() => console.log('image', image)} // 選択した画像をバックエンドに送信するonSend関数
 			/>
 		)
 	}
@@ -290,6 +304,8 @@ export function Chat({ navigation, route }) {
 		});
 		if (!result.cancelled) {
 			setImage(result.uri);
+			// イメージを送信
+			_onSendMessage([], result.uri)
 		}
 	};
 
@@ -312,7 +328,8 @@ export function Chat({ navigation, route }) {
 						height: 200,
 						padding: 6,
 						borderRadius: 15,
-						borderBottomLeftRadius: 0,
+						// 自分が送った画像の場合は、右下のborderRadiusを15に設定
+						borderBottomLeftRadius: props.currentMessage.user._id === userId ? 15 : 0,
 						resizeMode: "cover",
 					}}
 					source={{ uri: props.currentMessage.image }}
@@ -345,7 +362,7 @@ export function Chat({ navigation, route }) {
 				<View style={constantsCommonStyles.mainContainerStyle}>
 					<GiftedChat
 						messages={messages}
-						onSend={messages => _onSendMessage(messages,image)}
+						onSend={messages => _onSendMessage(messages, image)}
 						user={{
 							_id: userId,
 						}}
