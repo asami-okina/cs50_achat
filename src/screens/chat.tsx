@@ -112,20 +112,21 @@ export function Chat({ navigation, route }) {
 			</Send>
 		);
 	}
-
 	// 送信メッセージのスタイル変更
 	const _renderBubble = (props) => {
-		// 右側
-		if (props.currentMessage.user._id === userId) {
-			return (
-				<View>
-					<View
-						style={styles.readWrapperStyle}
-					>
+		const ownUserId: boolean = props.currentMessage.user._id === userId
+		return (
+			<View>
+				<View
+					style={styles.readWrapperStyle}
+				>
+					{ownUserId && (
 						<View style={[styles.readRightContainerStyle, styles.readRightContainerStyle]}>
 							<Text style={styles.readStyle}>{props.currentMessage.received ? "Read" : "Unread"}</Text>
 							<Text style={styles.readStyle}>{moment(props.currentMessage.createdAt).format("HH:mm")}</Text>
 						</View>
+					)}
+					{ownUserId && (
 						<Bubble
 							{...props}
 							wrapperStyle={{
@@ -139,16 +140,8 @@ export function Chat({ navigation, route }) {
 								},
 							}}
 						/>
-					</View>
-				</View>
-			)
-		} else {
-			// 左側
-			return (
-				<View>
-					<View
-						style={styles.readWrapperStyle}
-					>
+					)}
+					{!ownUserId && (
 						<Bubble
 							{...props}
 							wrapperStyle={{
@@ -163,13 +156,15 @@ export function Chat({ navigation, route }) {
 								}
 							}}
 						/>
+					)}
+					{!ownUserId && (
 						<View style={styles.readLeftContainerStyle}>
 							<Text style={styles.readStyle}>{moment(props.currentMessage.createdAt).format("HH:mm")}</Text>
 						</View>
-					</View>
+					)}
 				</View>
-			)
-		}
+			</View>
+		)
 	}
 
 	// メッセージのスタイル変更
