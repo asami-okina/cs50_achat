@@ -77,7 +77,10 @@ export function Chat({ navigation, route }) {
 	}
 
 	// メッセージを送信
-	const _onSendMessage = useCallback((messages = [], image) => {
+	const _onSendMessage = useCallback((messages = [],image) => {
+		if(image){
+			messages[0]["image"] = 'https://placeimg.com/140/140/any'
+		}
 		setMessages(previousMessages => GiftedChat.append(previousMessages, messages))
 		// メッセージ更新API実行
 	}, [])
@@ -342,7 +345,7 @@ export function Chat({ navigation, route }) {
 				<View style={constantsCommonStyles.mainContainerStyle}>
 					<GiftedChat
 						messages={messages}
-						onSend={messages => _onSendMessage(messages, image)}
+						onSend={messages => _onSendMessage(messages,image)}
 						user={{
 							_id: userId,
 						}}
