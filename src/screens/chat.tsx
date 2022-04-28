@@ -394,7 +394,9 @@ export function Chat({ navigation, route }) {
 						renderDay={(props) => _renderDay(props)}
 						// メッセージ内に時間を表示しない
 						renderTime={(props) => _renderTime(props)}
+						// フッターに画像送信ボタン追加
 						renderActions={(props) => _renderActions(props)}
+						// 画像送信ボタンを押したときに送信したい処理
 						onPressActionButton={() => _onPressActionButton()}
 						// メッセージに画像を表示
 						renderMessageImage={(props) => _renderMessageImage(props)}
