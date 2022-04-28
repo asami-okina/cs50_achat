@@ -1,6 +1,6 @@
 // libs
 import React, { useEffect, useState, useCallback } from 'react';
-import { View, SafeAreaView, KeyboardAvoidingView, StyleSheet, Image, Text,TouchableOpacity } from 'react-native';
+import { View, SafeAreaView, KeyboardAvoidingView, StyleSheet, Image, Text, TouchableOpacity } from 'react-native';
 import { GiftedChat, Send, Bubble, InputToolbar, MessageText, LoadEarlier, Day, Time, Actions } from 'react-native-gifted-chat'
 import uuid from 'react-native-uuid';
 import { temporaryMessages, addMessages } from "../components/chat/messages"
@@ -8,8 +8,7 @@ import _ from 'lodash';
 import moment from "moment"
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import * as ImagePicker from 'expo-image-picker';
-import MapView, { PROVIDER_GOOGLE } from 'react-native-maps';
-
+import ImageModal from 'react-native-image-modal';
 
 // components
 import { TopAreaWrapper } from "../components/common/topAreaWrapper"
@@ -270,8 +269,8 @@ export function Chat({ navigation, route }) {
 				containerStyle={{ width: 24, height: 24, display: "flex", justifyContent: "center", alignItems: "center", marginLeft: 10, marginBottom: 0 }}
 				icon={() => <FontAwesome name='image' color={MAIN_WHITE_COLOR} size={24} margin={0} />}
 				options={{
-          ['Send Image']: image,
-        }}
+					['Send Image']: image,
+				}}
 				onSend={() => console.log('image', image)} // 選択した画像をバックエンドに送信するonSend関数
 			/>
 		)
@@ -295,6 +294,28 @@ export function Chat({ navigation, route }) {
 	const _onPressActionButton = () => {
 		pickImage()
 	}
+
+	// メッセージに画像を表示
+	const _renderMessageImage = (props) => {
+		return (
+			<View
+				style={{
+				}}
+			>
+				<ImageModal
+					resizeMode="contain"
+					style={{
+						width: 200,
+						height: 200,
+						padding: 6,
+						borderRadius: 15,
+						resizeMode: "cover",
+					}}
+					source={{ uri: props.currentMessage.image }}
+				/>
+			</View>
+		);
+	};
 
 
 	useEffect(() => {
@@ -359,6 +380,8 @@ export function Chat({ navigation, route }) {
 						renderTime={(props) => _renderTime(props)}
 						renderActions={(props) => _renderActions(props)}
 						onPressActionButton={() => _onPressActionButton()}
+						// メッセージに画像を表示
+						renderMessageImage={(props) => _renderMessageImage(props)}
 					/>
 				</View>
 			</SafeAreaView>
@@ -411,10 +434,4 @@ const styles = StyleSheet.create({
 		width: 40,
 		height: 40,
 	},
-	mapView: {
-    width: 150,
-    height: 100,
-    borderRadius: 13,
-    margin: 3,
-  },
 });

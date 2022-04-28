@@ -3,7 +3,7 @@ export const temporaryMessages = [
 	{
 		// _id: uuid.v4(),
 		_id: 1,
-		text: 'Hello developer 1',
+		text: '',
 		createdAt: "2022-04-27T02:10:29.189Z",
 		user: {
 			_id: 2,
@@ -11,7 +11,8 @@ export const temporaryMessages = [
 			avatar: 'https://placeimg.com/140/140/any',
 		},
 		sent: true,
-		received: true
+		received: true,
+		image: 'https://placeimg.com/140/140/any',
 	},
 	{
 		_id: 2,
@@ -240,7 +241,7 @@ export const temporaryMessages = [
 		},
 		sent: true,
 		received: true,
-		// image: 'https://placeimg.com/140/140/any',
+		image: 'https://placeimg.com/140/140/any',
 	},
 ]
 
