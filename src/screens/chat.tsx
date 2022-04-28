@@ -309,6 +309,7 @@ export function Chat({ navigation, route }) {
 						height: 200,
 						padding: 6,
 						borderRadius: 15,
+						borderBottomLeftRadius: 0,
 						resizeMode: "cover",
 					}}
 					source={{ uri: props.currentMessage.image }}

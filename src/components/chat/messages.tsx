@@ -232,7 +232,7 @@ export const temporaryMessages = [
 	},
 	{
 		_id: 20,
-		text: 'Hello developer',
+		text: '',
 		createdAt: "2022-04-25T09:00:08.189Z",
 		user: {
 			_id: 2,
