@@ -239,7 +239,8 @@ export const temporaryMessages = [
 			avatar: 'https://placeimg.com/140/140/any',
 		},
 		sent: true,
-		received: true
+		received: true,
+		// image: 'https://placeimg.com/140/140/any',
 	},
 ]
 

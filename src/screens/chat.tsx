@@ -1,12 +1,14 @@
 // libs
 import React, { useEffect, useState, useCallback } from 'react';
-import { View, SafeAreaView, KeyboardAvoidingView, StyleSheet, Image, Text } from 'react-native';
+import { View, SafeAreaView, KeyboardAvoidingView, StyleSheet, Image, Text,TouchableOpacity } from 'react-native';
 import { GiftedChat, Send, Bubble, InputToolbar, MessageText, LoadEarlier, Day, Time, Actions } from 'react-native-gifted-chat'
 import uuid from 'react-native-uuid';
 import { temporaryMessages, addMessages } from "../components/chat/messages"
 import _ from 'lodash';
 import moment from "moment"
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import * as ImagePicker from 'expo-image-picker';
+import MapView, { PROVIDER_GOOGLE } from 'react-native-maps';
 
 
 // components
@@ -31,6 +33,9 @@ export function Chat({ navigation, route }) {
 
 	// メッセージ
 	const [messages, setMessages] = useState([]);
+
+	// 画像
+	const [image, setImage] = useState('')
 
 	// 画像と名前を取得
 	async function _fetchProfileImageAndName() {
@@ -73,7 +78,7 @@ export function Chat({ navigation, route }) {
 	}
 
 	// メッセージを送信
-	const _onSendMessage = useCallback((messages = []) => {
+	const _onSendMessage = useCallback((messages = [], image) => {
 		setMessages(previousMessages => GiftedChat.append(previousMessages, messages))
 		// メッセージ更新API実行
 	}, [])
@@ -258,20 +263,37 @@ export function Chat({ navigation, route }) {
 	}
 
 
-	// 明日ここから
 	// フッターに画像送信ボタン追加
 	const _renderActions = (props) => {
 		return (
 			<Actions {...props}
 				containerStyle={{ width: 24, height: 24, display: "flex", justifyContent: "center", alignItems: "center", marginLeft: 10, marginBottom: 0 }}
 				icon={() => <FontAwesome name='image' color={MAIN_WHITE_COLOR} size={24} margin={0} />}
+				options={{
+          ['Send Image']: image,
+        }}
+				onSend={() => console.log('image', image)} // 選択した画像をバックエンドに送信するonSend関数
 			/>
 		)
 	}
 
+	// イメージピッカー
+	const pickImage = async () => {
+		// No permissions request is necessary for launching the image library
+		let result: any = await ImagePicker.launchImageLibraryAsync({
+			mediaTypes: ImagePicker.MediaTypeOptions.All,
+			allowsEditing: true,
+			aspect: [1, 1],
+			quality: 1,
+		});
+		if (!result.cancelled) {
+			setImage(result.uri);
+		}
+	};
+
 	// 画像送信ボタンを押したときに送信したい処理
 	const _onPressActionButton = () => {
-
+		pickImage()
 	}
 
 
@@ -298,7 +320,7 @@ export function Chat({ navigation, route }) {
 				<View style={constantsCommonStyles.mainContainerStyle}>
 					<GiftedChat
 						messages={messages}
-						onSend={messages => _onSendMessage(messages)}
+						onSend={messages => _onSendMessage(messages, image)}
 						user={{
 							_id: userId,
 						}}
@@ -389,4 +411,10 @@ const styles = StyleSheet.create({
 		width: 40,
 		height: 40,
 	},
+	mapView: {
+    width: 150,
+    height: 100,
+    borderRadius: 13,
+    margin: 3,
+  },
 });
