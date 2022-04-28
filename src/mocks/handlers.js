@@ -1,6 +1,7 @@
 // すべてのリクエストハンドラを格納するモジュール
 // src/mocks/handlers.js
 import { rest } from 'msw'
+import { temporaryMessages } from "../components/chat/messages"
 
 let profileInfo =
 {
@@ -591,7 +592,7 @@ export const handlers = [
 		}
 	}),
 	// チャット履歴取得
-	rest.get('https://a-chat/api/users/:userId/chats', (req, res, ctx) => {
+	rest.get('https://a-chat/api/users/:userId/message', (req, res, ctx) => {
 		const parsedUrl = new URL(req.url)
 		const groupChatRoomId = parsedUrl.searchParams.get("groupChatRoomId")
 		const directChatRoomId = parsedUrl.searchParams.get("directChatRoomId")
@@ -601,7 +602,7 @@ export const handlers = [
 			return res(
 				ctx.status(200),
 				ctx.json(
-					directChatRoom
+					temporaryMessages
 				),
 			)
 
@@ -611,9 +612,25 @@ export const handlers = [
 			return res(
 				ctx.status(200),
 				ctx.json(
-					groupChatRoom
+					temporaryMessages
 				),
 			)
 		}
+	}),
+	// チャット送信
+	rest.post('https://a-chat/api/users/:userId/message', (req, res, ctx) => {
+		const { userId } = req.body
+		const { directChatRoomId } = req.body
+		const { groupChatRoomId } = req.body
+		const { text } = req.body
+		const { image } = req.body
+		const { created_at } = req.body
+		// mockserviceworker甩に以下保持
+		const { all } = req.body
+		temporaryMessages.unshift(all)
+		return res(
+			// 200のステータスコードで応答する
+			ctx.status(200)
+		)
 	}),
 ]

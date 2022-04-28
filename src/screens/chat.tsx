@@ -3,7 +3,7 @@ import React, { useEffect, useState, useCallback } from 'react';
 import { View, SafeAreaView, KeyboardAvoidingView, StyleSheet, Image, Text } from 'react-native';
 import { GiftedChat, Send, Bubble, InputToolbar, MessageText, LoadEarlier, Day, Time, Actions } from 'react-native-gifted-chat'
 import uuid from 'react-native-uuid';
-import { temporaryMessages, addMessages } from "../components/chat/messages"
+import { addMessages } from "../components/chat/messages"
 import _ from 'lodash';
 import moment from "moment"
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
@@ -36,41 +36,46 @@ export function Chat({ navigation, route }) {
 	// 画像
 	const [image, setImage] = useState('')
 
-	// 画像と名前を取得
-	async function _fetchProfileImageAndName() {
+	// チャットルームIDに紐づくチャット履歴の取得
+	async function _fetchChatByChatRoomId() {
 		try {
 			// paramsを生成
 			const params = { "groupChatRoomId": groupChatRoomId, "directChatRoomId": directChatRoomId }
 			const query_params = new URLSearchParams(params);
 			// APIリクエスト
-			const response = await fetch(`https://a-chat/api/users/${userId}/chats?${query_params}`, {
+			const response = await fetch(`https://a-chat/api/users/${userId}/message?${query_params}`, {
 				method: "GET",
 				headers: {
 					"Content-Type": "application/json"
 				},
 			})
-			// ステータスコードを取得
-			const parse_response_code = await response.status
 			// レスポンスをJSONにする
 			const parse_response = await response.json()
+			setMessages(parse_response)
+		} catch (e) {
+			console.error(e)
+		}
+	}
 
-			// // 成功した場合
-			// if (parse_response_code === 200) {
-			// 	setAlreadyFriend(false)
-			// 	setExistUserId(true)
-			// }
-			// // 既に友達になっている場合
-			// if (parse_response_code === 400 && parse_response.already_follow_requested) {
-			// 	setAlreadyFriend(true)
-			// 	setExistUserId(true)
-			// }
-			// // 該当のユーザーIDが存在しない場合
-			// if (parse_response_code === 400 && !parse_response.exist) {
-			// 	setAlreadyFriend(false)
-			// 	setExistUserId(false)
-			// }
-			// // 友達一覧のstateを更新
-			// setFriendInfo(parse_response)
+	// メッセージ送信
+	async function _postMessage(messages) {
+		try {
+			// APIリクエスト
+			const bodyData = {
+				"directChatRoomId": directChatRoomId,
+				"groupChatRoomId": groupChatRoomId,
+				"text": messages[0]["text"] ?  messages[0]["text"] : null,
+				"image": messages[0]["image"] ?  messages[0]["image"] : null,
+				"created_at": messages[0]["createdAt"],
+				"all": messages[0]
+			}
+			const response = await fetch(`https://a-chat/api/users/:userId/message`, {
+				method: "POST",
+				headers: {
+					"Content-Type": "application/json"
+				},
+				body: JSON.stringify(bodyData),
+			})
 		} catch (e) {
 			console.error(e)
 		}
@@ -97,6 +102,7 @@ export function Chat({ navigation, route }) {
 			messages[0]["image"] = image
 		}
 		setMessages(previousMessages => GiftedChat.append(previousMessages, messages))
+		_postMessage(messages)
 		setImage('')
 		// メッセージ更新API実行
 	}, [])
@@ -333,14 +339,9 @@ export function Chat({ navigation, route }) {
 		);
 	};
 
-
 	useEffect(() => {
-		_fetchProfileImageAndName()
-	}, [])
-
-	useEffect(() => {
-		// 仮のメッセージ取得
-		setMessages(temporaryMessages)
+		// チャットルームIDに紐づくチャット履歴の取得
+		_fetchChatByChatRoomId()
 	}, [])
 
 
