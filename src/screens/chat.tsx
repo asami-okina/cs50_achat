@@ -64,8 +64,8 @@ export function Chat({ navigation, route }) {
 			const bodyData = {
 				"directChatRoomId": directChatRoomId,
 				"groupChatRoomId": groupChatRoomId,
-				"text": messages[0]["text"] ?  messages[0]["text"] : null,
-				"image": messages[0]["image"] ?  messages[0]["image"] : null,
+				"content": messages[0]["text"] ?  messages[0]["text"] : messages[0]["image"],
+				"type": messages[0]["text"] ?  "text" : "image",
 				"created_at": messages[0]["createdAt"],
 				"all": messages[0]
 			}
@@ -80,6 +80,27 @@ export function Chat({ navigation, route }) {
 			console.error(e)
 		}
 	}
+
+	 	// 最終既読日時の更新
+		async function _updateLastReadTime() {
+			try {
+				// APIリクエスト
+				const bodyData = {
+					"directChatRoomId": directChatRoomId,
+					"groupChatRoomId": groupChatRoomId,
+					"lasReadTime": new Date(),
+				}
+				const response = await fetch(`https://a-chat/api/users/:userId/lastReadTime`, {
+					method: "POST",
+					headers: {
+						"Content-Type": "application/json"
+					},
+					body: JSON.stringify(bodyData),
+				})
+			} catch (e) {
+				console.error(e)
+			}
+		}
 
 	// メッセージを送信
 	const _onSendMessage = useCallback((messages = [], image) => {
@@ -342,6 +363,8 @@ export function Chat({ navigation, route }) {
 	useEffect(() => {
 		// チャットルームIDに紐づくチャット履歴の取得
 		_fetchChatByChatRoomId()
+		// 最終既読日時の更新
+		_updateLastReadTime()
 	}, [])
 
 

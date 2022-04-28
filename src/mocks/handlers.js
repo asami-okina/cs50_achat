@@ -622,12 +622,24 @@ export const handlers = [
 		const { userId } = req.body
 		const { directChatRoomId } = req.body
 		const { groupChatRoomId } = req.body
-		const { text } = req.body
-		const { image } = req.body
+		const { type } = req.body
+		const { content } = req.body
 		const { created_at } = req.body
 		// mockserviceworker甩に以下保持
 		const { all } = req.body
+		// 配列の最初に追加
 		temporaryMessages.unshift(all)
+		return res(
+			// 200のステータスコードで応答する
+			ctx.status(200)
+		)
+	}),
+	// 最終既読日時の更新
+	rest.post('https://a-chat/api/users/:userId/lastReadTime', (req, res, ctx) => {
+		const { userId } = req.body
+		const { directChatRoomId } = req.body
+		const { groupChatRoomId } = req.body
+		const { lasReadTime } = req.body
 		return res(
 			// 200のステータスコードで応答する
 			ctx.status(200)
