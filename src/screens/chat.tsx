@@ -1,11 +1,13 @@
 // libs
 import React, { useEffect, useState, useCallback } from 'react';
 import { View, SafeAreaView, KeyboardAvoidingView, StyleSheet, Image, Text } from 'react-native';
-import { GiftedChat, Send, Bubble, InputToolbar, MessageText, LoadEarlier, Day, Time } from 'react-native-gifted-chat'
+import { GiftedChat, Send, Bubble, InputToolbar, MessageText, LoadEarlier, Day, Time, Actions } from 'react-native-gifted-chat'
 import uuid from 'react-native-uuid';
 import { temporaryMessages, addMessages } from "../components/chat/messages"
 import _ from 'lodash';
 import moment from "moment"
+import FontAwesome from 'react-native-vector-icons/FontAwesome';
+
 
 // components
 import { TopAreaWrapper } from "../components/common/topAreaWrapper"
@@ -256,6 +258,23 @@ export function Chat({ navigation, route }) {
 	}
 
 
+	// 明日ここから
+	// フッターに画像送信ボタン追加
+	const _renderActions = (props) => {
+		return (
+			<Actions {...props}
+				containerStyle={{ width: 24, height: 24, display: "flex", justifyContent: "center", alignItems: "center", marginLeft: 10, marginBottom: 0 }}
+				icon={() => <FontAwesome name='image' color={MAIN_WHITE_COLOR} size={24} margin={0} />}
+			/>
+		)
+	}
+
+	// 画像送信ボタンを押したときに送信したい処理
+	const _onPressActionButton = () => {
+
+	}
+
+
 	useEffect(() => {
 		_fetchProfileImageAndName()
 	}, [])
@@ -316,6 +335,8 @@ export function Chat({ navigation, route }) {
 						renderDay={(props) => _renderDay(props)}
 						// メッセージ内に時間を表示しない
 						renderTime={(props) => _renderTime(props)}
+						renderActions={(props) => _renderActions(props)}
+						onPressActionButton={() => _onPressActionButton()}
 					/>
 				</View>
 			</SafeAreaView>
@@ -363,5 +384,9 @@ const styles = StyleSheet.create({
 		width: 50,
 		"fontFamily": STANDARD_FONT,
 		color: MAIN_NAVY_COLOR,
+	},
+	addImageStyle: {
+		width: 40,
+		height: 40,
 	},
 });
