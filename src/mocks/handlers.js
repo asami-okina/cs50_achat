@@ -1,7 +1,7 @@
 // すべてのリクエストハンドラを格納するモジュール
 // src/mocks/handlers.js
 import { rest } from 'msw'
-import { temporaryMessages } from "../components/chat/messages"
+// import { temporaryMessages } from "../components/chat/messages"
 
 let profileInfo =
 {
@@ -102,68 +102,263 @@ let groups = [
 	},
 ]
 
-let chats = [
+// 個別のメッセージ履歴
+let temporaryMessages_friend1 = [
 	{
-		"direct_chat_room_id": "friend 1",
-		"friends_user_id":  "friend 1",
-		"friends_nick_name":  "friend 1",
-		"friends_profile_image": require("../../assets/images/friend_profile_image_2.jpg"),
-		"friends_last_message_content": "元気？",
-		"friends_last_message_creation_date": "2022/3/20",
-		"unread_count": 3
+		_id: 1,
+		createdAt: "2022-04-27T02:10:29.189Z",
+		user: {
+			_id: 2,
+			name: "friend 1",
+			avatar: 'https://placeimg.com/140/140/any',
+		},
+		sent: true,
+		received: true,
+		image: 'https://placeimg.com/140/140/any',
 	},
 	{
-		"direct_chat_room_id":  "friend 2",
-		"friends_user_id":  "friend 2",
-		"friends_nick_name":  "friend 2",
-		"friends_profile_image": require("../../assets/images/friend_profile_image_2.jpg"),
-		"friends_last_message_content": "ご飯いこう",
-		"friends_last_message_creation_date": "2022/3/22",
-		"unread_count": 2
+		_id: 2,
+		text: 'いいよん',
+		createdAt: "2022-04-27T02:08:10.189Z",
+		user: {
+			_id: 2,
+			name: "friend 1",
+			avatar: 'https://placeimg.com/140/140/any',
+		},
+		sent: true,
+		received: true
 	},
-	{
-		"direct_chat_room_id":  "friend 3",
-		"friends_user_id":  "friend 3",
-		"friends_nick_name":  "friend 3",
-		"friends_profile_image": require("../../assets/images/friend_profile_image_2.jpg"),
-		"friends_last_message_content": "いいよー",
-		"friends_last_message_creation_date": "13:00",
-		"unread_count": 0
-	},
-	{
-		"group_chat_room_id": "group 1",
-		"group_name": "group 1",
-		"group_image": require("../../assets/images/friend_profile_image_2.jpg"),
-		"group_last_message_content": "暑いね",
-		"group_last_message_creation_date": "2022/3/19",
-		"unread_count": 2
-	},
-	{
-		"group_chat_room_id": "group 2",
-		"group_name": "group 2",
-		"group_image": require("../../assets/images/friend_profile_image_2.jpg"),
-		"group_last_message_content": "料理会しよう",
-		"group_last_message_creation_date": "2022/3/21",
-		"unread_count": 0
-	},
-	{
-		"group_chat_room_id": "group 3",
-		"group_name": "group 3",
-		"group_image": require("../../assets/images/friend_profile_image_2.jpg"),
-		"group_last_message_content": "ランチいこう",
-		"group_last_message_creation_date": "10:00",
-		"unread_count": 2
-	},
-	{
-		"group_chat_room_id": "group 4",
-		"group_name": "group 4",
-		"group_image": require("../../assets/images/friend_profile_image_2.jpg"),
-		"group_last_message_content": "夜ご飯いこう",
-		"group_last_message_creation_date": "11:00",
-		"unread_count": 2
-	}
 ]
 
+
+let temporaryMessages_friend2 = [
+	{
+		_id: 3,
+		createdAt: "2022-04-27T02:10:29.189Z",
+		user: {
+			_id: 3,
+			name: "friend 2",
+			avatar: 'https://placeimg.com/140/140/any',
+		},
+		sent: true,
+		received: true,
+		image: 'https://placeimg.com/140/140/any',
+	},
+	{
+		_id: 4,
+		text: 'Hello developer',
+		createdAt: "2022-04-27T02:08:10.189Z",
+		user: {
+			_id: 4,
+			name: "friend 2",
+			avatar: 'https://placeimg.com/140/140/any',
+		},
+		sent: true,
+		received: true
+	},
+]
+
+let temporaryMessages_friend3 = [
+	{
+		_id: 5,
+		createdAt: "2022-04-27T02:10:29.189Z",
+		user: {
+			_id: 5,
+			name: "friend 2",
+			avatar: 'https://placeimg.com/140/140/any',
+		},
+		sent: true,
+		received: true,
+		image: 'https://placeimg.com/140/140/any',
+	},
+	{
+		_id: 6,
+		text: 'Hello developer',
+		createdAt: "2022-04-27T02:08:10.189Z",
+		user: {
+			_id: 6,
+			name: "friend 2",
+			avatar: 'https://placeimg.com/140/140/any',
+		},
+		sent: true,
+		received: true
+	},
+]
+
+let temporaryMessages_group1 = [
+	{
+		_id: 7,
+		createdAt: "2022-04-27T02:10:29.189Z",
+		user: {
+			_id: 7,
+			name: "group 1",
+			avatar: 'https://placeimg.com/140/140/any',
+		},
+		sent: true,
+		received: true,
+		image: 'https://placeimg.com/140/140/any',
+	},
+	{
+		_id: 8,
+		text: 'Hello developer',
+		createdAt: "2022-04-27T02:08:10.189Z",
+		user: {
+			_id: 8,
+			name: "group 1",
+			avatar: 'https://placeimg.com/140/140/any',
+		},
+		sent: true,
+		received: true
+	},
+]
+
+let temporaryMessages_group2 = [
+	{
+		_id: 9,
+		createdAt: "2022-04-27T02:10:29.189Z",
+		user: {
+			_id: 9,
+			name: "group 2",
+			avatar: 'https://placeimg.com/140/140/any',
+		},
+		sent: true,
+		received: true,
+		image: 'https://placeimg.com/140/140/any',
+	},
+	{
+		_id: 10,
+		text: "group 2",
+		createdAt: "2022-04-27T02:08:10.189Z",
+		user: {
+			_id: 10,
+			name: "group 2",
+			avatar: 'https://placeimg.com/140/140/any',
+		},
+		sent: true,
+		received: true
+	},
+]
+
+let temporaryMessages_group3 = [
+	{
+		_id: 10,
+		createdAt: "2022-04-27T02:10:29.189Z",
+		user: {
+			_id: 10,
+			name: "group 3",
+			avatar: 'https://placeimg.com/140/140/any',
+		},
+		sent: true,
+		received: true,
+		image: 'https://placeimg.com/140/140/any',
+	},
+	{
+		_id: 11,
+		text: 'Hello developer',
+		createdAt: "2022-04-27T02:08:10.189Z",
+		user: {
+			_id: 11,
+			name: "group 3",
+			avatar: 'https://placeimg.com/140/140/any',
+		},
+		sent: true,
+		received: true
+	},
+]
+
+let temporaryMessages_group4 = [
+	{
+		_id: 12,
+		createdAt: "2022-04-27T02:10:29.189Z",
+		user: {
+			_id: 12,
+			name: "group 4",
+			avatar: 'https://placeimg.com/140/140/any',
+		},
+		sent: true,
+		received: true,
+		image: 'https://placeimg.com/140/140/any',
+	},
+	{
+		_id: 13,
+		text: 'Hello developer',
+		createdAt: "2022-04-27T02:08:10.189Z",
+		user: {
+			_id: 13,
+			name: "group 4",
+			avatar: 'https://placeimg.com/140/140/any',
+		},
+		sent: true,
+		received: true
+	},
+]
+
+// Chats一覧に表示する、最終メッセージ一覧
+function getChats() {
+	return [
+		{
+			"direct_chat_room_id": "friend 1",
+			"friends_user_id": "friend 1",
+			"friends_nick_name": "friend 1",
+			"friends_profile_image": require("../../assets/images/friend_profile_image_2.jpg"),
+			"friends_last_message_content": temporaryMessages_friend1[0].text ? temporaryMessages_friend1[0].text : temporaryMessages_friend1[0].image,
+			"friends_last_message_creation_date": "2022/3/20",
+			"unread_count": 3
+		},
+		{
+			"direct_chat_room_id": "friend 2",
+			"friends_user_id": "friend 2",
+			"friends_nick_name": "friend 2",
+			"friends_profile_image": require("../../assets/images/friend_profile_image_2.jpg"),
+			"friends_last_message_content": temporaryMessages_friend2[0].text ? temporaryMessages_friend2[0].text: temporaryMessages_friend2[0].image,
+			"friends_last_message_creation_date": "2022/3/22",
+			"unread_count": 2
+		},
+		{
+			"direct_chat_room_id": "friend 3",
+			"friends_user_id": "friend 3",
+			"friends_nick_name": "friend 3",
+			"friends_profile_image": require("../../assets/images/friend_profile_image_2.jpg"),
+			"friends_last_message_content": temporaryMessages_friend3[0].text ? temporaryMessages_friend3[0].text : temporaryMessages_friend3[0].image,
+			"friends_last_message_creation_date": "13:00",
+			"unread_count": 0
+		},
+		{
+			"group_chat_room_id": "group 1",
+			"group_name": "group 1",
+			"group_image": require("../../assets/images/friend_profile_image_2.jpg"),
+			"group_last_message_content": temporaryMessages_group1[0].text ? temporaryMessages_group1[0].text : temporaryMessages_group1[0].image,
+			"group_last_message_creation_date": "2022/3/19",
+			"unread_count": 2
+		},
+		{
+			"group_chat_room_id": "group 2",
+			"group_name": "group 2",
+			"group_image": require("../../assets/images/friend_profile_image_2.jpg"),
+			"group_last_message_content": temporaryMessages_group2[0].text ? temporaryMessages_group2[0].text : temporaryMessages_group2[0].image,
+			"group_last_message_creation_date": "2022/3/21",
+			"unread_count": 0
+		},
+		{
+			"group_chat_room_id": "group 3",
+			"group_name": "group 3",
+			"group_image": require("../../assets/images/friend_profile_image_2.jpg"),
+			"group_last_message_content": temporaryMessages_group3[0].text ? temporaryMessages_group3[0].text : temporaryMessages_group3[0].image,
+			"group_last_message_creation_date": "10:00",
+			"unread_count": 2
+		},
+		{
+			"group_chat_room_id": "group 4",
+			"group_name": "group 4",
+			"group_image": require("../../assets/images/friend_profile_image_2.jpg"),
+			"group_last_message_content": temporaryMessages_group4[0].text ? temporaryMessages_group4[0].text : temporaryMessages_group4[0].image,
+			"group_last_message_creation_date": "11:00",
+			"unread_count": 2
+		}
+	]
+}
+
+// Chatsで名前検索した際にヒットするチャット一覧
 let chatsBySearchText = [
 	{
 		"direct_chat_room_id": "friend 1",
@@ -200,6 +395,8 @@ let chatsBySearchText = [
 		"unread_count": 0
 	},
 ]
+
+
 
 export const handlers = [
 	// req: 一致したリクエストに関する情報
@@ -489,7 +686,7 @@ export const handlers = [
 			return res(
 				ctx.status(200),
 				ctx.json(
-					chats
+					getChats()
 				),
 			)
 		}
@@ -521,22 +718,80 @@ export const handlers = [
 
 		// 友達とのチャットの場合
 		if (directChatRoomId) {
-			return res(
-				ctx.status(200),
-				ctx.json(
-					temporaryMessages
-				),
-			)
+			// 本番は、以下を使用
+			// return res(
+			// 	ctx.status(200),
+			// 	ctx.json(
+			// 		temporaryMessages
+			// 	),
+			// )
+			if (directChatRoomId === "friend 1") {
+				return res(
+					ctx.status(200),
+					ctx.json(
+						temporaryMessages_friend1
+					),
+				)
+			}
+			if (directChatRoomId === "friend 2") {
+				return res(
+					ctx.status(200),
+					ctx.json(
+						temporaryMessages_friend2
+					),
+				)
+			}
+			if (directChatRoomId === "friend 3") {
+				return res(
+					ctx.status(200),
+					ctx.json(
+						temporaryMessages_friend3
+					),
+				)
+			}
 
 		}
 		// グループチャットの場合
 		if (groupChatRoomId) {
-			return res(
-				ctx.status(200),
-				ctx.json(
-					temporaryMessages
-				),
-			)
+			// 本番は、以下を使用
+			// return res(
+			// 	ctx.status(200),
+			// 	ctx.json(
+			// 		temporaryMessages
+			// 	),
+			// )
+			if (groupChatRoomId === "group 1") {
+				return res(
+					ctx.status(200),
+					ctx.json(
+						temporaryMessages_group1
+					),
+				)
+			}
+			if (groupChatRoomId === "group 2") {
+				return res(
+					ctx.status(200),
+					ctx.json(
+						temporaryMessages_group2
+					),
+				)
+			}
+			if (groupChatRoomId === "group 3") {
+				return res(
+					ctx.status(200),
+					ctx.json(
+						temporaryMessages_group3
+					),
+				)
+			}
+			if (groupChatRoomId === "group 4") {
+				return res(
+					ctx.status(200),
+					ctx.json(
+						temporaryMessages_group4
+					),
+				)
+			}
 		}
 	}),
 	// チャット送信
@@ -550,7 +805,28 @@ export const handlers = [
 		// mockserviceworker甩に以下保持
 		const { all } = req.body
 		// 配列の最初に追加
-		temporaryMessages.unshift(all)
+		// 本番時は、バックエンドにて詳細実装する
+		if (directChatRoomId === "friend 1"){
+			temporaryMessages_friend1 = [all, ...temporaryMessages_friend1]
+		}
+		if (directChatRoomId === "friend 2"){
+			temporaryMessages_friend2 = [all, ...temporaryMessages_friend2]
+		}
+		if (directChatRoomId === "friend 3"){
+			temporaryMessages_friend3 = [all, ...temporaryMessages_friend3]
+		}
+		if(groupChatRoomId === "group 1"){
+			temporaryMessages_group1 = [all, ...temporaryMessages_group1]
+		}
+		if(groupChatRoomId === "group 2"){
+			temporaryMessages_group2 = [all, ...temporaryMessages_group2]
+		}
+		if(groupChatRoomId === "group 3"){
+			temporaryMessages_group3 = [all, ...temporaryMessages_group3]
+		}
+		if(groupChatRoomId === "group 4"){
+			temporaryMessages_group4 = [all, ...temporaryMessages_group4]
+		}
 		return res(
 			// 200のステータスコードで応答する
 			ctx.status(200)
