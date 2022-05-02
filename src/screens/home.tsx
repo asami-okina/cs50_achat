@@ -51,6 +51,11 @@ export function Home({ navigation }) {
 	// 所属グループ数
 	const [groupCount, setGroupCount] = useState(0)
 
+	// 自分のニックネーム
+	const [nickName, setNickName] = useState("")
+	// 自分のプロフィール画像
+	const [profileImage, setProfileImage] = useState(null)
+
 	// ニックネームまたはグループ名の検索でヒットするユーザーまたはグループ情報の取得
 	async function _searchName(searchText) {
 		try {
@@ -182,21 +187,21 @@ export function Home({ navigation }) {
 					{/* 友達一覧 */}
 					{/* 検索中ではない場合 */}
 					{!isDuringSearch && openFriendList && (
-						<FriendAndGroupList openFriendList={openFriendList} friendList={beforeFriendListSearch} openGroupList={null} groupList={null} type={"Friend"} setModalVisible={setModalVisible} clickedCancelMordal={clickedCancelMordal} setClickedCancelMordal={setClickedCancelMordal} clickedOkMordal={clickedOkMordal} setClickedOkMordal={setClickedOkMordal} />
+						<FriendAndGroupList navigation={navigation} openFriendList={openFriendList} friendList={beforeFriendListSearch} openGroupList={null} groupList={null} type={"Friend"} setModalVisible={setModalVisible} clickedCancelMordal={clickedCancelMordal} setClickedCancelMordal={setClickedCancelMordal} clickedOkMordal={clickedOkMordal} setClickedOkMordal={setClickedOkMordal} />
 					)}
 					{/* 検索中の場合 */}
 					{isDuringSearch && openFriendList && (
-						<FriendAndGroupList openFriendList={openFriendList} friendList={afterFriendListSearch} openGroupList={null} groupList={null} type={"Friend"} setModalVisible={setModalVisible} clickedCancelMordal={clickedCancelMordal} setClickedCancelMordal={setClickedCancelMordal} clickedOkMordal={clickedOkMordal} setClickedOkMordal={setClickedOkMordal} />
+						<FriendAndGroupList navigation={navigation} openFriendList={openFriendList} friendList={afterFriendListSearch} openGroupList={null} groupList={null} type={"Friend"} setModalVisible={setModalVisible} clickedCancelMordal={clickedCancelMordal} setClickedCancelMordal={setClickedCancelMordal} clickedOkMordal={clickedOkMordal} setClickedOkMordal={setClickedOkMordal} />
 					)}
 					{/* グループ一覧 */}
 					{/* 検索中ではない場合 */}
 					{!isDuringSearch && openGroupList && (
-						<FriendAndGroupList openFriendList={null} friendList={null} openGroupList={openGroupList} groupList={beforeGroupListSearch} type={"Group"} setModalVisible={setModalVisible} clickedCancelMordal={clickedCancelMordal} setClickedCancelMordal={setClickedCancelMordal} clickedOkMordal={clickedOkMordal} setClickedOkMordal={setClickedOkMordal}
+						<FriendAndGroupList navigation={navigation} openFriendList={null} friendList={null} openGroupList={openGroupList} groupList={beforeGroupListSearch} type={"Group"} setModalVisible={setModalVisible} clickedCancelMordal={clickedCancelMordal} setClickedCancelMordal={setClickedCancelMordal} clickedOkMordal={clickedOkMordal} setClickedOkMordal={setClickedOkMordal}
 						/>
 					)}
 					{/* 検索中の場合 */}
 					{isDuringSearch && openGroupList && (
-						<FriendAndGroupList openFriendList={null} friendList={null} openGroupList={openGroupList} groupList={afterGroupListSearch} type={"Group"} setModalVisible={setModalVisible} clickedCancelMordal={clickedCancelMordal} setClickedCancelMordal={setClickedCancelMordal} clickedOkMordal={clickedOkMordal} setClickedOkMordal={setClickedOkMordal}
+						<FriendAndGroupList navigation={navigation} openFriendList={null} friendList={null} openGroupList={openGroupList} groupList={afterGroupListSearch} type={"Group"} setModalVisible={setModalVisible} clickedCancelMordal={clickedCancelMordal} setClickedCancelMordal={setClickedCancelMordal} clickedOkMordal={clickedOkMordal} setClickedOkMordal={setClickedOkMordal}
 						/>
 					)}
 				</View>

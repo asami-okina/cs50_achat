@@ -4,9 +4,9 @@ import { StyleSheet, Text, TouchableOpacity, TouchableHighlight, View, Image } f
 import { SwipeListView } from 'react-native-swipe-list-view';
 
 // layouts
-import { CONTENT_WIDTH, PROFILE_IMAGE_SIZE, STANDARD_FONT, MAIN_WHITE_COLOR, MAIN_PINK_COLOR,PROFILE_IMAGE_BORDER_RADIUS } from '../../../../constants/layout'
+import { CONTENT_WIDTH, PROFILE_IMAGE_SIZE, STANDARD_FONT, MAIN_WHITE_COLOR, MAIN_PINK_COLOR, PROFILE_IMAGE_BORDER_RADIUS } from '../../../../constants/layout'
 
-export default function Basic({ groupList, friendList, type, setModalVisible, clickedCancelMordal, setClickedCancelMordal, clickedOkMordal, setClickedOkMordal }) {
+export default function Basic({ navigation, groupList, friendList, type, setModalVisible, clickedCancelMordal, setClickedCancelMordal, clickedOkMordal, setClickedOkMordal }) {
 	// ユーザーID(今後は認証から取得するようにする)
 	const userId = "asami11"
 
@@ -59,7 +59,9 @@ export default function Basic({ groupList, friendList, type, setModalVisible, cl
 		<>
 			{type === "Group" && (
 				<TouchableHighlight
-					onPress={() => console.log('You touched me')}
+					onPress={() => {
+						navigation.navigate('Chat', { "groupChatRoomId": data.item.group_chat_room_id, "directChatRoomId": null, "profileImage": data.item.group_image, "name": data.item.group_name })
+					}}
 					style={styles.rowFrontStyle}
 					underlayColor={'#feffff'}
 				>
@@ -73,7 +75,9 @@ export default function Basic({ groupList, friendList, type, setModalVisible, cl
 			)}
 			{type === "Friend" && (
 				<TouchableHighlight
-					onPress={() => console.log('You touched me')}
+					onPress={() => {
+						navigation.navigate('Chat', { "groupChatRoomId": null, "directChatRoomId": data.item.direct_chat_room_id, "profileImage": data.item.friend_profile_image, "name": data.item.friend_nickname })
+					}}
 					style={styles.rowFrontStyle}
 					underlayColor={'#feffff'}
 				>

@@ -1,7 +1,5 @@
 // すべてのリクエストハンドラを格納するモジュール
-// src/mocks/handlers.js
 import { rest } from 'msw'
-// import { temporaryMessages } from "../components/chat/messages"
 
 let profileInfo =
 {
@@ -164,7 +162,7 @@ let temporaryMessages_friend3 = [
 		createdAt: "2022-04-27T02:10:29.189Z",
 		user: {
 			_id: 5,
-			name: "friend 2",
+			name: "friend 3",
 			avatar: 'https://placeimg.com/140/140/any',
 		},
 		sent: true,
@@ -177,7 +175,7 @@ let temporaryMessages_friend3 = [
 		createdAt: "2022-04-27T02:08:10.189Z",
 		user: {
 			_id: 6,
-			name: "friend 2",
+			name: "friend 3",
 			avatar: 'https://placeimg.com/140/140/any',
 		},
 		sent: true,
@@ -185,13 +183,13 @@ let temporaryMessages_friend3 = [
 	},
 ]
 
-let temporaryMessages_group1 = [
+let temporaryMessages_friend4 = [
 	{
 		_id: 7,
 		createdAt: "2022-04-27T02:10:29.189Z",
 		user: {
 			_id: 7,
-			name: "group 1",
+			name: "friend 4",
 			avatar: 'https://placeimg.com/140/140/any',
 		},
 		sent: true,
@@ -204,6 +202,195 @@ let temporaryMessages_group1 = [
 		createdAt: "2022-04-27T02:08:10.189Z",
 		user: {
 			_id: 8,
+			name: "friend 4",
+			avatar: 'https://placeimg.com/140/140/any',
+		},
+		sent: true,
+		received: true
+	},
+]
+
+let temporaryMessages_friend5 = [
+	{
+		_id: 9,
+		createdAt: "2022-04-27T02:10:29.189Z",
+		user: {
+			_id: 9,
+			name: "friend 5",
+			avatar: 'https://placeimg.com/140/140/any',
+		},
+		sent: true,
+		received: true,
+		image: 'https://placeimg.com/140/140/any',
+	},
+	{
+		_id: 10,
+		text: 'Hello developer',
+		createdAt: "2022-04-27T02:08:10.189Z",
+		user: {
+			_id: 10,
+			name: "friend 5",
+			avatar: 'https://placeimg.com/140/140/any',
+		},
+		sent: true,
+		received: true
+	},
+]
+
+let temporaryMessages_friend6 = [
+	{
+		_id: 11,
+		createdAt: "2022-04-27T02:10:29.189Z",
+		user: {
+			_id: 11,
+			name: "friend 6",
+			avatar: 'https://placeimg.com/140/140/any',
+		},
+		sent: true,
+		received: true,
+		image: 'https://placeimg.com/140/140/any',
+	},
+	{
+		_id: 12,
+		text: 'Hello developer',
+		createdAt: "2022-04-27T02:08:10.189Z",
+		user: {
+			_id: 12,
+			name: "friend 6",
+			avatar: 'https://placeimg.com/140/140/any',
+		},
+		sent: true,
+		received: true
+	},
+]
+
+let temporaryMessages_friend7 = [
+	{
+		_id: 13,
+		createdAt: "2022-04-27T02:10:29.189Z",
+		user: {
+			_id: 13,
+			name: "friend 7",
+			avatar: 'https://placeimg.com/140/140/any',
+		},
+		sent: true,
+		received: true,
+		image: 'https://placeimg.com/140/140/any',
+	},
+	{
+		_id: 14,
+		text: 'Hello developer',
+		createdAt: "2022-04-27T02:08:10.189Z",
+		user: {
+			_id: 14,
+			name: "friend 7",
+			avatar: 'https://placeimg.com/140/140/any',
+		},
+		sent: true,
+		received: true
+	},
+]
+
+let temporaryMessages_friend8 = [
+	{
+		_id: 15,
+		createdAt: "2022-04-27T02:10:29.189Z",
+		user: {
+			_id: 15,
+			name: "friend 8",
+			avatar: 'https://placeimg.com/140/140/any',
+		},
+		sent: true,
+		received: true,
+		image: 'https://placeimg.com/140/140/any',
+	},
+	{
+		_id: 16,
+		text: 'Hello developer',
+		createdAt: "2022-04-27T02:08:10.189Z",
+		user: {
+			_id: 16,
+			name: "friend 8",
+			avatar: 'https://placeimg.com/140/140/any',
+		},
+		sent: true,
+		received: true
+	},
+]
+
+let temporaryMessages_friend9 = [
+	{
+		_id: 17,
+		createdAt: "2022-04-27T02:10:29.189Z",
+		user: {
+			_id: 17,
+			name: "friend 9",
+			avatar: 'https://placeimg.com/140/140/any',
+		},
+		sent: true,
+		received: true,
+		image: 'https://placeimg.com/140/140/any',
+	},
+	{
+		_id: 18,
+		text: 'Hello developer',
+		createdAt: "2022-04-27T02:08:10.189Z",
+		user: {
+			_id: 18,
+			name: "friend 9",
+			avatar: 'https://placeimg.com/140/140/any',
+		},
+		sent: true,
+		received: true
+	},
+]
+
+let temporaryMessages_friend10 = [
+	{
+		_id: 19,
+		createdAt: "2022-04-27T02:10:29.189Z",
+		user: {
+			_id: 19,
+			name: "friend 10",
+			avatar: 'https://placeimg.com/140/140/any',
+		},
+		sent: true,
+		received: true,
+		image: 'https://placeimg.com/140/140/any',
+	},
+	{
+		_id: 20,
+		text: 'Hello developer',
+		createdAt: "2022-04-27T02:08:10.189Z",
+		user: {
+			_id: 20,
+			name: "friend 10",
+			avatar: 'https://placeimg.com/140/140/any',
+		},
+		sent: true,
+		received: true
+	},
+]
+
+let temporaryMessages_group1 = [
+	{
+		_id: 30,
+		createdAt: "2022-04-27T02:10:29.189Z",
+		user: {
+			_id: 30,
+			name: "group 1",
+			avatar: 'https://placeimg.com/140/140/any',
+		},
+		sent: true,
+		received: true,
+		image: 'https://placeimg.com/140/140/any',
+	},
+	{
+		_id: 31,
+		text: 'Hello developer',
+		createdAt: "2022-04-27T02:08:10.189Z",
+		user: {
+			_id: 31,
 			name: "group 1",
 			avatar: 'https://placeimg.com/140/140/any',
 		},
@@ -214,10 +401,10 @@ let temporaryMessages_group1 = [
 
 let temporaryMessages_group2 = [
 	{
-		_id: 9,
+		_id: 32,
 		createdAt: "2022-04-27T02:10:29.189Z",
 		user: {
-			_id: 9,
+			_id: 32,
 			name: "group 2",
 			avatar: 'https://placeimg.com/140/140/any',
 		},
@@ -226,11 +413,11 @@ let temporaryMessages_group2 = [
 		image: 'https://placeimg.com/140/140/any',
 	},
 	{
-		_id: 10,
+		_id: 33,
 		text: "group 2",
 		createdAt: "2022-04-27T02:08:10.189Z",
 		user: {
-			_id: 10,
+			_id: 33,
 			name: "group 2",
 			avatar: 'https://placeimg.com/140/140/any',
 		},
@@ -241,10 +428,10 @@ let temporaryMessages_group2 = [
 
 let temporaryMessages_group3 = [
 	{
-		_id: 10,
+		_id: 34,
 		createdAt: "2022-04-27T02:10:29.189Z",
 		user: {
-			_id: 10,
+			_id: 34,
 			name: "group 3",
 			avatar: 'https://placeimg.com/140/140/any',
 		},
@@ -253,11 +440,11 @@ let temporaryMessages_group3 = [
 		image: 'https://placeimg.com/140/140/any',
 	},
 	{
-		_id: 11,
+		_id: 35,
 		text: 'Hello developer',
 		createdAt: "2022-04-27T02:08:10.189Z",
 		user: {
-			_id: 11,
+			_id: 35,
 			name: "group 3",
 			avatar: 'https://placeimg.com/140/140/any',
 		},
@@ -268,10 +455,10 @@ let temporaryMessages_group3 = [
 
 let temporaryMessages_group4 = [
 	{
-		_id: 12,
+		_id: 36,
 		createdAt: "2022-04-27T02:10:29.189Z",
 		user: {
-			_id: 12,
+			_id: 36,
 			name: "group 4",
 			avatar: 'https://placeimg.com/140/140/any',
 		},
@@ -280,12 +467,39 @@ let temporaryMessages_group4 = [
 		image: 'https://placeimg.com/140/140/any',
 	},
 	{
-		_id: 13,
+		_id: 37,
 		text: 'Hello developer',
 		createdAt: "2022-04-27T02:08:10.189Z",
 		user: {
-			_id: 13,
+			_id: 37,
 			name: "group 4",
+			avatar: 'https://placeimg.com/140/140/any',
+		},
+		sent: true,
+		received: true
+	},
+]
+
+let temporaryMessages_group5 = [
+	{
+		_id: 38,
+		createdAt: "2022-04-27T02:10:29.189Z",
+		user: {
+			_id: 38,
+			name: "group 5",
+			avatar: 'https://placeimg.com/140/140/any',
+		},
+		sent: true,
+		received: true,
+		image: 'https://placeimg.com/140/140/any',
+	},
+	{
+		_id: 39,
+		text: 'Hello developer',
+		createdAt: "2022-04-27T02:08:10.189Z",
+		user: {
+			_id: 39,
+			name: "group 5",
 			avatar: 'https://placeimg.com/140/140/any',
 		},
 		sent: true,
@@ -740,6 +954,62 @@ export const handlers = [
 					),
 				)
 			}
+			if (directChatRoomId === "friend 4") {
+				return res(
+					ctx.status(200),
+					ctx.json(
+						temporaryMessages_friend4
+					),
+				)
+			}
+			if (directChatRoomId === "friend 5") {
+				return res(
+					ctx.status(200),
+					ctx.json(
+						temporaryMessages_friend5
+					),
+				)
+			}
+			if (directChatRoomId === "friend 6") {
+				return res(
+					ctx.status(200),
+					ctx.json(
+						temporaryMessages_friend6
+					),
+				)
+			}
+			if (directChatRoomId === "friend 7") {
+				return res(
+					ctx.status(200),
+					ctx.json(
+						temporaryMessages_friend7
+					),
+				)
+			}
+			if (directChatRoomId === "friend 8") {
+				return res(
+					ctx.status(200),
+					ctx.json(
+						temporaryMessages_friend8
+					),
+				)
+			}
+			if (directChatRoomId === "friend 9") {
+				return res(
+					ctx.status(200),
+					ctx.json(
+						temporaryMessages_friend9
+					),
+				)
+			}
+			if (directChatRoomId === "friend 10") {
+				return res(
+					ctx.status(200),
+					ctx.json(
+						temporaryMessages_friend10
+					),
+				)
+			}
 
 		}
 		// グループチャットの場合
@@ -783,6 +1053,14 @@ export const handlers = [
 					),
 				)
 			}
+			if (groupChatRoomId === "group 5") {
+				return res(
+					ctx.status(200),
+					ctx.json(
+						temporaryMessages_group5
+					),
+				)
+			}
 		}
 	}),
 	// チャット送信
@@ -806,6 +1084,27 @@ export const handlers = [
 		if (directChatRoomId === "friend 3") {
 			temporaryMessages_friend3 = [all, ...temporaryMessages_friend3]
 		}
+		if (directChatRoomId === "friend 4") {
+			temporaryMessages_friend4 = [all, ...temporaryMessages_friend3]
+		}
+		if (directChatRoomId === "friend 5") {
+			temporaryMessages_friend5 = [all, ...temporaryMessages_friend3]
+		}
+		if (directChatRoomId === "friend 6") {
+			temporaryMessages_friend6 = [all, ...temporaryMessages_friend3]
+		}
+		if (directChatRoomId === "friend 7") {
+			temporaryMessages_friend7 = [all, ...temporaryMessages_friend3]
+		}
+		if (directChatRoomId === "friend 8") {
+			temporaryMessages_friend8 = [all, ...temporaryMessages_friend3]
+		}
+		if (directChatRoomId === "friend 9") {
+			temporaryMessages_friend9 = [all, ...temporaryMessages_friend3]
+		}
+		if (directChatRoomId === "friend 10") {
+			temporaryMessages_friend10 = [all, ...temporaryMessages_friend3]
+		}
 		if (groupChatRoomId === "group 1") {
 			temporaryMessages_group1 = [all, ...temporaryMessages_group1]
 		}
@@ -817,6 +1116,9 @@ export const handlers = [
 		}
 		if (groupChatRoomId === "group 4") {
 			temporaryMessages_group4 = [all, ...temporaryMessages_group4]
+		}
+		if (groupChatRoomId === "group 5") {
+			temporaryMessages_group5 = [all, ...temporaryMessages_group4]
 		}
 		return res(
 			// 200のステータスコードで応答する
