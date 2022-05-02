@@ -51,11 +51,6 @@ export function Home({ navigation }) {
 	// 所属グループ数
 	const [groupCount, setGroupCount] = useState(0)
 
-	// 自分のニックネーム
-	const [nickName, setNickName] = useState("")
-	// 自分のプロフィール画像
-	const [profileImage, setProfileImage] = useState(null)
-
 	// ニックネームまたはグループ名の検索でヒットするユーザーまたはグループ情報の取得
 	async function _searchName(searchText) {
 		try {
