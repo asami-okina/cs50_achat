@@ -13,150 +13,150 @@ let profileInfo =
 
 let friends = [
 	{
-		"direct_chat_room_id": "1",
+		"direct_chat_room_id": "friend 1",
 		"friend_use_id": "friend 1",
 		"friend_profile_image": require("../../assets/images/friend_profile_image_1.jpg"),
-		"friend_nickname": "asamiasamiasami1"
+		"friend_nickname": "friend 1"
 	},
 	{
-		"direct_chat_room_id": "2",
+		"direct_chat_room_id": "friend 2",
 		"friend_use_id": "friend 2",
 		"friend_profile_image": require("../../assets/images/friend_profile_image_2.jpg"),
-		"friend_nickname": "asami2"
+		"friend_nickname": "friend 2"
 	},
 	{
-		"direct_chat_room_id": "3",
+		"direct_chat_room_id": "friend 3",
 		"friend_use_id": "friend 3",
 		"friend_profile_image": require("../../assets/images/friend_profile_image_2.jpg"),
-		"friend_nickname": "asami3"
+		"friend_nickname": "friend 3"
 	},
 	{
-		"direct_chat_room_id": "5",
-		"friend_use_id": "friend 5",
-		"friend_profile_image": require("../../assets/images/friend_profile_image_2.jpg"),
-		"friend_nickname": "asami5"
-	},
-	{
-		"direct_chat_room_id": "6",
-		"friend_use_id": "friend 6",
-		"friend_profile_image": require("../../assets/images/friend_profile_image_2.jpg"),
-		"friend_nickname": "asami6"
-	},
-	{
-		"direct_chat_room_id": "7",
-		"friend_use_id": "friend 7",
-		"friend_profile_image": require("../../assets/images/friend_profile_image_2.jpg"),
-		"friend_nickname": "asami7"
-	},
-	{
-		"direct_chat_room_id": "8",
-		"friend_use_id": "friend 8",
-		"friend_profile_image": require("../../assets/images/friend_profile_image_2.jpg"),
-		"friend_nickname": "asami8"
-	},
-	{
-		"direct_chat_room_id": "9",
-		"friend_use_id": "friend 9",
-		"friend_profile_image": require("../../assets/images/friend_profile_image_2.jpg"),
-		"friend_nickname": "asami9"
-	},
-	{
-		"direct_chat_room_id": "4",
+		"direct_chat_room_id": "friend 4",
 		"friend_use_id": "friend 4",
 		"friend_profile_image": require("../../assets/images/friend_profile_image_2.jpg"),
-		"friend_nickname": "asami4"
+		"friend_nickname": "friend 4"
 	},
 	{
-		"direct_chat_room_id": "10",
+		"direct_chat_room_id": "friend 5",
+		"friend_use_id": "friend 5",
+		"friend_profile_image": require("../../assets/images/friend_profile_image_2.jpg"),
+		"friend_nickname": "friend 5"
+	},
+	{
+		"direct_chat_room_id": "friend 6",
+		"friend_use_id": "friend 6",
+		"friend_profile_image": require("../../assets/images/friend_profile_image_2.jpg"),
+		"friend_nickname": "friend 6"
+	},
+	{
+		"direct_chat_room_id": "friend 7",
+		"friend_use_id": "friend 7",
+		"friend_profile_image": require("../../assets/images/friend_profile_image_2.jpg"),
+		"friend_nickname": "friend 7"
+	},
+	{
+		"direct_chat_room_id": "friend 8",
+		"friend_use_id": "friend 8",
+		"friend_profile_image": require("../../assets/images/friend_profile_image_2.jpg"),
+		"friend_nickname": "friend 8"
+	},
+	{
+		"direct_chat_room_id": "friend 9",
+		"friend_use_id": "friend 9",
+		"friend_profile_image": require("../../assets/images/friend_profile_image_2.jpg"),
+		"friend_nickname": "friend 9"
+	},
+	{
+		"direct_chat_room_id": "friend 10",
 		"friend_use_id": "friend 10",
 		"friend_profile_image": require("../../assets/images/friend_profile_image_2.jpg"),
-		"friend_nickname": "asami10"
+		"friend_nickname": "friend 10"
 	},
 ]
 
 let groups = [
 	{
-		"group_chat_room_id": "1",
+		"group_chat_room_id": "group 1",
 		"group_name": "group 1",
 		"group_image": require("../../assets/images/group_image_1.jpg")
 	},
 	{
-		"group_chat_room_id": "2",
+		"group_chat_room_id": "group 2",
 		"group_name": "group 2",
 		"group_image": require("../../assets/images/group_image_2.jpg")
 	},
 	{
-		"group_chat_room_id": "3",
+		"group_chat_room_id": "group 3",
 		"group_name": "group 3",
 		"group_image": require("../../assets/images/group_image_2.jpg")
 	},
 	{
-		"group_chat_room_id": "4",
+		"group_chat_room_id": "group 4",
 		"group_name": "group 4",
 		"group_image": require("../../assets/images/group_image_2.jpg")
 	},
 	{
-		"group_chat_room_id": "5",
-		"group_name": "group 5r",
+		"group_chat_room_id": "group 5",
+		"group_name": "group 5",
 		"group_image": require("../../assets/images/group_image_2.jpg")
 	},
 ]
 
 let chats = [
 	{
-		"direct_chat_room_id": 1,
-		"friends_user_id": 1,
-		"friends_nick_name": "kahi",
+		"direct_chat_room_id": "friend 1",
+		"friends_user_id":  "friend 1",
+		"friends_nick_name":  "friend 1",
 		"friends_profile_image": require("../../assets/images/friend_profile_image_2.jpg"),
 		"friends_last_message_content": "元気？",
 		"friends_last_message_creation_date": "2022/3/20",
 		"unread_count": 3
 	},
 	{
-		"direct_chat_room_id": 2,
-		"friends_user_id": 2,
-		"friends_nick_name": "suzuki",
+		"direct_chat_room_id":  "friend 2",
+		"friends_user_id":  "friend 2",
+		"friends_nick_name":  "friend 2",
 		"friends_profile_image": require("../../assets/images/friend_profile_image_2.jpg"),
 		"friends_last_message_content": "ご飯いこう",
 		"friends_last_message_creation_date": "2022/3/22",
 		"unread_count": 2
 	},
 	{
-		"direct_chat_room_id": 3,
-		"friends_user_id": 3,
-		"friends_nick_name": "kahi",
+		"direct_chat_room_id":  "friend 3",
+		"friends_user_id":  "friend 3",
+		"friends_nick_name":  "friend 3",
 		"friends_profile_image": require("../../assets/images/friend_profile_image_2.jpg"),
 		"friends_last_message_content": "いいよー",
 		"friends_last_message_creation_date": "13:00",
 		"unread_count": 0
 	},
 	{
-		"group_chat_room_id": 4,
-		"group_name": "いつめん",
+		"group_chat_room_id": "group 1",
+		"group_name": "group 1",
 		"group_image": require("../../assets/images/friend_profile_image_2.jpg"),
 		"group_last_message_content": "暑いね",
 		"group_last_message_creation_date": "2022/3/19",
 		"unread_count": 2
 	},
 	{
-		"group_chat_room_id": 5,
-		"group_name": "smile",
+		"group_chat_room_id": "group 2",
+		"group_name": "group 2",
 		"group_image": require("../../assets/images/friend_profile_image_2.jpg"),
 		"group_last_message_content": "料理会しよう",
 		"group_last_message_creation_date": "2022/3/21",
 		"unread_count": 0
 	},
 	{
-		"group_chat_room_id": 6,
-		"group_name": "happy's",
+		"group_chat_room_id": "group 3",
+		"group_name": "group 3",
 		"group_image": require("../../assets/images/friend_profile_image_2.jpg"),
 		"group_last_message_content": "ランチいこう",
 		"group_last_message_creation_date": "10:00",
 		"unread_count": 2
 	},
 	{
-		"group_chat_room_id": 7,
-		"group_name": "happy's",
+		"group_chat_room_id": "group 4",
+		"group_name": "group 4",
 		"group_image": require("../../assets/images/friend_profile_image_2.jpg"),
 		"group_last_message_content": "夜ご飯いこう",
 		"group_last_message_creation_date": "11:00",
@@ -166,116 +166,38 @@ let chats = [
 
 let chatsBySearchText = [
 	{
-		"direct_chat_room_id": 1,
-		"friends_user_id": 1,
-		"friends_nick_name": "after_kahi",
+		"direct_chat_room_id": "friend 1",
+		"friends_user_id": "friend 1",
+		"friends_nick_name": "after_friend 1",
 		"friends_profile_image": require("../../assets/images/friend_profile_image_2.jpg"),
 		"friends_last_message_content": "元気？",
 		"friends_last_message_creation_date": "2022/3/20",
 		"unread_count": 3
 	},
 	{
-		"direct_chat_room_id": 2,
-		"friends_user_id": 2,
-		"friends_nick_name": "after_suzuki",
+		"direct_chat_room_id": "friend 2",
+		"friends_user_id": "friend 1",
+		"friends_nick_name": "after_friend 2",
 		"friends_profile_image": require("../../assets/images/friend_profile_image_2.jpg"),
 		"friends_last_message_content": "ご飯いこう",
 		"friends_last_message_creation_date": "2022/3/22",
 		"unread_count": 2
 	},
 	{
-		"group_chat_room_id": 4,
-		"group_name": "after_いつめん",
+		"group_chat_room_id": "group 1",
+		"group_name": "after_group 1",
 		"group_image": require("../../assets/images/friend_profile_image_2.jpg"),
 		"group_last_message_content": "暑いね",
 		"group_last_message_creation_date": "2022/3/19",
 		"unread_count": 2
 	},
 	{
-		"group_chat_room_id": 5,
-		"group_name": "after_smile",
+		"group_chat_room_id": "group 2",
+		"group_name": "after_group 2",
 		"group_image": require("../../assets/images/friend_profile_image_2.jpg"),
 		"group_last_message_content": "料理会しよう",
 		"group_last_message_creation_date": "2022/3/21",
 		"unread_count": 0
-	},
-]
-
-let directChatRoom = [
-	{
-		"senderId": "asami11",
-		"content": "やっほー",
-		"created_at": "2021/12/1 12:00",
-		"read": true
-	},
-	{
-		"senderId": "kahi",
-		"content": "やっほー",
-		"createdAt": "2021/12/1 12:01",
-		"read": true
-	},
-	{
-		"senderId": "asami11",
-		"content": "ごはんいこうよ",
-		"created_at": "2021/12/1 12:02",
-		"read": true
-	},
-	{
-		"senderId": "kahi",
-		"content": "いいよ",
-		"createdAt": "2021/12/1 12:03",
-		"read": true
-	},
-	{
-		"senderId": "kahi",
-		"content": "どこいく？",
-		"createdAt": "2021/12/2 10:00",
-		"read": true
-	},
-	{
-		"senderId": "kahi",
-		"content": "どこいく？",
-		"createdAt": "2021/12/2 11:00",
-		"read": false
-	},
-]
-
-let groupChatRoom = [
-	{
-		"senderId": "asami11",
-		"content": "やっほー",
-		"created_at": "2021/12/1 12:00",
-		"read": true
-	},
-	{
-		"senderId": "kahi",
-		"content": "やっほー",
-		"createdAt": "2021/12/1 12:01",
-		"read": true
-	},
-	{
-		"senderId": "asami11",
-		"content": "ごはんいこうよ",
-		"created_at": "2021/12/1 12:02",
-		"read": true
-	},
-	{
-		"senderId": "kahi",
-		"content": "いいよ",
-		"createdAt": "2021/12/1 12:03",
-		"read": true
-	},
-	{
-		"senderId": "kahi",
-		"content": "どこいく？",
-		"createdAt": "2021/12/2 10:00",
-		"read": true
-	},
-	{
-		"senderId": "kahi",
-		"content": "どこいく？",
-		"createdAt": "2021/12/2 11:00",
-		"read": false
 	},
 ]
 
