@@ -671,12 +671,23 @@ export const handlers = [
 		const parsedUrl = new URL(req.url)
 		const searchText = parsedUrl.searchParams.get("searchText")
 		const { userId } = req.params
+		const result = []
+		const chats = getChats()
 		// ニックネームまたはグループ名の検索でヒットするチャット情報取得
+		// 以下はmock甩に、仮配列から検索結果を出力
 		if (searchText) {
+			for(let i = 0; i < chats.length; i++){
+				if (chats[i].friends_nick_name && chats[i].friends_nick_name.indexOf(searchText) > -1){
+					result.push(chats[i])
+				}
+				if (chats[i].group_name && chats[i].group_name.indexOf(searchText) > -1){
+					result.push(chats[i])
+				}
+			}
 			return res(
 				ctx.status(200),
 				ctx.json(
-					chatsBySearchText
+					result
 				),
 			)
 
