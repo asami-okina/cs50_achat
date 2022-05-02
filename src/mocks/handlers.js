@@ -310,7 +310,7 @@ function getChats() {
 			"friends_user_id": "friend 2",
 			"friends_nick_name": "friend 2",
 			"friends_profile_image": require("../../assets/images/friend_profile_image_2.jpg"),
-			"friends_last_message_content": temporaryMessages_friend2[0].text ? temporaryMessages_friend2[0].text: temporaryMessages_friend2[0].image,
+			"friends_last_message_content": temporaryMessages_friend2[0].text ? temporaryMessages_friend2[0].text : temporaryMessages_friend2[0].image,
 			"friends_last_message_creation_date": "2022/3/22",
 			"unread_count": 2
 		},
@@ -357,46 +357,6 @@ function getChats() {
 		}
 	]
 }
-
-// Chatsで名前検索した際にヒットするチャット一覧
-let chatsBySearchText = [
-	{
-		"direct_chat_room_id": "friend 1",
-		"friends_user_id": "friend 1",
-		"friends_nick_name": "after_friend 1",
-		"friends_profile_image": require("../../assets/images/friend_profile_image_2.jpg"),
-		"friends_last_message_content": "元気？",
-		"friends_last_message_creation_date": "2022/3/20",
-		"unread_count": 3
-	},
-	{
-		"direct_chat_room_id": "friend 2",
-		"friends_user_id": "friend 1",
-		"friends_nick_name": "after_friend 2",
-		"friends_profile_image": require("../../assets/images/friend_profile_image_2.jpg"),
-		"friends_last_message_content": "ご飯いこう",
-		"friends_last_message_creation_date": "2022/3/22",
-		"unread_count": 2
-	},
-	{
-		"group_chat_room_id": "group 1",
-		"group_name": "after_group 1",
-		"group_image": require("../../assets/images/friend_profile_image_2.jpg"),
-		"group_last_message_content": "暑いね",
-		"group_last_message_creation_date": "2022/3/19",
-		"unread_count": 2
-	},
-	{
-		"group_chat_room_id": "group 2",
-		"group_name": "after_group 2",
-		"group_image": require("../../assets/images/friend_profile_image_2.jpg"),
-		"group_last_message_content": "料理会しよう",
-		"group_last_message_creation_date": "2022/3/21",
-		"unread_count": 0
-	},
-]
-
-
 
 export const handlers = [
 	// req: 一致したリクエストに関する情報
@@ -460,30 +420,50 @@ export const handlers = [
 		// search文言の取得
 		const parsedUrl = new URL(req.url)
 		const searchText = parsedUrl.searchParams.get("search")
+		console.log('searchText', searchText)
+		const result = [
+			{
+				"friend": []
+			},
+			{
+				"group": []
+			}
+		]
+		for (let i = 0; i < friends.length; i++) {
+			if (friends[i].friend_nickname && friends[i].friend_nickname.trim().indexOf(searchText.trim()) > -1) {
+				result[0].friend.push(friends[i])
+			}
+		}
+		for (let i = 0; i < groups.length; i++) {
+			if (groups[i].group_name && groups[i].group_name.trim().indexOf(searchText.trim()) > -1) {
+				result[1].group.push(groups[i])
+			}
+		}
 		return res(
 			ctx.status(200),
 			ctx.json(
-				[
-					{
-						"friend": [
-							{
-								"direct_chat_room_id": "1",
-								"friend_use_id": "asami111",
-								"friend_profile_image": require("../../assets/images/friend_profile_image_1.jpg"),
-								"friend_nickname": "検索結果name"
-							}
-						]
-					},
-					{
-						"group": [
-							{
-								"group_chat_room_id": "12",
-								"group_name": "検索結果グループ",
-								"group_image": require("../../assets/images/group_image_1.jpg")
-							}
-						]
-					}
-				]
+				result
+				// [
+				// 	{
+				// 		"friend": [
+				// 			{
+				// 				"direct_chat_room_id": "1",
+				// 				"friend_use_id": "asami111",
+				// 				"friend_profile_image": require("../../assets/images/friend_profile_image_1.jpg"),
+				// 				"friend_nickname": "検索結果name"
+				// 			}
+				// 		]
+				// 	},
+				// 	{
+				// 		"group": [
+				// 			{
+				// 				"group_chat_room_id": "12",
+				// 				"group_name": "検索結果グループ",
+				// 				"group_image": require("../../assets/images/group_image_1.jpg")
+				// 			}
+				// 		]
+				// 	}
+				// ]
 			),
 		)
 	}),
@@ -676,11 +656,11 @@ export const handlers = [
 		// ニックネームまたはグループ名の検索でヒットするチャット情報取得
 		// 以下はmock甩に、仮配列から検索結果を出力
 		if (searchText) {
-			for(let i = 0; i < chats.length; i++){
-				if (chats[i].friends_nick_name && chats[i].friends_nick_name.indexOf(searchText) > -1){
+			for (let i = 0; i < chats.length; i++) {
+				if (chats[i].friends_nick_name && chats[i].friends_nick_name.indexOf(searchText) > -1) {
 					result.push(chats[i])
 				}
-				if (chats[i].group_name && chats[i].group_name.indexOf(searchText) > -1){
+				if (chats[i].group_name && chats[i].group_name.indexOf(searchText) > -1) {
 					result.push(chats[i])
 				}
 			}
@@ -817,25 +797,25 @@ export const handlers = [
 		const { all } = req.body
 		// 配列の最初に追加
 		// 本番時は、バックエンドにて詳細実装する
-		if (directChatRoomId === "friend 1"){
+		if (directChatRoomId === "friend 1") {
 			temporaryMessages_friend1 = [all, ...temporaryMessages_friend1]
 		}
-		if (directChatRoomId === "friend 2"){
+		if (directChatRoomId === "friend 2") {
 			temporaryMessages_friend2 = [all, ...temporaryMessages_friend2]
 		}
-		if (directChatRoomId === "friend 3"){
+		if (directChatRoomId === "friend 3") {
 			temporaryMessages_friend3 = [all, ...temporaryMessages_friend3]
 		}
-		if(groupChatRoomId === "group 1"){
+		if (groupChatRoomId === "group 1") {
 			temporaryMessages_group1 = [all, ...temporaryMessages_group1]
 		}
-		if(groupChatRoomId === "group 2"){
+		if (groupChatRoomId === "group 2") {
 			temporaryMessages_group2 = [all, ...temporaryMessages_group2]
 		}
-		if(groupChatRoomId === "group 3"){
+		if (groupChatRoomId === "group 3") {
 			temporaryMessages_group3 = [all, ...temporaryMessages_group3]
 		}
-		if(groupChatRoomId === "group 4"){
+		if (groupChatRoomId === "group 4") {
 			temporaryMessages_group4 = [all, ...temporaryMessages_group4]
 		}
 		return res(
