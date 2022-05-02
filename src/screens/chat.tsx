@@ -1,5 +1,5 @@
 // libs
-import React, { useEffect, useState, useCallback } from 'react';
+import React, { useEffect, useState, useCallback, useRef } from 'react';
 import { View, SafeAreaView, KeyboardAvoidingView, StyleSheet, Image, Text } from 'react-native';
 import { GiftedChat, Send, Bubble, InputToolbar, MessageText, LoadEarlier, Day, Time, Actions } from 'react-native-gifted-chat'
 import uuid from 'react-native-uuid';
@@ -9,6 +9,7 @@ import moment from "moment"
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import * as ImagePicker from 'expo-image-picker';
 import ImageModal from 'react-native-image-modal';
+import { useIsMounted } from "../hooks/useIsMounted"
 
 // components
 import { TopAreaWrapper } from "../components/common/topAreaWrapper"
@@ -35,6 +36,9 @@ export function Chat({ navigation, route }) {
 
 	// 画像
 	const [image, setImage] = useState('')
+
+	// マウント判定
+	const isMounted = useIsMounted()
 
 	// チャットルームIDに紐づくチャット履歴の取得
 	async function _fetchChatByChatRoomId() {
@@ -64,8 +68,8 @@ export function Chat({ navigation, route }) {
 			const bodyData = {
 				"directChatRoomId": directChatRoomId,
 				"groupChatRoomId": groupChatRoomId,
-				"content": messages[0]["text"] ?  messages[0]["text"] : messages[0]["image"],
-				"type": messages[0]["text"] ?  "text" : "image",
+				"content": messages[0]["text"] ? messages[0]["text"] : messages[0]["image"],
+				"type": messages[0]["text"] ? "text" : "image",
 				"created_at": messages[0]["createdAt"],
 				"all": messages[0]
 			}
@@ -81,26 +85,26 @@ export function Chat({ navigation, route }) {
 		}
 	}
 
-	 	// 最終既読日時の更新
-		async function _updateLastReadTime() {
-			try {
-				// APIリクエスト
-				const bodyData = {
-					"directChatRoomId": directChatRoomId,
-					"groupChatRoomId": groupChatRoomId,
-					"lasReadTime": new Date(),
-				}
-				const response = await fetch(`https://a-chat/api/users/:userId/lastReadTime`, {
-					method: "POST",
-					headers: {
-						"Content-Type": "application/json"
-					},
-					body: JSON.stringify(bodyData),
-				})
-			} catch (e) {
-				console.error(e)
+	// 最終既読日時の更新
+	async function _updateLastReadTime() {
+		try {
+			// APIリクエスト
+			const bodyData = {
+				"directChatRoomId": directChatRoomId,
+				"groupChatRoomId": groupChatRoomId,
+				"lasReadTime": new Date(),
 			}
+			const response = await fetch(`https://a-chat/api/users/:userId/lastReadTime`, {
+				method: "POST",
+				headers: {
+					"Content-Type": "application/json"
+				},
+				body: JSON.stringify(bodyData),
+			})
+		} catch (e) {
+			console.error(e)
 		}
+	}
 
 	// メッセージを送信
 	const _onSendMessage = useCallback((messages = [], image) => {
@@ -255,7 +259,6 @@ export function Chat({ navigation, route }) {
 			/>
 		)
 	}
-
 	// メッセージ内に時間を表示しない
 	const _renderTime = (props) => {
 		return (
@@ -281,13 +284,15 @@ export function Chat({ navigation, route }) {
 		// 追加のメッセージがある場合のみ、API実行中のローディングを表示
 		if (addMessages.length !== 0 && initialApiCount) {
 			setLoadEarlier(true)
-		}
-		if (initialApiCount) {
+		} if (initialApiCount) {
 			setTimeout(() => {
-				const newData = [...messages, ...addMessages];
-				setMessages(newData)
-				setLoadEarlier(false)
-				setInitialApiCount(false)
+				// マウントされているか判定
+				if (isMounted.current) {
+					const newData = [...messages, ...addMessages];
+					setMessages(newData)
+					setLoadEarlier(false)
+					setInitialApiCount(false)
+				}
 			}, 2000)
 		}
 	}
