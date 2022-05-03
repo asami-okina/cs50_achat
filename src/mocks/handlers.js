@@ -1,5 +1,6 @@
 // すべてのリクエストハンドラを格納するモジュール
 import { rest } from 'msw'
+import uuid from 'react-native-uuid';
 
 let profileInfo =
 {
@@ -76,27 +77,51 @@ let groups = [
 	{
 		"group_chat_room_id": "group 1",
 		"group_name": "group 1",
-		"group_image": require("../../assets/images/group_image_1.jpg")
+		"group_image": require("../../assets/images/group_image_1.jpg"),
+		"group_member_user_id": [
+			"friend 1",
+			"friend 2"
+		]
 	},
 	{
 		"group_chat_room_id": "group 2",
 		"group_name": "group 2",
-		"group_image": require("../../assets/images/group_image_2.jpg")
+		"group_image": require("../../assets/images/group_image_2.jpg"),
+		"group_member_user_id": [
+			"friend 1",
+			"friend 2",
+			"friend 3"
+		]
 	},
 	{
 		"group_chat_room_id": "group 3",
 		"group_name": "group 3",
-		"group_image": require("../../assets/images/group_image_2.jpg")
+		"group_image": require("../../assets/images/group_image_2.jpg"),
+		"group_member_user_id": [
+			"friend 4",
+			"friend 5",
+			"friend 6"
+		]
+
 	},
 	{
 		"group_chat_room_id": "group 4",
 		"group_name": "group 4",
-		"group_image": require("../../assets/images/group_image_2.jpg")
+		"group_image": require("../../assets/images/group_image_2.jpg"),
+		"group_member_user_id": [
+			"friend 6",
+			"friend 7",
+		]
 	},
 	{
 		"group_chat_room_id": "group 5",
 		"group_name": "group 5",
-		"group_image": require("../../assets/images/group_image_2.jpg")
+		"group_image": require("../../assets/images/group_image_2.jpg"),
+		"group_member_user_id": [
+			"friend 7",
+			"friend 8",
+			"friend 9"
+		]
 	},
 ]
 
@@ -507,6 +532,9 @@ let temporaryMessages_group5 = [
 	},
 ]
 
+let temporaryMessages_group6 = [
+]
+
 // Chats一覧に表示する、最終メッセージ一覧
 function getChats() {
 	return [
@@ -634,7 +662,7 @@ export const handlers = [
 		// search文言の取得
 		const parsedUrl = new URL(req.url)
 		const searchText = parsedUrl.searchParams.get("search")
-		console.log('searchText', searchText)
+
 		const result = [
 			{
 				"friend": []
@@ -705,10 +733,25 @@ export const handlers = [
 		const { groupImage } = req.body
 		const { groupName } = req.body
 		const { groupMemberUserIds } = req.body
+		const groupChatRoomId = uuid.v4()
+
+		groups.push(
+			{
+				"group_chat_room_id": "group 6",
+				"group_name": groupName,
+				"group_image": groupImage,
+				"group_member_user_id": groupMemberUserIds
+			}
+		)
 
 		return res(
 			// 200のステータスコードで応答する
-			ctx.status(200)
+			ctx.status(200),
+			ctx.json(
+				{
+					"group_chat_room_id": groupChatRoomId
+				}
+			),
 		)
 	}),
 	// ユーザーの所属するグループ数
@@ -1061,6 +1104,14 @@ export const handlers = [
 					),
 				)
 			}
+			if (groupChatRoomId === "group 6") {
+				return res(
+					ctx.status(200),
+					ctx.json(
+						temporaryMessages_group6
+					),
+				)
+			}
 		}
 	}),
 	// チャット送信
@@ -1118,7 +1169,10 @@ export const handlers = [
 			temporaryMessages_group4 = [all, ...temporaryMessages_group4]
 		}
 		if (groupChatRoomId === "group 5") {
-			temporaryMessages_group5 = [all, ...temporaryMessages_group4]
+			temporaryMessages_group5 = [all, ...temporaryMessages_group5]
+		}
+		if (groupChatRoomId === "group 6") {
+			temporaryMessages_group6 = [all, ...temporaryMessages_group6]
 		}
 		return res(
 			// 200のステータスコードで応答する

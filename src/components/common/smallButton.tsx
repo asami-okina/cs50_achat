@@ -3,13 +3,15 @@ import React, { useEffect, useState } from 'react';
 import { StyleSheet, TouchableOpacity, View, Text } from 'react-native';
 
 // layouts
-import { MAIN_NAVY_COLOR, MAIN_WHITE_COLOR, ADD_BUTTON_SIZE, CONTENT_WIDTH, BUTTON_BORDER_RADIUS, MAIN_BLACK_COLOR, SMALL_BUTTON_WIDTH,MAIN_GRAY_COLOR } from '../../constants/layout'
+import { MAIN_NAVY_COLOR, MAIN_WHITE_COLOR, ADD_BUTTON_SIZE, CONTENT_WIDTH, BUTTON_BORDER_RADIUS, MAIN_BLACK_COLOR, SMALL_BUTTON_WIDTH, MAIN_GRAY_COLOR } from '../../constants/layout'
 
-export function SmallButton({ text, navigation, friendList, groupSetting, type, friendListNames,alreadyFriend }) {
+export function SmallButton({ text, navigation, friendList, groupSetting, type, friendListNames, alreadyFriend }) {
 	// ユーザーID(今後は認証から取得するようにする)
 	const userId = "asami11"
 	// 自分を含めたグループメンバーのuserId
 	const [groupMemberUserIds, setGroupMemberUserIds] = useState([])
+
+	const [groupChatRoomId, setGroupChatRoomId] = useState('')
 
 	// グループ追加
 	async function _addGroup() {
@@ -27,8 +29,11 @@ export function SmallButton({ text, navigation, friendList, groupSetting, type, 
 				},
 				body: JSON.stringify(bodyData),
 			})
-			// グループ設定画面からグループチャットに遷移
-
+			// レスポンスをJSONにする
+			const parse_response = await response.json()
+			// グループチャットルームIDを取得
+			const groupChatRoomId = parse_response.group_chat_room_id
+			setGroupChatRoomId(groupChatRoomId)
 		} catch (e) {
 			console.error(e)
 		}
@@ -72,7 +77,7 @@ export function SmallButton({ text, navigation, friendList, groupSetting, type, 
 			<View style={styles.wrapperStyle}>
 				<View style={type === "addFriend" ? styles.addFriendContainerStyle : styles.containerStyle}>
 					<TouchableOpacity
-						style={alreadyFriend ? [styles.buttonStyle, styles.buttonGrayStyle] :styles.buttonStyle}
+						style={alreadyFriend ? [styles.buttonStyle, styles.buttonGrayStyle] : styles.buttonStyle}
 						onPress={() => {
 							// グループ追加画面からグループ設定画面への遷移
 							if (type === "addGroup") {
@@ -80,7 +85,11 @@ export function SmallButton({ text, navigation, friendList, groupSetting, type, 
 							}
 							if (type === "addGroupSetting") {
 								// グループ追加API実行
-								_addGroup()
+								_addGroup().then(() => {
+									// グループ設定画面からグループチャットに遷移
+									// 本番では、"group 6"部分を修正。現在は仮で実装している。
+									navigation.navigate('Chat', { "groupChatRoomId": "group 6", "directChatRoomId": null, "profileImage": null, "name": groupSetting.groupName || friendListNames })
+								})
 							}
 							if (type === "addFriend" && !alreadyFriend) {
 								// 友達追加API実行
