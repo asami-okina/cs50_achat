@@ -1,6 +1,6 @@
 // libs
 import React, { useEffect, useState, useCallback, useRef } from 'react';
-import { View, SafeAreaView, KeyboardAvoidingView, StyleSheet, Image, Text } from 'react-native';
+import { View, SafeAreaView, KeyboardAvoidingView, StyleSheet, Image, Text, Pressable,Platform } from 'react-native';
 import { GiftedChat, Send, Bubble, InputToolbar, MessageText, LoadEarlier, Day, Time, Actions } from 'react-native-gifted-chat'
 import uuid from 'react-native-uuid';
 import { addMessages } from "../components/chat/messages"
@@ -10,6 +10,9 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import * as ImagePicker from 'expo-image-picker';
 import ImageModal from 'react-native-image-modal';
 import { useIsMounted } from "../hooks/useIsMounted"
+import CameraRoll from "@react-native-community/cameraroll";
+import * as Sharing from 'expo-sharing';
+import * as FileSystem from 'expo-file-system';
 
 // components
 import { TopAreaWrapper } from "../components/common/topAreaWrapper"
@@ -190,6 +193,13 @@ export function Chat({ navigation, route }) {
 					)}
 					{!ownUserId && (
 						<View style={styles.readLeftContainerStyle}>
+							{props.currentMessage.image && (
+								// <FontAwesome icon="fa-solid fa-down-to-bracket" />
+								<Pressable
+									onPress={() => { _openShareDialogAsync(props.currentMessage.image) }}>
+									<FontAwesome name='download' color={MAIN_NAVY_COLOR} size={24} margin={0} />
+								</Pressable>
+							)}
 							<Text style={styles.readStyle}>{moment(props.currentMessage.createdAt).format("HH:mm")}</Text>
 						</View>
 					)}
@@ -364,6 +374,19 @@ export function Chat({ navigation, route }) {
 			</View>
 		);
 	};
+		// 画像のシェア
+	  let _openShareDialogAsync = async (image) => {
+			if (!(await Sharing.isAvailableAsync())) {
+				alert(`Uh oh, sharing isn't available on your platform`);
+				return;
+			}
+
+			const result = await FileSystem.downloadAsync(
+				image,
+				FileSystem.documentDirectory + "asami.jpeg"
+			);
+			await Sharing.shareAsync(result.uri, { mimeType: result.mimeType, UTI: "public" + result.mimeType});
+		}
 
 	useEffect(() => {
 		// チャットルームIDに紐づくチャット履歴の取得
