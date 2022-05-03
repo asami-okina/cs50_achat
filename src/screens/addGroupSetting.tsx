@@ -13,7 +13,7 @@ import { SelectedFriendSpace } from "../components/addGroupSetting/selectedFrien
 import { constantsCommonStyles } from '../constants/styles/commonStyles'
 
 // layouts
-import { IPHONE_X_BOTTOM_SPACE, PROFILE_IMAGE_SIZE } from '../constants/layout'
+import { IPHONE_X_BOTTOM_SPACE } from '../constants/layout'
 
 export function AddGroupSetting({ route, navigation }) {
 	// ユーザーID(今後は認証から取得するようにする)
@@ -91,7 +91,7 @@ export function AddGroupSetting({ route, navigation }) {
 				</View>
 				{/* 右下のボタン(Create) */}
 				{friendListNames.length !== 0 && (
-					<SmallButton text={"Create"} navigation={navigation} friendList={friendList} groupSetting={{ "groupName": groupName, "image": image }} type={"addGroupSetting"} friendListNames={friendListNames} alreadyFriend={null} />
+					<SmallButton text={"Create"} navigation={navigation} friendList={friendList} groupSetting={{ "groupName": groupName, "image": image }} type={"addGroupSetting"} friendListNames={friendListNames} alreadyFriend={null} addGroupMemberGroupChatRoomId={null} addGroupMemberGroupImage={null} addGroupMemberGroupName={null} />
 				)}
 			</SafeAreaView>
 		</KeyboardAvoidingView>

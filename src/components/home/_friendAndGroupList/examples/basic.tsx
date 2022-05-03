@@ -60,7 +60,7 @@ export default function Basic({ navigation, groupList, friendList, type, setModa
 			{type === "Group" && (
 				<TouchableHighlight
 					onPress={() => {
-						navigation.navigate('Chat', { "groupChatRoomId": data.item.group_chat_room_id, "directChatRoomId": null, "profileImage": data.item.group_image, "name": data.item.group_name })
+						navigation.navigate('Chat', { "groupChatRoomId": data.item.group_chat_room_id, "directChatRoomId": null, "profileImage": data.item.group_image, "name": data.item.group_name, "groupMemberUserId": data.item.group_member_user_id })
 					}}
 					style={styles.rowFrontStyle}
 					underlayColor={'#feffff'}

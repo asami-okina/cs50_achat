@@ -13,6 +13,7 @@ export function FriendList({
 	addFriendList,
 	deleteFriendList,
 	selectedFriendList,
+	groupMemberUserId,
 }) {
 	return (
 		<ScrollView>
@@ -21,7 +22,7 @@ export function FriendList({
 			<View style={styles.containerStyle}>
 				{listData.length !== 0 && listData !== undefined && listData.map((list) => {
 					return (
-						<FriendListItem list={list} key={list.key} addFriendList={addFriendList} deleteFriendList={deleteFriendList} selectedFriendList={selectedFriendList} />
+						<FriendListItem list={list} key={list.key} addFriendList={addFriendList} deleteFriendList={deleteFriendList} selectedFriendList={selectedFriendList} groupMemberUserId={groupMemberUserId} />
 					)
 				})
 				}

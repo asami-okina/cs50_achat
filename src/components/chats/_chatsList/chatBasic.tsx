@@ -56,11 +56,11 @@ export default function ChatBasic({ navigation, chatRoomList, setDeleteModalVisi
 		<>
 			{/* 友達の場合 */}
 			{data.item.friends_user_id && (
-				<ListItem navigation={navigation} profileImage={data.item.friends_profile_image} name={data.item.friends_nick_name} lastMessageCreationDate={data.item.friends_last_message_creation_date} lastMessageContent={data.item.friends_last_message_content} unreadCount={data.item.unread_count} groupChatRoomId={null} directChatRoomId={data.item.direct_chat_room_id} />
+				<ListItem navigation={navigation} profileImage={data.item.friends_profile_image} name={data.item.friends_nick_name} lastMessageCreationDate={data.item.friends_last_message_creation_date} lastMessageContent={data.item.friends_last_message_content} unreadCount={data.item.unread_count} groupChatRoomId={null} directChatRoomId={data.item.direct_chat_room_id} groupMemberUserId={null} />
 			)}
 			{/* グループの場合 */}
 			{data.item.group_chat_room_id && (
-				<ListItem navigation={navigation} profileImage={data.item.group_image} name={data.item.group_name} lastMessageCreationDate={data.item.group_last_message_creation_date} lastMessageContent={data.item.group_last_message_content} unreadCount={data.item.unread_count} groupChatRoomId={data.item.group_chat_room_id} directChatRoomId={null} />
+				<ListItem navigation={navigation} profileImage={data.item.group_image} name={data.item.group_name} lastMessageCreationDate={data.item.group_last_message_creation_date} lastMessageContent={data.item.group_last_message_content} unreadCount={data.item.unread_count} groupChatRoomId={data.item.group_chat_room_id} directChatRoomId={null} groupMemberUserId={data.item.group_member_user_id} />
 			)}
 		</>
 	);

@@ -102,7 +102,6 @@ let groups = [
 			"friend 5",
 			"friend 6"
 		]
-
 	},
 	{
 		"group_chat_room_id": "group 4",
@@ -574,6 +573,10 @@ function getChats() {
 			"group_image": require("../../assets/images/friend_profile_image_2.jpg"),
 			"group_last_message_content": temporaryMessages_group1[0].text ? temporaryMessages_group1[0].text : temporaryMessages_group1[0].image,
 			"group_last_message_creation_date": "2022/3/19",
+			"group_member_user_id": [
+				"friend 1",
+				"friend 2",
+			],
 			"unread_count": 2
 		},
 		{
@@ -582,6 +585,11 @@ function getChats() {
 			"group_image": require("../../assets/images/friend_profile_image_2.jpg"),
 			"group_last_message_content": temporaryMessages_group2[0].text ? temporaryMessages_group2[0].text : temporaryMessages_group2[0].image,
 			"group_last_message_creation_date": "2022/3/21",
+			"group_member_user_id": [
+				"friend 1",
+				"friend 2",
+				"friend 3"
+			],
 			"unread_count": 0
 		},
 		{
@@ -590,6 +598,11 @@ function getChats() {
 			"group_image": require("../../assets/images/friend_profile_image_2.jpg"),
 			"group_last_message_content": temporaryMessages_group3[0].text ? temporaryMessages_group3[0].text : temporaryMessages_group3[0].image,
 			"group_last_message_creation_date": "10:00",
+			"group_member_user_id": [
+				"friend 4",
+				"friend 5",
+				"friend 6"
+			],
 			"unread_count": 2
 		},
 		{
@@ -598,6 +611,10 @@ function getChats() {
 			"group_image": require("../../assets/images/friend_profile_image_2.jpg"),
 			"group_last_message_content": temporaryMessages_group4[0].text ? temporaryMessages_group4[0].text : temporaryMessages_group4[0].image,
 			"group_last_message_creation_date": "11:00",
+			"group_member_user_id": [
+				"friend 6",
+				"friend 7",
+			],
 			"unread_count": 2
 		}
 	]
@@ -1204,4 +1221,27 @@ export const handlers = [
 			ctx.status(200)
 		)
 	}),
+		// グループメンバーの追加
+		rest.post('https://a-chat/api/users/:userId/group-member', (req, res, ctx) => {
+			const { groupChatRoomId } = req.body
+			const { adduserIds } = req.body
+			let newData = []
+			for(let i = 0; i < groups.length; i++){
+				if (groups[i].group_chat_room_id === groupChatRoomId){
+					// 既存のグループメンバーユーザーID配列に新規に追加したメンバーのユーザーIDを追加
+					newData = groups[i].group_member_user_id.concat(adduserIds)
+					groups[i].group_member_user_id = newData
+				}
+			}
+
+			return res(
+				// 200のステータスコードで応答する
+				ctx.status(200),
+				ctx.json(
+					{
+						"adduserIds": adduserIds
+					}
+				),
+			)
+		}),
 ]

@@ -3,22 +3,24 @@ import React, { useEffect, useState } from 'react';
 import { View, SafeAreaView, KeyboardAvoidingView } from 'react-native';
 
 // components
-import { Footer } from '../components/common/footer'
-import { SmallButton } from '../components/common/smallButton';
-import { AddGroupTitle } from '../components/addGroup/addGroupTitle'
-import { FriendList } from '../components/addGroup/friendList'
-import { AddFriendList } from '../components/addGroup/addFriendList'
-import { TopAreaWrapper } from "../components/common/topAreaWrapper"
-import { SearchForm } from "../components/common/_topAreaContainer/searchForm"
+import { Footer } from '../common/footer'
+import { SmallButton } from '../common/smallButton';
+import { AddGroupTitle } from '../addGroup/addGroupTitle'
+import { FriendList } from '../addGroup/friendList'
+import { AddFriendList } from '../addGroup/addFriendList'
+import { TopAreaWrapper } from "../common/topAreaWrapper"
+import { SearchForm } from "../common/_topAreaContainer/searchForm"
 
 
 // constantsCommonStyles
-import { constantsCommonStyles } from '../constants/styles/commonStyles'
+import { constantsCommonStyles } from '../../constants/styles/commonStyles'
 
 // layouts
-import { IPHONE_X_BOTTOM_SPACE } from '../constants/layout'
+import { IPHONE_X_BOTTOM_SPACE } from '../../constants/layout'
 
-export function AddGroup({ navigation }) {
+export function AddGroupMember({ navigation, route }) {
+	// 引数を取得
+	const { groupChatRoomId, groupMemberUserId, image, name } = route.params
 	// ユーザーID(今後は認証から取得するようにする)
 	const userId = "asami11"
 
@@ -187,15 +189,15 @@ export function AddGroup({ navigation }) {
 					{/* 友達一覧 */}
 					{/* 検索中ではない場合 */}
 					{!isDuringSearch && (
-						<FriendList listData={beforeFriendListSearch} addFriendList={_addFriendList} deleteFriendList={_deleteFriendList} selectedFriendList={beforeSelectedFriendList} groupMemberUserId={[]} />
+						<FriendList listData={beforeFriendListSearch} addFriendList={_addFriendList} deleteFriendList={_deleteFriendList} selectedFriendList={beforeSelectedFriendList} groupMemberUserId={groupMemberUserId} />
 					)}
 					{/* 検索中の場合 */}
 					{isDuringSearch && (
-						<FriendList listData={afterFriendListSearch} addFriendList={_addFriendList} deleteFriendList={_deleteFriendList} selectedFriendList={afterSelectedFriendList} groupMemberUserId={[]} />
+						<FriendList listData={afterFriendListSearch} addFriendList={_addFriendList} deleteFriendList={_deleteFriendList} selectedFriendList={afterSelectedFriendList} groupMemberUserId={groupMemberUserId} />
 					)}
 				</View>
 				{/* 右下のボタン(Next) */}
-				<SmallButton text={"Next"} navigation={navigation} friendList={mergedSelectedFriendList} groupSetting={null} type={"addGroup"} friendListNames={null} alreadyFriend={null} addGroupMemberGroupChatRoomId={null} addGroupMemberGroupImage={null} addGroupMemberGroupName={null} />
+				<SmallButton text={"Add"} navigation={navigation} friendList={mergedSelectedFriendList} groupSetting={null} type={"addGroupMember"} friendListNames={null} alreadyFriend={null} addGroupMemberGroupChatRoomId={groupChatRoomId} addGroupMemberGroupImage={image} addGroupMemberGroupName={name} />
 				{/*フッター */}
 				<Footer navigation={navigation} />
 			</SafeAreaView>

@@ -21,6 +21,7 @@ import { AddFriend } from './src/screens/addFriend';
 import { Profile } from "./src/screens/profile"
 import { EditNickName } from "./src/components/profile/_profileInfo/editNickName"
 import { Chat } from "./src/screens/chat"
+import { AddGroupMember } from './src/components/chat/addGroupMember';
 
 // fonts
 import { useFonts, AlfaSlabOne_400Regular } from '@expo-google-fonts/alfa-slab-one';
@@ -77,6 +78,7 @@ function App() {
 					<Stack.Screen name="Profile" component={Profile} options={{ headerShown: false }} />
 					<Stack.Screen name="EditNickName" component={EditNickName} options={{ headerShown: false }} />
 					<Stack.Screen name="Chat" component={Chat} options={{ headerShown: false }} />
+					<Stack.Screen name="AddGroupMember" component={AddGroupMember} options={{ headerShown: false }} />
 				</Stack.Navigator>
 			</NavigationContainer>
 		);

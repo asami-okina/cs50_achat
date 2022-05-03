@@ -1,6 +1,6 @@
 // libs
-import React, { useEffect, useState, useCallback, useRef } from 'react';
-import { View, SafeAreaView, KeyboardAvoidingView, StyleSheet, Image, Text, Pressable, Platform } from 'react-native';
+import React, { useEffect, useState, useCallback } from 'react';
+import { View, SafeAreaView, KeyboardAvoidingView, StyleSheet, Image, Text, Pressable } from 'react-native';
 import { GiftedChat, Send, Bubble, InputToolbar, MessageText, LoadEarlier, Day, Time, Actions } from 'react-native-gifted-chat'
 import uuid from 'react-native-uuid';
 import { addMessages } from "../components/chat/messages"
@@ -10,7 +10,6 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import * as ImagePicker from 'expo-image-picker';
 import ImageModal from 'react-native-image-modal';
 import { useIsMounted } from "../hooks/useIsMounted"
-import CameraRoll from "@react-native-community/cameraroll";
 import * as Sharing from 'expo-sharing';
 import * as FileSystem from 'expo-file-system';
 
@@ -26,7 +25,8 @@ import { MAIN_NAVY_COLOR, MAIN_WHITE_COLOR, FOOTER_HEIGHT, CONTENT_WIDTH, SEARCH
 
 export function Chat({ navigation, route }) {
 	// 引数を取得
-	const { groupChatRoomId, directChatRoomId, profileImage, name } = route.params
+	// addGroupMemberName: 今後、○○がグループに参加しました。というメッセージに使用する
+	const { groupChatRoomId, directChatRoomId, profileImage, name, groupMemberUserId, addGroupMemberName } = route.params
 
 	const [loadEarlier, setLoadEarlier] = useState(false)
 	const [initialApiCount, setInitialApiCount] = useState(true)
@@ -403,7 +403,7 @@ export function Chat({ navigation, route }) {
 				<View style={constantsCommonStyles.topMarginViewStyle}></View>
 				{/* 丸みを帯びている白いトップ部分 */}
 				<TopAreaWrapper type={"Chats"}>
-					<MainTitle navigation={navigation} title={null} link={"Chats"} props={{ "profileImage": profileImage, "name": name }} />
+					<MainTitle navigation={navigation} title={null} link={"Chats"} props={{ "profileImage": profileImage, "name": name }} groupChatRoomId={groupChatRoomId} groupMemberUserId={groupMemberUserId} />
 				</TopAreaWrapper>
 				{/* トップ部分を除くメイン部分: iphoneXの場合は、底のマージンを考慮 */}
 				<View style={IPHONE_X_BOTTOM_SPACE === 0 ? constantsCommonStyles.mainContainerStyle : constantsCommonStyles.mainContainerIphoneXStyle}>
