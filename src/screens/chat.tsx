@@ -1,6 +1,6 @@
 // libs
 import React, { useEffect, useState, useCallback, useRef } from 'react';
-import { View, SafeAreaView, KeyboardAvoidingView, StyleSheet, Image, Text, Pressable,Platform } from 'react-native';
+import { View, SafeAreaView, KeyboardAvoidingView, StyleSheet, Image, Text, Pressable, Platform } from 'react-native';
 import { GiftedChat, Send, Bubble, InputToolbar, MessageText, LoadEarlier, Day, Time, Actions } from 'react-native-gifted-chat'
 import uuid from 'react-native-uuid';
 import { addMessages } from "../components/chat/messages"
@@ -22,7 +22,7 @@ import { MainTitle } from "../components/common/_topAreaContainer/mainTitle"
 import { constantsCommonStyles } from '../constants/styles/commonStyles'
 
 // layouts
-import { MAIN_NAVY_COLOR, MAIN_WHITE_COLOR, FOOTER_HEIGHT, CONTENT_WIDTH, SEARCH_FORM_BORDER_RADIUS, SEND_BUTTON_HEIGHT, STANDARD_FONT, MAIN_YELLOW_COLOR,IPHONE_X_BOTTOM_SPACE,OPERATION_SCREEN_HEIGHT_IPHONE_X } from '../constants/layout'
+import { MAIN_NAVY_COLOR, MAIN_WHITE_COLOR, FOOTER_HEIGHT, CONTENT_WIDTH, SEARCH_FORM_BORDER_RADIUS, SEND_BUTTON_HEIGHT, STANDARD_FONT, MAIN_YELLOW_COLOR, IPHONE_X_BOTTOM_SPACE, OPERATION_SCREEN_HEIGHT_IPHONE_X } from '../constants/layout'
 
 export function Chat({ navigation, route }) {
 	// 引数を取得
@@ -374,19 +374,19 @@ export function Chat({ navigation, route }) {
 			</View>
 		);
 	};
-		// 画像のシェア
-	  let _openShareDialogAsync = async (image) => {
-			if (!(await Sharing.isAvailableAsync())) {
-				alert(`Uh oh, sharing isn't available on your platform`);
-				return;
-			}
-
-			const result = await FileSystem.downloadAsync(
-				image,
-				FileSystem.documentDirectory + "asami.jpeg"
-			);
-			await Sharing.shareAsync(result.uri, { mimeType: result.mimeType, UTI: "public" + result.mimeType});
+	// 画像のシェア
+	let _openShareDialogAsync = async (image) => {
+		if (!(await Sharing.isAvailableAsync())) {
+			alert(`Uh oh, sharing isn't available on your platform`);
+			return;
 		}
+
+		const result = await FileSystem.downloadAsync(
+			image,
+			FileSystem.documentDirectory + "asami.jpeg"
+		);
+		await Sharing.shareAsync(result.uri, { mimeType: result.mimeType, UTI: "public" + result.mimeType });
+	}
 
 	useEffect(() => {
 		// チャットルームIDに紐づくチャット履歴の取得
