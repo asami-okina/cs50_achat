@@ -397,6 +397,9 @@ let temporaryMessages_friend10 = [
 	},
 ]
 
+let temporaryMessages_friend11 = [
+]
+
 let temporaryMessages_group1 = [
 	{
 		_id: 30,
@@ -542,7 +545,7 @@ function getChats() {
 			"direct_chat_room_id": "friend 1",
 			"friends_user_id": "friend 1",
 			"friends_nick_name": "friend 1",
-			"friends_profile_image": require("../../assets/images/friend_profile_image_2.jpg"),
+			"friends_profile_image": require("../../assets/images/friend_profile_image_1.jpg"),
 			"friends_last_message_content": temporaryMessages_friend1[0].text ? temporaryMessages_friend1[0].text : temporaryMessages_friend1[0].image,
 			"friends_last_message_creation_date": "2022/3/20",
 			"unread_count": 3
@@ -858,7 +861,7 @@ export const handlers = [
 		const { userId } = req.params
 
 		// 既に友達になっている場合
-		if (searchUserId === "aa") {
+		if (searchUserId === "9") {
 			return res(
 				ctx.status(400),
 				ctx.json(
@@ -895,9 +898,9 @@ export const handlers = [
 					{
 						"already_follow_requested": false,
 						"exist": true,
-						"friend_use_id": "friend 9",
+						"friend_use_id": "friend 11",
 						"friend_profile_image": require("../../assets/images/friend_profile_image_2.jpg"),
-						"friend_nickname": "asami9"
+						"friend_nickname": "asami11"
 					}
 				),
 			)
@@ -1053,6 +1056,14 @@ export const handlers = [
 					),
 				)
 			}
+			if (directChatRoomId === "friend 11") {
+				return res(
+					ctx.status(200),
+					ctx.json(
+						temporaryMessages_friend11
+					),
+				)
+			}
 
 		}
 		// グループチャットの場合
@@ -1136,25 +1147,28 @@ export const handlers = [
 			temporaryMessages_friend3 = [all, ...temporaryMessages_friend3]
 		}
 		if (directChatRoomId === "friend 4") {
-			temporaryMessages_friend4 = [all, ...temporaryMessages_friend3]
+			temporaryMessages_friend4 = [all, ...temporaryMessages_friend4]
 		}
 		if (directChatRoomId === "friend 5") {
-			temporaryMessages_friend5 = [all, ...temporaryMessages_friend3]
+			temporaryMessages_friend5 = [all, ...temporaryMessages_friend5]
 		}
 		if (directChatRoomId === "friend 6") {
-			temporaryMessages_friend6 = [all, ...temporaryMessages_friend3]
+			temporaryMessages_friend6 = [all, ...temporaryMessages_friend6]
 		}
 		if (directChatRoomId === "friend 7") {
-			temporaryMessages_friend7 = [all, ...temporaryMessages_friend3]
+			temporaryMessages_friend7 = [all, ...temporaryMessages_friend7]
 		}
 		if (directChatRoomId === "friend 8") {
-			temporaryMessages_friend8 = [all, ...temporaryMessages_friend3]
+			temporaryMessages_friend8 = [all, ...temporaryMessages_friend8]
 		}
 		if (directChatRoomId === "friend 9") {
-			temporaryMessages_friend9 = [all, ...temporaryMessages_friend3]
+			temporaryMessages_friend9 = [all, ...temporaryMessages_friend9]
 		}
 		if (directChatRoomId === "friend 10") {
-			temporaryMessages_friend10 = [all, ...temporaryMessages_friend3]
+			temporaryMessages_friend10 = [all, ...temporaryMessages_friend10]
+		}
+		if (directChatRoomId === "friend 11") {
+			temporaryMessages_friend11 = [all, ...temporaryMessages_friend11]
 		}
 		if (groupChatRoomId === "group 1") {
 			temporaryMessages_group1 = [all, ...temporaryMessages_group1]

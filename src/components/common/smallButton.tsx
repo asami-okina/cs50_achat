@@ -93,7 +93,10 @@ export function SmallButton({ text, navigation, friendList, groupSetting, type, 
 							}
 							if (type === "addFriend" && !alreadyFriend) {
 								// 友達追加API実行
-								_addFriend()
+								// 友だち追加画面から友達とのチャット２千位
+								_addFriend().then(() => {
+									navigation.navigate('Chat', { "groupChatRoomId": null, "directChatRoomId": "friend 11", "profileImage":require("../../../assets/images/friend_profile_image_2.jpg"), "name": friendList.friend_use_id })
+								})
 							}
 						}}
 					>
