@@ -1,7 +1,7 @@
 // libs
 import React, { useState, useEffect } from 'react';
 import { View, SafeAreaView, KeyboardAvoidingView } from 'react-native';
-import {API_SERVER_URL} from "../constants/api"
+import { API_SERVER_URL } from "../constants/api"
 
 // components
 import { AddGroupTitle } from '../components/addGroup/addGroupTitle'

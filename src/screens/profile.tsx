@@ -8,7 +8,7 @@ import { TopAreaWrapper } from "../components/common/topAreaWrapper"
 import { MainTitle } from "../components/common/_topAreaContainer/mainTitle"
 import { ProfileInfo } from "../components/profile/profileInfo"
 import { ProfileImage } from "../components/profile/profileImage"
-import {API_SERVER_URL} from "../constants/api"
+import { API_SERVER_URL } from "../constants/api"
 
 // constantsCommonStyles
 import { constantsCommonStyles } from '../constants/styles/commonStyles'
