@@ -10,6 +10,7 @@ import { ForgotPassword } from '../components/logIn/forgotPasseword';
 import { MailForm } from '../components/logIn/mailForm';
 import { PasswordForm } from '../components/logIn/passwordForm';
 import { TopAreaWrapper } from "../components/common/topAreaWrapper"
+import {API_SERVER_URL} from "../constants/api"
 
 // constantsCommonStyles
 import { constantsCommonStyles } from '../constants/styles/commonStyles'
@@ -38,7 +39,7 @@ export function LogIn({ navigation }) {
 				"mail": emailText,
 				"password": passwordText
 			}
-			const response = await fetch(`https://a-chat/api/login`, {
+			const response = await fetch(API_SERVER_URL + `/api/login`, {
 				method: "POST",
 				headers: {
 					"Content-Type": "application/json"

@@ -1,6 +1,7 @@
 // libs
 import React, { useState } from 'react';
 import { Text, View, Image, TextInput, Pressable } from 'react-native';
+import { API_SERVER_URL } from "../../constants/api"
 
 // components
 import { UserIdFormDescription } from './_description/userIdFormDescription';
@@ -57,7 +58,7 @@ export function UserIdForm({
 			const query_params = new URLSearchParams(params);
 
 			// APIリクエスト
-			const response = await fetch(`https://a-chat/api/signup?${query_params}`, {
+			const response = await fetch(API_SERVER_URL + `/api/signup?${query_params}`, {
 				method: "GET",
 				headers: {
 					"Content-Type": "application/json"

@@ -1,6 +1,7 @@
 // libs
 import React from 'react';
 import { View, StyleSheet, Text } from 'react-native';
+import { API_SERVER_URL } from "../../../../constants/api"
 
 // components
 import { Button } from "../../../common/button"
@@ -20,7 +21,7 @@ export function ButtonContainer({ navigation, nickName, setNickName, wordCount, 
 			const bodyData = {
 				"nickName": nickName,
 			}
-			const response = await fetch(`https://a-chat/api/users/${userId}/profile`, {
+			const response = await fetch(API_SERVER_URL + `/api/users/${userId}/profile`, {
 				method: "POST",
 				headers: {
 					"Content-Type": "application/json"

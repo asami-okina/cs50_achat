@@ -2,6 +2,7 @@
 import React from 'react';
 import { View, StyleSheet, Image, Pressable } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
+import { API_SERVER_URL } from "../../constants/api"
 
 // layouts
 import { MAIN_NAVY_COLOR, PROFILE_IMAGE_BORDER_RADIUS } from '../../constants/layout'
@@ -17,7 +18,7 @@ export function ProfileImage({ image, setImage }) {
 			const bodyData = {
 				"profileImage": newImageUri,
 			}
-			const response = await fetch(`https://a-chat/api/users/${userId}/profile`, {
+			const response = await fetch(API_SERVER_URL + `/api/users/${userId}/profile`, {
 				method: "POST",
 				headers: {
 					"Content-Type": "application/json"

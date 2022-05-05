@@ -1,6 +1,7 @@
 // libs
 import React, { useEffect, useState } from 'react';
 import { StyleSheet, TouchableOpacity, View, Text } from 'react-native';
+import { API_SERVER_URL } from "../../constants/api"
 
 // layouts
 import { MAIN_NAVY_COLOR, MAIN_WHITE_COLOR, ADD_BUTTON_SIZE, CONTENT_WIDTH, BUTTON_BORDER_RADIUS, MAIN_BLACK_COLOR, SMALL_BUTTON_WIDTH, MAIN_GRAY_COLOR } from '../../constants/layout'
@@ -28,7 +29,7 @@ export function SmallButton({ text, navigation, friendList, groupSetting, type, 
 				"groupName": groupSetting.groupName || friendListNames,
 				"groupMemberUserIds": groupMemberUserIds,
 			}
-			const response = await fetch(`https://a-chat/api/users/${userId}/groups`, {
+			const response = await fetch(API_SERVER_URL + `/api/users/${userId}/groups`, {
 				method: "POST",
 				headers: {
 					"Content-Type": "application/json"
@@ -53,7 +54,7 @@ export function SmallButton({ text, navigation, friendList, groupSetting, type, 
 				"friendUserId": friendList.friend_use_id,
 				"ownUserId": userId,
 			}
-			const response = await fetch(`https://a-chat/api/users/${userId}/friends`, {
+			const response = await fetch(API_SERVER_URL + `/api/users/${userId}/friends`, {
 				method: "POST",
 				headers: {
 					"Content-Type": "application/json"
@@ -86,7 +87,7 @@ export function SmallButton({ text, navigation, friendList, groupSetting, type, 
 				"groupChatRoomId": addGroupMemberGroupChatRoomId,
 				"adduserIds": newDataUserIds
 			}
-			const response = await fetch(`https://a-chat/api/users/${userId}/group-member`, {
+			const response = await fetch(API_SERVER_URL + `/api/users/${userId}/group-member`, {
 				method: "POST",
 				headers: {
 					"Content-Type": "application/json"

@@ -2,6 +2,7 @@
 import React, { useEffect, useState } from 'react';
 import { StyleSheet, Text, TouchableOpacity, TouchableHighlight, View, Image } from 'react-native';
 import { SwipeListView } from 'react-native-swipe-list-view';
+import {API_SERVER_URL} from '../../../../constants/api'
 
 // layouts
 import { CONTENT_WIDTH, PROFILE_IMAGE_SIZE, STANDARD_FONT, MAIN_WHITE_COLOR, MAIN_PINK_COLOR, PROFILE_IMAGE_BORDER_RADIUS, MAIN_NAVY_COLOR } from '../../../../constants/layout'
@@ -149,7 +150,7 @@ export default function Basic({ navigation, groupList, friendList, type, setModa
 			const bodyData = {
 				"groupChatRoomId": groupChatRoomId
 			}
-			const response = await fetch(`https://a-chat/api/users/${userId}/groups`, {
+			const response = await fetch(API_SERVER_URL + `/api/users/${userId}/groups`, {
 				method: "DELETE",
 				headers: {
 					"Content-Type": "application/json"

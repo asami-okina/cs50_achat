@@ -11,6 +11,7 @@ import { AddButton } from '../components/common/addButton'
 import { ConfirmModal } from '../components/common/confirmModal'
 import { TopAreaWrapper } from "../components/common/topAreaWrapper"
 import { SearchForm } from "../components/common/_topAreaContainer/searchForm"
+import { API_SERVER_URL } from "../constants/api"
 
 // constantsCommonStyles
 import { constantsCommonStyles } from '../constants/styles/commonStyles'
@@ -63,7 +64,7 @@ export function Home({ navigation }) {
 			const query_params = new URLSearchParams(params_search);
 
 			// APIリクエスト
-			const response = await fetch(`https://a-chat/api/users/${userId}/home?${query_params}`, {
+			const response = await fetch(API_SERVER_URL + `/api/users/${userId}/home?${query_params}`, {
 				method: "GET",
 				headers: {
 					"Content-Type": "application/json"
@@ -84,7 +85,7 @@ export function Home({ navigation }) {
 	async function _fetchGroupList(userId) {
 		try {
 			// APIリクエスト
-			const response = await fetch(`https://a-chat/api/users/${userId}/groups`, {
+			const response = await fetch(API_SERVER_URL + `/api/users/${userId}/groups`, {
 				method: "GET",
 				headers: {
 					"Content-Type": "application/json"
@@ -102,7 +103,7 @@ export function Home({ navigation }) {
 	async function _fetchGroupCount(userId) {
 		try {
 			// APIリクエスト
-			const response = await fetch(`https://a-chat/api/users/${userId}/group-count`, {
+			const response = await fetch(API_SERVER_URL + `/api/users/${userId}/group-count`, {
 				method: "GET",
 				headers: {
 					"Content-Type": "application/json"
@@ -120,7 +121,7 @@ export function Home({ navigation }) {
 	async function _fetchFriendList(userId) {
 		try {
 			// APIリクエスト
-			const response = await fetch(`https://a-chat/api/users/${userId}/friends`, {
+			const response = await fetch(API_SERVER_URL + `/api/users/${userId}/friends`, {
 				method: "GET",
 				headers: {
 					"Content-Type": "application/json"
@@ -138,7 +139,7 @@ export function Home({ navigation }) {
 	async function _fetchFriendCount(userId) {
 		try {
 			// APIリクエスト
-			const response = await fetch(`https://a-chat/api/users/${userId}/friend-count`, {
+			const response = await fetch(API_SERVER_URL + `/api/users/${userId}/friend-count`, {
 				method: "GET",
 				headers: {
 					"Content-Type": "application/json"

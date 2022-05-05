@@ -2,6 +2,8 @@
 import React, { useEffect, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { SwipeListView } from 'react-native-swipe-list-view';
+import { API_SERVER_URL } from "../../../constants/api"
+
 // components
 import { ListItem } from "./_chatBasic/listItem"
 import { HiddenListItem } from "./_chatBasic/hiddenListItem"
@@ -80,7 +82,7 @@ export default function ChatBasic({ navigation, chatRoomList, setDeleteModalVisi
 				"groupChatRoomId": groupChatRoomId,
 				"type": clickedType
 			}
-			const response = await fetch(`https://a-chat/api/users/${userId}/chatRoom`, {
+			const response = await fetch(API_SERVER_URL + `/api/users/${userId}/chatRoom`, {
 				method: "POST",
 				headers: {
 					"Content-Type": "application/json"

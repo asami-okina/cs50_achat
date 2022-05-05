@@ -12,6 +12,7 @@ import ImageModal from 'react-native-image-modal';
 import { useIsMounted } from "../hooks/useIsMounted"
 import * as Sharing from 'expo-sharing';
 import * as FileSystem from 'expo-file-system';
+import { API_SERVER_URL } from "../constants/api"
 
 // components
 import { TopAreaWrapper } from "../components/common/topAreaWrapper"
@@ -49,7 +50,7 @@ export function Chat({ navigation, route }) {
 			const params = { "groupChatRoomId": groupChatRoomId, "directChatRoomId": directChatRoomId }
 			const query_params = new URLSearchParams(params);
 			// APIリクエスト
-			const response = await fetch(`https://a-chat/api/users/${userId}/message?${query_params}`, {
+			const response = await fetch(API_SERVER_URL + `/api/users/${userId}/message?${query_params}`, {
 				method: "GET",
 				headers: {
 					"Content-Type": "application/json"
@@ -75,7 +76,7 @@ export function Chat({ navigation, route }) {
 				"created_at": messages[0]["createdAt"],
 				"all": messages[0]
 			}
-			const response = await fetch(`https://a-chat/api/users/:userId/message`, {
+			const response = await fetch(API_SERVER_URL + `/api/users/:userId/message`, {
 				method: "POST",
 				headers: {
 					"Content-Type": "application/json"
@@ -96,7 +97,7 @@ export function Chat({ navigation, route }) {
 				"groupChatRoomId": groupChatRoomId,
 				"lasReadTime": new Date(),
 			}
-			const response = await fetch(`https://a-chat/api/users/:userId/lastReadTime`, {
+			const response = await fetch(API_SERVER_URL + `/api/users/:userId/lastReadTime`, {
 				method: "POST",
 				headers: {
 					"Content-Type": "application/json"
@@ -403,7 +404,7 @@ export function Chat({ navigation, route }) {
 			const params = { "friendUserId": friendUserId }
 			const query_params = new URLSearchParams(params);
 			// APIリクエスト
-			const response = await fetch(`https://a-chat/api/users/${userId}/friend?${query_params}`, {
+			const response = await fetch(API_SERVER_URL + `/api/users/${userId}/friend?${query_params}`, {
 				method: "GET",
 				headers: {
 					"Content-Type": "application/json"

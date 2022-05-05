@@ -1,6 +1,7 @@
 // libs
 import React, { useEffect, useState } from 'react';
 import { View, SafeAreaView, KeyboardAvoidingView } from 'react-native';
+import {API_SERVER_URL} from "../constants/api"
 
 // components
 import { Footer } from '../components/common/footer'
@@ -50,7 +51,7 @@ export function AddGroup({ navigation }) {
 			const params = { "search": searchText }
 			const query_params = new URLSearchParams(params);
 			// APIリクエスト
-			const response = await fetch(`https://a-chat/api/users/${userId}/home?${query_params}`, {
+			const response = await fetch(API_SERVER_URL + `/api/users/${userId}/home?${query_params}`, {
 				method: "GET",
 				headers: {
 					"Content-Type": "application/json"
@@ -69,7 +70,7 @@ export function AddGroup({ navigation }) {
 	async function _fetchFriendList(userId) {
 		try {
 			// APIリクエスト
-			const response = await fetch(`https://a-chat/api/users/${userId}/friends`, {
+			const response = await fetch(API_SERVER_URL + `/api/users/${userId}/friends`, {
 				method: "GET",
 				headers: {
 					"Content-Type": "application/json"

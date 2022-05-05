@@ -2,6 +2,7 @@
 // libs
 import React, { useState, useEffect } from 'react';
 import { Text, StyleSheet, TouchableOpacity } from 'react-native';
+import { API_SERVER_URL } from "../../constants/api"
 
 // layouts
 import { MAIN_NAVY_COLOR, MAIN_WHITE_COLOR, BUTTON_HEIGHT, CONTENT_WIDTH, STANDARD_FONT, BUTTON_TEXT_SIZE, MAIN_GRAY_COLOR, BUTTON_BORDER_RADIUS } from '../../constants/layout'
@@ -27,7 +28,7 @@ export function Button({
 				"friendUserId": propsList.friendUserId,
 				"ownUserId": userId,
 			}
-			const response = await fetch(`https://a-chat/api/users/${userId}/friends`, {
+			const response = await fetch(API_SERVER_URL + `/api/users/${userId}/friends`, {
 				method: "POST",
 				headers: {
 					"Content-Type": "application/json"

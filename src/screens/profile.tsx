@@ -8,6 +8,7 @@ import { TopAreaWrapper } from "../components/common/topAreaWrapper"
 import { MainTitle } from "../components/common/_topAreaContainer/mainTitle"
 import { ProfileInfo } from "../components/profile/profileInfo"
 import { ProfileImage } from "../components/profile/profileImage"
+import {API_SERVER_URL} from "../constants/api"
 
 // constantsCommonStyles
 import { constantsCommonStyles } from '../constants/styles/commonStyles'
@@ -32,7 +33,7 @@ export function Profile({ navigation }) {
 	async function _fetchProfileByUserId() {
 		try {
 			// APIリクエスト
-			const response = await fetch(`https://a-chat/api/users/${userId}/profile`, {
+			const response = await fetch(API_SERVER_URL + `/api/users/${userId}/profile`, {
 				method: "GET",
 				headers: {
 					"Content-Type": "application/json"

@@ -1,6 +1,7 @@
 // libs
 import React, { useState, useEffect } from 'react';
 import { View, SafeAreaView, KeyboardAvoidingView } from 'react-native';
+import {API_SERVER_URL} from "../constants/api"
 
 // components
 import { AddGroupTitle } from '../components/addGroup/addGroupTitle'
@@ -47,7 +48,7 @@ export function AddGroupSetting({ route, navigation }) {
 	async function _fetchProfileByUserId(userId) {
 		try {
 			// APIリクエスト
-			const response = await fetch(`https://a-chat/api/users/${userId}/profile`, {
+			const response = await fetch(API_SERVER_URL + `/api/users/${userId}/profile`, {
 				method: "GET",
 				headers: {
 					"Content-Type": "application/json"

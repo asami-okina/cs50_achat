@@ -1,7 +1,7 @@
 // libs
 import React, { useState } from 'react';
 import { View, Text, StyleSheet, Image, Switch, Pressable } from 'react-native';
-
+import { API_SERVER_URL } from "../../constants/api"
 // layouts
 import { TAB_TITLE_TEXT_SIZE, TAB_FONT, MAIN_NAVY_COLOR, CONTENT_WIDTH, STANDARD_FONT, MAIN_WHITE_COLOR, MAIN_GRAY_COLOR, MAIN_YELLOW_GREEN } from '../../constants/layout'
 
@@ -25,7 +25,7 @@ export function ProfileInfo({ navigation, nickName, setNickName, isEnabled, setI
 				"isSetSearchFlag": true,
 				"searchFlag": newIsEnabled,
 			}
-			const response = await fetch(`https://a-chat/api/users/${userId}/profile`, {
+			const response = await fetch(API_SERVER_URL + `/api/users/${userId}/profile`, {
 				method: "POST",
 				headers: {
 					"Content-Type": "application/json"

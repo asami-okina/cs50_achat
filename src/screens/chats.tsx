@@ -9,6 +9,7 @@ import { ConfirmModal } from '../components/common/confirmModal'
 import { TopAreaWrapper } from "../components/common/topAreaWrapper"
 import { SearchForm } from "../components/common/_topAreaContainer/searchForm"
 import { ChatsList } from "../components/chats/chatsList";
+import { API_SERVER_URL } from "../constants/api"
 
 // constantsCommonStyles
 import { constantsCommonStyles } from '../constants/styles/commonStyles'
@@ -59,7 +60,7 @@ export function Chats({ navigation }) {
 			const query_params = new URLSearchParams(params_search);
 
 			// APIリクエスト
-			const response = await fetch(`https://a-chat/api/users/${userId}/chatRoom?${query_params}`, {
+			const response = await fetch(API_SERVER_URL + `/api/users/${userId}/chatRoom?${query_params}`, {
 				method: "GET",
 				headers: {
 					"Content-Type": "application/json"
@@ -79,7 +80,7 @@ export function Chats({ navigation }) {
 	async function _fetchChatsList() {
 		try {
 			// APIリクエスト
-			const response = await fetch(`https://a-chat/api/users/${userId}/chatRoom`, {
+			const response = await fetch(API_SERVER_URL + `/api/users/${userId}/chatRoom`, {
 				method: "GET",
 				headers: {
 					"Content-Type": "application/json"
