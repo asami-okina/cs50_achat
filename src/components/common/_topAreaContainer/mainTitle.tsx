@@ -24,7 +24,7 @@ export function MainTitle({ navigation, title, link, props, groupChatRoomId, gro
 						}
 					</View>
 					<View style={styles.nameAndAddCiecleContainerStyle}>
-						<Text style={styles.nameStyle}>{props.name}</Text>
+						<Text style={styles.nameStyle} numberOfLines={1} ellipsizeMode="tail">{props.name}</Text>
 						{groupChatRoomId && (
 							<Pressable onPress={() => {
 								navigation.navigate('AddGroupMember', { groupChatRoomId: groupChatRoomId, groupMemberUserId: groupMemberUserId, image: props.profileImage, name: props.name })
@@ -82,5 +82,6 @@ const styles = StyleSheet.create({
 	},
 	nameStyle: {
 		paddingLeft: 12,
+		maxWidth: 220,
 	}
 })
