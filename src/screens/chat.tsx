@@ -16,7 +16,6 @@ import * as FileSystem from 'expo-file-system';
 // components
 import { TopAreaWrapper } from "../components/common/topAreaWrapper"
 import { MainTitle } from "../components/common/_topAreaContainer/mainTitle"
-import { AlreadyFriendModal } from '../components/chat/_clickedFriendIcon/alreadyFriendModal';
 
 // constantsCommonStyles
 import { constantsCommonStyles } from '../constants/styles/commonStyles'
@@ -390,33 +389,43 @@ export function Chat({ navigation, route }) {
 
 	// グループトーク画面で、クリックした人とのdirectChatRoomId(ない場合は、まだ友達ではない)
 	const [selectedFriendDirectChatRoomId, setSelectedFriendDirectChatRoomId] = useState(null)
+	// グループトーク画面でクリックした人と既に友達かどうか
+	const [selectedUserAlreadyFriend, setSelectedUserAlreadyFriend] = useState(false)
+	// グループトーク画面でユーザーアイコンをクリックしたかどうか
+	const [clickedUserIcon, setClickedUserIcon] = useState(false)
+	// グループトーク画面でクリックした人のuser情報
 	const [selectedUserInfo, setSelectedUserInfo] = useState(null)
 
-		// 該当友達とのdirectChatRoomIdを取得
-		async function fetchDirectChatRoomIdByUserId(friendUserId) {
-			try {
-				// paramsを生成
-				const params = { "friendUserId": friendUserId }
-				const query_params = new URLSearchParams(params);
-				// APIリクエスト
-				const response = await fetch(`https://a-chat/api/users/${userId}/friend?${query_params}`, {
-					method: "GET",
-					headers: {
-						"Content-Type": "application/json"
-					},
-				})
-				// レスポンスをJSONにする
-				const parse_response = await response.json()
-				setSelectedFriendDirectChatRoomId(parse_response.directChatRoomId)
-			} catch (e) {
-				console.error(e)
-			}
+	// 該当友達とのdirectChatRoomIdを取得
+	async function fetchDirectChatRoomIdByUserId(friendUserId) {
+		try {
+			// paramsを生成
+			const params = { "friendUserId": friendUserId }
+			const query_params = new URLSearchParams(params);
+			// APIリクエスト
+			const response = await fetch(`https://a-chat/api/users/${userId}/friend?${query_params}`, {
+				method: "GET",
+				headers: {
+					"Content-Type": "application/json"
+				},
+			})
+			// レスポンスをJSONにする
+			const parse_response = await response.json()
+			// グループトーク画面でクリックした人と既に友達かどうか
+			setSelectedUserAlreadyFriend(parse_response.alreadyFriend)
+			// グループトーク画面で、クリックした人とのdirectChatRoomId(ない場合は、まだ友達ではない)
+			setSelectedFriendDirectChatRoomId(parse_response.directChatRoomId)
+			// グループトーク画面でユーザーアイコンをクリックしたかどうか
+			setClickedUserIcon(true)
+		} catch (e) {
+			console.error(e)
 		}
+	}
 
 	// ユーザーアイコンをクリックした場合
 	const _onPressAvatar = (user) => {
 		// グループチャットの場合のみ、ユーザーアイコンをクリックできるようにする
-		if(groupChatRoomId !== null || groupChatRoomId != undefined){
+		if (groupChatRoomId !== null || groupChatRoomId != undefined) {
 			setSelectedUserInfo(user)
 			// クリックした人と既に友達かどうかをチェック
 			const friendUserId = user._id
@@ -425,6 +434,9 @@ export function Chat({ navigation, route }) {
 	}
 
 	useEffect(() => {
+		console.log('きた')
+		console.log('directChatRoomId',directChatRoomId)
+		console.log('groupChatRoomId',groupChatRoomId)
 		// チャットルームIDに紐づくチャット履歴の取得
 		_fetchChatByChatRoomId()
 		// 最終既読日時の更新
@@ -432,11 +444,19 @@ export function Chat({ navigation, route }) {
 	}, [directChatRoomId, groupChatRoomId])
 
 	useEffect(() => {
-		// 既に友達の場合、Talkが選べるモーダルを表示
-		if(selectedFriendDirectChatRoomId){
-			navigation.navigate('AlreadyFriendModal', { "user": selectedUserInfo, "groupChatRoomId": groupChatRoomId, "groupImage": image, "groupName": name, "directChatRoomId":selectedFriendDirectChatRoomId })
+		// グループトーク画面でユーザーアイコンをクリックしたかどうかをfalseに戻す
+		setClickedUserIcon(false)
+		// グループトーク画面でユーザーアイコンをクリックした場合
+		if (clickedUserIcon) {
+			// 既に友達の場合、Talkが選べるモーダルを表示
+			if (selectedFriendDirectChatRoomId && selectedUserAlreadyFriend) {
+				navigation.navigate('AlreadyFriendModal', { "user": selectedUserInfo, "groupChatRoomId": groupChatRoomId, "groupImage": image, "groupName": name, "directChatRoomId": selectedFriendDirectChatRoomId })
+			}
+			if (!selectedUserAlreadyFriend) {
+				navigation.navigate('NotFriendModal', { "user": selectedUserInfo, "groupChatRoomId": groupChatRoomId, "groupImage": image, "groupName": name, "directChatRoomId": null })
+			}
 		}
-	}, [selectedFriendDirectChatRoomId])
+	}, [clickedUserIcon])
 
 
 	return (

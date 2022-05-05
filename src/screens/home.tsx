@@ -1,6 +1,7 @@
 // libs
 import React, { useEffect, useState } from 'react';
 import { View, SafeAreaView, KeyboardAvoidingView } from 'react-native';
+import { useIsFocused } from '@react-navigation/native'
 
 // components
 import { Footer } from '../components/common/footer'
@@ -50,6 +51,9 @@ export function Home({ navigation }) {
 	const [openGroupList, setOpenGroupList] = useState(false)
 	// 所属グループ数
 	const [groupCount, setGroupCount] = useState(0)
+
+	// 現在画面がフォーカスされているかをbooleanで保持
+	const isFocused = useIsFocused()
 
 	// ニックネームまたはグループ名の検索でヒットするユーザーまたはグループ情報の取得
 	async function _searchName(searchText) {
@@ -159,7 +163,7 @@ export function Home({ navigation }) {
 			// 友達数を取得
 			_fetchFriendCount(userId)
 		}
-	}, [])
+	}, [isFocused])
 
 	// 検索フォームのラベル化
 	let textInputSearch;

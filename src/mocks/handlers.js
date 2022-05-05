@@ -427,11 +427,23 @@ let temporaryMessages_group1 = [
 		sent: true,
 		received: true
 	},
+	{
+		_id: 32,
+		text: 'we are not friend',
+		createdAt: "2022-04-27T02:08:10.189Z",
+		user: {
+			_id: "friend 20",
+			name: "friend 20",
+			avatar: require("../../assets/images/friend_profile_image_20.jpg"),
+		},
+		sent: true,
+		received: true
+	},
 ]
 
 let temporaryMessages_group2 = [
 	{
-		_id: 32,
+		_id: 33,
 		createdAt: "2022-04-27T02:10:29.189Z",
 		user: {
 			_id: "friend 1",
@@ -443,7 +455,7 @@ let temporaryMessages_group2 = [
 		image: 'https://placeimg.com/140/140/any',
 	},
 	{
-		_id: 33,
+		_id: 34,
 		text: "group 2",
 		createdAt: "2022-04-27T02:08:10.189Z",
 		user: {
@@ -455,7 +467,7 @@ let temporaryMessages_group2 = [
 		received: true
 	},
 	{
-		_id: 34,
+		_id: 35,
 		text: "group 3",
 		createdAt: "2022-04-27T02:08:10.189Z",
 		user: {
@@ -470,7 +482,7 @@ let temporaryMessages_group2 = [
 
 let temporaryMessages_group3 = [
 	{
-		_id: 35,
+		_id: 36,
 		createdAt: "2022-04-27T02:10:29.189Z",
 		user: {
 			_id: "friend 4",
@@ -482,7 +494,7 @@ let temporaryMessages_group3 = [
 		image: 'https://placeimg.com/140/140/any',
 	},
 	{
-		_id: 36,
+		_id: 37,
 		text: 'Hello developer',
 		createdAt: "2022-04-27T02:08:10.189Z",
 		user: {
@@ -494,7 +506,7 @@ let temporaryMessages_group3 = [
 		received: true
 	},
 	{
-		_id: 37,
+		_id: 38,
 		text: "friend 6",
 		createdAt: "2022-04-27T02:08:10.189Z",
 		user: {
@@ -509,7 +521,7 @@ let temporaryMessages_group3 = [
 
 let temporaryMessages_group4 = [
 	{
-		_id: 38,
+		_id: 39,
 		createdAt: "2022-04-27T02:10:29.189Z",
 		user: {
 			_id: "friend 6",
@@ -521,7 +533,7 @@ let temporaryMessages_group4 = [
 		image: 'https://placeimg.com/140/140/any',
 	},
 	{
-		_id: 39,
+		_id: 40,
 		text: 'Hello developer',
 		createdAt: "2022-04-27T02:08:10.189Z",
 		user: {
@@ -536,7 +548,7 @@ let temporaryMessages_group4 = [
 
 let temporaryMessages_group5 = [
 	{
-		_id: 40,
+		_id: 41,
 		createdAt: "2022-04-27T02:10:29.189Z",
 		user: {
 			_id: "friend 7",
@@ -548,7 +560,7 @@ let temporaryMessages_group5 = [
 		image: 'https://placeimg.com/140/140/any',
 	},
 	{
-		_id: 41,
+		_id: 42,
 		text: 'Hello developer',
 		createdAt: "2022-04-27T02:08:10.189Z",
 		user: {
@@ -560,7 +572,7 @@ let temporaryMessages_group5 = [
 		received: true
 	},
 	{
-		_id: 42,
+		_id: 43,
 		text: 'Hello developer',
 		createdAt: "2022-04-27T02:08:10.189Z",
 		user: {
@@ -843,9 +855,24 @@ export const handlers = [
 	rest.post('https://a-chat/api/users/:userId/friends', (req, res, ctx) => {
 		const { friendUserId } = req.body
 		const { ownUserId } = req.body
+		// mock用
+		friends.push(
+			{
+				"direct_chat_room_id": "friend 11",
+				"friend_use_id": "friend 11",
+				"friend_profile_image": require("../../assets/images/friend_profile_image_11.jpg"),
+				"friend_nickname": "friend 11"
+			}
+		)
 		return res(
 			// 200のステータスコードで応答する
-			ctx.status(200)
+			ctx.status(200),
+			ctx.json({
+				"direct_chat_room_id": "friend 11",
+				"friend_use_id": "friend 11",
+				"friend_profile_image": require("../../assets/images/friend_profile_image_11.jpg"),
+				"friend_nickname": "friend 11"
+			})
 		)
 	}),
 	// ユーザーIDに紐づくニックネーム、プロフィール画像の取得
@@ -956,7 +983,7 @@ export const handlers = [
 						"exist": true,
 						"friend_use_id": "friend 11",
 						"friend_profile_image": require("../../assets/images/friend_profile_image_11.jpg"),
-						"friend_nickname": "asami11"
+						"friend_nickname": "friend 11"
 					}
 				),
 			)
@@ -1295,11 +1322,21 @@ export const handlers = [
 					ctx.status(200),
 					ctx.json(
 						{
-							"directChatRoomId": friends[i].direct_chat_room_id
+							"directChatRoomId": friends[i].direct_chat_room_id,
+							"alreadyFriend": true
 						}
 					),
 				)
 		}
+		return res(
+			ctx.status(200),
+			ctx.json(
+				{
+					"directChatRoomId": null,
+					"alreadyFriend": false
+				}
+			),
+		)
 	}),
 ]
 

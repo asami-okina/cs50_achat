@@ -1,6 +1,6 @@
 
 // libs
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Text, StyleSheet, TouchableOpacity } from 'react-native';
 
 // layouts
@@ -14,6 +14,41 @@ export function Button({
 	scene,
 	propsList
 }) {
+	// ユーザーID(今後は認証から取得するようにする)
+	const userId = "asami11"
+	// 友達追加したユーザーの情報
+	const [friendInfo, setFriendInfo] = useState(null)
+
+	// 友達追加
+	async function _addFriend() {
+		try {
+			// APIリクエスト
+			const bodyData = {
+				"friendUserId": propsList.friendUserId,
+				"ownUserId": userId,
+			}
+			const response = await fetch(`https://a-chat/api/users/${userId}/friends`, {
+				method: "POST",
+				headers: {
+					"Content-Type": "application/json"
+				},
+				body: JSON.stringify(bodyData),
+			})
+			// レスポンスをJSONにする
+			const parse_response = await response.json()
+			setFriendInfo(parse_response)
+			// 友達チャットに遷移
+		} catch (e) {
+			console.error(e)
+		}
+	}
+
+	// 友達追加されたら、チャット画面に遷移
+	useEffect(() => {
+		if (friendInfo) {
+			navigation.navigate('Chat', { "groupChatRoomId": null, "directChatRoomId": friendInfo.direct_chat_room_id, "profileImage": friendInfo.friend_profile_image, "name": friendInfo.friend_nickname })
+		}
+	}, [friendInfo])
 	return (
 		<>
 			{
@@ -38,8 +73,14 @@ export function Button({
 								propsList._updateNickName()
 								navigation.navigate(link)
 							}
+							// グループチャット画面で既に友達であるユーザーアイコンをクリックした場合、チャット画面２千位
 							if (enable && scene === "alreadyFriendModal") {
 								navigation.navigate('Chat', { "groupChatRoomId": null, "directChatRoomId": propsList.directChatRoomId, "profileImage": propsList.friendImage, "name": propsList.friendNickName, "groupMemberUserId": null })
+							}
+							// グループチャット画面で友達ではないユーザーアイコンをクリックした場合、友だち追加する
+							if (enable && scene === "notFriendModal") {
+								// 友達追加
+								_addFriend()
 							}
 							if (enable && link && scene !== "ProfileSettingNickName") {
 								navigation.navigate(link)

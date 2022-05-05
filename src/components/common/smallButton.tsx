@@ -13,6 +13,12 @@ export function SmallButton({ text, navigation, friendList, groupSetting, type, 
 
 	const [groupChatRoomId, setGroupChatRoomId] = useState('')
 
+	// グループに追加したメンバーの名前の配列
+	const [addGroupMemberName, setAddGroupMemberName] = useState([])
+
+	// 友達追加したユーザーの情報
+	const [friendInfo, setFriendInfo] = useState(null)
+
 	// グループ追加
 	async function _addGroup() {
 		try {
@@ -54,13 +60,15 @@ export function SmallButton({ text, navigation, friendList, groupSetting, type, 
 				},
 				body: JSON.stringify(bodyData),
 			})
+			// レスポンスをJSONにする
+			const parse_response = await response.json()
+			setFriendInfo(parse_response)
 			// 友達チャットに遷移
 		} catch (e) {
 			console.error(e)
 		}
 	}
 
-	const [addGroupMemberName, setAddGroupMemberName] = useState([])
 	// グループメンバーの追加
 	async function _addGroupMember() {
 		try {
@@ -113,6 +121,13 @@ export function SmallButton({ text, navigation, friendList, groupSetting, type, 
 		}
 	}, [addGroupMemberName])
 
+	// 友達追加されたら、チャット画面に遷移
+	useEffect(() => {
+		if (friendInfo) {
+			navigation.navigate('Chat', { "groupChatRoomId": null, "directChatRoomId": friendInfo.direct_chat_room_id, "profileImage": friendInfo.friend_profile_image, "name": friendInfo.friend_nickname })
+		}
+	}, [friendInfo])
+
 	return (
 		<View style={styles.boxStyle}>
 			<View style={styles.wrapperStyle}>
@@ -135,9 +150,7 @@ export function SmallButton({ text, navigation, friendList, groupSetting, type, 
 							if (type === "addFriend" && !alreadyFriend) {
 								// 友達追加API実行
 								// 友だち追加画面から友達とのチャットに遷移
-								_addFriend().then(() => {
-									navigation.navigate('Chat', { "groupChatRoomId": null, "directChatRoomId": "friend 11", "profileImage": require("../../../assets/images/friend_profile_image_2.jpg"), "name": friendList.friend_use_id })
-								})
+								_addFriend()
 							}
 							if (type === "addGroupMember") {
 								// グループメンバーの追加
