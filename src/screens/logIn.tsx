@@ -94,7 +94,7 @@ export function LogIn({ navigation }) {
 						setOnFocusInputMailOrPasseword={setOnFocusInputMailOrPasseword}
 					/>
 					{/* パスワードを忘れた場合 */}
-					<ForgotPassword />
+					{/* <ForgotPassword /> */}
 					{/* 画面下 */}
 					<View style={constantsCommonStyles.bottomStyleByWelcomeAndSignUpAndLogin}>
 						<Button navigation={navigation} link={'Home'} buttonText={'Log In'} scene={'LogIn'} propsList={{ 'emailText': emailText, 'passwordText': passwordText, 'executedLoginAuthentication': executedLoginAuthentication, 'onFocusInputMailOrPasseword': onFocusInputMailOrPasseword, 'onPressFunction': _loginAuthentication }} enable={false} />

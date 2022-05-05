@@ -55,7 +55,7 @@ export function PasswordForm({
 								}}
 							/>
 							<Pressable onPress={handlePasswordVisibility}>
-							<MaterialCommunityIcons name={rightIcon === "eye" ? "eye" : "eye-off"} size={22} color={MAIN_GRAY_COLOR} style={searchStyles.passwordIconStyle} />
+								<MaterialCommunityIcons name={rightIcon === "eye" ? "eye" : "eye-off"} size={22} color={MAIN_GRAY_COLOR} style={searchStyles.passwordIconStyle} />
 							</Pressable>
 						</View>
 					</Pressable>
