@@ -16,6 +16,7 @@ import * as FileSystem from 'expo-file-system';
 // components
 import { TopAreaWrapper } from "../components/common/topAreaWrapper"
 import { MainTitle } from "../components/common/_topAreaContainer/mainTitle"
+import { AlreadyFriendModal } from '../components/chat/_clickedFriendIcon/alreadyFriendModal';
 
 // constantsCommonStyles
 import { constantsCommonStyles } from '../constants/styles/commonStyles'
@@ -27,7 +28,6 @@ export function Chat({ navigation, route }) {
 	// 引数を取得
 	// addGroupMemberName: 今後、○○がグループに参加しました。というメッセージに使用する
 	const { groupChatRoomId, directChatRoomId, profileImage, name, groupMemberUserId, addGroupMemberName } = route.params
-
 	const [loadEarlier, setLoadEarlier] = useState(false)
 	const [initialApiCount, setInitialApiCount] = useState(true)
 
@@ -388,6 +388,13 @@ export function Chat({ navigation, route }) {
 		await Sharing.shareAsync(result.uri, { mimeType: result.mimeType, UTI: "public" + result.mimeType });
 	}
 
+	const [modalVisible, setModalVisible] = useState(true)
+
+	// ユーザーアイコンをクリックした場合
+	const _onPressAvatar = (user) => {
+		navigation.navigate('AlreadyFriendModal', { "user": user, "groupChatRoomId": groupChatRoomId, "groupImage": image, "groupName": name })
+	}
+
 	useEffect(() => {
 		// チャットルームIDに紐づくチャット履歴の取得
 		_fetchChatByChatRoomId()
@@ -452,6 +459,8 @@ export function Chat({ navigation, route }) {
 						onPressActionButton={() => _onPressActionButton()}
 						// メッセージに画像を表示
 						renderMessageImage={(props) => _renderMessageImage(props)}
+						// ユーザーアイコンをクリックした場合
+						onPressAvatar={(user) => _onPressAvatar(user)}
 					/>
 				</View>
 			</SafeAreaView>

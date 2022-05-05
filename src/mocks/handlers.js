@@ -26,49 +26,49 @@ let friends = [
 	{
 		"direct_chat_room_id": "friend 3",
 		"friend_use_id": "friend 3",
-		"friend_profile_image": require("../../assets/images/friend_profile_image_2.jpg"),
+		"friend_profile_image": require("../../assets/images/friend_profile_image_3.jpg"),
 		"friend_nickname": "friend 3"
 	},
 	{
 		"direct_chat_room_id": "friend 4",
 		"friend_use_id": "friend 4",
-		"friend_profile_image": require("../../assets/images/friend_profile_image_2.jpg"),
+		"friend_profile_image": require("../../assets/images/friend_profile_image_4.jpg"),
 		"friend_nickname": "friend 4"
 	},
 	{
 		"direct_chat_room_id": "friend 5",
 		"friend_use_id": "friend 5",
-		"friend_profile_image": require("../../assets/images/friend_profile_image_2.jpg"),
+		"friend_profile_image": require("../../assets/images/friend_profile_image_5.jpg"),
 		"friend_nickname": "friend 5"
 	},
 	{
 		"direct_chat_room_id": "friend 6",
 		"friend_use_id": "friend 6",
-		"friend_profile_image": require("../../assets/images/friend_profile_image_2.jpg"),
+		"friend_profile_image": require("../../assets/images/friend_profile_image_6.jpg"),
 		"friend_nickname": "friend 6"
 	},
 	{
 		"direct_chat_room_id": "friend 7",
 		"friend_use_id": "friend 7",
-		"friend_profile_image": require("../../assets/images/friend_profile_image_2.jpg"),
+		"friend_profile_image": require("../../assets/images/friend_profile_image_7.jpg"),
 		"friend_nickname": "friend 7"
 	},
 	{
 		"direct_chat_room_id": "friend 8",
 		"friend_use_id": "friend 8",
-		"friend_profile_image": require("../../assets/images/friend_profile_image_2.jpg"),
+		"friend_profile_image": require("../../assets/images/friend_profile_image_8.jpg"),
 		"friend_nickname": "friend 8"
 	},
 	{
 		"direct_chat_room_id": "friend 9",
 		"friend_use_id": "friend 9",
-		"friend_profile_image": require("../../assets/images/friend_profile_image_2.jpg"),
+		"friend_profile_image": require("../../assets/images/friend_profile_image_9.jpg"),
 		"friend_nickname": "friend 9"
 	},
 	{
 		"direct_chat_room_id": "friend 10",
 		"friend_use_id": "friend 10",
-		"friend_profile_image": require("../../assets/images/friend_profile_image_2.jpg"),
+		"friend_profile_image": require("../../assets/images/friend_profile_image_10.jpg"),
 		"friend_nickname": "friend 10"
 	},
 ]
@@ -96,8 +96,9 @@ let groups = [
 	{
 		"group_chat_room_id": "group 3",
 		"group_name": "group 3",
-		"group_image": require("../../assets/images/group_image_2.jpg"),
+		"group_image": require("../../assets/images/group_image_3.jpg"),
 		"group_member_user_id": [
+			"friend 1",
 			"friend 4",
 			"friend 5",
 			"friend 6"
@@ -106,8 +107,9 @@ let groups = [
 	{
 		"group_chat_room_id": "group 4",
 		"group_name": "group 4",
-		"group_image": require("../../assets/images/group_image_2.jpg"),
+		"group_image": require("../../assets/images/group_image_4.jpg"),
 		"group_member_user_id": [
+			"friend 1",
 			"friend 6",
 			"friend 7",
 		]
@@ -115,8 +117,9 @@ let groups = [
 	{
 		"group_chat_room_id": "group 5",
 		"group_name": "group 5",
-		"group_image": require("../../assets/images/group_image_2.jpg"),
+		"group_image": require("../../assets/images/group_image_5.jpg"),
 		"group_member_user_id": [
+			"friend 1",
 			"friend 7",
 			"friend 8",
 			"friend 9"
@@ -132,7 +135,7 @@ let temporaryMessages_friend1 = [
 		user: {
 			_id: 2,
 			name: "friend 1",
-			avatar: 'https://placeimg.com/140/140/any',
+			avatar: require("../../assets/images/friend_profile_image_1.jpg"),
 		},
 		sent: true,
 		received: true,
@@ -145,7 +148,7 @@ let temporaryMessages_friend1 = [
 		user: {
 			_id: 2,
 			name: "friend 1",
-			avatar: 'https://placeimg.com/140/140/any',
+			avatar: require("../../assets/images/friend_profile_image_1.jpg"),
 		},
 		sent: true,
 		received: true
@@ -160,7 +163,7 @@ let temporaryMessages_friend2 = [
 		user: {
 			_id: 3,
 			name: "friend 2",
-			avatar: 'https://placeimg.com/140/140/any',
+			avatar: require("../../assets/images/friend_profile_image_2.jpg"),
 		},
 		sent: true,
 		received: true,
@@ -173,7 +176,7 @@ let temporaryMessages_friend2 = [
 		user: {
 			_id: 4,
 			name: "friend 2",
-			avatar: 'https://placeimg.com/140/140/any',
+			avatar: require("../../assets/images/friend_profile_image_2.jpg"),
 		},
 		sent: true,
 		received: true
@@ -187,7 +190,7 @@ let temporaryMessages_friend3 = [
 		user: {
 			_id: 5,
 			name: "friend 3",
-			avatar: 'https://placeimg.com/140/140/any',
+			avatar: require("../../assets/images/friend_profile_image_3.jpg"),
 		},
 		sent: true,
 		received: true,
@@ -200,7 +203,7 @@ let temporaryMessages_friend3 = [
 		user: {
 			_id: 6,
 			name: "friend 3",
-			avatar: 'https://placeimg.com/140/140/any',
+			avatar: require("../../assets/images/friend_profile_image_3.jpg"),
 		},
 		sent: true,
 		received: true
@@ -214,7 +217,7 @@ let temporaryMessages_friend4 = [
 		user: {
 			_id: 7,
 			name: "friend 4",
-			avatar: 'https://placeimg.com/140/140/any',
+			avatar: require("../../assets/images/friend_profile_image_4.jpg"),
 		},
 		sent: true,
 		received: true,
@@ -227,7 +230,7 @@ let temporaryMessages_friend4 = [
 		user: {
 			_id: 8,
 			name: "friend 4",
-			avatar: 'https://placeimg.com/140/140/any',
+			avatar: require("../../assets/images/friend_profile_image_4.jpg"),
 		},
 		sent: true,
 		received: true
@@ -241,7 +244,7 @@ let temporaryMessages_friend5 = [
 		user: {
 			_id: 9,
 			name: "friend 5",
-			avatar: 'https://placeimg.com/140/140/any',
+			avatar: require("../../assets/images/friend_profile_image_5.jpg"),
 		},
 		sent: true,
 		received: true,
@@ -254,7 +257,7 @@ let temporaryMessages_friend5 = [
 		user: {
 			_id: 10,
 			name: "friend 5",
-			avatar: 'https://placeimg.com/140/140/any',
+			avatar: require("../../assets/images/friend_profile_image_5.jpg"),
 		},
 		sent: true,
 		received: true
@@ -268,7 +271,7 @@ let temporaryMessages_friend6 = [
 		user: {
 			_id: 11,
 			name: "friend 6",
-			avatar: 'https://placeimg.com/140/140/any',
+			avatar: require("../../assets/images/friend_profile_image_6.jpg"),
 		},
 		sent: true,
 		received: true,
@@ -281,7 +284,7 @@ let temporaryMessages_friend6 = [
 		user: {
 			_id: 12,
 			name: "friend 6",
-			avatar: 'https://placeimg.com/140/140/any',
+			avatar: require("../../assets/images/friend_profile_image_6.jpg"),
 		},
 		sent: true,
 		received: true
@@ -295,7 +298,7 @@ let temporaryMessages_friend7 = [
 		user: {
 			_id: 13,
 			name: "friend 7",
-			avatar: 'https://placeimg.com/140/140/any',
+			avatar: require("../../assets/images/friend_profile_image_7.jpg"),
 		},
 		sent: true,
 		received: true,
@@ -308,7 +311,7 @@ let temporaryMessages_friend7 = [
 		user: {
 			_id: 14,
 			name: "friend 7",
-			avatar: 'https://placeimg.com/140/140/any',
+			avatar: require("../../assets/images/friend_profile_image_7.jpg"),
 		},
 		sent: true,
 		received: true
@@ -322,7 +325,7 @@ let temporaryMessages_friend8 = [
 		user: {
 			_id: 15,
 			name: "friend 8",
-			avatar: 'https://placeimg.com/140/140/any',
+			avatar: require("../../assets/images/friend_profile_image_8.jpg"),
 		},
 		sent: true,
 		received: true,
@@ -335,7 +338,7 @@ let temporaryMessages_friend8 = [
 		user: {
 			_id: 16,
 			name: "friend 8",
-			avatar: 'https://placeimg.com/140/140/any',
+			avatar: require("../../assets/images/friend_profile_image_8.jpg"),
 		},
 		sent: true,
 		received: true
@@ -349,7 +352,7 @@ let temporaryMessages_friend9 = [
 		user: {
 			_id: 17,
 			name: "friend 9",
-			avatar: 'https://placeimg.com/140/140/any',
+			avatar: require("../../assets/images/friend_profile_image_9.jpg"),
 		},
 		sent: true,
 		received: true,
@@ -362,7 +365,7 @@ let temporaryMessages_friend9 = [
 		user: {
 			_id: 18,
 			name: "friend 9",
-			avatar: 'https://placeimg.com/140/140/any',
+			avatar: require("../../assets/images/friend_profile_image_9.jpg"),
 		},
 		sent: true,
 		received: true
@@ -376,7 +379,7 @@ let temporaryMessages_friend10 = [
 		user: {
 			_id: 19,
 			name: "friend 10",
-			avatar: 'https://placeimg.com/140/140/any',
+			avatar: require("../../assets/images/friend_profile_image_10.jpg"),
 		},
 		sent: true,
 		received: true,
@@ -389,7 +392,7 @@ let temporaryMessages_friend10 = [
 		user: {
 			_id: 20,
 			name: "friend 10",
-			avatar: 'https://placeimg.com/140/140/any',
+			avatar: require("../../assets/images/friend_profile_image_10.jpg"),
 		},
 		sent: true,
 		received: true
@@ -404,9 +407,9 @@ let temporaryMessages_group1 = [
 		_id: 30,
 		createdAt: "2022-04-27T02:10:29.189Z",
 		user: {
-			_id: 30,
-			name: "group 1",
-			avatar: 'https://placeimg.com/140/140/any',
+			_id: "friend 1",
+			name: "friend 1",
+			avatar: require("../../assets/images/friend_profile_image_1.jpg"),
 		},
 		sent: true,
 		received: true,
@@ -417,9 +420,9 @@ let temporaryMessages_group1 = [
 		text: 'Hello developer',
 		createdAt: "2022-04-27T02:08:10.189Z",
 		user: {
-			_id: 31,
-			name: "group 1",
-			avatar: 'https://placeimg.com/140/140/any',
+			_id: "friend 2",
+			name: "friend 2",
+			avatar: require("../../assets/images/friend_profile_image_2.jpg"),
 		},
 		sent: true,
 		received: true
@@ -431,9 +434,9 @@ let temporaryMessages_group2 = [
 		_id: 32,
 		createdAt: "2022-04-27T02:10:29.189Z",
 		user: {
-			_id: 32,
-			name: "group 2",
-			avatar: 'https://placeimg.com/140/140/any',
+			_id: "friend 1",
+			name: "friend 1",
+			avatar: require("../../assets/images/friend_profile_image_1.jpg"),
 		},
 		sent: true,
 		received: true,
@@ -444,9 +447,21 @@ let temporaryMessages_group2 = [
 		text: "group 2",
 		createdAt: "2022-04-27T02:08:10.189Z",
 		user: {
-			_id: 33,
-			name: "group 2",
-			avatar: 'https://placeimg.com/140/140/any',
+			_id: "friend 2",
+			name: "friend 2",
+			avatar: require("../../assets/images/friend_profile_image_2.jpg"),
+		},
+		sent: true,
+		received: true
+	},
+	{
+		_id: 34,
+		text: "group 3",
+		createdAt: "2022-04-27T02:08:10.189Z",
+		user: {
+			_id: "friend 3",
+			name: "friend 3",
+			avatar: require("../../assets/images/friend_profile_image_3.jpg"),
 		},
 		sent: true,
 		received: true
@@ -455,25 +470,37 @@ let temporaryMessages_group2 = [
 
 let temporaryMessages_group3 = [
 	{
-		_id: 34,
+		_id: 35,
 		createdAt: "2022-04-27T02:10:29.189Z",
 		user: {
-			_id: 34,
-			name: "group 3",
-			avatar: 'https://placeimg.com/140/140/any',
+			_id: "friend 4",
+			name: "friend 4",
+			avatar: require("../../assets/images/friend_profile_image_4.jpg"),
 		},
 		sent: true,
 		received: true,
 		image: 'https://placeimg.com/140/140/any',
 	},
 	{
-		_id: 35,
+		_id: 36,
 		text: 'Hello developer',
 		createdAt: "2022-04-27T02:08:10.189Z",
 		user: {
-			_id: 35,
-			name: "group 3",
-			avatar: 'https://placeimg.com/140/140/any',
+			_id: "friend 5",
+			name: "friend 5",
+			avatar: require("../../assets/images/friend_profile_image_5.jpg"),
+		},
+		sent: true,
+		received: true
+	},
+	{
+		_id: 37,
+		text: "friend 6",
+		createdAt: "2022-04-27T02:08:10.189Z",
+		user: {
+			_id: "friend 6",
+			name: "friend 6",
+			avatar: require("../../assets/images/friend_profile_image_6.jpg"),
 		},
 		sent: true,
 		received: true
@@ -482,39 +509,12 @@ let temporaryMessages_group3 = [
 
 let temporaryMessages_group4 = [
 	{
-		_id: 36,
-		createdAt: "2022-04-27T02:10:29.189Z",
-		user: {
-			_id: 36,
-			name: "group 4",
-			avatar: 'https://placeimg.com/140/140/any',
-		},
-		sent: true,
-		received: true,
-		image: 'https://placeimg.com/140/140/any',
-	},
-	{
-		_id: 37,
-		text: 'Hello developer',
-		createdAt: "2022-04-27T02:08:10.189Z",
-		user: {
-			_id: 37,
-			name: "group 4",
-			avatar: 'https://placeimg.com/140/140/any',
-		},
-		sent: true,
-		received: true
-	},
-]
-
-let temporaryMessages_group5 = [
-	{
 		_id: 38,
 		createdAt: "2022-04-27T02:10:29.189Z",
 		user: {
-			_id: 38,
-			name: "group 5",
-			avatar: 'https://placeimg.com/140/140/any',
+			_id: "friend 6",
+			name: "friend 6",
+			avatar: require("../../assets/images/friend_profile_image_6.jpg"),
 		},
 		sent: true,
 		received: true,
@@ -525,9 +525,48 @@ let temporaryMessages_group5 = [
 		text: 'Hello developer',
 		createdAt: "2022-04-27T02:08:10.189Z",
 		user: {
-			_id: 39,
-			name: "group 5",
-			avatar: 'https://placeimg.com/140/140/any',
+			_id: "friend 7",
+			name: "friend 7",
+			avatar: require("../../assets/images/friend_profile_image_7.jpg"),
+		},
+		sent: true,
+		received: true
+	},
+]
+
+let temporaryMessages_group5 = [
+	{
+		_id: 40,
+		createdAt: "2022-04-27T02:10:29.189Z",
+		user: {
+			_id: "friend 7",
+			name: "friend 7",
+			avatar: require("../../assets/images/friend_profile_image_7.jpg"),
+		},
+		sent: true,
+		received: true,
+		image: 'https://placeimg.com/140/140/any',
+	},
+	{
+		_id: 41,
+		text: 'Hello developer',
+		createdAt: "2022-04-27T02:08:10.189Z",
+		user: {
+			_id: "friend 8",
+			name: "friend 8",
+			avatar: require("../../assets/images/friend_profile_image_8.jpg"),
+		},
+		sent: true,
+		received: true
+	},
+	{
+		_id: 42,
+		text: 'Hello developer',
+		createdAt: "2022-04-27T02:08:10.189Z",
+		user: {
+			_id: "friend 9",
+			name: "friend 9",
+			avatar: require("../../assets/images/friend_profile_image_9.jpg"),
 		},
 		sent: true,
 		received: true
@@ -562,7 +601,7 @@ function getChats() {
 			"direct_chat_room_id": "friend 3",
 			"friends_user_id": "friend 3",
 			"friends_nick_name": "friend 3",
-			"friends_profile_image": require("../../assets/images/friend_profile_image_2.jpg"),
+			"friends_profile_image": require("../../assets/images/friend_profile_image_3.jpg"),
 			"friends_last_message_content": temporaryMessages_friend3[0].text ? temporaryMessages_friend3[0].text : temporaryMessages_friend3[0].image,
 			"friends_last_message_creation_date": "13:00",
 			"unread_count": 0
@@ -570,7 +609,7 @@ function getChats() {
 		{
 			"group_chat_room_id": "group 1",
 			"group_name": "group 1",
-			"group_image": require("../../assets/images/friend_profile_image_2.jpg"),
+			"group_image": require("../../assets/images/group_image_1.jpg"),
 			"group_last_message_content": temporaryMessages_group1[0].text ? temporaryMessages_group1[0].text : temporaryMessages_group1[0].image,
 			"group_last_message_creation_date": "2022/3/19",
 			"group_member_user_id": [
@@ -582,7 +621,7 @@ function getChats() {
 		{
 			"group_chat_room_id": "group 2",
 			"group_name": "group 2",
-			"group_image": require("../../assets/images/friend_profile_image_2.jpg"),
+			"group_image": require("../../assets/images/group_image_2.jpg"),
 			"group_last_message_content": temporaryMessages_group2[0].text ? temporaryMessages_group2[0].text : temporaryMessages_group2[0].image,
 			"group_last_message_creation_date": "2022/3/21",
 			"group_member_user_id": [
@@ -595,7 +634,7 @@ function getChats() {
 		{
 			"group_chat_room_id": "group 3",
 			"group_name": "group 3",
-			"group_image": require("../../assets/images/friend_profile_image_2.jpg"),
+			"group_image": require("../../assets/images/group_image_3.jpg"),
 			"group_last_message_content": temporaryMessages_group3[0].text ? temporaryMessages_group3[0].text : temporaryMessages_group3[0].image,
 			"group_last_message_creation_date": "10:00",
 			"group_member_user_id": [
@@ -608,7 +647,7 @@ function getChats() {
 		{
 			"group_chat_room_id": "group 4",
 			"group_name": "group 4",
-			"group_image": require("../../assets/images/friend_profile_image_2.jpg"),
+			"group_image": require("../../assets/images/group_image_4.jpg"),
 			"group_last_message_content": temporaryMessages_group4[0].text ? temporaryMessages_group4[0].text : temporaryMessages_group4[0].image,
 			"group_last_message_creation_date": "11:00",
 			"group_member_user_id": [
@@ -886,7 +925,7 @@ export const handlers = [
 						"already_follow_requested": true,
 						"exist": true,
 						"friend_use_id": "friend 9",
-						"friend_profile_image": require("../../assets/images/friend_profile_image_2.jpg"),
+						"friend_profile_image": require("../../assets/images/friend_profile_image_9.jpg"),
 						"friend_nickname": "asami9"
 					}
 				),
@@ -916,7 +955,7 @@ export const handlers = [
 						"already_follow_requested": false,
 						"exist": true,
 						"friend_use_id": "friend 11",
-						"friend_profile_image": require("../../assets/images/friend_profile_image_2.jpg"),
+						"friend_profile_image": require("../../assets/images/friend_profile_image_11.jpg"),
 						"friend_nickname": "asami11"
 					}
 				),
@@ -1221,27 +1260,46 @@ export const handlers = [
 			ctx.status(200)
 		)
 	}),
-		// グループメンバーの追加
-		rest.post('https://a-chat/api/users/:userId/group-member', (req, res, ctx) => {
-			const { groupChatRoomId } = req.body
-			const { adduserIds } = req.body
-			let newData = []
-			for(let i = 0; i < groups.length; i++){
-				if (groups[i].group_chat_room_id === groupChatRoomId){
-					// 既存のグループメンバーユーザーID配列に新規に追加したメンバーのユーザーIDを追加
-					newData = groups[i].group_member_user_id.concat(adduserIds)
-					groups[i].group_member_user_id = newData
-				}
+	// グループメンバーの追加
+	rest.post('https://a-chat/api/users/:userId/group-member', (req, res, ctx) => {
+		const { groupChatRoomId } = req.body
+		const { adduserIds } = req.body
+		let newData = []
+		for (let i = 0; i < groups.length; i++) {
+			if (groups[i].group_chat_room_id === groupChatRoomId) {
+				// 既存のグループメンバーユーザーID配列に新規に追加したメンバーのユーザーIDを追加
+				newData = groups[i].group_member_user_id.concat(adduserIds)
+				groups[i].group_member_user_id = newData
 			}
+		}
 
-			return res(
-				// 200のステータスコードで応答する
-				ctx.status(200),
-				ctx.json(
-					{
-						"adduserIds": adduserIds
-					}
-				),
-			)
-		}),
+		return res(
+			// 200のステータスコードで応答する
+			ctx.status(200),
+			ctx.json(
+				{
+					"adduserIds": adduserIds
+				}
+			),
+		)
+	}),
+	// 該当友達とのdirectChatRoomIdを取得
+	rest.get('https://a-chat/api/users/:userId/friend', (req, res, ctx) => {
+		const parsedUrl = new URL(req.url)
+		const friendUserId = parsedUrl.searchParams.get("friendUserId")
+		const { userId } = req.params
+		// mock甩にfriends配列から取得
+		for (let i = 0; i < friends.length; i++) {
+			if (friends[i].friend_use_id === friendUserId)
+				return res(
+					ctx.status(200),
+					ctx.json(
+						{
+							"directChatRoomId": friends[i].direct_chat_room_id
+						}
+					),
+				)
+		}
+	}),
 ]
+

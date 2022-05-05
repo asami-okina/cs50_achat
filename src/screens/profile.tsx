@@ -65,7 +65,7 @@ export function Profile({ navigation }) {
 				<View style={constantsCommonStyles.topMarginViewStyle}></View>
 				{/* 丸みを帯びている白いトップ部分 */}
 				<TopAreaWrapper type={"addFriend"}>
-					<MainTitle navigation={navigation} title={"Profile Setting"} link={"Home"} props={null} />
+					<MainTitle navigation={navigation} title={"Profile Setting"} link={"Home"} props={null} groupChatRoomId={null} groupMemberUserId={null} />
 				</TopAreaWrapper>
 				{/* トップ部分を除くメイン部分*/}
 				<View style={constantsCommonStyles.mainContainerStyle}>

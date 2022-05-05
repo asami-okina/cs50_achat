@@ -38,6 +38,9 @@ export function Button({
 								propsList._updateNickName()
 								navigation.navigate(link)
 							}
+							if (enable && scene === "alreadyFriendModal") {
+								navigation.navigate('Chat', { "groupChatRoomId": null, "directChatRoomId": propsList.directChatRoomId, "profileImage": propsList.friendImage, "name": propsList.friendNickName, "groupMemberUserId": null })
+							}
 							if (enable && link && scene !== "ProfileSettingNickName") {
 								navigation.navigate(link)
 							}
