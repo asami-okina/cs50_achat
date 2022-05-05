@@ -4,7 +4,7 @@ import { StyleSheet, Text, TouchableOpacity, TouchableHighlight, View, Image } f
 import { SwipeListView } from 'react-native-swipe-list-view';
 
 // layouts
-import { CONTENT_WIDTH, PROFILE_IMAGE_SIZE, STANDARD_FONT, MAIN_WHITE_COLOR, MAIN_PINK_COLOR, PROFILE_IMAGE_BORDER_RADIUS } from '../../../../constants/layout'
+import { CONTENT_WIDTH, PROFILE_IMAGE_SIZE, STANDARD_FONT, MAIN_WHITE_COLOR, MAIN_PINK_COLOR, PROFILE_IMAGE_BORDER_RADIUS, MAIN_NAVY_COLOR } from '../../../../constants/layout'
 
 export default function Basic({ navigation, groupList, friendList, type, setModalVisible, clickedCancelMordal, setClickedCancelMordal, clickedOkMordal, setClickedOkMordal }) {
 	// ユーザーID(今後は認証から取得するようにする)
@@ -67,7 +67,12 @@ export default function Basic({ navigation, groupList, friendList, type, setModa
 				>
 					<View style={styles.listWrapperStyle}>
 						<View style={styles.listItemContainerStyle}>
-							<Image source={data.item.group_image} style={styles.profileImageStyle} />
+							{data.item.group_image ? (
+								<Image source={data.item.group_image} style={styles.profileImageStyle} />
+							) :
+								(
+									<View style={styles.profileImageNoneStyle}></View>
+								)}
 							<Text style={styles.listItemNameStyle}>{data.item.group_name}</Text>
 						</View>
 					</View>
@@ -216,6 +221,12 @@ const styles = StyleSheet.create({
 		width: PROFILE_IMAGE_SIZE,
 		height: PROFILE_IMAGE_SIZE,
 		borderRadius: PROFILE_IMAGE_BORDER_RADIUS
+	},
+	profileImageNoneStyle: {
+		width: PROFILE_IMAGE_SIZE,
+		height: PROFILE_IMAGE_SIZE,
+		borderRadius: PROFILE_IMAGE_BORDER_RADIUS,
+		backgroundColor: MAIN_NAVY_COLOR
 	},
 	listWrapperStyle: {
 		height: 60,
