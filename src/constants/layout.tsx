@@ -65,7 +65,7 @@ export const MORDAL_TEXT_CONTENT_WIDTH = CONTENT_WIDTH - 150
 export const SMALL_BUTTON_WIDTH = 100
 
 // グループに追加するために選択された友達部分の表示幅
-export const ADD_FRIEND_WIDTH = 70
+export const ADD_FRIEND_WIDTH = 60
 
 // ------------------------------------------------------------------------------------------------
 // 高さ

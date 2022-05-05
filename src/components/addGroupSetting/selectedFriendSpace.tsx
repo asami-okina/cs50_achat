@@ -6,7 +6,7 @@ import { View, StyleSheet, Image, Text, ScrollView, Pressable } from 'react-nati
 import { AddFriendList } from '../../components/addGroup/addFriendList'
 
 // layouts
-import { PROFILE_IMAGE_SIZE } from '../../constants/layout'
+import { PROFILE_IMAGE_SIZE, ADD_FRIEND_WIDTH } from '../../constants/layout'
 
 // constantsSelectedFriendStyles
 import { selectedFriendStyles } from '../../constants/styles/selectedFriendStyles'
@@ -64,6 +64,7 @@ const styles = StyleSheet.create({
 	ownWrapperStyle: {
 		justifyContent: "center",
 		alignItems: "center",
+		width: ADD_FRIEND_WIDTH,
 	},
 	scrollViewStyle: {
 		flex: 1,
