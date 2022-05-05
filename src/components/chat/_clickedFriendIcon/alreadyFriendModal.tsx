@@ -16,37 +16,9 @@ import { MAIN_NAVY_COLOR, PROFILE_IMAGE_BORDER_RADIUS, TAB_TITLE_TEXT_SIZE, TAB_
 export function AlreadyFriendModal({ route, navigation }) {
 	// ユーザーID(今後は認証から取得するようにする)
 	const userId = "asami11"
-	const { user, groupChatRoomId, groupImage, groupName } = route.params
+	const { user, groupChatRoomId, groupImage, groupName, directChatRoomId } = route.params
 	const friendImage = user.avatar
 	const friendNickName = user.name
-	const friendUserId = user._id
-	const [directChatRoomId, setDirectChatRoomId] = useState('')
-
-	// 該当友達とのdirectChatRoomIdを取得
-	async function fetchDirectChatRoomIdByUserId() {
-		try {
-			// paramsを生成
-			const params = { "friendUserId": friendUserId }
-			const query_params = new URLSearchParams(params);
-			// APIリクエスト
-			const response = await fetch(`https://a-chat/api/users/${userId}/friend?${query_params}`, {
-				method: "GET",
-				headers: {
-					"Content-Type": "application/json"
-				},
-			})
-			// レスポンスをJSONにする
-			const parse_response = await response.json()
-			setDirectChatRoomId(parse_response.directChatRoomId)
-		} catch (e) {
-			console.error(e)
-		}
-	}
-	useEffect(() => {
-		if (userId) {
-			fetchDirectChatRoomIdByUserId()
-		}
-	}, [friendUserId])
 
 	return (
 		<KeyboardAvoidingView behavior="padding" style={constantsCommonStyles.screenContainerStyle}>

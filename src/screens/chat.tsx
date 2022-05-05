@@ -388,11 +388,40 @@ export function Chat({ navigation, route }) {
 		await Sharing.shareAsync(result.uri, { mimeType: result.mimeType, UTI: "public" + result.mimeType });
 	}
 
-	const [modalVisible, setModalVisible] = useState(true)
+	// グループトーク画面で、クリックした人とのdirectChatRoomId(ない場合は、まだ友達ではない)
+	const [selectedFriendDirectChatRoomId, setSelectedFriendDirectChatRoomId] = useState(null)
+	const [selectedUserInfo, setSelectedUserInfo] = useState(null)
+
+		// 該当友達とのdirectChatRoomIdを取得
+		async function fetchDirectChatRoomIdByUserId(friendUserId) {
+			try {
+				// paramsを生成
+				const params = { "friendUserId": friendUserId }
+				const query_params = new URLSearchParams(params);
+				// APIリクエスト
+				const response = await fetch(`https://a-chat/api/users/${userId}/friend?${query_params}`, {
+					method: "GET",
+					headers: {
+						"Content-Type": "application/json"
+					},
+				})
+				// レスポンスをJSONにする
+				const parse_response = await response.json()
+				setSelectedFriendDirectChatRoomId(parse_response.directChatRoomId)
+			} catch (e) {
+				console.error(e)
+			}
+		}
 
 	// ユーザーアイコンをクリックした場合
 	const _onPressAvatar = (user) => {
-		navigation.navigate('AlreadyFriendModal', { "user": user, "groupChatRoomId": groupChatRoomId, "groupImage": image, "groupName": name })
+		// グループチャットの場合のみ、ユーザーアイコンをクリックできるようにする
+		if(groupChatRoomId !== null || groupChatRoomId != undefined){
+			setSelectedUserInfo(user)
+			// クリックした人と既に友達かどうかをチェック
+			const friendUserId = user._id
+			fetchDirectChatRoomIdByUserId(friendUserId)
+		}
 	}
 
 	useEffect(() => {
@@ -401,6 +430,13 @@ export function Chat({ navigation, route }) {
 		// 最終既読日時の更新
 		_updateLastReadTime()
 	}, [directChatRoomId, groupChatRoomId])
+
+	useEffect(() => {
+		// 既に友達の場合、Talkが選べるモーダルを表示
+		if(selectedFriendDirectChatRoomId){
+			navigation.navigate('AlreadyFriendModal', { "user": selectedUserInfo, "groupChatRoomId": groupChatRoomId, "groupImage": image, "groupName": name, "directChatRoomId":selectedFriendDirectChatRoomId })
+		}
+	}, [selectedFriendDirectChatRoomId])
 
 
 	return (
