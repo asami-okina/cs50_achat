@@ -44,7 +44,8 @@ export const styles = StyleSheet.create({
 		display: "flex",
 		justifyContent: "center",
 		alignItems: "center",
-		backgroundColor: MAIN_WHITE_COLOR
+		backgroundColor: MAIN_WHITE_COLOR,
+		marginBottom: 40
 	},
 	groupAndFriendContainerStyle: {
 		display: "flex",

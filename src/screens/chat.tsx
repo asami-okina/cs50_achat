@@ -434,9 +434,6 @@ export function Chat({ navigation, route }) {
 	}
 
 	useEffect(() => {
-		console.log('きた')
-		console.log('directChatRoomId',directChatRoomId)
-		console.log('groupChatRoomId',groupChatRoomId)
 		// チャットルームIDに紐づくチャット履歴の取得
 		_fetchChatByChatRoomId()
 		// 最終既読日時の更新
