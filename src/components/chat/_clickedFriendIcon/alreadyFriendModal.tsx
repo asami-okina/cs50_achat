@@ -21,7 +21,6 @@ export function AlreadyFriendModal({ route, navigation }) {
 	const friendNickName = user.name
 	const friendUserId = user._id
 	const [directChatRoomId, setDirectChatRoomId] = useState('')
-	console.log('friendImage', friendImage)
 
 	// 該当友達とのdirectChatRoomIdを取得
 	async function fetchDirectChatRoomIdByUserId() {

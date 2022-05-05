@@ -400,7 +400,7 @@ export function Chat({ navigation, route }) {
 		_fetchChatByChatRoomId()
 		// 最終既読日時の更新
 		_updateLastReadTime()
-	}, [])
+	}, [directChatRoomId, groupChatRoomId])
 
 
 	return (
