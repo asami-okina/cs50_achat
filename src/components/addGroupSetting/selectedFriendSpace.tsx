@@ -11,7 +11,7 @@ import { PROFILE_IMAGE_SIZE, ADD_FRIEND_WIDTH } from '../../constants/layout'
 // constantsSelectedFriendStyles
 import { selectedFriendStyles } from '../../constants/styles/selectedFriendStyles'
 
-export function SelectedFriendSpace({ navigation, friendList, setFriendList, ownNickName, ownProfileImage }) {
+export function SelectedFriendSpace({ navigation, friendList, setFriendList, ownNickName, ownProfileImage,groupName, groupImage }) {
 	// 選択された友達リストの削除
 	const _deleteFriendList = (rowKey) => {
 		// 選択されたリストから該当リストを削除
@@ -30,7 +30,7 @@ export function SelectedFriendSpace({ navigation, friendList, setFriendList, own
 		<View style={selectedFriendStyles.wrapperStyle}>
 			<View style={selectedFriendStyles.containerStyle} >
 				{/* 追加ボタン */}
-				<Pressable style={styles.ownWrapperStyle} onPress={() => navigation.navigate('AddGroup')}>
+				<Pressable style={styles.ownWrapperStyle} onPress={() => navigation.navigate('AddGroup',{"groupName": groupName, "groupImage": groupImage})}>
 					<View style={selectedFriendStyles.closeImageStyle}></View>
 					<Image source={require("../../../assets/images/add-circle.png")} style={selectedFriendStyles.profileImageStyle} />
 					<Text style={selectedFriendStyles.listItemNameStyle} numberOfLines={1} ellipsizeMode="tail"></Text>

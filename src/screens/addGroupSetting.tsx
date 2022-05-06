@@ -19,12 +19,13 @@ import { IPHONE_X_BOTTOM_SPACE } from '../constants/layout'
 
 
 // script自体の読み込みは1回。あしたはここから。image,nameのひきつぎ
-const sessionData = {}
 
 export function AddGroupSetting({ route, navigation }) {
 	// ユーザーID(今後は認証から取得するようにする)
 	const userId = "asami11"
 	const [friendList, setFriendList] = useState(route.params.friendList)
+	// グループ設定画面から、メンバー追加で戻ったときにグループ名とグループ画像を保持
+	const { backGroupName, backGroupImage } = route.params
 	const groupMemberCount = friendList.length + 1 // 自分を1としてカウントし、足す
 
 	// 自分のニックネーム
@@ -47,10 +48,10 @@ export function AddGroupSetting({ route, navigation }) {
 	}, [friendList, ownNickName])
 
 	// グループ画像
-	const [image, setImage] = useState(sessionData["testgroupId/image"])
+	const [image, setImage] = useState(null)
 
 	// グループ名
-	const [groupName, setGroupName] = useState(sessionData["testgroupId/groupname"] || friendListNames)
+	const [groupName, setGroupName] = useState(friendListNames)
 
 	// [自分の情報]ユーザーIDに紐づくニックネーム、プロフィール画像の取得
 	async function _fetchProfileByUserId(userId) {
@@ -78,9 +79,25 @@ export function AddGroupSetting({ route, navigation }) {
 
 	useEffect(() => {
 		if (userId) {
+			// [自分の情報]ユーザーIDに紐づくニックネーム、プロフィール画像の取得
 			_fetchProfileByUserId(userId)
 		}
 	}, [])
+
+	//　グループ設定画面から、メンバー追加で戻ったときにグループ名をセット
+	useEffect(() => {
+		if (backGroupName) {
+			setGroupName(backGroupName)
+		}
+	}, [backGroupName])
+
+	//　グループ設定画面から、メンバー追加で戻ったときにグループ画像をセット
+	useEffect(() => {
+		if (backGroupImage) {
+			setImage(backGroupImage)
+		}
+
+	}, [backGroupImage])
 
 	return (
 		<KeyboardAvoidingView behavior="padding" style={sameStyles.screenContainerStyle}>
@@ -91,10 +108,8 @@ export function AddGroupSetting({ route, navigation }) {
 				<TopAreaWrapper type={"addGroupSetting"}>
 					<GroupImageAndGroupName image={image} setImage={(v: string) => {
 						setImage(v)
-						sessionData["testgroupId/image"] = v
 					}} groupName={groupName} setGroupName={(v: string) => {
 						setGroupName(v)
-						sessionData["testgroupId/groupname"] = v
 					}} friendListNames={friendListNames} />
 				</TopAreaWrapper>
 				{/* トップ部分を除くメイン部分: iphoneXの場合は、底のマージンを考慮 */}
@@ -102,14 +117,11 @@ export function AddGroupSetting({ route, navigation }) {
 					{/* タイトル */}
 					<AddGroupTitle text={"Member"} groupMemberCount={groupMemberCount} />
 					{/* 選択された友達のスペース */}
-					<SelectedFriendSpace navigation={navigation} friendList={friendList} setFriendList={setFriendList} ownNickName={ownNickName} ownProfileImage={ownProfileImage} />
+					<SelectedFriendSpace navigation={navigation} friendList={friendList} setFriendList={setFriendList} ownNickName={ownNickName} ownProfileImage={ownProfileImage} groupName={groupName} groupImage={image} />
 				</View>
 				{/* 右下のボタン(Create) */}
 				{friendListNames.length !== 0 && (
-					<SmallButton onPress={() => {
-						delete sessionData["testgroupId/groupname"]
-						delete sessionData["testgroupId/image"]
-					}} text={"Create"} navigation={navigation} friendList={friendList} groupSetting={{ "groupName": groupName, "image": image }} type={"addGroupSetting"} friendListNames={friendListNames} alreadyFriend={null} addGroupMemberGroupChatRoomId={null} addGroupMemberGroupImage={null} addGroupMemberGroupName={null} />
+					<SmallButton text={"Create"} navigation={navigation} friendList={friendList} groupSetting={{ "groupName": groupName, "image": image }} type={"addGroupSetting"} friendListNames={friendListNames} alreadyFriend={null} addGroupMemberGroupChatRoomId={null} addGroupMemberGroupImage={null} addGroupMemberGroupName={null} backGroupName={null} backGroupImage={null} />
 				)}
 			</SafeAreaView>
 		</KeyboardAvoidingView>

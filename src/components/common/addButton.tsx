@@ -17,7 +17,7 @@ export function AddButton({ navigation, openFriendList, openGroupList }) {
 								navigation.navigate('AddFriend')
 							}
 							if (openGroupList) {
-								navigation.navigate('AddGroup')
+								navigation.navigate('AddGroup', {"groupName": null, "groupImage": null})
 							}
 						}}
 					>

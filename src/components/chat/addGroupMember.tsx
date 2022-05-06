@@ -198,7 +198,7 @@ export function AddGroupMember({ navigation, route }) {
 					)}
 				</View>
 				{/* 右下のボタン(Next) */}
-				<SmallButton text={"Add"} navigation={navigation} friendList={mergedSelectedFriendList} groupSetting={null} type={"addGroupMember"} friendListNames={null} alreadyFriend={null} addGroupMemberGroupChatRoomId={groupChatRoomId} addGroupMemberGroupImage={image} addGroupMemberGroupName={name} />
+				<SmallButton text={"Add"} navigation={navigation} friendList={mergedSelectedFriendList} groupSetting={null} type={"addGroupMember"} friendListNames={null} alreadyFriend={null} addGroupMemberGroupChatRoomId={groupChatRoomId} addGroupMemberGroupImage={image} addGroupMemberGroupName={name} backGroupName={null} backGroupImage={null} />
 				{/*フッター */}
 				<Footer navigation={navigation} />
 			</SafeAreaView>

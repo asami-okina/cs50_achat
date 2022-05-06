@@ -6,7 +6,7 @@ import { API_SERVER_URL } from "../../constants/api"
 // layouts
 import { MAIN_NAVY_COLOR, MAIN_WHITE_COLOR, ADD_BUTTON_SIZE, CONTENT_WIDTH, BUTTON_BORDER_RADIUS, MAIN_BLACK_COLOR, SMALL_BUTTON_WIDTH, MAIN_GRAY_COLOR } from '../../constants/layout'
 
-export function SmallButton({ text, navigation, friendList, groupSetting, onPress, type, friendListNames, alreadyFriend, addGroupMemberGroupChatRoomId, addGroupMemberGroupImage, addGroupMemberGroupName }) {
+export function SmallButton({ text, navigation, friendList, groupSetting, type, friendListNames, alreadyFriend, addGroupMemberGroupChatRoomId, addGroupMemberGroupImage, addGroupMemberGroupName,backGroupName, backGroupImage }) {
 	// ユーザーID(今後は認証から取得するようにする)
 	const userId = "asami11"
 	// 自分を含めたグループメンバーのuserId
@@ -136,10 +136,9 @@ export function SmallButton({ text, navigation, friendList, groupSetting, onPres
 					<TouchableOpacity
 						style={alreadyFriend ? [styles.buttonStyle, styles.buttonGrayStyle] : styles.buttonStyle}
 						onPress={() => {
-							onPress?.()
 							// グループ追加画面からグループ設定画面への遷移
 							if (type === "addGroup") {
-								navigation.navigate('AddGroupSetting', { friendList: friendList })
+								navigation.navigate('AddGroupSetting', { friendList: friendList, backGroupName: backGroupName, backGroupImage:backGroupImage })
 							}
 							if (type === "addGroupSetting") {
 								// グループ追加API実行

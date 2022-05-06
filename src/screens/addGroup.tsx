@@ -19,7 +19,8 @@ import { sameStyles } from '../constants/styles/sameStyles'
 // layouts
 import { IPHONE_X_BOTTOM_SPACE } from '../constants/layout'
 
-export function AddGroup({ navigation }) {
+export function AddGroup({ route, navigation }) {
+	const {groupName, groupImage} =route.params
 	// ユーザーID(今後は認証から取得するようにする)
 	const userId = "asami11"
 
@@ -196,7 +197,7 @@ export function AddGroup({ navigation }) {
 					)}
 				</View>
 				{/* 右下のボタン(Next) */}
-				<SmallButton text={"Next"} navigation={navigation} friendList={mergedSelectedFriendList} groupSetting={null} type={"addGroup"} friendListNames={null} alreadyFriend={null} addGroupMemberGroupChatRoomId={null} addGroupMemberGroupImage={null} addGroupMemberGroupName={null} />
+				<SmallButton text={"Next"} navigation={navigation} friendList={mergedSelectedFriendList} groupSetting={null} type={"addGroup"} friendListNames={null} alreadyFriend={null} addGroupMemberGroupChatRoomId={null} addGroupMemberGroupImage={null} addGroupMemberGroupName={null} backGroupName={groupName} backGroupImage={groupImage} />
 				{/*フッター */}
 				<Footer navigation={navigation} />
 			</SafeAreaView>
