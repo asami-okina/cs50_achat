@@ -179,8 +179,8 @@ src
 
 # TechnologyUsed
 This software uses the following open source packages:
-- React Native Expo
-- Mock Service Worker
+- [ReactNativeExpo](https://docs.expo.dev/)
+- [MockServiceWorker](https://mswjs.io/)
 
 # Author
 Kawasaki Asami
