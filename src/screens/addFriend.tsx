@@ -11,8 +11,8 @@ import { MainTitle } from "../components/common/_topAreaContainer/mainTitle"
 import { ExistFriend } from '../components/addFriend/existFriend';
 import { NotExistFriend } from "../components/addFriend/notExistFriend"
 
-// constantsCommonStyles
-import { constantsCommonStyles } from '../constants/styles/commonStyles'
+// commonStyles
+import { commonStyles } from '../constants/styles/commonStyles'
 
 // layouts
 import { IPHONE_X_BOTTOM_SPACE } from '../constants/layout'
@@ -77,16 +77,16 @@ export function AddFriend({ navigation }) {
 	let textInputSearch;
 
 	return (
-		<KeyboardAvoidingView behavior="padding" style={constantsCommonStyles.screenContainerStyle}>
-			<SafeAreaView style={constantsCommonStyles.screenContainerStyle}>
+		<KeyboardAvoidingView behavior="padding" style={commonStyles.screenContainerStyle}>
+			<SafeAreaView style={commonStyles.screenContainerStyle}>
 				{/* 画面一番上にある青色の余白部分 */}
-				<View style={constantsCommonStyles.topMarginViewStyle}></View>
+				<View style={commonStyles.topMarginViewStyle}></View>
 				{/* 丸みを帯びている白いトップ部分 */}
 				<TopAreaWrapper type={"addFriend"}>
 					<MainTitle navigation={navigation} title={"Friend Search"} link={"Home"} props={null} groupChatRoomId={null} groupMemberUserId={null} />
 				</TopAreaWrapper>
 				{/* トップ部分を除くメイン部分: iphoneXの場合は、底のマージンを考慮 */}
-				<View style={IPHONE_X_BOTTOM_SPACE === 0 ? constantsCommonStyles.withFooterMainContainerNoneBottomButtonStyle : constantsCommonStyles.withFooterMainContainerIphoneXNoneBottomButtonStyle}>
+				<View style={IPHONE_X_BOTTOM_SPACE === 0 ? commonStyles.withFooterMainContainerNoneBottomButtonStyle : commonStyles.withFooterMainContainerIphoneXNoneBottomButtonStyle}>
 					{/* 検索フォーム */}
 					<View style={styles.searchFormContainerStyle}>
 						<SearchForm setSearchText={setSearchText} searchText={searchText} textInputSearch={textInputSearch} searchName={_searchId} fetchGroupCount={null} fetchFriendCount={null} setIsDuringSearch={null} placeholder={"Search by frinend's userID"} />

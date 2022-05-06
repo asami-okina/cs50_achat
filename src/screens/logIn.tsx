@@ -12,8 +12,8 @@ import { PasswordForm } from '../components/logIn/passwordForm';
 import { TopAreaWrapper } from "../components/common/topAreaWrapper"
 import { API_SERVER_URL } from "../constants/api"
 
-// constantsCommonStyles
-import { constantsCommonStyles } from '../constants/styles/commonStyles'
+// commonStyles
+import { commonStyles } from '../constants/styles/commonStyles'
 
 export function LogIn({ navigation }) {
 	// キーボードに完了ボタンを表示
@@ -63,15 +63,15 @@ export function LogIn({ navigation }) {
 	}
 
 	return (
-		<KeyboardAvoidingView behavior="padding" style={constantsCommonStyles.screenContainerStyle}>
-			<SafeAreaView style={constantsCommonStyles.screenContainerStyle}>
+		<KeyboardAvoidingView behavior="padding" style={commonStyles.screenContainerStyle}>
+			<SafeAreaView style={commonStyles.screenContainerStyle}>
 				{/* 画面一番上にある青色の余白部分 */}
-				<View style={constantsCommonStyles.topMarginViewStyle}></View>
+				<View style={commonStyles.topMarginViewStyle}></View>
 				{/* 丸みを帯びている白いトップ部分 */}
 				<TopAreaWrapper type={"login"}>
-					<Text style={constantsCommonStyles.topAreaTitleStyle}>Log In</Text>
+					<Text style={commonStyles.topAreaTitleStyle}>Log In</Text>
 				</TopAreaWrapper>
-				<ScrollView style={constantsCommonStyles.mainContainerStyle}>
+				<ScrollView style={commonStyles.mainContainerStyle}>
 					{/* ログイン認証エラー */}
 					{executedLoginAuthentication ? onFocusInputMailOrPasseword ? null : (
 						<AuthErrorText />
@@ -97,7 +97,7 @@ export function LogIn({ navigation }) {
 					{/* パスワードを忘れた場合 */}
 					{/* <ForgotPassword /> */}
 					{/* 画面下 */}
-					<View style={constantsCommonStyles.bottomStyleByWelcomeAndSignUpAndLogin}>
+					<View style={commonStyles.bottomStyleByWelcomeAndSignUpAndLogin}>
 						<Button navigation={navigation} link={'Home'} buttonText={'Log In'} scene={'LogIn'} propsList={{ 'emailText': emailText, 'passwordText': passwordText, 'executedLoginAuthentication': executedLoginAuthentication, 'onFocusInputMailOrPasseword': onFocusInputMailOrPasseword, 'onPressFunction': _loginAuthentication }} enable={false} />
 						{/* サインアップまたはログインへのリンク */}
 						<ToSignUpOrLoginTextArea navigation={navigation} description={`Don't you have an account?`} link={'SignUp'} />

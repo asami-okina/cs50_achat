@@ -10,8 +10,8 @@ import { NickNameStringCount } from "../_profileInfo/_editNickName/nickNameStrin
 import { TextInputForm } from "../_profileInfo/_editNickName/textInputForm"
 import { ButtonContainer } from "../_profileInfo/_editNickName/buttonContainer";
 
-// constantsCommonStyles
-import { constantsCommonStyles } from '../../../constants/styles/commonStyles'
+// commonStyles
+import { commonStyles } from '../../../constants/styles/commonStyles'
 
 export function EditNickName({ navigation }) {
 
@@ -30,16 +30,16 @@ export function EditNickName({ navigation }) {
 	const [defaultInput, setDefaultInput] = useState(true)
 
 	return (
-		<KeyboardAvoidingView behavior="padding" style={constantsCommonStyles.screenContainerStyle}>
-			<SafeAreaView style={constantsCommonStyles.screenContainerStyle}>
+		<KeyboardAvoidingView behavior="padding" style={commonStyles.screenContainerStyle}>
+			<SafeAreaView style={commonStyles.screenContainerStyle}>
 				{/* 画面一番上にある青色の余白部分 */}
-				<View style={constantsCommonStyles.topMarginViewStyle}></View>
+				<View style={commonStyles.topMarginViewStyle}></View>
 				{/* 丸みを帯びている白いトップ部分 */}
 				<TopAreaWrapper type={"addFriend"}>
 					<MainTitle navigation={navigation} title={"NickName"} link={"Profile"} props={null} />
 				</TopAreaWrapper>
 				{/* トップ部分を除くメイン部分*/}
-				<View style={constantsCommonStyles.mainContainerStyle}>
+				<View style={commonStyles.mainContainerStyle}>
 					<NickNameStringCount wordCount={wordCount} />
 					<TextInputForm defaultInput={defaultInput} setDefaultInput={setDefaultInput} isValidInput={isValidInput} setIsValidInput={setIsValidInput} wordCount={wordCount} setWordCount={setWordCount} nickName={nickName} setNickName={setNickName} />
 					{/* 遷移ボタン */}

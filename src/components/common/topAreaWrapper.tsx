@@ -2,8 +2,8 @@
 import React from 'react';
 import { View } from 'react-native';
 
-// constantsCommonStyles
-import { constantsCommonStyles } from '../../constants/styles/commonStyles'
+// commonStyles
+import { commonStyles } from '../../constants/styles/commonStyles'
 
 // 丸みを帯びている白いトップ部分
 export function TopAreaWrapper({
@@ -11,7 +11,7 @@ export function TopAreaWrapper({
 	children,
 }) {
 	return (
-		<View style={type === "addGroupSetting" ? constantsCommonStyles.topAreaContainerGroupSettingStyle : constantsCommonStyles.topAreaContainerStyle}>
+		<View style={type === "addGroupSetting" ? commonStyles.topAreaContainerGroupSettingStyle : commonStyles.topAreaContainerStyle}>
 			{children}
 		</View>
 	);

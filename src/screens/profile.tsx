@@ -10,8 +10,8 @@ import { ProfileInfo } from "../components/profile/profileInfo"
 import { ProfileImage } from "../components/profile/profileImage"
 import { API_SERVER_URL } from "../constants/api"
 
-// constantsCommonStyles
-import { constantsCommonStyles } from '../constants/styles/commonStyles'
+// commonStyles
+import { commonStyles } from '../constants/styles/commonStyles'
 
 export function Profile({ navigation }) {
 	// ユーザーID(今後は認証から取得するようにする)
@@ -60,16 +60,16 @@ export function Profile({ navigation }) {
 	}, [isFocused])
 
 	return (
-		<KeyboardAvoidingView behavior="padding" style={constantsCommonStyles.screenContainerStyle}>
-			<SafeAreaView style={constantsCommonStyles.screenContainerStyle}>
+		<KeyboardAvoidingView behavior="padding" style={commonStyles.screenContainerStyle}>
+			<SafeAreaView style={commonStyles.screenContainerStyle}>
 				{/* 画面一番上にある青色の余白部分 */}
-				<View style={constantsCommonStyles.topMarginViewStyle}></View>
+				<View style={commonStyles.topMarginViewStyle}></View>
 				{/* 丸みを帯びている白いトップ部分 */}
 				<TopAreaWrapper type={"addFriend"}>
 					<MainTitle navigation={navigation} title={"Profile Setting"} link={"Home"} props={null} groupChatRoomId={null} groupMemberUserId={null} />
 				</TopAreaWrapper>
 				{/* トップ部分を除くメイン部分*/}
-				<View style={constantsCommonStyles.mainContainerStyle}>
+				<View style={commonStyles.mainContainerStyle}>
 					<View style={styles.profileImageWrapperStyle} >
 						{/* プロフィール画像 */}
 						<ProfileImage image={profileImage} setImage={setProfileImage} />
