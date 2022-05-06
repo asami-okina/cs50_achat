@@ -33,7 +33,7 @@ The following is a screen-by-screen explanation.
 	- Add a friend
 	- Create a new group
 	- Group leave function
-	- 友達、グループをクリックするとチャットに遷移
+	- Clicking on a friend or group will take you to the chat
 
 3. Individual and group chat function on Chats screen
   - Message Search
@@ -75,6 +75,7 @@ expo start
 ```
 
 # directoryStructure
+```bash
 images
 src
 ├─ components
@@ -174,6 +175,7 @@ src
    ├─ profile.tsx
    ├─ signUp.tsx
    └─ welcome.tsx
+```
 
 # TechnologyUsed
 This software uses the following open source packages:
