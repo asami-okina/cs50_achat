@@ -154,6 +154,9 @@ export const MAIN_YELLOW_GREEN = "#66E33A"
 // 黄色
 export const MAIN_YELLOW_COLOR = "#FFF450"
 
+// 水色
+export const MAIN_LITE_BLUE_COLOR = "#3EB0E6"
+
 // ------------------------------------------------------------------------------------------------
 // borderRadius(丸み)
 // 画面上位の白色の丸み部分
