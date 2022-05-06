@@ -18,8 +18,8 @@ import { API_SERVER_URL } from "../constants/api"
 import { TopAreaWrapper } from "../components/common/topAreaWrapper"
 import { MainTitle } from "../components/common/_topAreaContainer/mainTitle"
 
-// commonStyles
-import { commonStyles } from '../constants/styles/commonStyles'
+// asamiStyles
+import { asamiStyles } from '../constants/styles/asamiStyles'
 
 // layouts
 import { MAIN_NAVY_COLOR, MAIN_WHITE_COLOR, FOOTER_HEIGHT, CONTENT_WIDTH, SEARCH_FORM_BORDER_RADIUS, SEND_BUTTON_HEIGHT, STANDARD_FONT, MAIN_YELLOW_COLOR, IPHONE_X_BOTTOM_SPACE, OPERATION_SCREEN_HEIGHT_IPHONE_X } from '../constants/layout'
@@ -458,16 +458,16 @@ export function Chat({ navigation, route }) {
 
 
 	return (
-		<KeyboardAvoidingView behavior="padding" style={commonStyles.screenContainerStyle}>
-			<SafeAreaView style={commonStyles.screenContainerStyle}>
+		<KeyboardAvoidingView behavior="padding" style={asamiStyles.screenContainerStyle}>
+			<SafeAreaView style={asamiStyles.screenContainerStyle}>
 				{/* 画面一番上にある青色の余白部分 */}
-				<View style={commonStyles.topMarginViewStyle}></View>
+				<View style={asamiStyles.topMarginViewStyle}></View>
 				{/* 丸みを帯びている白いトップ部分 */}
 				<TopAreaWrapper type={"Chats"}>
 					<MainTitle navigation={navigation} title={null} link={"Chats"} props={{ "profileImage": profileImage, "name": name }} groupChatRoomId={groupChatRoomId} groupMemberUserId={groupMemberUserId} />
 				</TopAreaWrapper>
 				{/* トップ部分を除くメイン部分: iphoneXの場合は、底のマージンを考慮 */}
-				<View style={IPHONE_X_BOTTOM_SPACE === 0 ? commonStyles.mainContainerStyle : commonStyles.mainContainerIphoneXStyle}>
+				<View style={IPHONE_X_BOTTOM_SPACE === 0 ? asamiStyles.mainContainerStyle : asamiStyles.mainContainerIphoneXStyle}>
 					<GiftedChat
 						messages={messages}
 						onSend={messages => _onSendMessage(messages, image)}

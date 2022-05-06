@@ -13,8 +13,8 @@ import { TopAreaWrapper } from "../components/common/topAreaWrapper"
 import { SearchForm } from "../components/common/_topAreaContainer/searchForm"
 
 
-// commonStyles
-import { commonStyles } from '../constants/styles/commonStyles'
+// asamiStyles
+import { asamiStyles } from '../constants/styles/asamiStyles'
 
 // layouts
 import { IPHONE_X_BOTTOM_SPACE } from '../constants/layout'
@@ -169,16 +169,16 @@ export function AddGroup({ navigation }) {
 	}
 
 	return (
-		<KeyboardAvoidingView behavior="padding" style={commonStyles.screenContainerStyle}>
-			<SafeAreaView style={commonStyles.screenContainerStyle}>
+		<KeyboardAvoidingView behavior="padding" style={asamiStyles.screenContainerStyle}>
+			<SafeAreaView style={asamiStyles.screenContainerStyle}>
 				{/* 画面一番上にある青色の余白部分 */}
-				<View style={commonStyles.topMarginViewStyle}></View>
+				<View style={asamiStyles.topMarginViewStyle}></View>
 				{/* 丸みを帯びている白いトップ部分 */}
 				<TopAreaWrapper type={"searchForm"}>
 					<SearchForm setSearchText={setSearchText} searchText={searchText} textInputSearch={textInputSearch} searchName={_searchName} fetchGroupCount={null} fetchFriendCount={null} setIsDuringSearch={setIsDuringSearch} placeholder={"Search by name"} />
 				</TopAreaWrapper>
 				{/* トップ部分を除くメイン部分: iphoneXの場合は、底のマージンを考慮 */}
-				<View style={IPHONE_X_BOTTOM_SPACE === 0 ? commonStyles.withFooterMainContainerStyle : commonStyles.withFooterMainContainerIphoneXStyle}>
+				<View style={IPHONE_X_BOTTOM_SPACE === 0 ? asamiStyles.withFooterMainContainerStyle : asamiStyles.withFooterMainContainerIphoneXStyle}>
 					{/* 選択された友達一覧 */}
 					{mergedSelectedFriendList.length !== 0 && (
 						<AddFriendList selectedFriendList={mergedSelectedFriendList} deleteFriendList={_deleteFriendList} />

@@ -8,7 +8,7 @@ import { getStatusBarHeight, getBottomSpace } from 'react-native-iphone-x-helper
 // layouts
 // components
 // api
-// commonStyles
+// asamiStyles
 // constantsSearchStyles
 // constantsFormDescriptionStyles
 // hooks
