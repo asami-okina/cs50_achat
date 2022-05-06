@@ -10,8 +10,8 @@ import { GroupImageAndGroupName } from "../components/common/_topAreaContainer/g
 import { SmallButton } from "../components/common/smallButton"
 import { SelectedFriendSpace } from "../components/addGroupSetting/selectedFriendSpace"
 
-// asamiStyles
-import { asamiStyles } from '../constants/styles/asamiStyles'
+// sameStyles
+import { sameStyles } from '../constants/styles/sameStyles'
 
 // layouts
 import { IPHONE_X_BOTTOM_SPACE } from '../constants/layout'
@@ -75,16 +75,16 @@ export function AddGroupSetting({ route, navigation }) {
 	}, [])
 
 	return (
-		<KeyboardAvoidingView behavior="padding" style={asamiStyles.screenContainerStyle}>
-			<SafeAreaView style={asamiStyles.screenContainerStyle}>
+		<KeyboardAvoidingView behavior="padding" style={sameStyles.screenContainerStyle}>
+			<SafeAreaView style={sameStyles.screenContainerStyle}>
 				{/* 画面一番上にある青色の余白部分 */}
-				<View style={asamiStyles.topMarginViewStyle}></View>
+				<View style={sameStyles.topMarginViewStyle}></View>
 				{/* 丸みを帯びている白いトップ部分 */}
 				<TopAreaWrapper type={"addGroupSetting"}>
 					<GroupImageAndGroupName image={image} setImage={setImage} groupName={groupName} setGroupName={setGroupName} friendListNames={friendListNames} />
 				</TopAreaWrapper>
 				{/* トップ部分を除くメイン部分: iphoneXの場合は、底のマージンを考慮 */}
-				<View style={IPHONE_X_BOTTOM_SPACE === 0 ? asamiStyles.withFooterMainContainerStyle : asamiStyles.withFooterMainContainerIphoneXStyle}>
+				<View style={IPHONE_X_BOTTOM_SPACE === 0 ? sameStyles.withFooterMainContainerStyle : sameStyles.withFooterMainContainerIphoneXStyle}>
 					{/* タイトル */}
 					<AddGroupTitle text={"Member"} groupMemberCount={groupMemberCount} />
 					{/* 選択された友達のスペース */}

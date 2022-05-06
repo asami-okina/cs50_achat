@@ -11,8 +11,8 @@ import { SearchForm } from "../components/common/_topAreaContainer/searchForm"
 import { ChatsList } from "../components/chats/chatsList";
 import { API_SERVER_URL } from "../constants/api"
 
-// asamiStyles
-import { asamiStyles } from '../constants/styles/asamiStyles'
+// sameStyles
+import { sameStyles } from '../constants/styles/sameStyles'
 
 // layouts
 import { IPHONE_X_BOTTOM_SPACE } from '../constants/layout'
@@ -121,19 +121,19 @@ export function Chats({ navigation }) {
 	let textInputSearch;
 
 	return (
-		<KeyboardAvoidingView behavior="padding" style={asamiStyles.screenContainerStyle}>
-			<SafeAreaView style={asamiStyles.screenContainerStyle}>
+		<KeyboardAvoidingView behavior="padding" style={sameStyles.screenContainerStyle}>
+			<SafeAreaView style={sameStyles.screenContainerStyle}>
 				{/* Delete確認モーダル */}
 				<ConfirmModal modalVisible={deleteModalVisible} setModalVisible={setDeleteModalVisible} setClickedCancelMordal={setClickedDeleteCancelMordal} setClickedOkMordal={setClickedDeleteOkMordal} modalText={"Delete chat room.Are you okay?"} />
 				<ConfirmModal modalVisible={hiddenModalVisible} setModalVisible={setHiddenModalVisible} setClickedCancelMordal={setClickedHiddenCancelMordal} setClickedOkMordal={setClickedHiddenOkMordal} modalText={"Chat content will not be deleted."} />
 				{/* 画面一番上にある青色の余白部分 */}
-				<View style={asamiStyles.topMarginViewStyle}></View>
+				<View style={sameStyles.topMarginViewStyle}></View>
 				{/* 丸みを帯びている白いトップ部分 */}
 				<TopAreaWrapper type={"searchForm"}>
 					<SearchForm setSearchText={_autoSuggestSearchChatByNickNameOrGroupName} searchText={searchText} textInputSearch={textInputSearch} searchName={_searchChatByNickNameOrGroupName} fetchGroupCount={null} fetchFriendCount={null} setIsDuringSearch={setIsDuringSearch} placeholder={"Search by name"} />
 				</TopAreaWrapper>
 				{/* トップ部分を除くメイン部分: iphoneXの場合は、底のマージンを考慮 */}
-				<View style={IPHONE_X_BOTTOM_SPACE === 0 ? asamiStyles.withFooterMainContainerNoneBottomButtonStyle : asamiStyles.withFooterMainContainerIphoneXNoneBottomButtonStyle}>
+				<View style={IPHONE_X_BOTTOM_SPACE === 0 ? sameStyles.withFooterMainContainerNoneBottomButtonStyle : sameStyles.withFooterMainContainerIphoneXNoneBottomButtonStyle}>
 					{/* チャット一覧 */}
 					{/* 検索中ではない場合 */}
 					{!isDuringSearch && beforeChatRoomListSearch.length !== 0 && (

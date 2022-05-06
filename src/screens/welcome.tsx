@@ -9,23 +9,23 @@ import { AChatLogo } from '../components/common/aChatLogo'
 import { ToSignUpOrLoginTextArea } from '../components/common/toSignUpOrLoginTextArea'
 import { TopAreaWrapper } from "../components/common/topAreaWrapper"
 
-// asamiStyles
-import { asamiStyles } from '../constants/styles/asamiStyles'
+// sameStyles
+import { sameStyles } from '../constants/styles/sameStyles'
 
 export function Welcome({ navigation }) {
 	return (
-		<SafeAreaView style={asamiStyles.screenContainerStyle}>
+		<SafeAreaView style={sameStyles.screenContainerStyle}>
 			{/* 画面一番上にある青色の余白部分 */}
-			<View style={asamiStyles.topMarginViewStyle}></View>
+			<View style={sameStyles.topMarginViewStyle}></View>
 			{/* 丸みを帯びている白いトップ部分 */}
 			<TopAreaWrapper type={"welcome"}>
 			</TopAreaWrapper>
-			<View style={asamiStyles.mainContainerStyle}>
+			<View style={sameStyles.mainContainerStyle}>
 				{/* タイトル */}
 				<HeadTitle title={"Welcome"} />
 				{/* A-Chatロゴ */}
 				<AChatLogo />
-				<View style={asamiStyles.bottomStyleByWelcomeAndSignUpAndLogin}>
+				<View style={sameStyles.bottomStyleByWelcomeAndSignUpAndLogin}>
 					{/* 遷移ボタン */}
 					<Button navigation={navigation} link={'SignUp'} buttonText={'Sign Up'} enable={true} scene={'Welcome'} propsList={null} />
 					{/* サインアップまたはログインへのリンク */}

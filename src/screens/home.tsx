@@ -13,8 +13,8 @@ import { TopAreaWrapper } from "../components/common/topAreaWrapper"
 import { SearchForm } from "../components/common/_topAreaContainer/searchForm"
 import { API_SERVER_URL } from "../constants/api"
 
-// asamiStyles
-import { asamiStyles } from '../constants/styles/asamiStyles'
+// sameStyles
+import { sameStyles } from '../constants/styles/sameStyles'
 
 // layouts
 import { IPHONE_X_BOTTOM_SPACE } from '../constants/layout'
@@ -170,18 +170,18 @@ export function Home({ navigation }) {
 	let textInputSearch;
 
 	return (
-		<KeyboardAvoidingView behavior="padding" style={asamiStyles.screenContainerStyle}>
-			<SafeAreaView style={asamiStyles.screenContainerStyle}>
+		<KeyboardAvoidingView behavior="padding" style={sameStyles.screenContainerStyle}>
+			<SafeAreaView style={sameStyles.screenContainerStyle}>
 				{/* Delete確認モーダル */}
 				<ConfirmModal modalVisible={modalVisible} setModalVisible={setModalVisible} setClickedCancelMordal={setClickedCancelMordal} setClickedOkMordal={setClickedOkMordal} modalText={"When you leave a group, the group member list and all group talk history will be deleted. Do you want to leave the group?"} />
 				{/* 画面一番上にある青色の余白部分 */}
-				<View style={asamiStyles.topMarginViewStyle}></View>
+				<View style={sameStyles.topMarginViewStyle}></View>
 				{/* 丸みを帯びている白いトップ部分 */}
 				<TopAreaWrapper type={"searchForm"}>
 					<SearchForm setSearchText={setSearchText} searchText={searchText} textInputSearch={textInputSearch} searchName={_searchName} fetchGroupCount={_fetchGroupCount} fetchFriendCount={_fetchFriendCount} setIsDuringSearch={setIsDuringSearch} placeholder={"Search by name"} />
 				</TopAreaWrapper>
 				{/* トップ部分を除くメイン部分: iphoneXの場合は、底のマージンを考慮 */}
-				<View style={IPHONE_X_BOTTOM_SPACE === 0 ? asamiStyles.withFooterMainContainerStyle : asamiStyles.withFooterMainContainerIphoneXStyle}>
+				<View style={IPHONE_X_BOTTOM_SPACE === 0 ? sameStyles.withFooterMainContainerStyle : sameStyles.withFooterMainContainerIphoneXStyle}>
 					{/* FriendとGroupの選択タブ */}
 					<FriendOrGroupSelectTab setOpenFriendList={setOpenFriendList} setOpenGroupList={setOpenGroupList} openFriendList={openFriendList} openGroupList={openGroupList} friendCount={friendCount} groupCount={groupCount} />
 					{/* 友達一覧 */}

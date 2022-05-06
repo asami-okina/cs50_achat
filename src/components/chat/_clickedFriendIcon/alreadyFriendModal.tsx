@@ -7,8 +7,8 @@ import { TopAreaWrapper } from "../../../components/common/topAreaWrapper"
 import { Header } from '../_clickedFriendIcon/_alreadyFriendModal/header';
 import { Button } from "../../../components/common/button"
 
-// asamiStyles
-import { asamiStyles } from '../../../constants/styles/asamiStyles'
+// sameStyles
+import { sameStyles } from '../../../constants/styles/sameStyles'
 
 // layouts
 import { MAIN_NAVY_COLOR, PROFILE_IMAGE_BORDER_RADIUS, TAB_TITLE_TEXT_SIZE, TAB_FONT } from '../../../constants/layout'
@@ -21,16 +21,16 @@ export function AlreadyFriendModal({ route, navigation }) {
 	const friendNickName = user.name
 
 	return (
-		<KeyboardAvoidingView behavior="padding" style={asamiStyles.screenContainerStyle}>
-			<SafeAreaView style={asamiStyles.screenContainerStyle}>
+		<KeyboardAvoidingView behavior="padding" style={sameStyles.screenContainerStyle}>
+			<SafeAreaView style={sameStyles.screenContainerStyle}>
 				{/* 画面一番上にある青色の余白部分 */}
-				<View style={asamiStyles.topMarginViewStyle}></View>
+				<View style={sameStyles.topMarginViewStyle}></View>
 				{/* 丸みを帯びている白いトップ部分 */}
 				<TopAreaWrapper type={"alreadyFriendModal"}>
 					<Header navigation={navigation} groupChatRoomId={groupChatRoomId} groupImage={groupImage} groupName={groupName} />
 				</TopAreaWrapper>
 				{/* トップ部分を除くメイン部分*/}
-				<View style={asamiStyles.mainContainerStyle}>
+				<View style={sameStyles.mainContainerStyle}>
 					<View style={styles.profileImageWrapperStyle} >
 						{friendImage ? (
 							<Image source={friendImage} style={{ width: 80, height: 80, borderRadius: PROFILE_IMAGE_BORDER_RADIUS, }} />

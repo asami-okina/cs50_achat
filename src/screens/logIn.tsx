@@ -12,8 +12,8 @@ import { PasswordForm } from '../components/logIn/passwordForm';
 import { TopAreaWrapper } from "../components/common/topAreaWrapper"
 import { API_SERVER_URL } from "../constants/api"
 
-// asamiStyles
-import { asamiStyles } from '../constants/styles/asamiStyles'
+// sameStyles
+import { sameStyles } from '../constants/styles/sameStyles'
 
 export function LogIn({ navigation }) {
 	// キーボードに完了ボタンを表示
@@ -63,15 +63,15 @@ export function LogIn({ navigation }) {
 	}
 
 	return (
-		<KeyboardAvoidingView behavior="padding" style={asamiStyles.screenContainerStyle}>
-			<SafeAreaView style={asamiStyles.screenContainerStyle}>
+		<KeyboardAvoidingView behavior="padding" style={sameStyles.screenContainerStyle}>
+			<SafeAreaView style={sameStyles.screenContainerStyle}>
 				{/* 画面一番上にある青色の余白部分 */}
-				<View style={asamiStyles.topMarginViewStyle}></View>
+				<View style={sameStyles.topMarginViewStyle}></View>
 				{/* 丸みを帯びている白いトップ部分 */}
 				<TopAreaWrapper type={"login"}>
-					<Text style={asamiStyles.topAreaTitleStyle}>Log In</Text>
+					<Text style={sameStyles.topAreaTitleStyle}>Log In</Text>
 				</TopAreaWrapper>
-				<ScrollView style={asamiStyles.mainContainerStyle}>
+				<ScrollView style={sameStyles.mainContainerStyle}>
 					{/* ログイン認証エラー */}
 					{executedLoginAuthentication ? onFocusInputMailOrPasseword ? null : (
 						<AuthErrorText />
@@ -97,7 +97,7 @@ export function LogIn({ navigation }) {
 					{/* パスワードを忘れた場合 */}
 					{/* <ForgotPassword /> */}
 					{/* 画面下 */}
-					<View style={asamiStyles.bottomStyleByWelcomeAndSignUpAndLogin}>
+					<View style={sameStyles.bottomStyleByWelcomeAndSignUpAndLogin}>
 						<Button navigation={navigation} link={'Home'} buttonText={'Log In'} scene={'LogIn'} propsList={{ 'emailText': emailText, 'passwordText': passwordText, 'executedLoginAuthentication': executedLoginAuthentication, 'onFocusInputMailOrPasseword': onFocusInputMailOrPasseword, 'onPressFunction': _loginAuthentication }} enable={false} />
 						{/* サインアップまたはログインへのリンク */}
 						<ToSignUpOrLoginTextArea navigation={navigation} description={`Don't you have an account?`} link={'SignUp'} />

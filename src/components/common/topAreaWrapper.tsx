@@ -2,8 +2,8 @@
 import React from 'react';
 import { View } from 'react-native';
 
-// asamiStyles
-import { asamiStyles } from '../../constants/styles/asamiStyles'
+// sameStyles
+import { sameStyles } from '../../constants/styles/sameStyles'
 
 // 丸みを帯びている白いトップ部分
 export function TopAreaWrapper({
@@ -11,7 +11,7 @@ export function TopAreaWrapper({
 	children,
 }) {
 	return (
-		<View style={type === "addGroupSetting" ? asamiStyles.topAreaContainerGroupSettingStyle : asamiStyles.topAreaContainerStyle}>
+		<View style={type === "addGroupSetting" ? sameStyles.topAreaContainerGroupSettingStyle : sameStyles.topAreaContainerStyle}>
 			{children}
 		</View>
 	);

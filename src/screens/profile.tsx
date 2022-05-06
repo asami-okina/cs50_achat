@@ -10,8 +10,8 @@ import { ProfileInfo } from "../components/profile/profileInfo"
 import { ProfileImage } from "../components/profile/profileImage"
 import { API_SERVER_URL } from "../constants/api"
 
-// asamiStyles
-import { asamiStyles } from '../constants/styles/asamiStyles'
+// sameStyles
+import { sameStyles } from '../constants/styles/sameStyles'
 
 export function Profile({ navigation }) {
 	// ユーザーID(今後は認証から取得するようにする)
@@ -60,16 +60,16 @@ export function Profile({ navigation }) {
 	}, [isFocused])
 
 	return (
-		<KeyboardAvoidingView behavior="padding" style={asamiStyles.screenContainerStyle}>
-			<SafeAreaView style={asamiStyles.screenContainerStyle}>
+		<KeyboardAvoidingView behavior="padding" style={sameStyles.screenContainerStyle}>
+			<SafeAreaView style={sameStyles.screenContainerStyle}>
 				{/* 画面一番上にある青色の余白部分 */}
-				<View style={asamiStyles.topMarginViewStyle}></View>
+				<View style={sameStyles.topMarginViewStyle}></View>
 				{/* 丸みを帯びている白いトップ部分 */}
 				<TopAreaWrapper type={"addFriend"}>
 					<MainTitle navigation={navigation} title={"Profile Setting"} link={"Home"} props={null} groupChatRoomId={null} groupMemberUserId={null} />
 				</TopAreaWrapper>
 				{/* トップ部分を除くメイン部分*/}
-				<View style={asamiStyles.mainContainerStyle}>
+				<View style={sameStyles.mainContainerStyle}>
 					<View style={styles.profileImageWrapperStyle} >
 						{/* プロフィール画像 */}
 						<ProfileImage image={profileImage} setImage={setProfileImage} />

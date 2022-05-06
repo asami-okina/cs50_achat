@@ -12,8 +12,8 @@ import { ToSignUpOrLoginTextArea } from '../components/common/toSignUpOrLoginTex
 // components
 import { Button } from '../components/common/button'
 
-// asamiStyles
-import { asamiStyles } from '../constants/styles/asamiStyles'
+// sameStyles
+import { sameStyles } from '../constants/styles/sameStyles'
 
 export function SignUp({ navigation }) {
 	// キーボードに完了ボタンを表示
@@ -36,16 +36,16 @@ export function SignUp({ navigation }) {
 	const [isAvailableUserId, setIsAvailableUserId] = useState(false)
 
 	return (
-		<KeyboardAvoidingView behavior="padding" style={asamiStyles.screenContainerStyle}>
-			<SafeAreaView style={asamiStyles.screenContainerStyle}>
+		<KeyboardAvoidingView behavior="padding" style={sameStyles.screenContainerStyle}>
+			<SafeAreaView style={sameStyles.screenContainerStyle}>
 				{/* 画面一番上にある青色の余白部分 */}
-				<View style={asamiStyles.topMarginViewStyle}></View>
+				<View style={sameStyles.topMarginViewStyle}></View>
 				{/* 丸みを帯びている白いトップ部分 */}
 				<TopAreaWrapper type={"signUp"}>
-					<Text style={asamiStyles.topAreaTitleStyle}>Sign Up</Text>
+					<Text style={sameStyles.topAreaTitleStyle}>Sign Up</Text>
 				</TopAreaWrapper>
 				{/* トップ部分を除くメイン部分 */}
-				<ScrollView style={asamiStyles.mainContainerStyle}>
+				<ScrollView style={sameStyles.mainContainerStyle}>
 					{/* Email */}
 					<MailForm
 						inputAccessoryViewID={inputAccessoryViewID}
@@ -72,7 +72,7 @@ export function SignUp({ navigation }) {
 						pageType={"SignUp"}
 					/>
 					{/* 画面下 */}
-					<View style={asamiStyles.bottomStyleByWelcomeAndSignUpAndLogin}>
+					<View style={sameStyles.bottomStyleByWelcomeAndSignUpAndLogin}>
 						{isCorrectMail && isCorrectPassewordSymbol && isCorrectPassewordStringCount && isCorrectUserIdSymbol && isCorrectUserIdStringCount && isAvailableUserId ?
 							(
 								<Button navigation={navigation} link={'Home'} buttonText={'Sign Up'} enable={true} scene={'SignUp'} propsList={null} />
