@@ -17,11 +17,14 @@ export function MainTitle({ navigation, title, link, props, groupChatRoomId, gro
 			{props && (
 				<View style={styles.topAreaContainerStyle}>
 					<View style={styles.imageContainerStyle}>
-						{props.profileImage ? (
-							<Image source={props.profileImage} style={styles.circleStyle} />
-						) :
-							<View style={styles.circleStyle}></View>
-						}
+						{/* ディレクトリの画像はtypeofがnumberとなり、アップロードした画像はstringとなる */}
+						{props.profileImage ? typeof props.profileImage === "string" ?
+							(
+								<Image source={{ uri: props.profileImage }} style={styles.circleStyle} />
+							) :
+							(
+								<Image source={props.profileImage} style={styles.circleStyle} />
+							) : <View style={styles.circleStyle}></View>}
 					</View>
 					<View style={styles.nameAndAddCiecleContainerStyle}>
 						<Text style={styles.nameStyle} numberOfLines={1} ellipsizeMode="tail">{props.name}</Text>

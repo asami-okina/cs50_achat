@@ -145,7 +145,7 @@ export function SmallButton({ text, navigation, friendList, groupSetting, type, 
 								_addGroup().then(() => {
 									// グループ設定画面からグループチャットに遷移
 									// 本番では、"group 6"部分を修正。現在は仮で実装している。
-									navigation.navigate('Chat', { "groupChatRoomId": "group 6", "directChatRoomId": null, "profileImage": null, "name": groupSetting.groupName || friendListNames })
+									navigation.navigate('Chat', { "groupChatRoomId": "group 6", "directChatRoomId": null, "profileImage": groupSetting.image, "name": groupSetting.groupName || friendListNames })
 								})
 							}
 							if (type === "addFriend" && !alreadyFriend) {
