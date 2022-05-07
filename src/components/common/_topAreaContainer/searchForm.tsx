@@ -61,6 +61,7 @@ export function SearchForm({
 				{deleteIconDisplay && (
 					<Pressable onPress={() => {
 						textInputSearch.clear();
+						// beforeとafterをmergeさせなきゃ
 						// 検索中フラグをfalseにする
 						if (setIsDuringSearch) {
 							setIsDuringSearch(false)

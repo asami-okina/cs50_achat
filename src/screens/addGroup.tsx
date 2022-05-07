@@ -20,7 +20,7 @@ import { sameStyles } from '../constants/styles/sameStyles'
 import { IPHONE_X_BOTTOM_SPACE } from '../constants/layout'
 
 export function AddGroup({ route, navigation }) {
-	const {groupName, groupImage} =route.params
+	const { groupName, groupImage, backFriendList } = route.params
 	// ユーザーID(今後は認証から取得するようにする)
 	const userId = "asami11"
 
@@ -84,13 +84,6 @@ export function AddGroup({ route, navigation }) {
 			console.error(e)
 		}
 	}
-
-	useEffect(() => {
-		if (userId) {
-			// 友達一覧を取得
-			_fetchFriendList(userId)
-		}
-	}, [])
 
 	// 検索フォームのラベル化
 	let textInputSearch;
@@ -169,6 +162,28 @@ export function AddGroup({ route, navigation }) {
 		}
 	}
 
+	useEffect(() => {
+		if (userId) {
+			// 友達一覧を取得
+			_fetchFriendList(userId)
+		}
+	}, [])
+
+	// 一度設定画面に遷移した後、追加ボタンで戻ってきた場合の選択された友達一覧コンテナ、一覧部分
+	useEffect(() => {
+		if (backFriendList) {
+			setMergerdSelectedFriendList(backFriendList)
+			if (beforeSelectedFriendList.length !== 0) {
+				setBeforeSelectedFriendList(backFriendList)
+			}
+			if (afterSelectedFriendList.length !== 0) {
+				setAfterSelectedFriendList(backFriendList)
+			}
+		}
+
+	}, [backFriendList])
+
+
 	return (
 		<KeyboardAvoidingView behavior="padding" style={sameStyles.screenContainerStyle}>
 			<SafeAreaView style={sameStyles.screenContainerStyle}>
@@ -189,11 +204,11 @@ export function AddGroup({ route, navigation }) {
 					{/* 友達一覧 */}
 					{/* 検索中ではない場合 */}
 					{!isDuringSearch && (
-						<FriendList listData={beforeFriendListSearch} addFriendList={_addFriendList} deleteFriendList={_deleteFriendList} selectedFriendList={beforeSelectedFriendList} groupMemberUserId={[]} />
+						<FriendList listData={beforeFriendListSearch} addFriendList={_addFriendList} deleteFriendList={_deleteFriendList} selectedFriendList={mergedSelectedFriendList} groupMemberUserId={[]} />
 					)}
 					{/* 検索中の場合 */}
 					{isDuringSearch && (
-						<FriendList listData={afterFriendListSearch} addFriendList={_addFriendList} deleteFriendList={_deleteFriendList} selectedFriendList={afterSelectedFriendList} groupMemberUserId={[]} />
+						<FriendList listData={afterFriendListSearch} addFriendList={_addFriendList} deleteFriendList={_deleteFriendList} selectedFriendList={mergedSelectedFriendList} groupMemberUserId={[]} />
 					)}
 				</View>
 				{/* 右下のボタン(Next) */}

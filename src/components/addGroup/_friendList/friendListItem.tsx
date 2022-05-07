@@ -16,7 +16,7 @@ export function FriendListItem({
 }) {
 	let clicked = false
 	// 該当友達が選択されているかどうかの判定
-	const prevIndex = selectedFriendList.findIndex(item => item.key === list.key);
+	const prevIndex = selectedFriendList.findIndex(item => item.friend_use_id === list.friend_use_id);
 	if (prevIndex !== -1) {
 		clicked = true
 	}

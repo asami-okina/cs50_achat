@@ -30,7 +30,7 @@ export function SelectedFriendSpace({ navigation, friendList, setFriendList, own
 		<View style={selectedFriendStyles.wrapperStyle}>
 			<View style={selectedFriendStyles.containerStyle} >
 				{/* 追加ボタン */}
-				<Pressable style={styles.ownWrapperStyle} onPress={() => navigation.navigate('AddGroup',{"groupName": groupName, "groupImage": groupImage})}>
+				<Pressable style={styles.ownWrapperStyle} onPress={() => navigation.navigate('AddGroup',{"groupName": groupName, "groupImage": groupImage, "backFriendList": friendList})}>
 					<View style={selectedFriendStyles.closeImageStyle}></View>
 					<Image source={require("../../../assets/images/add-circle.png")} style={selectedFriendStyles.profileImageStyle} />
 					<Text style={selectedFriendStyles.listItemNameStyle} numberOfLines={1} ellipsizeMode="tail"></Text>
