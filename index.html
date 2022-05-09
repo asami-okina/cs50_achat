@@ -1,0 +1,47 @@
+<form method="post">
+    <div>
+        <label for="fullname">お名前</label>
+        <input type="text" name="fullname" id="input" />
+    </div>
+    <input type="submit" value="送信する" id="btn" name="submit" />
+</form>
+<div id="textbox">
+</div>
+<script>
+    document.getElementById("btn").addEventListener("click", function (event) {
+        event.preventDefault()
+    });
+
+    const sock = new WebSocket("ws://127.0.0.1:5001");
+    sock.addEventListener("open", e => {
+        console.log("接続が開かれたときに呼び出されるイベント");
+    });
+
+    sock.addEventListener("message", e => {
+        console.log("サーバーからメッセージを受信したときに呼び出されるイベント");
+        // id属性で要素を取得
+        var textbox_element = document.getElementById('textbox');
+
+        // 新しいHTML要素を作成
+        const recieved_message = e.data
+        let new_element = document.createElement('p')
+        new_element.textContent = recieved_message
+
+        // 指定した要素の中の末尾に挿入
+        textbox_element.appendChild(new_element);
+    });
+
+    sock.addEventListener("close", e => {
+        console.log("接続が閉じられたときに呼び出されるイベント");
+    });
+
+    sock.addEventListener("error", e => {
+        console.log("エラーが発生したときに呼び出されるイベント");
+    });
+
+    btn.addEventListener("click", e => {
+        let input = document.getElementById('input');
+        let message = input.value
+        sock.send(message);
+    });
+</script>

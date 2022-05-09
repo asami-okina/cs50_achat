@@ -56,6 +56,7 @@ function App() {
 		MPLUS1p_800ExtraBold,
 		MPLUS1p_900Black,
 	});
+
 	if (!fontsLoaded) {
 		return <AppLoading />;
 	} else {
