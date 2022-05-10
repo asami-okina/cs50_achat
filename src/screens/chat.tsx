@@ -43,6 +43,19 @@ export function Chat({ navigation, route }) {
 	// マウント判定
 	const isMounted = useIsMounted()
 
+	const sock = new WebSocket("wss://e652-217-178-25-219.jp.ngrok.io");
+
+	useEffect(() => {
+		sock.addEventListener("message", e => {
+			console.log("サーバーからメッセージを受信したときに呼び出されるイベント");
+			const newMessage = JSON.parse(e.data)
+			if (isMounted.current) {
+				setMessages(previousMessages => GiftedChat.append(previousMessages, newMessage))
+			}
+		});
+
+	}, [])
+
 	// チャットルームIDに紐づくチャット履歴の取得
 	async function _fetchChatByChatRoomId() {
 		try {
@@ -125,11 +138,13 @@ export function Chat({ navigation, route }) {
 			]
 			messages[0]["image"] = image
 		}
-		// 画像とテスト両方ある場合
+		// 画像とテキスト両方ある場合
 		if (image && messages.length !== 0) {
 			messages[0]["image"] = image
 		}
-		setMessages(previousMessages => GiftedChat.append(previousMessages, messages))
+		// websocketでメッセージをサーバーに送る
+		sock.send(JSON.stringify(messages))
+		// setMessages(previousMessages => GiftedChat.append(previousMessages, messages))
 		_postMessage(messages)
 		setImage('')
 		// メッセージ更新API実行

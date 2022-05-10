@@ -15,7 +15,6 @@
     const sock = new WebSocket("ws://127.0.0.1:5001");
     sock.addEventListener("open", e => {
         console.log("接続が開かれたときに呼び出されるイベント");
-        sock.send("opened");
     });
 
     sock.addEventListener("message", e => {

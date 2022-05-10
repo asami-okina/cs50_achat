@@ -5,34 +5,24 @@ app.use(express.json())
 
 // websocket
 const server = require("ws").Server;
-const s = new server({ port: 5001 });
-
-const messages = [{ "messages": [] }]
+const s = new server({ port: 8000 });
 
 s.on("connection", ws => {
 	// クライアントからサーバに送られてきたメッセージ
 	ws.on("message", message => {
 		console.log("Received: " + message);
-		if (message.toString() === "opened") {
-			s.clients.forEach(client => {
-				// 自分がリロードした時のみメッセージ履歴を取得
-				if (client === ws) {
-					client.send(JSON.stringify(messages));
-				}
-			});
-		} else {
-			messages[0].messages.push({ message: message.toString() })
-			// 接続しているクライアント全てに送信
-			s.clients.forEach(client => {
-				const message_content = [{ "message": [] }]
-				message_content[0].message.push(message.toString())
-				client.send(JSON.stringify(message_content));
-			});
-		}
+		s.clients.forEach(client => {
+			client.send(message.toString());
+		});
+		// messages[0].messages.push({ message: message.toString() })
+		// // 接続しているクライアント全てに送信
+		// s.clients.forEach(client => {
+		// 	const message_content = [{ "message": [] }]
+		// 	message_content[0].message.push(message.toString())
+		// 	client.send(JSON.stringify(message_content));
+		// });
 	});
 });
-
-
 
 let _count = 0;
 function _id() {
@@ -1211,6 +1201,28 @@ app.post('/api/users/:userId/message', (req, res, ctx) => {
 	if (groupChatRoomId === "group 6") {
 		temporaryMessages_group6 = [all, ...temporaryMessages_group6]
 	}
+	// s.on("connection", ws => {
+	// 	// クライアントからサーバに送られてきたメッセージ
+	// 	ws.on("message", message => {
+	// 		console.log("Received: " + message);
+	// 		if (message.toString() === "opened") {
+	// 			s.clients.forEach(client => {
+	// 				// 自分がリロードした時のみメッセージ履歴を取得
+	// 				if (client === ws) {
+	// 					client.send(JSON.stringify(messages));
+	// 				}
+	// 			});
+	// 		} else {
+	// 			messages[0].messages.push({ message: message.toString() })
+	// 			// 接続しているクライアント全てに送信
+	// 			s.clients.forEach(client => {
+	// 				const message_content = [{ "message": [] }]
+	// 				message_content[0].message.push(message.toString())
+	// 				client.send(JSON.stringify(message_content));
+	// 			});
+	// 		}
+	// 	});
+	// });
 	return res.status(200).send("")
 })
 // 最終既読日時の更新

@@ -34,12 +34,12 @@ import {
 
 const Stack = createNativeStackNavigator();
 
-// mock service
-import 'react-native-url-polyfill/auto';
-const { native } = require('./src/mocks/native');
-// bypass: デフォルトの設定だと、モックされていないAPIリクエストに対してコンソールに警告が表示される。
-// 消したいときは、onUnhandledRequestの設定値をbypassに変更する
-native.listen({ onUnhandledRequest: 'bypass' })
+// // mock service
+// import 'react-native-url-polyfill/auto';
+// const { native } = require('./src/mocks/native');
+// // bypass: デフォルトの設定だと、モックされていないAPIリクエストに対してコンソールに警告が表示される。
+// // 消したいときは、onUnhandledRequestの設定値をbypassに変更する
+// native.listen({ onUnhandledRequest: 'bypass' })
 
 
 function App() {
