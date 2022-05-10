@@ -15,20 +15,33 @@
     const sock = new WebSocket("ws://127.0.0.1:5001");
     sock.addEventListener("open", e => {
         console.log("接続が開かれたときに呼び出されるイベント");
+        sock.send("opened");
     });
 
     sock.addEventListener("message", e => {
         console.log("サーバーからメッセージを受信したときに呼び出されるイベント");
         // id属性で要素を取得
         var textbox_element = document.getElementById('textbox');
-
         // 新しいHTML要素を作成
-        const recieved_message = e.data
-        let new_element = document.createElement('p')
-        new_element.textContent = recieved_message
-
-        // 指定した要素の中の末尾に挿入
-        textbox_element.appendChild(new_element);
+        const recieved_messages = e.data
+        let parse_messages = JSON.parse(recieved_messages)
+        if (parse_messages[0].messages) {
+            if (parse_messages[0].messages.length === 0) {
+                return
+            } else {
+                parse_messages[0].messages.forEach((message, i) => {
+                    let new_element = document.createElement('p')
+                    new_element.textContent = message.message
+                    // 指定した要素の中の末尾に挿入
+                    textbox_element.appendChild(new_element);
+                })
+            }
+        } else {
+            let new_element = document.createElement('p')
+            new_element.textContent = parse_messages[0].message
+            // 指定した要素の中の末尾に挿入
+            textbox_element.appendChild(new_element);
+        }
     });
 
     sock.addEventListener("close", e => {

@@ -7,19 +7,28 @@ app.use(express.json())
 const server = require("ws").Server;
 const s = new server({ port: 5001 });
 
+const messages = [{ "messages": [] }]
+
 s.on("connection", ws => {
 	// クライアントからサーバに送られてきたメッセージ
 	ws.on("message", message => {
 		console.log("Received: " + message);
-		// 接続しているクライアント全てに送信
-		s.clients.forEach(client => {
-			client.send(message.toString());
-		});
-		// 接続している自分以外のクライアント全てに送信
-		// s.clients.forEach(client => {
-		// 	if (client !== ws)
-		// 		client.send(message.toString());
-		// });
+		if (message.toString() === "opened") {
+			s.clients.forEach(client => {
+				// 自分がリロードした時のみメッセージ履歴を取得
+				if (client === ws) {
+					client.send(JSON.stringify(messages));
+				}
+			});
+		} else {
+			messages[0].messages.push({ message: message.toString() })
+			// 接続しているクライアント全てに送信
+			s.clients.forEach(client => {
+				const message_content = [{ "message": [] }]
+				message_content[0].message.push(message.toString())
+				client.send(JSON.stringify(message_content));
+			});
+		}
 	});
 });
 
