@@ -25,10 +25,14 @@
         // 新しいHTML要素を作成
         const recieved_messages = e.data
         let parse_messages = JSON.parse(recieved_messages)
+
+        // メッセージ履歴がある場合
         if (parse_messages[0].messages) {
+            // メッセージ履歴が空の場合
             if (parse_messages[0].messages.length === 0) {
                 return
             } else {
+                // メッセージ履歴の長さがある場合
                 parse_messages[0].messages.forEach((message, i) => {
                     let new_element = document.createElement('p')
                     new_element.textContent = message.message
@@ -37,6 +41,7 @@
                 })
             }
         } else {
+            // メッセージ履歴ではなく、送信したメッセージの表示
             let new_element = document.createElement('p')
             new_element.textContent = parse_messages[0].message
             // 指定した要素の中の末尾に挿入
