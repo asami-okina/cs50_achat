@@ -78,7 +78,7 @@ export function Chats({ navigation }) {
 
 
 	// ユーザーIDに紐づくチャットルーム一覧を取得
-	async function _fetchChatsList() {
+	async function _fetchChatsList(userId) {
 		try {
 			// APIリクエスト
 			const response = await fetch(API_SERVER_URL + `/api/users/${userId}/chatRoom`, {
@@ -111,7 +111,7 @@ export function Chats({ navigation }) {
 		}).then((data) => {
 			setUserId(data.userId)
 			// navigationがリレンダーされないので、画面にフォーカスが当たった時に再実行するよう実装
-			_fetchChatsList()
+			_fetchChatsList(data.userId)
 		})
 	}, [isFocused])
 

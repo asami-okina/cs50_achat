@@ -1,19 +1,15 @@
 // ------------------------------------------------
 // 検証中の約束
-// PC
-// userId : asami1 mail:asami1@g.com pass: asami1
-// 携帯
-// userId : asami2 mail:asami2@g.com pass: asami2
 const pc = {
-	"email": "asami1@g.com",
-	"password": "asami1",
-	"userId": "asami1",
+	"email": "pc@g.com",
+	"password": "pcAsami",
+	"userId": "pcAsami",
 }
 
 const smartPhone = {
-	"email": "asami1@g.com",
-	"password": "asami1",
-	"userId": "asami1",
+	"email": "sp@g.com",
+	"password": "spAsami",
+	"userId": "spAsami",
 }
 // ------------------------------------------------
 
@@ -21,6 +17,7 @@ const smartPhone = {
 const express = require('express')
 const app = express()
 app.use(express.json())
+app.use(express.static('../assets'));
 
 // websocket
 const server = require("ws").Server;
@@ -33,13 +30,6 @@ s.on("connection", ws => {
 		s.clients.forEach(client => {
 			client.send(message.toString());
 		});
-		// messages[0].messages.push({ message: message.toString() })
-		// // 接続しているクライアント全てに送信
-		// s.clients.forEach(client => {
-		// 	const message_content = [{ "message": [] }]
-		// 	message_content[0].message.push(message.toString())
-		// 	client.send(JSON.stringify(message_content));
-		// });
 	});
 });
 
@@ -48,74 +38,37 @@ function _id() {
 	return _count++;
 }
 
-let profileInfo =
+let pc_profileInfo =
 {
-	"userId": "asami11",
+	"userId": "pcAsami",
 	"nickName": "あさみん",
 	"profileImage": "https://pbs.twimg.com/profile_images/1257586310077796352/XWNIr3Fr_400x400.jpg",
 	"searchFlag": true
 }
 
-let friends = [
+let sp_profileInfo =
+{
+	"userId": "spAsami",
+	"nickName": "あさみん",
+	"profileImage": "https://pbs.twimg.com/profile_images/1522452340611358720/8AqTz3iz_400x400.jpg",
+	"searchFlag": true
+}
+
+let pc_friends = [
 	{
 		"direct_chat_room_id": "friend 1",
-		"friend_use_id": "friend 1",
-		"friend_profile_image": null,
-		"friend_nickname": "friend 1"
+		"friend_use_id": sp_profileInfo.userId,
+		"friend_profile_image": sp_profileInfo.profileImage,
+		"friend_nickname": "sp"
 	},
+]
+
+let sp_friends = [
 	{
-		"direct_chat_room_id": "friend 2",
-		"friend_use_id": "friend 2",
-		"friend_profile_image": null,
-		"friend_nickname": "friend 2"
-	},
-	{
-		"direct_chat_room_id": "friend 3",
-		"friend_use_id": "friend 3",
-		"friend_profile_image": null,
-		"friend_nickname": "friend 3"
-	},
-	{
-		"direct_chat_room_id": "friend 4",
-		"friend_use_id": "friend 4",
-		"friend_profile_image": null,
-		"friend_nickname": "friend 4"
-	},
-	{
-		"direct_chat_room_id": "friend 5",
-		"friend_use_id": "friend 5",
-		"friend_profile_image": null,
-		"friend_nickname": "friend 5"
-	},
-	{
-		"direct_chat_room_id": "friend 6",
-		"friend_use_id": "friend 6",
-		"friend_profile_image": null,
-		"friend_nickname": "friend 6"
-	},
-	{
-		"direct_chat_room_id": "friend 7",
-		"friend_use_id": "friend 7",
-		"friend_profile_image": null,
-		"friend_nickname": "friend 7"
-	},
-	{
-		"direct_chat_room_id": "friend 8",
-		"friend_use_id": "friend 8",
-		"friend_profile_image": null,
-		"friend_nickname": "friend 8"
-	},
-	{
-		"direct_chat_room_id": "friend 9",
-		"friend_use_id": "friend 9",
-		"friend_profile_image": null,
-		"friend_nickname": "friend 9"
-	},
-	{
-		"direct_chat_room_id": "friend 10",
-		"friend_use_id": "friend 10",
-		"friend_profile_image": null,
-		"friend_nickname": "friend 10"
+		"direct_chat_room_id": "friend 1",
+		"friend_use_id": pc_profileInfo.userId,
+		"friend_profile_image": pc_profileInfo.profileImage,
+		"friend_nickname": "pc"
 	},
 ]
 
@@ -123,52 +76,10 @@ let groups = [
 	{
 		"group_chat_room_id": "group 1",
 		"group_name": "group 1",
-		"group_image": null,
+		"group_image": "https://pbs.twimg.com/media/E16OXztUYAIpisv?format=jpg&name=large",
 		"group_member_user_id": [
-			"friend 1",
-			"friend 2"
-		]
-	},
-	{
-		"group_chat_room_id": "group 2",
-		"group_name": "group 2",
-		"group_image": null,
-		"group_member_user_id": [
-			"friend 1",
-			"friend 2",
-			"friend 3"
-		]
-	},
-	{
-		"group_chat_room_id": "group 3",
-		"group_name": "group 3",
-		"group_image": null,
-		"group_member_user_id": [
-			"friend 1",
-			"friend 4",
-			"friend 5",
-			"friend 6"
-		]
-	},
-	{
-		"group_chat_room_id": "group 4",
-		"group_name": "group 4",
-		"group_image": null,
-		"group_member_user_id": [
-			"friend 1",
-			"friend 6",
-			"friend 7",
-		]
-	},
-	{
-		"group_chat_room_id": "group 5",
-		"group_name": "group 5",
-		"group_image": null,
-		"group_member_user_id": [
-			"friend 1",
-			"friend 7",
-			"friend 8",
-			"friend 9"
+			"pc",
+			"sp"
 		]
 	},
 ]
@@ -179,9 +90,9 @@ let temporaryMessages_friend1 = [
 		_id: 1,
 		createdAt: "2022-04-27T02:10:29.189Z",
 		user: {
-			_id: 2,
-			name: "friend 1",
-			avatar: null,
+			_id: "pc",
+			name: "pc",
+			avatar: pc_profileInfo.profileImage,
 		},
 		sent: true,
 		received: true,
@@ -192,253 +103,9 @@ let temporaryMessages_friend1 = [
 		text: 'いいよん',
 		createdAt: "2022-04-27T02:08:10.189Z",
 		user: {
-			_id: 2,
-			name: "friend 1",
-			avatar: null,
-		},
-		sent: true,
-		received: true
-	},
-]
-
-
-let temporaryMessages_friend2 = [
-	{
-		_id: 3,
-		createdAt: "2022-04-27T02:10:29.189Z",
-		user: {
-			_id: 3,
-			name: "friend 2",
-			avatar: null,
-		},
-		sent: true,
-		received: true,
-		image: 'https://placeimg.com/140/140/any',
-	},
-	{
-		_id: 4,
-		text: 'Hello developer',
-		createdAt: "2022-04-27T02:08:10.189Z",
-		user: {
-			_id: 4,
-			name: "friend 2",
-			avatar: null,
-		},
-		sent: true,
-		received: true
-	},
-]
-
-let temporaryMessages_friend3 = [
-	{
-		_id: 5,
-		createdAt: "2022-04-27T02:10:29.189Z",
-		user: {
-			_id: 5,
-			name: "friend 3",
-			avatar: null,
-		},
-		sent: true,
-		received: true,
-		image: 'https://placeimg.com/140/140/any',
-	},
-	{
-		_id: 6,
-		text: 'Hello developer',
-		createdAt: "2022-04-27T02:08:10.189Z",
-		user: {
-			_id: 6,
-			name: "friend 3",
-			avatar: null,
-		},
-		sent: true,
-		received: true
-	},
-]
-
-let temporaryMessages_friend4 = [
-	{
-		_id: 7,
-		createdAt: "2022-04-27T02:10:29.189Z",
-		user: {
-			_id: 7,
-			name: "friend 4",
-			avatar: null,
-		},
-		sent: true,
-		received: true,
-		image: 'https://placeimg.com/140/140/any',
-	},
-	{
-		_id: 8,
-		text: 'Hello developer',
-		createdAt: "2022-04-27T02:08:10.189Z",
-		user: {
-			_id: 8,
-			name: "friend 4",
-			avatar: null,
-		},
-		sent: true,
-		received: true
-	},
-]
-
-let temporaryMessages_friend5 = [
-	{
-		_id: 9,
-		createdAt: "2022-04-27T02:10:29.189Z",
-		user: {
-			_id: 9,
-			name: "friend 5",
-			avatar: null,
-		},
-		sent: true,
-		received: true,
-		image: 'https://placeimg.com/140/140/any',
-	},
-	{
-		_id: 10,
-		text: 'Hello developer',
-		createdAt: "2022-04-27T02:08:10.189Z",
-		user: {
-			_id: 10,
-			name: "friend 5",
-			avatar: null,
-		},
-		sent: true,
-		received: true
-	},
-]
-
-let temporaryMessages_friend6 = [
-	{
-		_id: 11,
-		createdAt: "2022-04-27T02:10:29.189Z",
-		user: {
-			_id: 11,
-			name: "friend 6",
-			avatar: null,
-		},
-		sent: true,
-		received: true,
-		image: 'https://placeimg.com/140/140/any',
-	},
-	{
-		_id: 12,
-		text: 'Hello developer',
-		createdAt: "2022-04-27T02:08:10.189Z",
-		user: {
-			_id: 12,
-			name: "friend 6",
-			avatar: null,
-		},
-		sent: true,
-		received: true
-	},
-]
-
-let temporaryMessages_friend7 = [
-	{
-		_id: 13,
-		createdAt: "2022-04-27T02:10:29.189Z",
-		user: {
-			_id: 13,
-			name: "friend 7",
-			avatar: null,
-		},
-		sent: true,
-		received: true,
-		image: 'https://placeimg.com/140/140/any',
-	},
-	{
-		_id: 14,
-		text: 'Hello developer',
-		createdAt: "2022-04-27T02:08:10.189Z",
-		user: {
-			_id: 14,
-			name: "friend 7",
-			avatar: null,
-		},
-		sent: true,
-		received: true
-	},
-]
-
-let temporaryMessages_friend8 = [
-	{
-		_id: 15,
-		createdAt: "2022-04-27T02:10:29.189Z",
-		user: {
-			_id: 15,
-			name: "friend 8",
-			avatar: null,
-		},
-		sent: true,
-		received: true,
-		image: 'https://placeimg.com/140/140/any',
-	},
-	{
-		_id: 16,
-		text: 'Hello developer',
-		createdAt: "2022-04-27T02:08:10.189Z",
-		user: {
-			_id: 16,
-			name: "friend 8",
-			avatar: null,
-		},
-		sent: true,
-		received: true
-	},
-]
-
-let temporaryMessages_friend9 = [
-	{
-		_id: 17,
-		createdAt: "2022-04-27T02:10:29.189Z",
-		user: {
-			_id: 17,
-			name: "friend 9",
-			avatar: null,
-		},
-		sent: true,
-		received: true,
-		image: 'https://placeimg.com/140/140/any',
-	},
-	{
-		_id: 18,
-		text: 'Hello developer',
-		createdAt: "2022-04-27T02:08:10.189Z",
-		user: {
-			_id: 18,
-			name: "friend 9",
-			avatar: null,
-		},
-		sent: true,
-		received: true
-	},
-]
-
-let temporaryMessages_friend10 = [
-	{
-		_id: 19,
-		createdAt: "2022-04-27T02:10:29.189Z",
-		user: {
-			_id: 19,
-			name: "friend 10",
-			avatar: null,
-		},
-		sent: true,
-		received: true,
-		image: 'https://placeimg.com/140/140/any',
-	},
-	{
-		_id: 20,
-		text: 'Hello developer',
-		createdAt: "2022-04-27T02:08:10.189Z",
-		user: {
-			_id: 20,
-			name: "friend 10",
-			avatar: null,
+			_id: "sp",
+			name: "sp",
+			avatar: sp_profileInfo.profileImage,
 		},
 		sent: true,
 		received: true
@@ -453,9 +120,9 @@ let temporaryMessages_group1 = [
 		_id: 30,
 		createdAt: "2022-04-27T02:10:29.189Z",
 		user: {
-			_id: "friend 1",
-			name: "friend 1",
-			avatar: null,
+			_id: "pc",
+			name: "pc",
+			avatar: pc_profileInfo.profileImage,
 		},
 		sent: true,
 		received: true,
@@ -466,9 +133,9 @@ let temporaryMessages_group1 = [
 		text: 'Hello developer',
 		createdAt: "2022-04-27T02:08:10.189Z",
 		user: {
-			_id: "friend 2",
-			name: "friend 2",
-			avatar: null,
+			_id: "sp",
+			name: "sp",
+			avatar: sp_profileInfo.profileImage,
 		},
 		sent: true,
 		received: true
@@ -478,153 +145,9 @@ let temporaryMessages_group1 = [
 		text: 'we are not friend',
 		createdAt: "2022-04-27T02:08:10.189Z",
 		user: {
-			_id: "friend 20",
-			name: "friend 20",
-			avatar: null,
-		},
-		sent: true,
-		received: true
-	},
-]
-
-let temporaryMessages_group2 = [
-	{
-		_id: 33,
-		createdAt: "2022-04-27T02:10:29.189Z",
-		user: {
-			_id: "friend 1",
-			name: "friend 1",
-			avatar: null,
-		},
-		sent: true,
-		received: true,
-		image: 'https://placeimg.com/140/140/any',
-	},
-	{
-		_id: 34,
-		text: "group 2",
-		createdAt: "2022-04-27T02:08:10.189Z",
-		user: {
-			_id: "friend 2",
-			name: "friend 2",
-			avatar: null,
-		},
-		sent: true,
-		received: true
-	},
-	{
-		_id: 35,
-		text: "group 3",
-		createdAt: "2022-04-27T02:08:10.189Z",
-		user: {
-			_id: "friend 3",
-			name: "friend 3",
-			avatar: null,
-		},
-		sent: true,
-		received: true
-	},
-]
-
-let temporaryMessages_group3 = [
-	{
-		_id: 36,
-		createdAt: "2022-04-27T02:10:29.189Z",
-		user: {
-			_id: "friend 4",
-			name: "friend 4",
-			avatar: null,
-		},
-		sent: true,
-		received: true,
-		image: 'https://placeimg.com/140/140/any',
-	},
-	{
-		_id: 37,
-		text: 'Hello developer',
-		createdAt: "2022-04-27T02:08:10.189Z",
-		user: {
-			_id: "friend 5",
-			name: "friend 5",
-			avatar: null,
-		},
-		sent: true,
-		received: true
-	},
-	{
-		_id: 38,
-		text: "friend 6",
-		createdAt: "2022-04-27T02:08:10.189Z",
-		user: {
-			_id: "friend 6",
-			name: "friend 6",
-			avatar: null,
-		},
-		sent: true,
-		received: true
-	},
-]
-
-let temporaryMessages_group4 = [
-	{
-		_id: 39,
-		createdAt: "2022-04-27T02:10:29.189Z",
-		user: {
-			_id: "friend 6",
-			name: "friend 6",
-			avatar: null,
-		},
-		sent: true,
-		received: true,
-		image: 'https://placeimg.com/140/140/any',
-	},
-	{
-		_id: 40,
-		text: 'Hello developer',
-		createdAt: "2022-04-27T02:08:10.189Z",
-		user: {
-			_id: "friend 7",
-			name: "friend 7",
-			avatar: null,
-		},
-		sent: true,
-		received: true
-	},
-]
-
-let temporaryMessages_group5 = [
-	{
-		_id: 41,
-		createdAt: "2022-04-27T02:10:29.189Z",
-		user: {
-			_id: "friend 7",
-			name: "friend 7",
-			avatar: null,
-		},
-		sent: true,
-		received: true,
-		image: 'https://placeimg.com/140/140/any',
-	},
-	{
-		_id: 42,
-		text: 'Hello developer',
-		createdAt: "2022-04-27T02:08:10.189Z",
-		user: {
-			_id: "friend 8",
-			name: "friend 8",
-			avatar: null,
-		},
-		sent: true,
-		received: true
-	},
-	{
-		_id: 43,
-		text: 'Hello developer',
-		createdAt: "2022-04-27T02:08:10.189Z",
-		user: {
-			_id: "friend 9",
-			name: "friend 9",
-			avatar: null,
+			_id: "sp",
+			name: "sp",
+			avatar: sp_profileInfo.profileImage,
 		},
 		sent: true,
 		received: true
@@ -635,85 +158,55 @@ let temporaryMessages_group6 = [
 ]
 
 // Chats一覧に表示する、最終メッセージ一覧
-function getChats() {
+function pcGetChats() {
 	return [
 		{
 			"direct_chat_room_id": "friend 1",
-			"friends_user_id": "friend 1",
-			"friends_nick_name": "friend 1",
-			"friends_profile_image": null,
+			"friends_user_id": "sp",
+			"friends_nick_name": "sp",
+			"friends_profile_image": sp_profileInfo.profileImage,
 			"friends_last_message_content": temporaryMessages_friend1[0].text ? temporaryMessages_friend1[0].text : temporaryMessages_friend1[0].image,
 			"friends_last_message_creation_date": "2022/3/20",
 			"unread_count": 3
 		},
 		{
-			"direct_chat_room_id": "friend 2",
-			"friends_user_id": "friend 2",
-			"friends_nick_name": "friend 2",
-			"friends_profile_image": null,
-			"friends_last_message_content": temporaryMessages_friend2[0].text ? temporaryMessages_friend2[0].text : temporaryMessages_friend2[0].image,
-			"friends_last_message_creation_date": "2022/3/22",
+			"group_chat_room_id": "group 1",
+			"group_name": "group 1",
+			"group_image": "https://pbs.twimg.com/media/E16OXztUYAIpisv?format=jpg&name=large",
+			"group_last_message_content": temporaryMessages_group1[0].text ? temporaryMessages_group1[0].text : temporaryMessages_group1[0].image,
+			"group_last_message_creation_date": "2022/3/19",
+			"group_member_user_id": [
+				"pc",
+				"sp",
+			],
 			"unread_count": 2
 		},
+	]
+}
+
+function spGetChats() {
+	return [
 		{
-			"direct_chat_room_id": "friend 3",
-			"friends_user_id": "friend 3",
-			"friends_nick_name": "friend 3",
-			"friends_profile_image": null,
-			"friends_last_message_content": temporaryMessages_friend3[0].text ? temporaryMessages_friend3[0].text : temporaryMessages_friend3[0].image,
-			"friends_last_message_creation_date": "13:00",
-			"unread_count": 0
+			"direct_chat_room_id": "friend 1",
+			"friends_user_id": "pc",
+			"friends_nick_name": "pc",
+			"friends_profile_image": pc_profileInfo.profileImage,
+			"friends_last_message_content": temporaryMessages_friend1[0].text ? temporaryMessages_friend1[0].text : temporaryMessages_friend1[0].image,
+			"friends_last_message_creation_date": "2022/3/20",
+			"unread_count": 3
 		},
 		{
 			"group_chat_room_id": "group 1",
 			"group_name": "group 1",
-			"group_image": null,
+			"group_image": "https://pbs.twimg.com/media/E16OXztUYAIpisv?format=jpg&name=large",
 			"group_last_message_content": temporaryMessages_group1[0].text ? temporaryMessages_group1[0].text : temporaryMessages_group1[0].image,
 			"group_last_message_creation_date": "2022/3/19",
 			"group_member_user_id": [
-				"friend 1",
-				"friend 2",
+				"pc",
+				"sp",
 			],
 			"unread_count": 2
 		},
-		{
-			"group_chat_room_id": "group 2",
-			"group_name": "group 2",
-			"group_image": null,
-			"group_last_message_content": temporaryMessages_group2[0].text ? temporaryMessages_group2[0].text : temporaryMessages_group2[0].image,
-			"group_last_message_creation_date": "2022/3/21",
-			"group_member_user_id": [
-				"friend 1",
-				"friend 2",
-				"friend 3"
-			],
-			"unread_count": 0
-		},
-		{
-			"group_chat_room_id": "group 3",
-			"group_name": "group 3",
-			"group_image": null,
-			"group_last_message_content": temporaryMessages_group3[0].text ? temporaryMessages_group3[0].text : temporaryMessages_group3[0].image,
-			"group_last_message_creation_date": "10:00",
-			"group_member_user_id": [
-				"friend 4",
-				"friend 5",
-				"friend 6"
-			],
-			"unread_count": 2
-		},
-		{
-			"group_chat_room_id": "group 4",
-			"group_name": "group 4",
-			"group_image": null,
-			"group_last_message_content": temporaryMessages_group4[0].text ? temporaryMessages_group4[0].text : temporaryMessages_group4[0].image,
-			"group_last_message_creation_date": "11:00",
-			"group_member_user_id": [
-				"friend 6",
-				"friend 7",
-			],
-			"unread_count": 2
-		}
 	]
 }
 
@@ -746,10 +239,10 @@ app.post('/api/login', (req, res, ctx) => {
 	const password = req.param("password")
 	let userId;
 	if (mail === "asami1@g.com") {
-		userId = "asami1"
+		userId = "pc"
 	}
 	if (mail === "asami2@g.com") {
-		userId = "asami2"
+		userId = "sp"
 	}
 	return res.status(200).send(
 		JSON.stringify({
@@ -773,6 +266,13 @@ app.get(`/api/users/:userId/home`, (req, res, ctx) => {
 			"group": []
 		}
 	]
+	let friends;
+	if (userId === "pcAsami") {
+		friends = pc_friends
+	}
+	if (userId === "spAsami") {
+		friends = sp_friends
+	}
 	for (let i = 0; i < friends.length; i++) {
 		if (friends[i].friend_nickname && friends[i].friend_nickname.trim().indexOf(searchText.trim()) > -1) {
 			result[0].friend.push(friends[i])
@@ -857,6 +357,13 @@ app.get('/api/users/:userId/group-count', (req, res, ctx) => {
 // ユーザの友達数
 app.get('/api/users/:userId/friend-count', (req, res, ctx) => {
 	const userId = req.param("userId")
+	let friends;
+	if (userId === "pcAsami") {
+		friends = pc_friends
+	}
+	if (userId === "spAsami") {
+		friends = sp_friends
+	}
 	return res.status(200).send(
 		`${friends.length}`
 	)
@@ -864,6 +371,13 @@ app.get('/api/users/:userId/friend-count', (req, res, ctx) => {
 // ユーザーの友達一覧
 app.get('/api/users/:userId/friends', (req, res, ctx) => {
 	const userId = req.param("userId")
+	let friends;
+	if (userId === "pcAsami") {
+		friends = pc_friends
+	}
+	if (userId === "spAsami") {
+		friends = sp_friends
+	}
 	return res.status(200).send(
 		JSON.stringify(
 			friends
@@ -875,19 +389,31 @@ app.post('/api/users/:userId/friends', (req, res, ctx) => {
 	const friendUserId = req.param("friendUserId")
 	const ownUserId = req.param("ownUserId")
 	// mock用
-	friends.push(
-		{
-			"direct_chat_room_id": "friend 11",
-			"friend_use_id": "friend 11",
-			"friend_profile_image": null,
-			"friend_nickname": "friend 11"
-		}
-	)
+	if (ownUserId === "pcAsami") {
+		pc_friends.push(
+			{
+				"direct_chat_room_id": "friend 11",
+				"friend_use_id": "friend 11",
+				"friend_profile_image": "https://pbs.twimg.com/media/EYY7o7FVcAUJRDG?format=jpg&name=large",
+				"friend_nickname": "friend 11"
+			}
+		)
+	}
+	if (ownUserId === "spAsami") {
+		sp_friends.push(
+			{
+				"direct_chat_room_id": "friend 11",
+				"friend_use_id": "friend 11",
+				"friend_profile_image": "https://pbs.twimg.com/media/EYY7o7FVcAUJRDG?format=jpg&name=large",
+				"friend_nickname": "friend 11"
+			}
+		)
+	}
 	return res.status(200).send(
 		JSON.stringify({
 			"direct_chat_room_id": "friend 11",
 			"friend_use_id": "friend 11",
-			"friend_profile_image": null,
+			"friend_profile_image": "https://pbs.twimg.com/media/EYY7o7FVcAUJRDG?format=jpg&name=large",
 			"friend_nickname": "friend 11"
 		})
 	)
@@ -896,10 +422,18 @@ app.post('/api/users/:userId/friends', (req, res, ctx) => {
 app.get(`/api/users/:userId/profile`, (req, res, ctx) => {
 	// userIdの取得
 	const userId = req.param("userId")
-	return res.status(200).send(
-		JSON.stringify(profileInfo
-		),
-	)
+	if (userId === "pcAsami") {
+		return res.status(200).send(
+			JSON.stringify(pc_profileInfo
+			),
+		)
+	}
+	if (userId === "spAsami") {
+		return res.status(200).send(
+			JSON.stringify(sp_profileInfo
+			),
+		)
+	}
 })
 // プロフィールの更新
 app.post('/api/users/:userId/profile', (req, res, ctx) => {
@@ -950,15 +484,15 @@ app.post('/api/users/:userId/profile', (req, res, ctx) => {
 		const userId = req.param("userId")
 
 		// 既に友達になっている場合
-		if (searchUserId === "9") {
+		if (searchUserId === "1") {
 			return res.status(400).send(
 				JSON.stringify(
 					{
 						"already_follow_requested": true,
 						"exist": true,
-						"friend_use_id": "friend 9",
-						"friend_profile_image": null,
-						"friend_nickname": "asami9"
+						"friend_use_id": "pcAsami",
+						"friend_profile_image": sp_profileInfo.profileImage,
+						"friend_nickname": "pcAsami"
 					}
 				),
 
@@ -997,7 +531,13 @@ app.get('/api/users/:userId/chatRoom', (req, res, ctx) => {
 	const searchText = req.params.searchText
 	const userId = req.param("userId")
 	const result = []
-	const chats = getChats()
+	let chats;
+	if (userId === "pcAsami") {
+		chats = pcGetChats()
+	}
+	if (userId === "spAsami") {
+		chats = spGetChats()
+	}
 	// ニックネームまたはグループ名の検索でヒットするチャット情報取得
 	// 以下はmock甩に、仮配列から検索結果を出力
 	if (searchText) {
@@ -1018,11 +558,16 @@ app.get('/api/users/:userId/chatRoom', (req, res, ctx) => {
 	}
 	// ユーザーIDに紐づくチャットルーム一覧を取得
 	if (!searchText) {
-		return res.status(200).send(
-			JSON.stringify(
-				getChats()
-			),
-		)
+		if (userId === "pcAsami") {
+			return res.status(200).send(
+				JSON.stringify(
+					pcGetChats()
+				),
+			)
+		}
+		if (userId === "spAsami") {
+			chats = spGetChats()
+		}
 	}
 })
 // チャットの表示/非表示、削除API
@@ -1052,69 +597,6 @@ app.get('/api/users/:userId/message', (req, res, ctx) => {
 				),
 			)
 		}
-		if (directChatRoomId === "friend 2") {
-			return res.status(200).send(
-				JSON.stringify(
-					temporaryMessages_friend2
-				),
-			)
-		}
-		if (directChatRoomId === "friend 3") {
-			return res.status(200).send(
-				JSON.stringify(
-					temporaryMessages_friend3
-				),
-			)
-		}
-		if (directChatRoomId === "friend 4") {
-			return res.status(200).send(
-				JSON.stringify(
-					temporaryMessages_friend4
-				),
-			)
-		}
-		if (directChatRoomId === "friend 5") {
-			return res.status(200).send(
-				JSON.stringify(
-					temporaryMessages_friend5
-				),
-			)
-		}
-		if (directChatRoomId === "friend 6") {
-			return res.status(200).send(
-				JSON.stringify(
-					temporaryMessages_friend6
-				),
-			)
-		}
-		if (directChatRoomId === "friend 7") {
-			return res.status(200).send(
-				JSON.stringify(
-					temporaryMessages_friend7
-				),
-			)
-		}
-		if (directChatRoomId === "friend 8") {
-			return res.status(200).send(
-				JSON.stringify(
-					temporaryMessages_friend8
-				),
-			)
-		}
-		if (directChatRoomId === "friend 9") {
-			return res.status(200).send(
-				JSON.stringify(
-					temporaryMessages_friend9
-				),
-			)
-		}
-		if (directChatRoomId === "friend 10") {
-			return res.status(200).send(
-				JSON.stringify(
-					temporaryMessages_friend10
-				),
-			)
-		}
 		if (directChatRoomId === "friend 11") {
 			return res.status(200).send(
 				JSON.stringify(
@@ -1136,34 +618,6 @@ app.get('/api/users/:userId/message', (req, res, ctx) => {
 			return res.status(200).send(
 				JSON.stringify(
 					temporaryMessages_group1
-				),
-			)
-		}
-		if (groupChatRoomId === "group 2") {
-			return res.status(200).send(
-				JSON.stringify(
-					temporaryMessages_group2
-				),
-			)
-		}
-		if (groupChatRoomId === "group 3") {
-			return res.status(200).send(
-				JSON.stringify(
-					temporaryMessages_group3
-				),
-			)
-		}
-		if (groupChatRoomId === "group 4") {
-			return res.status(200).send(
-				JSON.stringify(
-					temporaryMessages_group4
-				),
-			)
-		}
-		if (groupChatRoomId === "group 5") {
-			return res.status(200).send(
-				JSON.stringify(
-					temporaryMessages_group5
 				),
 			)
 		}
@@ -1194,76 +648,15 @@ app.post('/api/users/:userId/message', (req, res, ctx) => {
 	if (directChatRoomId === "friend 1") {
 		temporaryMessages_friend1 = [all, ...temporaryMessages_friend1]
 	}
-	if (directChatRoomId === "friend 2") {
-		temporaryMessages_friend2 = [all, ...temporaryMessages_friend2]
-	}
-	if (directChatRoomId === "friend 3") {
-		temporaryMessages_friend3 = [all, ...temporaryMessages_friend3]
-	}
-	if (directChatRoomId === "friend 4") {
-		temporaryMessages_friend4 = [all, ...temporaryMessages_friend4]
-	}
-	if (directChatRoomId === "friend 5") {
-		temporaryMessages_friend5 = [all, ...temporaryMessages_friend5]
-	}
-	if (directChatRoomId === "friend 6") {
-		temporaryMessages_friend6 = [all, ...temporaryMessages_friend6]
-	}
-	if (directChatRoomId === "friend 7") {
-		temporaryMessages_friend7 = [all, ...temporaryMessages_friend7]
-	}
-	if (directChatRoomId === "friend 8") {
-		temporaryMessages_friend8 = [all, ...temporaryMessages_friend8]
-	}
-	if (directChatRoomId === "friend 9") {
-		temporaryMessages_friend9 = [all, ...temporaryMessages_friend9]
-	}
-	if (directChatRoomId === "friend 10") {
-		temporaryMessages_friend10 = [all, ...temporaryMessages_friend10]
-	}
 	if (directChatRoomId === "friend 11") {
 		temporaryMessages_friend11 = [all, ...temporaryMessages_friend11]
 	}
 	if (groupChatRoomId === "group 1") {
 		temporaryMessages_group1 = [all, ...temporaryMessages_group1]
 	}
-	if (groupChatRoomId === "group 2") {
-		temporaryMessages_group2 = [all, ...temporaryMessages_group2]
-	}
-	if (groupChatRoomId === "group 3") {
-		temporaryMessages_group3 = [all, ...temporaryMessages_group3]
-	}
-	if (groupChatRoomId === "group 4") {
-		temporaryMessages_group4 = [all, ...temporaryMessages_group4]
-	}
-	if (groupChatRoomId === "group 5") {
-		temporaryMessages_group5 = [all, ...temporaryMessages_group5]
-	}
 	if (groupChatRoomId === "group 6") {
 		temporaryMessages_group6 = [all, ...temporaryMessages_group6]
 	}
-	// s.on("connection", ws => {
-	// 	// クライアントからサーバに送られてきたメッセージ
-	// 	ws.on("message", message => {
-	// 		console.log("Received: " + message);
-	// 		if (message.toString() === "opened") {
-	// 			s.clients.forEach(client => {
-	// 				// 自分がリロードした時のみメッセージ履歴を取得
-	// 				if (client === ws) {
-	// 					client.send(JSON.stringify(messages));
-	// 				}
-	// 			});
-	// 		} else {
-	// 			messages[0].messages.push({ message: message.toString() })
-	// 			// 接続しているクライアント全てに送信
-	// 			s.clients.forEach(client => {
-	// 				const message_content = [{ "message": [] }]
-	// 				message_content[0].message.push(message.toString())
-	// 				client.send(JSON.stringify(message_content));
-	// 			});
-	// 		}
-	// 	});
-	// });
 	return res.status(200).send("")
 })
 // 最終既読日時の更新

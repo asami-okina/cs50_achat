@@ -79,7 +79,7 @@ export default function Basic({ navigation, groupList, friendList, type, setModa
 					<View style={styles.listWrapperStyle}>
 						<View style={styles.listItemContainerStyle}>
 							{data.item.group_image ? (
-								<Image source={data.item.group_image} style={styles.profileImageStyle} />
+								<Image source={{uri: data.item.group_image}} style={styles.profileImageStyle} />
 							) :
 								(
 									<View style={styles.profileImageNoneStyle}></View>
@@ -99,7 +99,7 @@ export default function Basic({ navigation, groupList, friendList, type, setModa
 				>
 					<View style={styles.listWrapperStyle}>
 						<View style={styles.listItemContainerStyle}>
-							<Image source={data.item.friend_profile_image} style={styles.profileImageStyle} />
+							<Image source={{uri:data.item.friend_profile_image}} style={styles.profileImageStyle} />
 							<Text style={styles.listItemNameStyle}>{data.item.friend_nickname}</Text>
 						</View>
 					</View>
