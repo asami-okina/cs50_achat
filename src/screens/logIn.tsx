@@ -1,6 +1,7 @@
 // libs
 import React, { useState } from 'react';
 import { View, SafeAreaView, ScrollView, KeyboardAvoidingView, Text } from 'react-native';
+import {storage}from '../../storage'
 
 // components
 import { ToSignUpOrLoginTextArea } from '../components/common/toSignUpOrLoginTextArea'
@@ -50,6 +51,13 @@ export function LogIn({ navigation }) {
 			// レスポンスをJSONにする
 			const parse_response = await response.json()
 			if (parse_response.certificationResult) {
+							// ローカルストレージにユーザーIDを保存
+			await storage.save({
+				key: "key",
+				data: {
+					userId: parse_response.userId,
+				},
+			});
 				// Home画面へ遷移
 				navigation.navigate('Home')
 			} else {

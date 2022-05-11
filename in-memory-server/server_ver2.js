@@ -1,6 +1,21 @@
+// ------------------------------------------------
 // 検証中の約束
-// PCのuserId : asami1
-// 携帯のuserId : asami2
+// PC
+// userId : asami1 mail:asami1@g.com pass: asami1
+// 携帯
+// userId : asami2 mail:asami2@g.com pass: asami2
+const pc = {
+	"email": "asami1@g.com",
+	"password": "asami1",
+	"userId": "asami1",
+}
+
+const smartPhone = {
+	"email": "asami1@g.com",
+	"password": "asami1",
+	"userId": "asami1",
+}
+// ------------------------------------------------
 
 // libs
 const express = require('express')
@@ -729,9 +744,17 @@ app.get('/api/signup', (req, res, ctx) => {
 app.post('/api/login', (req, res, ctx) => {
 	const mail = req.param("mail")
 	const password = req.param("password")
+	let userId;
+	if (mail === "asami1@g.com") {
+		userId = "asami1"
+	}
+	if (mail === "asami2@g.com") {
+		userId = "asami2"
+	}
 	return res.status(200).send(
 		JSON.stringify({
-			"certificationResult": true
+			"certificationResult": true,
+			"userId": userId
 		})
 	)
 })

@@ -67,7 +67,6 @@ export function Button({
 			const response_user_id = parse_response.userId
 			console.log('response_user_id', response_user_id)
 			// ローカルストレージにユーザーIDを保存
-			// ストレージに保存
 			await storage.save({
 				key: "key",
 				data: {
