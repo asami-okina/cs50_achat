@@ -1,6 +1,10 @@
+// 検証中の約束
+// PCのuserId : asami1
+// 携帯のuserId : asami2
+
+// libs
 const express = require('express')
 const app = express()
-
 app.use(express.json())
 
 // websocket
@@ -699,13 +703,27 @@ function getChats() {
 }
 
 // 会員登録
+// userIdがあれば、登録するユーザーIDが使用可能かどうかチェック
 app.get('/api/signup', (req, res, ctx) => {
-	const userId = req.params.userId
-	return res.status(200).send(
-		JSON.stringify({
-			"isAvailableUserId": true,
-		}),
-	)
+	const userId = req.param("userId")
+	const mail = req.param("mail")
+	const password = req.param("password")
+	const type = req.param("type")
+	// 登録するユーザーIDが使用可能かどうかチェック
+	if (type === "isAvailableUserIdValidation") {
+		return res.status(200).send(
+			JSON.stringify({
+				"isAvailableUserId": true,
+			}),
+		)
+	} else {
+		// 会員登録
+		return res.status(200).send(
+			JSON.stringify({
+				"userId": userId,
+			}),
+		)
+	}
 })
 // ログイン認証
 app.post('/api/login', (req, res, ctx) => {

@@ -1,13 +1,15 @@
 // libs
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, Image, Switch, Pressable } from 'react-native';
 import { API_SERVER_URL } from "../../constants/api"
+import { storage } from "../../../storage"
+
 // layouts
 import { TAB_TITLE_TEXT_SIZE, TAB_FONT, MAIN_NAVY_COLOR, CONTENT_WIDTH, STANDARD_FONT, MAIN_WHITE_COLOR, MAIN_GRAY_COLOR, MAIN_YELLOW_GREEN } from '../../constants/layout'
 
 export function ProfileInfo({ navigation, nickName, setNickName, isEnabled, setIsEnabled }) {
 	// ユーザーID(今後は認証から取得するようにする)
-	const userId = "asami11"
+	const [userId, setUserId] = useState(null)
 
 	// 検索可能トグルの変更関数
 	const toggleSwitch = () => {
@@ -36,6 +38,15 @@ export function ProfileInfo({ navigation, nickName, setNickName, isEnabled, setI
 			console.error(e)
 		}
 	}
+
+	// ユーザーIDの取得
+	useEffect(() => {
+		storage.load({
+			key: "key"
+		}).then((data) => {
+			setUserId(data.userId)
+		})
+	}, [])
 
 	return (
 		<View style={styles.profileContainerStyle}>

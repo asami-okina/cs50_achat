@@ -54,7 +54,7 @@ export function UserIdForm({
 	async function _isAvailableUserIdValidation() {
 		try {
 			// paramsを生成
-			const params = { "userId": userIdText }
+			const params = { "userId": userIdText, "type": "isAvailableUserIdValidation" }
 			const query_params = new URLSearchParams(params);
 
 			// APIリクエスト

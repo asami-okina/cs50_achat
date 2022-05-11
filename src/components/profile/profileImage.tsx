@@ -1,15 +1,16 @@
 // libs
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, StyleSheet, Image, Pressable } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
 import { API_SERVER_URL } from "../../constants/api"
+import { storage } from '../../../storage';
 
 // layouts
 import { MAIN_NAVY_COLOR, PROFILE_IMAGE_BORDER_RADIUS } from '../../constants/layout'
 
 export function ProfileImage({ image, setImage }) {
 	// ユーザーID(今後は認証から取得するようにする)
-	const userId = "asami11"
+	const [userId, setUserId] = useState(null)
 
 	// プロフィール画像の更新
 	async function _updateProfileImage(newImageUri) {
@@ -46,6 +47,16 @@ export function ProfileImage({ image, setImage }) {
 			_updateProfileImage(newImageUri)
 		}
 	};
+
+	// ユーザーIDの取得
+	useEffect(() => {
+		storage.load({
+			key: "key"
+		}).then((data) => {
+			setUserId(data.userId)
+		})
+	}, [])
+
 
 	return (
 		<Pressable onPress={() => { pickImage() }} style={styles.profileImageContainerStyle}>

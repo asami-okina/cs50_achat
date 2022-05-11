@@ -16,9 +16,6 @@ export function GroupImageAndGroupName({
 	setGroupName,
 	friendListNames
 }) {
-	// ユーザーID(今後は認証から取得するようにする)
-	const userId = "asami11"
-
 	// グループ名のラベル化
 	let groupNameLabel;
 

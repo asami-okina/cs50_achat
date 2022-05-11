@@ -2,6 +2,7 @@
 import React, { useEffect, useState } from 'react';
 import { View, SafeAreaView, KeyboardAvoidingView } from 'react-native';
 import { API_SERVER_URL } from "../../constants/api"
+import { storage } from '../../../storage';
 
 // components
 import { Footer } from '../common/footer'
@@ -11,7 +12,6 @@ import { FriendList } from '../addGroup/friendList'
 import { AddFriendList } from '../addGroup/addFriendList'
 import { TopAreaWrapper } from "../common/topAreaWrapper"
 import { SearchForm } from "../common/_topAreaContainer/searchForm"
-
 
 // sameStyles
 import { sameStyles } from '../../constants/styles/sameStyles'
@@ -23,7 +23,7 @@ export function AddGroupMember({ navigation, route }) {
 	// 引数を取得
 	const { groupChatRoomId, groupMemberUserId, image, name } = route.params
 	// ユーザーID(今後は認証から取得するようにする)
-	const userId = "asami11"
+	const [userId, setUserId] = useState(null)
 
 	// 検索フォームのテキスト
 	const [searchText, setSearchText] = useState('')
@@ -85,13 +85,6 @@ export function AddGroupMember({ navigation, route }) {
 			console.error(e)
 		}
 	}
-
-	useEffect(() => {
-		if (userId) {
-			// 友達一覧を取得
-			_fetchFriendList(userId)
-		}
-	}, [])
 
 	// 検索フォームのラベル化
 	let textInputSearch;
@@ -169,6 +162,17 @@ export function AddGroupMember({ navigation, route }) {
 			setAfterSelectedFriendList(afterNewData);
 		}
 	}
+
+	// ユーザーIDの取得
+	useEffect(() => {
+		storage.load({
+			key: "key"
+		}).then((data) => {
+			setUserId(data.userId)
+			// 友達一覧を取得
+			_fetchFriendList(data.userId)
+		})
+	}, [])
 
 	return (
 		<KeyboardAvoidingView behavior="padding" style={sameStyles.screenContainerStyle}>

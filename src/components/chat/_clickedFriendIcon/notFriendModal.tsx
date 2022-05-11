@@ -14,8 +14,6 @@ import { sameStyles } from '../../../constants/styles/sameStyles'
 import { MAIN_NAVY_COLOR, PROFILE_IMAGE_BORDER_RADIUS, TAB_TITLE_TEXT_SIZE, TAB_FONT } from '../../../constants/layout'
 
 export function NotFriendModal({ route, navigation }) {
-	// ユーザーID(今後は認証から取得するようにする)
-	const userId = "asami11"
 	const { user, groupChatRoomId, groupImage, groupName, directChatRoomId } = route.params
 	const friendImage = user.avatar
 	const friendNickName = user.name

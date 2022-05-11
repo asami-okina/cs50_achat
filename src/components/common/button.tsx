@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import { Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { API_SERVER_URL } from "../../constants/api"
+import { storage } from '../../../storage';
 
 // layouts
 import { MAIN_NAVY_COLOR, MAIN_WHITE_COLOR, BUTTON_HEIGHT, CONTENT_WIDTH, STANDARD_FONT, BUTTON_TEXT_SIZE, MAIN_GRAY_COLOR, BUTTON_BORDER_RADIUS } from '../../constants/layout'
@@ -16,7 +17,7 @@ export function Button({
 	propsList
 }) {
 	// ユーザーID(今後は認証から取得するようにする)
-	const userId = "asami11"
+	const [userId, setUserId] = useState(null)
 	// 友達追加したユーザーの情報
 	const [friendInfo, setFriendInfo] = useState(null)
 
@@ -44,12 +45,60 @@ export function Button({
 		}
 	}
 
+	const [alreadySignUp, setAlreadySignUp] = useState(false)
+
+	// 会員登録
+	async function _signUp() {
+		try {
+			// paramsを生成
+			const params = { "mail": propsList.email, "password": propsList.password, "userId": propsList.userId, "type": "signUp" }
+			const query_params = new URLSearchParams(params);
+
+			// APIリクエスト
+			const response = await fetch(API_SERVER_URL + `/api/signup?${query_params}`, {
+				method: "GET",
+				headers: {
+					"Content-Type": "application/json"
+				},
+			})
+
+			// レスポンスをJSONにする
+			const parse_response = await response.json()
+			const response_user_id = parse_response.userId
+			console.log('response_user_id', response_user_id)
+			// ローカルストレージにユーザーIDを保存
+			// ストレージに保存
+			await storage.save({
+				key: "key",
+				data: {
+					userId: response_user_id,
+				},
+			});
+			setAlreadySignUp(true)
+		} catch (e) {
+			console.error(e)
+		}
+	}
+
+
 	// 友達追加されたら、チャット画面に遷移
 	useEffect(() => {
 		if (friendInfo) {
 			navigation.navigate('Chat', { "groupChatRoomId": null, "directChatRoomId": friendInfo.direct_chat_room_id, "profileImage": friendInfo.friend_profile_image, "name": friendInfo.friend_nickname })
 		}
 	}, [friendInfo])
+
+	// ユーザーIDの取得
+	useEffect(() => {
+		if (alreadySignUp && userId) {
+			storage.load({
+				key: "key"
+			}).then((data) => {
+				setUserId(data.userId)
+			})
+		}
+	})
+
 	return (
 		<>
 			{
@@ -84,6 +133,8 @@ export function Button({
 								_addFriend()
 							}
 							if (enable && link && scene !== "ProfileSettingNickName") {
+								// サインアップ
+								_signUp()
 								navigation.navigate(link)
 							}
 						}}

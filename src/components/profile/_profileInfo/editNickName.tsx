@@ -14,10 +14,6 @@ import { ButtonContainer } from "../_profileInfo/_editNickName/buttonContainer";
 import { sameStyles } from '../../../constants/styles/sameStyles'
 
 export function EditNickName({ navigation }) {
-
-	// ユーザーID(今後は認証から取得するようにする)
-	const userId = "asami11"
-
 	const [nickName, setNickName] = useState('')
 
 	// 入力文字数
@@ -36,7 +32,7 @@ export function EditNickName({ navigation }) {
 				<View style={sameStyles.topMarginViewStyle}></View>
 				{/* 丸みを帯びている白いトップ部分 */}
 				<TopAreaWrapper type={"addFriend"}>
-					<MainTitle navigation={navigation} title={"NickName"} link={"Profile"} props={null} />
+					<MainTitle navigation={navigation} title={"NickName"} link={"Profile"} props={null} groupChatRoomId={null} groupMemberUserId={null} />
 				</TopAreaWrapper>
 				{/* トップ部分を除くメイン部分*/}
 				<View style={sameStyles.mainContainerStyle}>

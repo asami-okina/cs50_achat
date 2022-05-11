@@ -12,6 +12,7 @@ import { ConfirmModal } from '../components/common/confirmModal'
 import { TopAreaWrapper } from "../components/common/topAreaWrapper"
 import { SearchForm } from "../components/common/_topAreaContainer/searchForm"
 import { API_SERVER_URL } from "../constants/api"
+import { storage } from "../../storage"
 
 // sameStyles
 import { sameStyles } from '../constants/styles/sameStyles'
@@ -21,7 +22,7 @@ import { IPHONE_X_BOTTOM_SPACE } from '../constants/layout'
 
 export function Home({ navigation }) {
 	// ユーザーID(今後は認証から取得するようにする)
-	const userId = "asami11"
+	const [userId, setUserId] = useState(null)
 
 	// 検索フォーム
 	const [searchText, setSearchText] = useState('')
@@ -153,22 +154,25 @@ export function Home({ navigation }) {
 		}
 	}
 
+	// ユーザーIDの取得
 	useEffect(() => {
-		if (userId) {
+		storage.load({
+			key: "key"
+		}).then((data) => {
+			setUserId(data.userId)
 			// ユーザが所属するグループ一覧を取得
-			_fetchGroupList(userId)
+			_fetchGroupList(data.userId)
 			// ユーザが所属するグループ数を取得
-			_fetchGroupCount(userId)
+			_fetchGroupCount(data.userId)
 			// 友達一覧を取得
-			_fetchFriendList(userId)
+			_fetchFriendList(data.userId)
 			// 友達数を取得
-			_fetchFriendCount(userId)
-		}
+			_fetchFriendCount(data.userId)
+		})
 	}, [isFocused])
 
 	// 検索フォームのラベル化
 	let textInputSearch;
-
 	return (
 		<KeyboardAvoidingView behavior="padding" style={sameStyles.screenContainerStyle}>
 			<SafeAreaView style={sameStyles.screenContainerStyle}>

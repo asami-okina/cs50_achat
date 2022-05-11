@@ -88,7 +88,7 @@ export function SignUp({ navigation }) {
 					<View style={sameStyles.bottomStyleByWelcomeAndSignUpAndLogin}>
 						{isCorrectMail && isCorrectPassewordSymbol && isCorrectPassewordStringCount && isCorrectUserIdSymbol && isCorrectUserIdStringCount && isAvailableUserId ?
 							(
-								<Button navigation={navigation} link={'Home'} buttonText={'Sign Up'} enable={true} scene={'SignUp'} propsList={null} />
+								<Button navigation={navigation} link={'Home'} buttonText={'Sign Up'} enable={true} scene={'SignUp'} propsList={{ "email": emailText, "password": passwordText, "userId": userIdText }} />
 							) : (
 								<Button navigation={navigation} link={'Home'} buttonText={'Sign Up'} enable={false} scene={'SignUp'} propsList={null} />
 							)}

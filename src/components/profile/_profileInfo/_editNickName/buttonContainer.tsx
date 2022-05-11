@@ -1,7 +1,8 @@
 // libs
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, StyleSheet, Text } from 'react-native';
 import { API_SERVER_URL } from "../../../../constants/api"
+import { storage } from '../../../../../storage';
 
 // components
 import { Button } from "../../../common/button"
@@ -12,7 +13,7 @@ import { STANDARD_FONT, MAIN_PINK_COLOR } from '../../../../constants/layout'
 export function ButtonContainer({ navigation, nickName, setNickName, wordCount, isValidInput, defaultInput }) {
 
 	// ユーザーID(今後は認証から取得するようにする)
-	const userId = "asami11"
+	const [userId, setUserId] = useState(null)
 
 	// ニックネームの更新
 	async function _updateNickName() {
@@ -32,6 +33,15 @@ export function ButtonContainer({ navigation, nickName, setNickName, wordCount, 
 			console.error(e)
 		}
 	}
+
+	// ユーザーIDの取得
+	useEffect(() => {
+		storage.load({
+			key: "key"
+		}).then((data) => {
+			setUserId(data.userId)
+		})
+	}, [])
 
 	return (
 		<View style={styles.buttonContainerStyle}>

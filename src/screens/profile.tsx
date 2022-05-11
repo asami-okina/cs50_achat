@@ -2,6 +2,7 @@
 import React, { useEffect, useState } from 'react';
 import { View, SafeAreaView, KeyboardAvoidingView, StyleSheet } from 'react-native';
 import { useIsFocused } from '@react-navigation/native'
+import { storage } from '../../storage'
 
 // components
 import { TopAreaWrapper } from "../components/common/topAreaWrapper"
@@ -15,7 +16,7 @@ import { sameStyles } from '../constants/styles/sameStyles'
 
 export function Profile({ navigation }) {
 	// ユーザーID(今後は認証から取得するようにする)
-	const userId = "asami11"
+	const [userId, setUserId] = useState(null)
 
 	// ニックネーム
 	const [nickName, setNickName] = useState("")
@@ -30,7 +31,7 @@ export function Profile({ navigation }) {
 	const isFocused = useIsFocused()
 
 	// [自分の情報]ユーザーIDに紐づくニックネーム、プロフィール画像の取得
-	async function _fetchProfileByUserId() {
+	async function _fetchProfileByUserId(userId) {
 		try {
 			// APIリクエスト
 			const response = await fetch(API_SERVER_URL + `/api/users/${userId}/profile`, {
@@ -52,11 +53,15 @@ export function Profile({ navigation }) {
 		}
 	}
 
+	// ユーザーIDの取得
 	useEffect(() => {
-		// navigationがリレンダーされないので、画面にフォーカスが当たった時に再実行するよう実装
-		if (userId) {
-			_fetchProfileByUserId()
-		}
+		storage.load({
+			key: "key"
+		}).then((data) => {
+			setUserId(data.userId)
+			// navigationがリレンダーされないので、画面にフォーカスが当たった時に再実行するよう実装
+			_fetchProfileByUserId(data.userId)
+		})
 	}, [isFocused])
 
 	return (

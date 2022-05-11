@@ -2,7 +2,7 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { View, SafeAreaView, KeyboardAvoidingView } from 'react-native';
 import { API_SERVER_URL } from "../constants/api"
-import * as SecureStore from 'expo-secure-store';
+import { storage } from '../../storage'
 
 // components
 import { AddGroupTitle } from '../components/addGroup/addGroupTitle'
@@ -22,7 +22,8 @@ import { IPHONE_X_BOTTOM_SPACE } from '../constants/layout'
 
 export function AddGroupSetting({ route, navigation }) {
 	// ユーザーID(今後は認証から取得するようにする)
-	const userId = "asami11"
+	const [userId, setUserId] = useState(null)
+
 	const [friendList, setFriendList] = useState(route.params.friendList)
 	// グループ設定画面から、メンバー追加で戻ったときにグループ名とグループ画像を保持
 	const { backGroupName, backGroupImage } = route.params
@@ -77,12 +78,17 @@ export function AddGroupSetting({ route, navigation }) {
 		}
 	}
 
+	// ユーザーIDの取得
 	useEffect(() => {
-		if (userId) {
+		storage.load({
+			key: "key"
+		}).then((data) => {
+			setUserId(data.userId)
 			// [自分の情報]ユーザーIDに紐づくニックネーム、プロフィール画像の取得
-			_fetchProfileByUserId(userId)
-		}
+			_fetchProfileByUserId(data.userId)
+		})
 	}, [])
+
 
 	//　グループ設定画面から、メンバー追加で戻ったときにグループ名をセット
 	useEffect(() => {

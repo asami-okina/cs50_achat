@@ -2,13 +2,14 @@
 import React, { useEffect, useState } from 'react';
 import { StyleSheet, TouchableOpacity, View, Text } from 'react-native';
 import { API_SERVER_URL } from "../../constants/api"
+import { storage } from '../../../storage'
 
 // layouts
 import { MAIN_NAVY_COLOR, MAIN_WHITE_COLOR, ADD_BUTTON_SIZE, CONTENT_WIDTH, BUTTON_BORDER_RADIUS, MAIN_BLACK_COLOR, SMALL_BUTTON_WIDTH, MAIN_GRAY_COLOR } from '../../constants/layout'
 
-export function SmallButton({ text, navigation, friendList, groupSetting, type, friendListNames, alreadyFriend, addGroupMemberGroupChatRoomId, addGroupMemberGroupImage, addGroupMemberGroupName,backGroupName, backGroupImage }) {
+export function SmallButton({ text, navigation, friendList, groupSetting, type, friendListNames, alreadyFriend, addGroupMemberGroupChatRoomId, addGroupMemberGroupImage, addGroupMemberGroupName, backGroupName, backGroupImage }) {
 	// ユーザーID(今後は認証から取得するようにする)
-	const userId = "asami11"
+	const [userId, setUserId] = useState(null)
 	// 自分を含めたグループメンバーのuserId
 	const [groupMemberUserIds, setGroupMemberUserIds] = useState([])
 
@@ -129,6 +130,15 @@ export function SmallButton({ text, navigation, friendList, groupSetting, type, 
 		}
 	}, [friendInfo])
 
+	// ユーザーIDの取得
+	useEffect(() => {
+		storage.load({
+			key: "key"
+		}).then((data) => {
+			setUserId(data.userId)
+		})
+	}, [])
+
 	return (
 		<View style={styles.boxStyle}>
 			<View style={styles.wrapperStyle}>
@@ -138,7 +148,7 @@ export function SmallButton({ text, navigation, friendList, groupSetting, type, 
 						onPress={() => {
 							// グループ追加画面からグループ設定画面への遷移
 							if (type === "addGroup") {
-								navigation.navigate('AddGroupSetting', { friendList: friendList, backGroupName: backGroupName, backGroupImage:backGroupImage })
+								navigation.navigate('AddGroupSetting', { friendList: friendList, backGroupName: backGroupName, backGroupImage: backGroupImage })
 							}
 							if (type === "addGroupSetting") {
 								// グループ追加API実行

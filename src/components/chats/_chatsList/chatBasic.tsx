@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { SwipeListView } from 'react-native-swipe-list-view';
 import { API_SERVER_URL } from "../../../constants/api"
+import { storage } from '../../../../storage'
 
 // components
 import { ListItem } from "./_chatBasic/listItem"
@@ -13,7 +14,7 @@ import { MAIN_WHITE_COLOR } from '../../../constants/layout'
 
 export default function ChatBasic({ navigation, chatRoomList, setDeleteModalVisible, clickedDeleteCancelMordal, setClickedDeleteCancelMordal, clickedDeleteOkMordal, setClickedDeleteOkMordal, setHiddenModalVisible, clickedHiddenCancelMordal, setClickedHiddenCancelMordal, clickedHiddenOkMordal, setClickedHiddenOkMordal, setGroupChatRoomId, setDirectChatRoomId, groupChatRoomId, directChatRoomId }) {
 	// ユーザーID(今後は認証から取得するようにする)
-	const userId = "asami11"
+	const [userId, setUserId] = useState(null)
 
 	// 削除時の確認モーダルでCancleの時は該当リストをデフォルト状態に戻す、Okの場合は該当リストを削除する甩に使用
 	const [rowMap, setRowMap] = useState('')
@@ -130,6 +131,15 @@ export default function ChatBasic({ navigation, chatRoomList, setDeleteModalVisi
 			setClickedType('')
 		}
 	}, [clickedDeleteCancelMordal, clickedDeleteOkMordal, clickedHiddenCancelMordal, clickedHiddenOkMordal])
+
+	// ユーザーIDの取得
+	useEffect(() => {
+		storage.load({
+			key: "key"
+		}).then((data) => {
+			setUserId(data.userId)
+		})
+	}, [])
 
 	return (
 		<View style={styles.containerStyle}>

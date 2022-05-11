@@ -50,8 +50,6 @@ export function PasswordForm({
 		}
 	}
 
-	console.log('rightIcon', rightIcon)
-
 	return (
 		<View>
 			{/* Password */}

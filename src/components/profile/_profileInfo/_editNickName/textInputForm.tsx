@@ -9,10 +9,6 @@ import { searchStyles } from '../../../../constants/styles/searchStyles'
 import { CONTENT_WIDTH, STANDARD_FONT, MAIN_PINK_COLOR, MAIN_YELLOW_GREEN, IN_SEARCH_FORM_SIDE_MARGIN, ICON_SIZE } from '../../../../constants/layout'
 
 export function TextInputForm({ defaultInput, setDefaultInput, isValidInput, setIsValidInput, wordCount, setWordCount, nickName, setNickName }) {
-
-	// ユーザーID(今後は認証から取得するようにする)
-	const userId = "asami11"
-
 	// 検索フォームの削除アイコン表示/非表示
 	const [deleteIconDisplay, setDeleteIconDisplay] = useState(false)
 

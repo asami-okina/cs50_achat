@@ -6,9 +6,6 @@ import { View, StyleSheet } from 'react-native';
 import ChatBasic from "./_chatsList/chatBasic"
 
 export function ChatsList({ navigation, chatRoomList, setDeleteModalVisible, clickedDeleteCancelMordal, setClickedDeleteCancelMordal, clickedDeleteOkMordal, setClickedDeleteOkMordal, setHiddenModalVisible, clickedHiddenCancelMordal, setClickedHiddenCancelMordal, clickedHiddenOkMordal, setClickedHiddenOkMordal, setGroupChatRoomId, setDirectChatRoomId, groupChatRoomId, directChatRoomId }) {
-	// ユーザーID(今後は認証から取得するようにする)
-	const userId = "asami11"
-
 	return (
 		<>
 			<View style={styles.listBoxStyle}>

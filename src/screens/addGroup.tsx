@@ -2,6 +2,7 @@
 import React, { useEffect, useState } from 'react';
 import { View, SafeAreaView, KeyboardAvoidingView } from 'react-native';
 import { API_SERVER_URL } from "../constants/api"
+import { storage } from "../../storage"
 
 // components
 import { Footer } from '../components/common/footer'
@@ -22,7 +23,7 @@ import { IPHONE_X_BOTTOM_SPACE } from '../constants/layout'
 export function AddGroup({ route, navigation }) {
 	const { groupName, groupImage, backFriendList } = route.params
 	// ユーザーID(今後は認証から取得するようにする)
-	const userId = "asami11"
+	const [userId, setUserId] = useState(null)
 
 	// 検索フォームのテキスト
 	const [searchText, setSearchText] = useState('')
@@ -161,12 +162,15 @@ export function AddGroup({ route, navigation }) {
 			setAfterSelectedFriendList(afterNewData);
 		}
 	}
-
+	// ユーザーIDの取得
 	useEffect(() => {
-		if (userId) {
+		storage.load({
+			key: "key"
+		}).then((data) => {
+			setUserId(data.userId)
 			// 友達一覧を取得
-			_fetchFriendList(userId)
-		}
+			_fetchFriendList(data.userId)
+		})
 	}, [])
 
 	// 一度設定画面に遷移した後、追加ボタンで戻ってきた場合の選択された友達一覧コンテナ、一覧部分

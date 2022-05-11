@@ -6,9 +6,6 @@ import { View, StyleSheet, Text, TouchableOpacity } from 'react-native';
 import { MAIN_WHITE_COLOR, MAIN_PINK_COLOR } from '../../../../constants/layout'
 
 export function HiddenListItem({ setDeleteModalVisible, setHiddenModalVisible, setRowMap, setkey, setClickedType, rowMap, data, setGroupChatRoomId, setDirectChatRoomId }) {
-	// ユーザーID(今後は認証から取得するようにする)
-	const userId = "asami11"
-
 	return (
 		<View style={styles.rowBackStyle}>
 			{/* deleteボタン */}

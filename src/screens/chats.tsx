@@ -2,6 +2,7 @@
 import React, { useEffect, useState } from 'react';
 import { View, SafeAreaView, KeyboardAvoidingView } from 'react-native';
 import { useIsFocused } from '@react-navigation/native'
+import { storage } from '../../storage'
 
 // components
 import { Footer } from '../components/common/footer'
@@ -19,7 +20,7 @@ import { IPHONE_X_BOTTOM_SPACE } from '../constants/layout'
 
 export function Chats({ navigation }) {
 	// ユーザーID(今後は認証から取得するようにする)
-	const userId = "asami11"
+	const [userId, setUserId] = useState(null)
 
 	// 検索フォーム
 	const [searchText, setSearchText] = useState('')
@@ -103,19 +104,23 @@ export function Chats({ navigation }) {
 		}
 	}
 
+	// ユーザーIDの取得
+	useEffect(() => {
+		storage.load({
+			key: "key"
+		}).then((data) => {
+			setUserId(data.userId)
+			// navigationがリレンダーされないので、画面にフォーカスが当たった時に再実行するよう実装
+			_fetchChatsList()
+		})
+	}, [isFocused])
+
 	useEffect(() => {
 		// サジェスト機能を使うために、searchTextが変わったら、毎回APIを実行する
 		if (userId) {
 			_searchChatByNickNameOrGroupName(searchText)
 		}
 	}, [searchText])
-
-	useEffect(() => {
-		// navigationがリレンダーされないので、画面にフォーカスが当たった時に再実行するよう実装
-		if (userId) {
-			_fetchChatsList()
-		}
-	}, [isFocused])
 
 	// 検索フォームのラベル化
 	let textInputSearch;

@@ -1,7 +1,8 @@
 // libs
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, SafeAreaView, KeyboardAvoidingView, StyleSheet } from 'react-native';
 import { API_SERVER_URL } from "../constants/api"
+import { storage } from '../../storage';
 
 // components
 import { Footer } from '../components/common/footer'
@@ -19,7 +20,7 @@ import { IPHONE_X_BOTTOM_SPACE } from '../constants/layout'
 
 export function AddFriend({ navigation }) {
 	// ユーザーID(今後は認証から取得するようにする)
-	const userId = "asami11"
+	const [userId, setUserId] = useState(null)
 
 	// 検索フォームのテキスト
 	const [searchText, setSearchText] = useState('')
@@ -71,6 +72,15 @@ export function AddFriend({ navigation }) {
 			console.error(e)
 		}
 	}
+
+	// ユーザーIDの取得
+	useEffect(() => {
+		storage.load({
+			key: "key"
+		}).then((data) => {
+			setUserId(data.userId)
+		})
+	}, [])
 
 
 	// 検索フォームのラベル化

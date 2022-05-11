@@ -6,8 +6,6 @@ import { View, StyleSheet, Pressable, Image, Text } from 'react-native';
 import { CONTENT_WIDTH, PROFILE_IMAGE_SIZE, STANDARD_FONT, MAIN_WHITE_COLOR, PROFILE_IMAGE_BORDER_RADIUS, MAIN_NAVY_COLOR, MAIN_GRAY_COLOR } from '../../../../constants/layout'
 
 export function ListItem({ navigation, profileImage, name, lastMessageCreationDate, lastMessageContent, unreadCount, groupChatRoomId, directChatRoomId, groupMemberUserId }) {
-	// ユーザーID(今後は認証から取得するようにする)
-	const userId = "asami11"
 	return (
 		<Pressable style={styles.listWrapperStyle} onPress={() => { navigation.navigate('Chat', { "groupChatRoomId": groupChatRoomId, "directChatRoomId": directChatRoomId, "profileImage": profileImage, "name": name }) }}>
 			<View style={styles.imageContainerStyle}>

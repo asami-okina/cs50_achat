@@ -3,13 +3,14 @@ import React, { useEffect, useState } from 'react';
 import { StyleSheet, Text, TouchableOpacity, TouchableHighlight, View, Image } from 'react-native';
 import { SwipeListView } from 'react-native-swipe-list-view';
 import { API_SERVER_URL } from '../../../../constants/api'
+import { storage } from '../../../../../storage';
 
 // layouts
 import { CONTENT_WIDTH, PROFILE_IMAGE_SIZE, STANDARD_FONT, MAIN_WHITE_COLOR, MAIN_PINK_COLOR, PROFILE_IMAGE_BORDER_RADIUS, MAIN_NAVY_COLOR } from '../../../../constants/layout'
 
 export default function Basic({ navigation, groupList, friendList, type, setModalVisible, clickedCancelMordal, setClickedCancelMordal, clickedOkMordal, setClickedOkMordal }) {
 	// ユーザーID(今後は認証から取得するようにする)
-	const userId = "asami11"
+	const [userId, setUserId] = useState(null)
 
 	// 削除時の確認モーダルでCancleの時は該当リストをデフォルト状態に戻す、Okの場合は該当リストを削除する甩に使用
 	const [rowMap, setRowMap] = useState('')
@@ -35,6 +36,15 @@ export default function Basic({ navigation, groupList, friendList, type, setModa
 			setListData(groupList.map((_, i) => ({ ..._, key: `${i}` })))
 		}
 	}, [groupList])
+
+	// ユーザーIDの取得
+	useEffect(() => {
+		storage.load({
+			key: "key"
+		}).then((data) => {
+			setUserId(data.userId)
+		})
+	}, [])
 
 
 	// スワップされた該当行をデフォルト状態に戻す

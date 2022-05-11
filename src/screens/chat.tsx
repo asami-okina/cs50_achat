@@ -13,6 +13,7 @@ import { useIsMounted } from "../hooks/useIsMounted"
 import * as Sharing from 'expo-sharing';
 import * as FileSystem from 'expo-file-system';
 import { API_SERVER_URL } from "../constants/api"
+import { storage } from '../../storage'
 
 // components
 import { TopAreaWrapper } from "../components/common/topAreaWrapper"
@@ -32,7 +33,7 @@ export function Chat({ navigation, route }) {
 	const [initialApiCount, setInitialApiCount] = useState(true)
 
 	// ユーザーID(今後は認証から取得するようにする)
-	const userId = "asami11"
+	const [userId, setUserId] = useState(null)
 
 	// メッセージ
 	const [messages, setMessages] = useState([]);
@@ -471,6 +472,15 @@ export function Chat({ navigation, route }) {
 			}
 		}
 	}, [clickedUserIcon])
+
+	// ユーザーIDの取得
+	useEffect(() => {
+		storage.load({
+			key: "key"
+		}).then((data) => {
+			setUserId(data.userId)
+		})
+	}, [])
 
 
 	return (
