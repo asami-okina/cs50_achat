@@ -146,11 +146,10 @@ export function Chat({ navigation, route }) {
 		}
 		// websocketでメッセージをサーバーに送る
 		sock.send(JSON.stringify(messages))
-		// setMessages(previousMessages => GiftedChat.append(previousMessages, messages))
 		_postMessage(messages)
 		setImage('')
 		// メッセージ更新API実行
-	}, [])
+	}, [userId])
 
 	// カスタム送信ボタンのスタイル変更
 	const _renderSend = (props) => {
@@ -211,7 +210,6 @@ export function Chat({ navigation, route }) {
 					{!ownUserId && (
 						<View style={styles.readLeftContainerStyle}>
 							{props.currentMessage.image && (
-								// <FontAwesome icon="fa-solid fa-down-to-bracket" />
 								<Pressable
 									onPress={() => { _openShareDialogAsync(props.currentMessage.image) }}>
 									<FontAwesome name='download' color={MAIN_NAVY_COLOR} size={24} margin={0} />
@@ -365,6 +363,7 @@ export function Chat({ navigation, route }) {
 
 	// 画像送信ボタンを押したときに送信したい処理
 	const _onPressActionButton = () => {
+		console.log('いま')
 		pickImage()
 	}
 
@@ -576,13 +575,13 @@ const styles = StyleSheet.create({
 		display: "flex",
 		justifyContent: "flex-end",
 		alignItems: "center",
-		marginRight: -5
+		marginRight: -5,
 	},
 	readRightContainerStyle: {
 		display: "flex",
 		justifyContent: "flex-end",
 		alignItems: "center",
-		marginLeft: -5
+		marginLeft: -5,
 	},
 	readStyle: {
 		width: 50,

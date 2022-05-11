@@ -1,13 +1,13 @@
 // ------------------------------------------------
 // 検証中の約束
-const pc = {
-	"email": "pc@g.com",
+const pcAsami = {
+	"email": "pcAsami@g.com",
 	"password": "pcAsami",
 	"userId": "pcAsami",
 }
 
 const smartPhone = {
-	"email": "sp@g.com",
+	"email": "spAsami@g.com",
 	"password": "spAsami",
 	"userId": "spAsami",
 }
@@ -59,7 +59,7 @@ let pc_friends = [
 		"direct_chat_room_id": "friend 1",
 		"friend_use_id": sp_profileInfo.userId,
 		"friend_profile_image": sp_profileInfo.profileImage,
-		"friend_nickname": "sp"
+		"friend_nickname": "spAsami"
 	},
 ]
 
@@ -68,7 +68,7 @@ let sp_friends = [
 		"direct_chat_room_id": "friend 1",
 		"friend_use_id": pc_profileInfo.userId,
 		"friend_profile_image": pc_profileInfo.profileImage,
-		"friend_nickname": "pc"
+		"friend_nickname": "pcAsami"
 	},
 ]
 
@@ -78,8 +78,8 @@ let groups = [
 		"group_name": "group 1",
 		"group_image": "https://pbs.twimg.com/media/E16OXztUYAIpisv?format=jpg&name=large",
 		"group_member_user_id": [
-			"pc",
-			"sp"
+			"pcAsami",
+			"spAsami"
 		]
 	},
 ]
@@ -90,25 +90,37 @@ let temporaryMessages_friend1 = [
 		_id: 1,
 		createdAt: "2022-04-27T02:10:29.189Z",
 		user: {
-			_id: "pc",
-			name: "pc",
+			_id: "pcAsami",
+			name: "pcAsami",
 			avatar: pc_profileInfo.profileImage,
 		},
-		sent: true,
-		received: true,
+		// sent: true,
+		// received: true,
 		image: 'https://placeimg.com/140/140/any',
 	},
 	{
 		_id: 2,
+		createdAt: "2022-04-27T02:10:29.189Z",
+		user: {
+			_id: "spAsami",
+			name: "spAsami",
+			avatar: sp_profileInfo.profileImage,
+		},
+		// sent: true,
+		// received: true,
+		image: 'https://placeimg.com/140/140/any',
+	},
+	{
+		_id: 3,
 		text: 'いいよん',
 		createdAt: "2022-04-27T02:08:10.189Z",
 		user: {
-			_id: "sp",
-			name: "sp",
+			_id: "spAsami",
+			name: "spAsami",
 			avatar: sp_profileInfo.profileImage,
 		},
-		sent: true,
-		received: true
+		// sent: true,
+		// received: true
 	},
 ]
 
@@ -120,8 +132,8 @@ let temporaryMessages_group1 = [
 		_id: 30,
 		createdAt: "2022-04-27T02:10:29.189Z",
 		user: {
-			_id: "pc",
-			name: "pc",
+			_id: "pcAsami",
+			name: "pcAsami",
 			avatar: pc_profileInfo.profileImage,
 		},
 		sent: true,
@@ -133,8 +145,8 @@ let temporaryMessages_group1 = [
 		text: 'Hello developer',
 		createdAt: "2022-04-27T02:08:10.189Z",
 		user: {
-			_id: "sp",
-			name: "sp",
+			_id: "spAsami",
+			name: "spAsami",
 			avatar: sp_profileInfo.profileImage,
 		},
 		sent: true,
@@ -145,8 +157,8 @@ let temporaryMessages_group1 = [
 		text: 'we are not friend',
 		createdAt: "2022-04-27T02:08:10.189Z",
 		user: {
-			_id: "sp",
-			name: "sp",
+			_id: "spAsami",
+			name: "spAsami",
 			avatar: sp_profileInfo.profileImage,
 		},
 		sent: true,
@@ -162,8 +174,8 @@ function pcGetChats() {
 	return [
 		{
 			"direct_chat_room_id": "friend 1",
-			"friends_user_id": "sp",
-			"friends_nick_name": "sp",
+			"friends_user_id": "spAsami",
+			"friends_nick_name": "spAsami",
 			"friends_profile_image": sp_profileInfo.profileImage,
 			"friends_last_message_content": temporaryMessages_friend1[0].text ? temporaryMessages_friend1[0].text : temporaryMessages_friend1[0].image,
 			"friends_last_message_creation_date": "2022/3/20",
@@ -176,8 +188,8 @@ function pcGetChats() {
 			"group_last_message_content": temporaryMessages_group1[0].text ? temporaryMessages_group1[0].text : temporaryMessages_group1[0].image,
 			"group_last_message_creation_date": "2022/3/19",
 			"group_member_user_id": [
-				"pc",
-				"sp",
+				"pcAsami",
+				"spAsami",
 			],
 			"unread_count": 2
 		},
@@ -188,8 +200,8 @@ function spGetChats() {
 	return [
 		{
 			"direct_chat_room_id": "friend 1",
-			"friends_user_id": "pc",
-			"friends_nick_name": "pc",
+			"friends_user_id": "pcAsami",
+			"friends_nick_name": "pcAsami",
 			"friends_profile_image": pc_profileInfo.profileImage,
 			"friends_last_message_content": temporaryMessages_friend1[0].text ? temporaryMessages_friend1[0].text : temporaryMessages_friend1[0].image,
 			"friends_last_message_creation_date": "2022/3/20",
@@ -202,8 +214,8 @@ function spGetChats() {
 			"group_last_message_content": temporaryMessages_group1[0].text ? temporaryMessages_group1[0].text : temporaryMessages_group1[0].image,
 			"group_last_message_creation_date": "2022/3/19",
 			"group_member_user_id": [
-				"pc",
-				"sp",
+				"pcAsami",
+				"spAsami",
 			],
 			"unread_count": 2
 		},
@@ -239,10 +251,10 @@ app.post('/api/login', (req, res, ctx) => {
 	const password = req.param("password")
 	let userId;
 	if (mail === "asami1@g.com") {
-		userId = "pc"
+		userId = "pcAsami"
 	}
 	if (mail === "asami2@g.com") {
-		userId = "sp"
+		userId = "spAsami"
 	}
 	return res.status(200).send(
 		JSON.stringify({
