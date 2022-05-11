@@ -43,8 +43,9 @@ export function Chat({ navigation, route }) {
 	// マウント判定
 	const isMounted = useIsMounted()
 
-	const sock = new WebSocket("wss://e652-217-178-25-219.jp.ngrok.io");
+	const sock = new WebSocket("wss://dd13-61-120-204-212.jp.ngrok.io");
 
+	// メッセージを送信した場合に実行
 	useEffect(() => {
 		sock.addEventListener("message", e => {
 			console.log("サーバーからメッセージを受信したときに呼び出されるイベント");
