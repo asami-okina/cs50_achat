@@ -380,7 +380,9 @@ export function Chat({ navigation, route }) {
 						width: 200,
 						height: 200,
 						padding: 6,
-						borderRadius: 15,
+						borderTopLeftRadius:15,
+						borderTopRightRadius:15,
+						borderRadius: props.currentMessage.user._id === userId ? 0 : 15,
 						// 自分が送った画像の場合は、右下のborderRadiusを15に設定
 						borderBottomLeftRadius: props.currentMessage.user._id === userId ? 15 : 0,
 						resizeMode: "cover",
