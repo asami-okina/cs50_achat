@@ -18,9 +18,9 @@ export function UserIdForm({
 	isAvailableUserId,
 	setIsAvailableUserId,
 	pageType,
+	userIdText,
+	onChangeUserIdText
 }) {
-	// 入力フォーム
-	const [userIdText, onChangeUserIdText] = useState("");
 
 	// ユーザーIDの説明文表示
 	const [displayUserIdDescription, setDisplayUserIdDescription] = useState(false);

@@ -35,6 +35,13 @@ export function SignUp({ navigation }) {
 	// ユーザーIDのバリデーション(使用可能かどうか)
 	const [isAvailableUserId, setIsAvailableUserId] = useState(false)
 
+	// メールアドレス入力フォーム
+	const [emailText, onChangeEmailText] = useState("");
+	// パスワード入力フォーム
+	const [passwordText, onChangePasswordText] = useState("");
+	// ユーザーID入力フォーム
+	const [userIdText, onChangeUserIdText] = useState("");
+
 	return (
 		<KeyboardAvoidingView behavior="padding" style={sameStyles.screenContainerStyle}>
 			<SafeAreaView style={sameStyles.screenContainerStyle}>
@@ -51,6 +58,8 @@ export function SignUp({ navigation }) {
 						inputAccessoryViewID={inputAccessoryViewID}
 						isCorrectMail={isCorrectMail}
 						setIsCorrectMail={setIsCorrectMail}
+						emailText={emailText}
+						onChangeEmailText={onChangeEmailText}
 					/>
 					{/* Password */}
 					<PasswordForm
@@ -59,6 +68,8 @@ export function SignUp({ navigation }) {
 						setIsCorrectPassewordSymbol={setIsCorrectPassewordSymbol}
 						isCorrectPassewordStringCount={isCorrectPassewordStringCount}
 						setIsCorrectPassewordStringCount={setIsCorrectPassewordStringCount}
+						passwordText={passwordText}
+						onChangePasswordText={onChangePasswordText}
 					/>
 					{/* UserId */}
 					<UserIdForm
@@ -70,6 +81,8 @@ export function SignUp({ navigation }) {
 						isAvailableUserId={isAvailableUserId}
 						setIsAvailableUserId={setIsAvailableUserId}
 						pageType={"SignUp"}
+						userIdText={userIdText}
+						onChangeUserIdText={onChangeUserIdText}
 					/>
 					{/* 画面下 */}
 					<View style={sameStyles.bottomStyleByWelcomeAndSignUpAndLogin}>
@@ -87,4 +100,3 @@ export function SignUp({ navigation }) {
 		</KeyboardAvoidingView>
 	);
 }
-

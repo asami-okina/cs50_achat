@@ -12,11 +12,9 @@ export function MailForm({
 	inputAccessoryViewID,
 	isCorrectMail,
 	setIsCorrectMail,
+	emailText,
+	onChangeEmailText
 }) {
-
-
-	// 入力フォーム
-	const [emailText, onChangeEmailText] = useState("");
 
 	// メールアドレスの説明文表示
 	const [displayMailDescription, setDisplayMailDescription] = useState(false);

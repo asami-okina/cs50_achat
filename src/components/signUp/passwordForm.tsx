@@ -15,9 +15,10 @@ export function PasswordForm({
 	setIsCorrectPassewordSymbol,
 	isCorrectPassewordStringCount,
 	setIsCorrectPassewordStringCount,
+	passwordText,
+	onChangePasswordText
+
 }) {
-	// 入力フォーム
-	const [passwordText, onChangePasswordText] = useState("");
 
 	// パスワードの説明文表示
 	const [displayPasswordDescription, setDisplayPasswordDescription] = useState(false);
