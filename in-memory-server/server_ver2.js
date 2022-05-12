@@ -152,8 +152,8 @@ let temporaryMessages_group1 = [
 			name: "pcAsami",
 			avatar: pc_profileInfo.profileImage,
 		},
-		sent: true,
-		received: true,
+		// sent: true,
+		// received: true,
 		image: 'https://placeimg.com/140/140/any',
 	},
 	{
@@ -165,8 +165,8 @@ let temporaryMessages_group1 = [
 			name: "spAsami",
 			avatar: sp_profileInfo.profileImage,
 		},
-		sent: true,
-		received: true
+		// sent: true,
+		// received: true
 	},
 	{
 		_id: 32,
@@ -177,8 +177,8 @@ let temporaryMessages_group1 = [
 			name: "spAsami",
 			avatar: sp_profileInfo.profileImage,
 		},
-		sent: true,
-		received: true
+		// sent: true,
+		// received: true
 	},
 ]
 
