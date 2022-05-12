@@ -32,6 +32,7 @@ s.on("connection", ws => {
 			// メッセージ送信
 			if (parseMessage[0]?.type === "sendMessage") {
 				// クライアントの中で、送るべきユーザーIDが一致するユーザーにのみメッセージ送信
+				// parseMessage[0]?.sendUserId: 送るべきユーザーID
 				parseMessage[0]?.sendUserId.forEach((userId) => {
 					s.clients.forEach(client => {
 						if (userId === client.userId) {
