@@ -51,7 +51,7 @@ export function Button({
 	async function _signUp() {
 		try {
 			// paramsを生成
-			const params = { "mail": propsList.email, "password": propsList.password, "userId": propsList.userId, "type": "signUp" }
+			const params = { "mail": propsList?.email, "password": propsList?.password, "userId": propsList?.userId, "type": "signUp" }
 			const query_params = new URLSearchParams(params);
 
 			// APIリクエスト
