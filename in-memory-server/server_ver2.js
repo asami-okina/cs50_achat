@@ -26,10 +26,25 @@ const s = new server({ port: 8000 });
 s.on("connection", ws => {
 	// クライアントからサーバに送られてきたメッセージ
 	ws.on("message", message => {
-		console.log("Received: " + message);
-		s.clients.forEach(client => {
-			client.send(message.toString());
-		});
+		const parseMessage = JSON.parse(message.toString())
+		// メッセージ送信
+		if (parseMessage[0]?.type === "sendMessage") {
+			// メッセージ送信
+			if (parseMessage[0]?.type === "sendMessage") {
+				// クライアントの中で、送るべきユーザーIDが一致するユーザーにのみメッセージ送信
+				parseMessage[0]?.sendUserId.forEach((userId) => {
+					s.clients.forEach(client => {
+						if (userId === client.userId) {
+							client.send(JSON.stringify(parseMessage));
+						}
+					});
+				})
+			}
+		} else {
+			// クライアントにユーザーID情報の追加
+			ws.userId = parseMessage[0]?.userId
+		}
+
 	});
 });
 
@@ -724,6 +739,66 @@ app.get('/api/users/:userId/friend', (req, res, ctx) => {
 			}
 		),
 	)
+})
+// 該当友達とのdirectChatRoomIdを取得
+app.get('/api/users/:userId/chat', (req, res, ctx) => {
+	const groupChatRoomId = req.param("groupChatRoomId")
+	const directChatRoomId = req.param("directChatRoomId")
+	const userId = req.param("userId")
+	// グループの場合
+	if (groupChatRoomId) {
+		let userIds = []
+		groups.forEach((group) => {
+			if (group.group_chat_room_id === groupChatRoomId) {
+				return res.status(200).send(
+					JSON.stringify(
+						{
+							"userIds": group.group_member_user_id
+						}
+					),
+				)
+			}
+		})
+	}
+	// 友達の場合
+	if (directChatRoomId) {
+		// 携帯の場合
+		if (userId === "pcAsami") {
+			pc_friends.forEach((friend) => {
+				if (friend.direct_chat_room_id === directChatRoomId) {
+					return res.status(200).send(
+						JSON.stringify(
+							{
+								"userIds": [friend.friend_use_id, userId]
+							}
+						),
+					)
+				}
+			})
+		}
+		// スマホの場合
+		if (userId === "spAsami") {
+			sp_friends.forEach((friend) => {
+				if (friend.direct_chat_room_id === directChatRoomId) {
+					return res.status(200).send(
+						JSON.stringify(
+							{
+								"userIds": [friend.friend_use_id, userId]
+							}
+						),
+					)
+				}
+			})
+		}
+	}
+	// return res.status(200).send(
+	// 	JSON.stringify(
+	// 		{
+	// 			"directChatRoomId": null,
+	// 			"alreadyFriend": false
+	// 		}
+	// 	),
+	// )
 })
 
 app.listen(3000, function () {

@@ -14,6 +14,7 @@ import * as Sharing from 'expo-sharing';
 import * as FileSystem from 'expo-file-system';
 import { API_SERVER_URL } from "../constants/api"
 import { storage } from '../../storage'
+import { sock } from "../../websocket"
 
 // components
 import { TopAreaWrapper } from "../components/common/topAreaWrapper"
@@ -43,8 +44,7 @@ export function Chat({ navigation, route }) {
 
 	// マウント判定
 	const isMounted = useIsMounted()
-
-	const sock = new WebSocket("wss://dd13-61-120-204-212.jp.ngrok.io");
+	const [sendUserIds, setSendUserIds] = useState(null)
 
 	// メッセージを送信した場合に実行
 	useEffect(() => {
@@ -74,6 +74,27 @@ export function Chat({ navigation, route }) {
 			// レスポンスをJSONにする
 			const parse_response = await response.json()
 			setMessages(parse_response)
+		} catch (e) {
+			console.error(e)
+		}
+	}
+
+	// directChatRoomId/groupChatRoomIdに紐づくメンバーのユーザーIDを取得
+	async function _fetchUserIdsByDirectOrGroupChatRoomId() {
+		try {
+			// paramsを生成
+			const params = { "groupChatRoomId": groupChatRoomId, "directChatRoomId": directChatRoomId }
+			const query_params = new URLSearchParams(params);
+			// APIリクエスト
+			const response = await fetch(API_SERVER_URL + `/api/users/${userId}/chat?${query_params}`, {
+				method: "GET",
+				headers: {
+					"Content-Type": "application/json"
+				},
+			})
+			// レスポンスをJSONにする
+			const parse_response = await response.json()
+			setSendUserIds(parse_response.userIds)
 		} catch (e) {
 			console.error(e)
 		}
@@ -144,12 +165,17 @@ export function Chat({ navigation, route }) {
 		if (image && messages.length !== 0) {
 			messages[0]["image"] = image
 		}
+		// messagesに要素追加
+		messages[0]["type"] = "sendMessage"
+		console.log('sendUserIds',sendUserIds)
+		messages[0]["sendUserId"] = sendUserIds
+		messages[0]["userId"] = userId
 		// websocketでメッセージをサーバーに送る
 		sock.send(JSON.stringify(messages))
 		_postMessage(messages)
 		setImage('')
 		// メッセージ更新API実行
-	}, [userId])
+	}, [userId,sendUserIds])
 
 	// カスタム送信ボタンのスタイル変更
 	const _renderSend = (props) => {
@@ -363,7 +389,6 @@ export function Chat({ navigation, route }) {
 
 	// 画像送信ボタンを押したときに送信したい処理
 	const _onPressActionButton = () => {
-		console.log('いま')
 		pickImage()
 	}
 
@@ -380,8 +405,8 @@ export function Chat({ navigation, route }) {
 						width: 200,
 						height: 200,
 						padding: 6,
-						borderTopLeftRadius:15,
-						borderTopRightRadius:15,
+						borderTopLeftRadius: 15,
+						borderTopRightRadius: 15,
 						borderRadius: props.currentMessage.user._id === userId ? 0 : 15,
 						// 自分が送った画像の場合は、右下のborderRadiusを15に設定
 						borderBottomLeftRadius: props.currentMessage.user._id === userId ? 15 : 0,
@@ -457,7 +482,9 @@ export function Chat({ navigation, route }) {
 		_fetchChatByChatRoomId()
 		// 最終既読日時の更新
 		_updateLastReadTime()
-	}, [directChatRoomId, groupChatRoomId])
+		// directChatRoomId/groupChatRoomIdに紐づくメンバーのユーザーIDを取得
+		_fetchUserIdsByDirectOrGroupChatRoomId()
+	}, [directChatRoomId, groupChatRoomId,userId])
 
 	useEffect(() => {
 		// グループトーク画面でユーザーアイコンをクリックしたかどうかをfalseに戻す
@@ -480,6 +507,7 @@ export function Chat({ navigation, route }) {
 			key: "key"
 		}).then((data) => {
 			setUserId(data.userId)
+			sock.send(JSON.stringify([{ "userId": data.userId, type: "setUserId" }]))
 		})
 	}, [])
 

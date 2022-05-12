@@ -45,8 +45,6 @@ export function Button({
 		}
 	}
 
-	const [alreadySignUp, setAlreadySignUp] = useState(false)
-
 	// 会員登録
 	async function _signUp() {
 		try {
@@ -65,7 +63,6 @@ export function Button({
 			// レスポンスをJSONにする
 			const parse_response = await response.json()
 			const response_user_id = parse_response.userId
-			console.log('response_user_id', response_user_id)
 			// ローカルストレージにユーザーIDを保存
 			await storage.save({
 				key: "key",
@@ -73,7 +70,6 @@ export function Button({
 					userId: response_user_id,
 				},
 			});
-			setAlreadySignUp(true)
 		} catch (e) {
 			console.error(e)
 		}
@@ -89,14 +85,12 @@ export function Button({
 
 	// ユーザーIDの取得
 	useEffect(() => {
-		if (alreadySignUp && userId) {
-			storage.load({
-				key: "key"
-			}).then((data) => {
-				setUserId(data.userId)
-			})
-		}
-	})
+		storage.load({
+			key: "key"
+		}).then((data) => {
+			setUserId(data.userId)
+		})
+	}, [])
 
 	return (
 		<>
@@ -133,8 +127,9 @@ export function Button({
 							}
 							if (enable && link && scene !== "ProfileSettingNickName") {
 								// サインアップ
-								_signUp()
-								navigation.navigate(link)
+								_signUp().then(() => {
+									navigation.navigate(link)
+								})
 							}
 						}}
 					>

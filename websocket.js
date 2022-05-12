@@ -1,0 +1,1 @@
+export const sock = new WebSocket("wss://c9ee-61-120-204-212.jp.ngrok.io");
