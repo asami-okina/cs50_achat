@@ -52,7 +52,12 @@ export function Chat({ navigation, route }) {
 			console.log("サーバーからメッセージを受信したときに呼び出されるイベント");
 			const newMessage = JSON.parse(e.data)
 			if (isMounted.current) {
-				setMessages(previousMessages => GiftedChat.append(previousMessages, newMessage))
+				// ユーザーが開いているチャットルームに一致する場合のみメッセージを表示する
+				const messageDirectChatRoomId = newMessage[0].directChatRoomId
+				const messageGroupChatRoomId = newMessage[0].groupChatRoomId
+				if ((directChatRoomId !== null && directChatRoomId === messageDirectChatRoomId) || (groupChatRoomId !== null && groupChatRoomId === messageGroupChatRoomId)) {
+					setMessages(previousMessages => GiftedChat.append(previousMessages, newMessage))
+				}
 			}
 		});
 
@@ -167,15 +172,17 @@ export function Chat({ navigation, route }) {
 		}
 		// messagesに要素追加
 		messages[0]["type"] = "sendMessage"
-		console.log('sendUserIds',sendUserIds)
+		console.log('sendUserIds', sendUserIds)
 		messages[0]["sendUserId"] = sendUserIds
 		messages[0]["userId"] = userId
+		messages[0]["groupChatRoomId"] = groupChatRoomId
+		messages[0]["directChatRoomId"] = directChatRoomId
 		// websocketでメッセージをサーバーに送る
 		sock.send(JSON.stringify(messages))
 		_postMessage(messages)
 		setImage('')
 		// メッセージ更新API実行
-	}, [userId,sendUserIds])
+	}, [userId, sendUserIds])
 
 	// カスタム送信ボタンのスタイル変更
 	const _renderSend = (props) => {
@@ -484,7 +491,7 @@ export function Chat({ navigation, route }) {
 		_updateLastReadTime()
 		// directChatRoomId/groupChatRoomIdに紐づくメンバーのユーザーIDを取得
 		_fetchUserIdsByDirectOrGroupChatRoomId()
-	}, [directChatRoomId, groupChatRoomId,userId])
+	}, [directChatRoomId, groupChatRoomId, userId])
 
 	useEffect(() => {
 		// グループトーク画面でユーザーアイコンをクリックしたかどうかをfalseに戻す
