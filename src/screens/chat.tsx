@@ -48,7 +48,8 @@ export function Chat({ navigation, route }) {
 
 	// メッセージを送信した場合に実行
 	useEffect(() => {
-		sock.addEventListener("message", e => {
+		
+		const handler = e => {
 			console.log("サーバーからメッセージを受信したときに呼び出されるイベント");
 			const newMessage = JSON.parse(e.data)
 			if (isMounted.current) {
@@ -60,9 +61,15 @@ export function Chat({ navigation, route }) {
 
 				}
 			}
-		});
+		}
+		// 第2引数に関数を指定することで、任意のイベントが発生した時に関数内に書かれた処理を実行する
+		sock.addEventListener("message", handler)
 
-	}, [groupChatRoomId, directChatRoomId])
+		return () => {
+			sock.removeEventListener("message", handler)
+		}
+	}, [directChatRoomId, groupChatRoomId])
+
 
 	// チャットルームIDに紐づくチャット履歴の取得
 	async function _fetchChatByChatRoomId() {
@@ -173,7 +180,6 @@ export function Chat({ navigation, route }) {
 		}
 		// messagesに要素追加
 		messages[0]["type"] = "sendMessage"
-		console.log('sendUserIds', sendUserIds)
 		messages[0]["sendUserId"] = sendUserIds
 		messages[0]["userId"] = userId
 		messages[0]["groupChatRoomId"] = groupChatRoomId
@@ -631,3 +637,4 @@ const styles = StyleSheet.create({
 		height: 40,
 	},
 });
+
