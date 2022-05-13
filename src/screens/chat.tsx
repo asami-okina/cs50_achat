@@ -57,11 +57,12 @@ export function Chat({ navigation, route }) {
 				const messageGroupChatRoomId = newMessage[0].groupChatRoomId
 				if ((directChatRoomId !== null && directChatRoomId === messageDirectChatRoomId) || (groupChatRoomId !== null && groupChatRoomId === messageGroupChatRoomId)) {
 					setMessages(previousMessages => GiftedChat.append(previousMessages, newMessage))
+
 				}
 			}
 		});
 
-	}, [])
+	}, [groupChatRoomId, directChatRoomId])
 
 	// チャットルームIDに紐づくチャット履歴の取得
 	async function _fetchChatByChatRoomId() {
@@ -351,7 +352,7 @@ export function Chat({ navigation, route }) {
 					setLoadEarlier(false)
 					setInitialApiCount(false)
 				}
-			}, 2000)
+			}, 1000)
 		}
 	}
 
