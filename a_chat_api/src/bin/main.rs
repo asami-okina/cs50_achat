@@ -1,4 +1,3 @@
-use std::fs::File;
 use std::io::prelude::*;
 use std::net::TcpListener;
 use std::net::TcpStream;
@@ -73,6 +72,7 @@ type Result<T> = std::result::Result<T, Box<dyn std::error::Error>>;
 
 #[tokio::main]
 // async処理はランタイムの上でしか動かないから、tokioランタイムを準備
+// awaitを使う関数の上には必ず「#[tokio::main]」を設置
 async fn http_get() -> Result<String> {
     let resp = reqwest::get("https://www.example.com/").await?;
     let body = resp.text().await?;
