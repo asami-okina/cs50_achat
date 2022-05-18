@@ -9,7 +9,8 @@ use std::time::Duration;
 extern crate a_chat_api;
 use a_chat_api::ThreadPool;
 
-fn main() {
+#[tokio::main]
+async fn main() {
     // TcpListenerはサーバーが公開しているIPアドレスとポートへクライアントが接続する許可を与える
     // TcpListenerのbind関数にサーバ側のIPアドレスとオープンされているポート番号を指定する
     // 許可されたIPアドレスと公開されたポートである場合、そのポートへの接続をリクエストしたクライアントをキャッチするリスナーオブジェクトができる。
@@ -54,9 +55,11 @@ fn handle_connection(mut stream: TcpStream) {
         ("HTTP/1.1 404 NOT FOUND\r\n\r\n", "404.html")
     };
 
-    let mut file = File::open(filename).unwrap();
-    let mut contents = String::new();
-    file.read_to_string(&mut contents).unwrap();
+    let body = http_get();
+    let contents = match body {
+        Ok(v) => v,
+        Err(e) => panic!("エラー")
+    };
 
     let response = format!("{}{}", status_line, contents);
 
@@ -64,4 +67,14 @@ fn handle_connection(mut stream: TcpStream) {
     stream.write(response.as_bytes()).unwrap();
     // flush:バイトが全て接続に書き込まれるまでプログラムが継続するのを防ぐ
     stream.flush().unwrap();
+}
+
+type Result<T> = std::result::Result<T, Box<dyn std::error::Error>>;
+
+#[tokio::main]
+// async処理はランタイムの上でしか動かないから、tokioランタイムを準備
+async fn http_get() -> Result<String> {
+    let resp = reqwest::get("https://www.example.com/").await?;
+    let body = resp.text().await?;
+    Ok(body)
 }

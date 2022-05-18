@@ -79,7 +79,6 @@ impl Worker {
             loop {
                 // recv():チャネルからJobを受け取る
                 let job = receiver.lock().unwrap().recv().unwrap();
-                println!("{}",'1');
 
                 // ワーカー{}は仕事を得ました; 実行します
                 println!("Worker {} got a job; executing.", id);
