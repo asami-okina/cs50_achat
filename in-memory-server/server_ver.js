@@ -243,7 +243,6 @@ app.post('/api/signup', (req, res, ctx) => {
 	const userId = req.param("userId")
 	const mail = req.param("mail")
 	const password = req.param("password")
-	console.log('password',password)
 	return res.status(200).send(
 		JSON.stringify({
 			"userId": userId,
@@ -254,7 +253,6 @@ app.post('/api/signup', (req, res, ctx) => {
 app.get('/api/signup/isAvailableUserIdValidation', (req, res, ctx) => {
 	const userId = req.param("userId")
 	// 登録するユーザーIDが使用可能かどうかチェック
-	console.log('きたあああ')
 	return res.status(200).send(
 		JSON.stringify({
 			"isAvailableUserId": true,

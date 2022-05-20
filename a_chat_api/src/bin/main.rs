@@ -13,7 +13,7 @@ use serde::{Serialize, Deserialize};
 use std::net::SocketAddr;
 use std::error::Error;
 use std::collections::HashMap;
-use serde_json::{Value, json};
+use serde_json::{Value, json,Result};
 
 
 #[tokio::main]
@@ -22,9 +22,8 @@ async fn main() {
         // handler: 何らかの処理要求が発生した時に起動されるプログラムのこと
         // handlerはアプリケーションのロジックが存在する場所
         let app = Router::new()
-        .route("/users/:user_id/posts/:post_id", get(user_post))
-        .route("/foo", get(get_foo).post(post_foo))
-        .route("/foo/bar", get(foo_bar));
+        .route("/api/signup/isAvailableUserIdValidation/:user_id", get(is_available_user_id_validation))
+        .route("/api/signup", post(sign_up));
 
     // localhost:3000 で hyper と共に実行する
     axum::Server::bind(&"0.0.0.0:3000".parse().unwrap())
@@ -33,31 +32,45 @@ async fn main() {
         .unwrap();
 }
 
-// 会員登録
-struct Name {
-    name: String,
-}
-
-// Serializeすれば、RustオブジェクトからJSONに変換
-#[derive(Serialize)]
-struct Message {
-    message: String,
-}
-
 // シリアライズ: オブジェクトをJSONに変換
 // デシリアライズ: JSONをオブジェクトに変換
 #[derive(Debug, Deserialize, Serialize)]
-struct Params {
-    user_id: u64,
-    post_id: String,
+struct SignUpParams {
+    user_id: String,
+    mail: String,
+    password: String
 }
 
-async fn user_post(Path(params): Path<Params>) -> Json<Value> {
+#[derive(Debug, Deserialize, Serialize)]
+struct IsAvailableUserIdValidationParams {
+    user_id: String,
+}
+
+
+
+// 会員登録
+async fn sign_up(body_json: Json<Value>) -> Json<Value> {
+    // user_idの取得
+    let user_id = match body_json.0.get("user_id") {
+        Some(user_id) => user_id,
+        None => panic!("error")
+    };
+    // mailの取得
+    let mail = match body_json.0.get("mail") {
+        Some(mail) => mail,
+        None => panic!("error")
+    };
+        // user_idの取得
+    let password = match body_json.0.get("password") {
+        Some(password) => password,
+        None => panic!("error")
+    };
+    Json(json!({ "user_id": user_id }))
+}
+
+
+// userIdがあれば、登録するユーザーIDが使用可能かどうかチェック
+async fn is_available_user_id_validation(Path(params): Path<IsAvailableUserIdValidationParams>) -> Json<Value> {
     let user_id = params.user_id;
-    let post_id = params.post_id;
-    Json(json!({ "user_id": user_id, "post_id": post_id }))
+    Json(json!({ "user_id": user_id  }))
 }
-
-async fn get_foo() {}
-async fn post_foo() {}
-async fn foo_bar() {}
