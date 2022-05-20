@@ -239,27 +239,27 @@ function spGetChats() {
 }
 
 // 会員登録
-// userIdがあれば、登録するユーザーIDが使用可能かどうかチェック
-app.get('/api/signup', (req, res, ctx) => {
+app.post('/api/signup', (req, res, ctx) => {
 	const userId = req.param("userId")
 	const mail = req.param("mail")
 	const password = req.param("password")
-	const type = req.param("type")
+	console.log('password',password)
+	return res.status(200).send(
+		JSON.stringify({
+			"userId": userId,
+		}),
+	)
+})
+// userIdがあれば、登録するユーザーIDが使用可能かどうかチェック
+app.get('/api/signup/isAvailableUserIdValidation', (req, res, ctx) => {
+	const userId = req.param("userId")
 	// 登録するユーザーIDが使用可能かどうかチェック
-	if (type === "isAvailableUserIdValidation") {
-		return res.status(200).send(
-			JSON.stringify({
-				"isAvailableUserId": true,
-			}),
-		)
-	} else {
-		// 会員登録
-		return res.status(200).send(
-			JSON.stringify({
-				"userId": userId,
-			}),
-		)
-	}
+	console.log('きたあああ')
+	return res.status(200).send(
+		JSON.stringify({
+			"isAvailableUserId": true,
+		}),
+	)
 })
 // ログイン認証
 app.post('/api/login', (req, res, ctx) => {
