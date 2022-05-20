@@ -45,35 +45,35 @@ export function Button({
 		}
 	}
 
-	// 会員登録
-	async function _signUp() {
-		try {
-			// paramsを生成
-			const params = { "mail": propsList?.email, "password": propsList?.password, "userId": propsList?.userId, "type": "signUp" }
-			const query_params = new URLSearchParams(params);
-
-			// APIリクエスト
-			const response = await fetch(API_SERVER_URL + `/api/signup?${query_params}`, {
-				method: "GET",
-				headers: {
-					"Content-Type": "application/json"
-				},
-			})
-
-			// レスポンスをJSONにする
-			const parse_response = await response.json()
-			const response_user_id = parse_response.userId
-			// ローカルストレージにユーザーIDを保存
-			await storage.save({
-				key: "key",
-				data: {
-					userId: response_user_id,
-				},
-			});
-		} catch (e) {
-			console.error(e)
+		// 会員登録
+		async function _signUp() {
+			try {
+				// paramsを生成
+				const params = { "mail": propsList?.email, "password": propsList?.password, "userId": propsList?.userId, "type": "signUp" }
+				const query_params = new URLSearchParams(params);
+	
+				// APIリクエスト
+				const response = await fetch(API_SERVER_URL + `/api/signup?${query_params}`, {
+					method: "POST",
+					headers: {
+						"Content-Type": "application/json"
+					},
+				})
+	
+				// レスポンスをJSONにする
+				const parse_response = await response.json()
+				const response_user_id = parse_response.userId
+				// ローカルストレージにユーザーIDを保存
+				await storage.save({
+					key: "key",
+					data: {
+						userId: response_user_id,
+					},
+				});
+			} catch (e) {
+				console.error(e)
+			}
 		}
-	}
 
 
 	// 友達追加されたら、チャット画面に遷移

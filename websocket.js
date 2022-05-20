@@ -1,2 +1,2 @@
 // 8000ポートの方を記載
-export const sock = new WebSocket("wss://1157-118-238-211-53.jp.ngrok.i");
+export const sock = new WebSocket("wss://b8f7-217-178-24-119.jp.ngrok.io");

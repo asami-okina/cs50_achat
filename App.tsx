@@ -34,6 +34,7 @@ import {
 
 const Stack = createNativeStackNavigator();
 
+// Node.jsを使うため、mock serviceはコメントアウト
 // // mock service
 // import 'react-native-url-polyfill/auto';
 // const { native } = require('./src/mocks/native');

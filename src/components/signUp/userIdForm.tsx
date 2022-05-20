@@ -54,11 +54,11 @@ export function UserIdForm({
 	async function _isAvailableUserIdValidation() {
 		try {
 			// paramsを生成
-			const params = { "userId": userIdText, "type": "isAvailableUserIdValidation" }
+			const params = { "userId": userIdText }
 			const query_params = new URLSearchParams(params);
 
 			// APIリクエスト
-			const response = await fetch(API_SERVER_URL + `/api/signup?${query_params}`, {
+			const response = await fetch(API_SERVER_URL + `/api/signup/isAvailableUserIdValidation?${query_params}`, {
 				method: "GET",
 				headers: {
 					"Content-Type": "application/json"
