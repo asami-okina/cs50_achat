@@ -4,16 +4,11 @@ use axum::{
     Router,
     response::Json,
     extract::Path,
-    response,
-    extract,
 };
 // シリアライズ: RustのオブジェクトをJSON形式に変換
 // デシリアライズ : JSON形式をRustのオブジェクトに変換
 use serde::{Serialize, Deserialize};
-use std::net::SocketAddr;
-use std::error::Error;
-use std::collections::HashMap;
-use serde_json::{Value, json,Result};
+use serde_json::{Value, json};
 
 
 #[tokio::main]
@@ -32,8 +27,8 @@ async fn main() {
         .unwrap();
 }
 
-// シリアライズ: オブジェクトをJSONに変換
-// デシリアライズ: JSONをオブジェクトに変換
+// シリアライズ: RustのオブジェクトをJSON形式に変換
+// デシリアライズ : JSON形式をRustのオブジェクトに変換
 #[derive(Debug, Deserialize, Serialize)]
 struct SignUpParams {
     user_id: String,
@@ -56,12 +51,12 @@ async fn sign_up(body_json: Json<Value>) -> Json<Value> {
         None => panic!("error")
     };
     // mailの取得
-    let mail = match body_json.0.get("mail") {
+    let _mail = match body_json.0.get("mail") {
         Some(mail) => mail,
         None => panic!("error")
     };
         // user_idの取得
-    let password = match body_json.0.get("password") {
+    let _password = match body_json.0.get("password") {
         Some(password) => password,
         None => panic!("error")
     };

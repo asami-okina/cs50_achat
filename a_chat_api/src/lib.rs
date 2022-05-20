@@ -15,7 +15,7 @@ impl<F:FnOnce()> FnBox for F {
 }
 
 pub struct ThreadPool {
-    workers: Vec<Worker>,
+    // workers: Vec<Worker>,
     sender: mpsc::Sender<Job>,
 }
 
@@ -35,15 +35,15 @@ impl ThreadPool {
         let receiver = Arc::new(Mutex::new(receiver));
         let mut workers = Vec::with_capacity(size);
 
-        for id in 0..size {
+        for _id in 0..size {
             // スレッドを生成してベクタに格納する
             // スレッドプールにJoinHandle<()>インスタンスのベクタを格納する代わりに、Worker構造体のインスタンスを格納し
             // 各Workerが単独のJoinHandle<()>インスタンスを格納する
             // Workerに実行するコードのクロージャを取り、既に走っているスレッドに実行してもらうために送信するメソッドを実装する
-            workers.push(Worker::new(id, Arc::clone(&receiver)));
+            workers.push(Worker::new(_id, Arc::clone(&receiver)));
         }
         ThreadPool {
-            workers,
+            // workers,
             sender
         }
     }
@@ -67,28 +67,28 @@ type Job = Box<dyn FnBox + Send + 'static>;
 // ThreadPoolからスレッドにコードを送信する責任を負うWorker構造体
 // Workerはチャネルの受信側
 struct Worker {
-    id: usize,
-    thread: thread::JoinHandle<()>,
+    _id: usize,
+    _thread: thread::JoinHandle<()>,
 }
 
 // Workerのスレッドで仕事を受け取り、実行する
 impl Worker {
-    fn new(id: usize, receiver: Arc<Mutex<mpsc::Receiver<Job>>>) -> Worker {
+    fn new(_id: usize, receiver: Arc<Mutex<mpsc::Receiver<Job>>>) -> Worker {
         // thread::spawn: クロージャを渡して、スレッドを立ち上げる
-        let thread = thread::spawn(move||{
+        let _thread = thread::spawn(move||{
             loop {
                 // recv():チャネルからJobを受け取る
                 let job = receiver.lock().unwrap().recv().unwrap();
 
                 // ワーカー{}は仕事を得ました; 実行します
-                println!("Worker {} got a job; executing.", id);
+                println!("Worker {} got a job; executing.", _id);
                 job.call_box();
             }
         });
 
         Worker {
-            id,
-            thread,
+            _id,
+            _thread,
         }
     }
 }
