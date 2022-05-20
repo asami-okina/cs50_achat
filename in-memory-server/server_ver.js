@@ -264,10 +264,10 @@ app.post('/api/login', (req, res, ctx) => {
 	const mail = req.param("mail")
 	const password = req.param("password")
 	let userId;
-	if (mail === "asami1@g.com") {
+	if (mail === "pcAsami@g.com") {
 		userId = "pcAsami"
 	}
-	if (mail === "asami2@g.com") {
+	if (mail === "spAsami@g.com") {
 		userId = "spAsami"
 	}
 	return res.status(200).send(
