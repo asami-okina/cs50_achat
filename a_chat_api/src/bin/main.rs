@@ -119,6 +119,7 @@ async fn search_name(
     search_name_query: Option<Query<SearchNameQuery>>,
 ) -> Json<Value> {
     let user_id = params.user_id;
+    // unwrap_or_default: Okの場合値を返し、Errの場合値の型のデフォルトを返す
     let Query(search_name_query) = search_name_query.unwrap_or_default();
     Json(json!({ "user_id": user_id, "search_text": search_name_query.search_text  }))
 }
