@@ -9,7 +9,7 @@ CREATE TABLE user
     delete_flag BOOLEAN,
     search_flag BOOLEAN,
     created_at INT NOT NULL,
-    updated_at INT
+    updated_at INT NULL
 );
 
 CREATE TABLE direct_chat_room

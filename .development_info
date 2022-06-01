@@ -9,3 +9,9 @@ diesel migration generate rust_mysql_init
 // ②up.sqlにマイグレーション内容記入
 // ③マイグレーション実行コマンド
 diesel migration run
+
+/* 
+  seeder
+  DBへのレコード追加
+*/
+cargo run --bin insert_user
