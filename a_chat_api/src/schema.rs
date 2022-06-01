@@ -54,8 +54,8 @@ table! {
         id -> Unsigned<Bigint>,
         content_type_id -> Unsigned<Bigint>,
         sender_id -> Varchar,
-        direct_chat_room_id -> Unsigned<Bigint>,
-        group_chat_room_id -> Unsigned<Bigint>,
+        direct_chat_room_id -> Nullable<Unsigned<Bigint>>,
+        group_chat_room_id -> Nullable<Unsigned<Bigint>>,
         content -> Text,
         created_at -> Integer,
     }

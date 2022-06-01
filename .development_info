@@ -14,4 +14,4 @@ diesel migration run
   seeder
   DBへのレコード追加
 */
-cargo run --bin insert_user
+cargo run --bin insert
