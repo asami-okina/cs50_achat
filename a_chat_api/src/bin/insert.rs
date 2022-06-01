@@ -13,25 +13,25 @@ fn main() {
     let new_users = vec![
         NewUser {
             id: String::from("pcAsami"),
-            nickname: String::from("pcAsami"),
+            nickname: Some(String::from("pcAsami")),
             mail: String::from("pcAsami@g.com"),
             password: String::from("pcAsami"),
-            profile_image: String::from("https://pbs.twimg.com/profile_images/1257586310077796352/XWNIr3Fr_400x400.jpg"),
+            profile_image: Some(String::from("https://pbs.twimg.com/profile_images/1257586310077796352/XWNIr3Fr_400x400.jpg")),
             delete_flag: false,
             search_flag: true,
             created_at: 1654063149,
-            updated_at: 0
+            updated_at: None
         },
         NewUser {
             id: String::from("spAsami"),
-            nickname: String::from("spAsami"),
+            nickname: Some(String::from("spAsami")),
             mail: String::from("spAsami@g.com"),
             password: String::from("spAsami"),
-            profile_image: String::from("https://pbs.twimg.com/profile_images/1522452340611358720/8AqTz3iz_400x400.jpg"),
+            profile_image: Some(String::from("https://pbs.twimg.com/profile_images/1522452340611358720/8AqTz3iz_400x400.jpg")),
             delete_flag: false,
             search_flag: true,
             created_at: 1654063209,
-            updated_at: 0
+            updated_at: None
         },
     ];
 

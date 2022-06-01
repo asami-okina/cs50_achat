@@ -71,12 +71,12 @@ table! {
 table! {
     user (id) {
         id -> Varchar,
-        nickname -> Varchar,
+        nickname -> Nullable<Varchar>,
         mail -> Varchar,
         password -> Varchar,
-        profile_image -> Varchar,
-        delete_flag -> Nullable<Bool>,
-        search_flag -> Nullable<Bool>,
+        profile_image -> Nullable<Varchar>,
+        delete_flag -> Bool,
+        search_flag -> Bool,
         created_at -> Integer,
         updated_at -> Nullable<Integer>,
     }

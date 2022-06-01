@@ -16,8 +16,6 @@ use std::collections::HashMap;
 
 
 use diesel::prelude::*;
-use a_chat_api::models::User;
-use a_chat_api::schema::users as users_schema;
 use a_chat_api::utils::establish_connection;
 
 #[tokio::main]
@@ -28,7 +26,6 @@ async fn main() {
         // handler: 何らかの処理要求が発生した時に起動されるプログラムのこと
         // handlerはアプリケーションのロジックが存在する場所
         let app = Router::new()
-        .route("/test/:user_id", get(get_user_info))
         .route("/api/signup/isAvailableUserIdValidation/:user_id", get(is_available_user_id_validation))
         .route("/api/signup", post(sign_up))
         .route("/api/login", post(log_in))
@@ -39,49 +36,52 @@ async fn main() {
         .serve(app.into_make_service())
         .await
         .unwrap();
-
-    // type PcProfileInfo = HashMap<String, String>;
-    
-    // let mut pc_profileInfo:PcProfileInfo = HashMap::new();
-    // pc_profileInfo.insert(String::from("userId"), String::from("pcAsami"));
-    // pc_profileInfo.insert(String::from("nickName"), String::from("あさみん"));
-    // pc_profileInfo.insert(String::from("profileImage"), String::from("https://pbs.twimg.com/profile_images/1257586310077796352/XWNIr3Fr_400x400.jpg"));
-    // pc_profileInfo.insert(String::from("searchFlag"), String::from("true"));
         
-}
-
-// [テスト]userテーブルの情報を取得
-async fn get_user_info(Path(params): Path<IsAvailableUserIdValidationParams>) -> Json<Value> {
-    // user_idの取得
-    let user_id = params.user_id;
-    let connection = establish_connection();
-
-    // users_schema::dsl::usersでユーザーテーブルを指定し、その先頭レコードをUser型で返す
-    let user = users_schema::dsl::users
-        .first::<User>(&connection)
-        .expect("Error loading users");
-
-    println!("{:?}", user);
-    Json(json!({ "user_id": user_id }))
 }
 
 // 会員登録
 async fn sign_up(body_json: Json<Value>) -> Json<Value> {
     // user_idの取得
-    let user_id = match body_json.0.get("user_id") {
-        Some(user_id) => user_id,
-        None => panic!("error")
-    };
+    let user_id = body_json.0.get("user_id")
+    .unwrap()
+    .as_str()
+    .unwrap();
+
     // mailの取得
-    let _mail = match body_json.0.get("mail") {
-        Some(mail) => mail,
-        None => panic!("error")
-    };
+    let mail = body_json.0.get("mail")
+    .unwrap()
+    .as_str()
+    .unwrap();
+
     // passwordの取得
-    let _password = match body_json.0.get("password") {
-        Some(password) => password,
-        None => panic!("error")
-    };
+    let password = body_json.0.get("password")
+    .unwrap()
+    .as_str()
+    .unwrap();
+
+    // DBへの追加
+    use a_chat_api::models::NewUser;
+    use a_chat_api::schema::user as user_schema;
+    let connection = establish_connection();
+    let new_user = 
+        NewUser {
+            id: user_id.to_string(),
+            nickname: None,
+            mail: mail.to_string(),
+            password:password.to_string(),
+            profile_image: None,
+            delete_flag: false,
+            search_flag: true,
+            created_at: 1654063149,
+            updated_at: None
+        };
+
+    // INSERT処理を実行
+    diesel::insert_into(user_schema::dsl::user)
+        .values(new_user)
+        .execute(&connection)
+        .expect("Error saving new user");
+
     Json(json!({ "user_id": user_id }))
 }
 

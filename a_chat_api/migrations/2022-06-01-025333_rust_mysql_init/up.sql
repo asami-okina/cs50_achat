@@ -2,12 +2,12 @@
 CREATE TABLE user
 (
     id VARCHAR(100) NOT NULL PRIMARY KEY,
-    nickname VARCHAR(20) NOT NULL,
+    nickname VARCHAR(20) NULL,
     mail VARCHAR(255) NOT NULL,
     password VARCHAR(255) NOT NULL,
-    profile_image VARCHAR(255) NOT NULL,
-    delete_flag BOOLEAN,
-    search_flag BOOLEAN,
+    profile_image VARCHAR(255) NULL,
+    delete_flag BOOLEAN NOT NULL,
+    search_flag BOOLEAN NOT NULL,
     created_at INT NOT NULL,
     updated_at INT NULL
 );

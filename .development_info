@@ -15,3 +15,8 @@ diesel migration run
   DBへのレコード追加
 */
 cargo run --bin insert
+
+/*
+  cargo runの実行
+*/
+cargo run --bin main

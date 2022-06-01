@@ -16,28 +16,28 @@ use crate::schema::user; // useコマンドでユーザーテーブルのスキ�
 // INSERT用
 pub struct NewUser {
     pub id: String,
-    pub nickname: String,
+    pub nickname: Option<String>,
     pub mail: String,
     pub password: String,
-    pub profile_image: String,
+    pub profile_image: Option<String>,
     pub delete_flag: bool,
     pub search_flag: bool,
     pub created_at: i32,
-    pub updated_at: i32
+    pub updated_at: Option<i32>
 }
 
 // SELECT用
 #[derive(Debug, Queryable)]
 pub struct User {
-    pub id: String,
-    pub nickname: String,
-    pub mail: String,
-    pub password: String,
-    pub profile_image: String,
-    pub delete_flag: bool,
-    pub search_flag: bool,
-    pub created_at: i32,
-    pub updated_at: i32
+  pub id: String,
+  pub nickname: Option<String>,
+  pub mail: String,
+  pub password: String,
+  pub profile_image: Option<String>,
+  pub delete_flag: bool,
+  pub search_flag: bool,
+  pub created_at: i32,
+  pub updated_at: Option<i32>
 }
 
 /*
