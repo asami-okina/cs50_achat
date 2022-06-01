@@ -14,6 +14,12 @@ use serde::{Serialize, Deserialize};
 use serde_json::{Value, json};
 use std::collections::HashMap;
 
+
+use diesel::prelude::*;
+use a_chat_api::models::User;
+use a_chat_api::schema::users as users_schema;
+use a_chat_api::utils::establish_connection;
+
 #[tokio::main]
 async fn main() {
     // 外部モジュールの呼び出し(2015年版)
@@ -22,6 +28,7 @@ async fn main() {
         // handler: 何らかの処理要求が発生した時に起動されるプログラムのこと
         // handlerはアプリケーションのロジックが存在する場所
         let app = Router::new()
+        .route("/test/:user_id", get(get_user_info))
         .route("/api/signup/isAvailableUserIdValidation/:user_id", get(is_available_user_id_validation))
         .route("/api/signup", post(sign_up))
         .route("/api/login", post(log_in))
@@ -42,6 +49,22 @@ async fn main() {
     // pc_profileInfo.insert(String::from("searchFlag"), String::from("true"));
         
 }
+
+// [テスト]userテーブルの情報を取得
+async fn get_user_info(Path(params): Path<IsAvailableUserIdValidationParams>) -> Json<Value> {
+    // user_idの取得
+    let user_id = params.user_id;
+    let connection = establish_connection();
+
+    // users_schema::dsl::usersでユーザーテーブルを指定し、その先頭レコードをUser型で返す
+    let user = users_schema::dsl::users
+        .first::<User>(&connection)
+        .expect("Error loading users");
+
+    println!("{:?}", user);
+    Json(json!({ "user_id": user_id }))
+}
+
 // 会員登録
 async fn sign_up(body_json: Json<Value>) -> Json<Value> {
     // user_idの取得

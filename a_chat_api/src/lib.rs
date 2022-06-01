@@ -1,8 +1,15 @@
+// モジュールツリーを作成し、それぞれの公開範囲を管理する
 use std::thread;
 use std::sync::mpsc;
 use std::sync::Arc;
 use std::sync::Mutex;
 
+#[macro_use]
+extern crate diesel;
+
+pub mod models;
+pub mod schema;
+pub mod utils;
 
 trait FnBox {
     fn call_box(self: Box<Self>);

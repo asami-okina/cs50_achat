@@ -1,0 +1,11 @@
+/*
+  migration
+  (参考:https://ozway.jp/2020/10/rust-mysql-diesel%EF%BC%881%EF%BC%89/)
+  ※注意 マイグレーションファイル名は毎回変更する！
+*/
+
+// ①マイグレーション用のディレクトリを作成 /a_chat_api/migrations直下
+diesel migration generate rust_mysql_init
+// ②up.sqlにマイグレーション内容記入
+// ③マイグレーション実行コマンド
+diesel migration run
