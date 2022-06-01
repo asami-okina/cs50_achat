@@ -59,28 +59,31 @@ async fn sign_up(body_json: Json<Value>) -> Json<Value> {
     .as_str()
     .unwrap();
 
-    // DBへの追加
-    use a_chat_api::models::NewUser;
-    use a_chat_api::schema::user as user_schema;
-    let connection = establish_connection();
-    let new_user = 
-        NewUser {
-            id: user_id.to_string(),
-            nickname: None,
-            mail: mail.to_string(),
-            password:password.to_string(),
-            profile_image: None,
-            delete_flag: false,
-            search_flag: true,
-            created_at: 1654063149,
-            updated_at: None
-        };
+    use a_chat_api::models::get_user;
 
-    // INSERT処理を実行
-    diesel::insert_into(user_schema::dsl::user)
-        .values(new_user)
-        .execute(&connection)
-        .expect("Error saving new user");
+    // // DBへの追加
+    // use a_chat_api::models::NewUser;
+    // use a_chat_api::schema::user as user_schema;
+    // let connection = establish_connection();
+    // let new_user = 
+    //     NewUser {achat.monster
+    //         id: user_id.to_string(),
+    //         nickname: None,
+    //         mail: mail.to_string(),
+    //         password:password.to_string(),
+    //         profile_image: None,
+    //         delete_flag: false,
+    //         search_flag: true,
+    //         created_at: 1654063149,
+    //         updated_at: None
+    //     };
+
+    // // INSERT処理を実行
+    // diesel::insert_into(user_schema::dsl::user)
+    //     .values(new_user)
+    //     .execute(&connection)
+    //     .expect("Error saving new user");
+    println!("{:?}",get_user());
 
     Json(json!({ "user_id": user_id }))
 }

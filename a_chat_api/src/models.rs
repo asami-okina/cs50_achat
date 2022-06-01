@@ -1,4 +1,9 @@
 // DBの操作に用いる構造体をまとめる
+use diesel::deserialize::QueryableByName;
+use diesel::prelude::*;
+use crate::utils::establish_connection;
+use diesel::sql_query;
+type DB = diesel::mysql::Mysql;
 /*
   userテーブル
 */
@@ -38,6 +43,51 @@ pub struct User {
   pub search_flag: bool,
   pub created_at: i32,
   pub updated_at: Option<i32>
+}
+
+/*
+  user一覧取得
+*/
+impl QueryableByName<DB> for User {
+  fn build<R: diesel::row::NamedRow<diesel::mysql::Mysql>>(
+      row: &R,
+  ) -> diesel::deserialize::Result<Self> {
+      Ok(User {
+        id: row.get("id")?,
+        nickname: row.get("nickname")?,
+        mail: row.get("mail")?,
+        password: row.get("password")?,
+        profile_image: row.get("profile_image")?,
+        delete_flag: row.get("delete_flag")?,
+        search_flag: row.get("search_flag")?,
+        created_at: row.get("created_at")?,
+        updated_at: row.get("updated_at")?,
+      })
+  }
+}
+
+pub fn get_user() -> Vec<User> {
+  let connection: MysqlConnection = establish_connection();
+  let user: Vec<User> = sql_query(
+      "
+      SELECT
+          id,
+          nickname,
+          mail,
+          password,
+          profile_image,
+          delete_flag,
+          search_flag,
+          created_at,
+          updated_at
+      FROM
+          user
+      ",
+  )
+  .load(&connection)
+  .unwrap();
+
+  user
 }
 
 /*
