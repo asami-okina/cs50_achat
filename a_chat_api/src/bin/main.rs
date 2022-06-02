@@ -32,6 +32,7 @@ async fn main(){
         .route("/api/login", post(handler_log_in))
         .route("/api/users/:user_id/home", get(handler_search_name))
         .route("/api/users/:user_id/groups", get(handler_fetch_group_list));
+        // .route("/api/users/:user_id/groups", post(handler_leave_group));
 
     // localhost:3000 で hyper と共に実行する
     axum::Server::bind(&"0.0.0.0:3000".parse().unwrap())
@@ -142,8 +143,8 @@ VALUES ( ?, ? , ? , ? )
   登録するユーザーIDが使用可能かどうかチェック
 */
 // handler
-async fn handler_is_available_user_id_validation(Path(params): Path<IsAvailableUserIdValidationParams>) -> Json<Value> {
-    let user_id = params.user_id;
+async fn handler_is_available_user_id_validation(Path(path): Path<IsAvailableUserIdValidationParams>) -> Json<Value> {
+    let user_id = path.user_id;
 
     let pool = MySqlPool::connect(&env::var("DATABASE_URL").unwrap()).await.unwrap();
     let is_available_user_id_validation = is_available_user_id_validation(&pool, &user_id).await.unwrap();
@@ -246,7 +247,7 @@ async fn log_in(pool: &MySqlPool, mail: &str, password: &str ) -> anyhow::Result
   ニックネームまたはグループ名の検索でヒットするユーザーまたはグループ情報の取得
 */
 #[derive(Debug, Deserialize, Serialize)]
-struct SearchNameParams {
+struct SearchNamePath {
     user_id: String,
 }
 
@@ -264,10 +265,10 @@ impl Default for SearchNameQuery {
 
 // handler
 async fn handler_search_name(
-    Path(params): Path<SearchNameParams>,
+    Path(path): Path<SearchNamePath>,
     search_name_query: Option<Query<SearchNameQuery>>,
 ) -> Json<Value> {
-    let user_id = params.user_id;
+    let user_id = path.user_id;
     // unwrap_or_default: Okの場合値を返し、Errの場合値の型のデフォルトを返す
     let Query(search_name_query) = search_name_query.unwrap_or_default();
     let search_text = search_name_query.search_text;
@@ -432,11 +433,11 @@ async fn search_name_groups(pool: &MySqlPool, user_id: &str, search_text: &str) 
 */
 // handler
 #[derive(Debug, Deserialize, Serialize)]
-struct FetchGroupListParams {
+struct FetchGroupListPath {
     user_id: String,
 }
-async fn handler_fetch_group_list(Path(params): Path<FetchGroupListParams>) -> Json<Value> {
-    let user_id = params.user_id;
+async fn handler_fetch_group_list(Path(path): Path<FetchGroupListPath>) -> Json<Value> {
+    let user_id = path.user_id;
 
     let pool = MySqlPool::connect(&env::var("DATABASE_URL").unwrap()).await.unwrap();
     let group_list = fetch_group_list(&pool, &user_id).await.unwrap();
@@ -489,3 +490,21 @@ async fn fetch_group_list(pool: &MySqlPool, user_id:&str) -> anyhow::Result<Vec<
     }
     Ok(result)
 }
+
+/*
+  グループからの脱退
+*/
+// handler
+// pathはクエリの一部
+// paramsは?以降
+// #[derive(Debug, Deserialize, Serialize)]
+// struct LeaveGroupPath {
+//     user_id: String,
+// }
+// async fn handler_fetch_group_list(Path(path): Path<FetchGroLeaveGroupPathupListParams>) -> Json<Value> {
+//     let user_id = path.user_id;
+
+//     let pool = MySqlPool::connect(&env::var("DATABASE_URL").unwrap()).await.unwrap();
+//     let group_list = fetch_group_list(&pool, &user_id).await.unwrap();
+//     Json(json!({ "groups": group_list }))
+// }
