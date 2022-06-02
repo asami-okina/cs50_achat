@@ -30,7 +30,7 @@ async fn main(){
         .route("/api/signup", post(handler_sign_up))
         .route("/api/signup/isAvailableUserIdValidation/:user_id", get(handler_is_available_user_id_validation))
         .route("/api/login", post(handler_log_in))
-        .route("/api/users/:user_id/home", get(search_name));
+        .route("/api/users/:user_id/home", get(handler_search_name));
 
     // localhost:3000 で hyper と共に実行する
     axum::Server::bind(&"0.0.0.0:3000".parse().unwrap())
@@ -117,7 +117,7 @@ async fn handler_sign_up(body_json: Json<Value>) -> Json<Value> {
     Json(json!({ "user_id": user_id }))
 }
 
-// 会員登録
+// SQL実行部分
 async fn sign_up(pool: &MySqlPool, user_id:&str, mail: &str, password: &str) -> anyhow::Result<()> {
     let now = SystemTime::now().duration_since(SystemTime::UNIX_EPOCH).unwrap().as_secs();
     sqlx::query!(
@@ -154,7 +154,7 @@ struct IsAvailableUserIdValidationParams {
     user_id: String,
 }
 
-// userIdがあれば、登録するユーザーIDが使用可能かどうかチェック
+// SQL実行部分
 async fn is_available_user_id_validation(pool: &MySqlPool, user_id:&str) -> anyhow::Result<bool>{
     let user = sqlx::query!(
         r#"
@@ -208,7 +208,7 @@ async fn handler_log_in(body_json: Json<Value>) -> Json<Value> {
     Json(json!({ "user_id": result.user_id, "certification_result": result.certification_result }))
 }
 
-// ログイン
+// SQL実行部分
 async fn log_in(pool: &MySqlPool, mail: &str, password: &str ) -> anyhow::Result<LoginResult> {
     let user = sqlx::query!(
         r#"
@@ -241,6 +241,9 @@ async fn log_in(pool: &MySqlPool, mail: &str, password: &str ) -> anyhow::Result
     Ok(result)
 }
 
+/*
+  ニックネームまたはグループ名の検索でヒットするユーザーまたはグループ情報の取得
+*/
 #[derive(Debug, Deserialize, Serialize)]
 struct SearchNameParams {
     user_id: String,
@@ -258,31 +261,105 @@ impl Default for SearchNameQuery {
     }
 }
 
-async fn search_name(
+// handler
+async fn handler_search_name(
     Path(params): Path<SearchNameParams>,
     search_name_query: Option<Query<SearchNameQuery>>,
 ) -> Json<Value> {
     let user_id = params.user_id;
     // unwrap_or_default: Okの場合値を返し、Errの場合値の型のデフォルトを返す
     let Query(search_name_query) = search_name_query.unwrap_or_default();
-    Json(json!({ "user_id": user_id, "search_text": search_name_query.search_text  }))
+    let search_text = search_name_query.search_text;
+    let pool = MySqlPool::connect(&env::var("DATABASE_URL").unwrap()).await.unwrap();
+    let friends = search_name(&pool, &user_id, &search_text).await.unwrap();
+    Json(json!({ "friends": friends  }))
 }
 
+#[derive(Debug, Deserialize, Serialize)]
+struct SearchNameFriendList {
+    direct_chat_room_id: String,
+    friend_use_id: String,
+    friend_profile_image: Option<String>,
+    friend_nickname: Option<String>
+}
 
-// ニックネームまたはグループ名の検索でヒットするユーザーまたはグループ情報の取得
-// queryとPathは両立できないため、どちらか1つしか利用できない(https://docs.rs/axum/0.5.6/axum/extract/index.html#extracting-request-bodies)
-// async fn search_name(Query(params): Query<HashMap<String, String>>)-> Json<Value> {
-//     // search_textの取得
-    // let _search_text = match  params.get("search_text") {
-    //     Some(search_text) => search_text,
-    //     None => panic!("error")
-    // };
-//     // user_idの取得
-//     let user_id = match  params.get("user_id") {
-//         Some(user_id) => user_id,
-//         None => panic!("error")
-//     };
+// SQL実行部分
+async fn search_name(pool: &MySqlPool, user_id: &str, search_text: &str) -> anyhow::Result<Vec<SearchNameFriendList>> {
+    // 取得したいデータ
+    // "direct_chat_room_id": "1",
+    // "friend_use_id": "asami111",
+    // "friend_profile_image": null,
+    // "friend_nickname": "検索結果name"
+    
+    // 条件
+    // ①userテーブルのnicknameが一致
+    // ②followテーブルのfrom_user_idが自分の場合のto_user_idが友達のuser_id
+    // ②direct_memberテーブルのdeleteフラグとhiddenフラグがfalseである
+    let search_name_friend_list = sqlx::query!(
+        r#"
+            SELECT
+                u.id as friend_user_id,
+                u.nickname as friend_nickname,
+                u.profile_image as friend_profile_image,
+                f.direct_chat_room_id as direct_chat_room_id
+            FROM
+                user as u
+                LEFT JOIN
+                    follow as f
+                ON  u.id = f.to_user_id
+            WHERE
+                u.id IN(
+                    SELECT
+                        id
+                    FROM
+                        user
+                    WHERE
+                        nickname = ?
+                )
+            AND u.id IN(
+                    SELECT
+                        f.to_user_id
+                    FROM
+                        follow as f
+                    WHERE
+                        f.from_user_id = ?
+                )
+            AND f.direct_chat_room_id IN(
+                    SELECT
+                        direct_chat_room_id
+                    FROM
+                        direct_member
+                    WHERE
+                        user_id = ?
+                    AND delete_flag = 0
+                    AND hidden_flag = 0
+                )
+        "#,
+        search_text,
+        user_id,
+        user_id
+    )
+    .fetch_all(pool)
+    .await
+    .unwrap();
 
-//     Json(json!({ "user_id": user_id  }))
-// }
+    let mut result:Vec<SearchNameFriendList> = vec![];
 
+    for row in &search_name_friend_list {
+        let friend = SearchNameFriendList {
+            direct_chat_room_id: row.direct_chat_room_id.unwrap().to_string(),
+            friend_use_id: row.friend_user_id.to_string(),
+            friend_profile_image:  match &row.friend_profile_image {
+                Some(friend_profile_image) => Some(friend_profile_image.to_string()),
+                None => None
+            },
+            friend_nickname:  match &row.friend_nickname {
+                Some(friend_nickname) => Some(friend_nickname.to_string()),
+                None => None
+            },
+          };
+          result.push(friend);
+    }
+
+    Ok(result)
+}
