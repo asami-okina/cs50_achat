@@ -4,22 +4,14 @@ use axum::{
     Router,
     response::Json,
     extract::{Path,Query},
-    http::{Request, header::HeaderMap},
-    body::{Bytes, Body}, Error,
 };
 mod component;
 // シリアライズ: RustのオブジェクトをJSON形式に変換
 // デシリアライズ : JSON形式をRustのオブジェクトに変換
 use serde::{Serialize, Deserialize};
 use serde_json::{Value, json};
-use std::collections::HashMap;
-
-use diesel::prelude::*;
-use a_chat_api::utils::establish_connection;
 
 use sqlx::mysql::MySqlPool;
-use structopt::StructOpt;
-use std::error;
 use std::env;
 use dotenv::dotenv;
 use std::time::SystemTime;
@@ -37,7 +29,7 @@ async fn main(){
         .route("/api/getAllUsers", get(handler_get_all_users))
         .route("/api/signup", post(handler_sign_up))
         .route("/api/signup/isAvailableUserIdValidation/:user_id", get(handler_is_available_user_id_validation))
-        .route("/api/login", post(log_in))
+        .route("/api/login", post(handler_log_in))
         .route("/api/users/:user_id/home", get(search_name));
 
     // localhost:3000 で hyper と共に実行する
@@ -188,27 +180,65 @@ async fn is_available_user_id_validation(pool: &MySqlPool, user_id:&str) -> anyh
     Ok(result)
 }
 
-// ログイン
-async fn log_in(body_json: Json<Value>) -> Json<Value> {
-    // mailの取得
-    let mail = match body_json.0.get("mail") {
-        Some(mail) => mail,
-        None => panic!("error")
-    };
-    // passwordの取得
-    let _password = match body_json.0.get("password") {
-        Some(password) => password,
-        None => panic!("error")
-    };
-    let mut user_id = "";
+/*
+  ログイン
+*/
+#[derive(Debug, Deserialize, Serialize)]
+struct LoginResult {
+    user_id: Option<String>,
+    certification_result: bool
+}
 
-    if mail == "pcAsami@g.com" {
-		user_id = "pcAsami"
-	}
-	if mail == "spAsami@g.com" {
-		user_id = "spAsami"
-	}
-    Json(json!({ "user_id": user_id, "certificationResult": true }))
+// handler
+async fn handler_log_in(body_json: Json<Value>) -> Json<Value> {
+    // mailの取得
+    let mail = body_json.0.get("mail")
+    .unwrap()
+    .as_str()
+    .unwrap();
+
+    // passwordの取得
+    let password = body_json.0.get("password")
+    .unwrap()
+    .as_str()
+    .unwrap();
+
+    let pool = MySqlPool::connect(&env::var("DATABASE_URL").unwrap()).await.unwrap();
+    let result = log_in(&pool, &mail, &password).await.unwrap();
+    Json(json!({ "user_id": result.user_id, "certification_result": result.certification_result }))
+}
+
+// ログイン
+async fn log_in(pool: &MySqlPool, mail: &str, password: &str ) -> anyhow::Result<LoginResult> {
+    let user = sqlx::query!(
+        r#"
+            SELECT *
+            FROM user
+            WHERE mail = ? AND password = ?
+        "#,
+        mail,
+        password
+    )
+    .fetch_all(pool)
+    .await
+    .unwrap();
+
+    let result;
+
+    if user.len() == 0 {
+        // まだ会員登録されていない
+        result = LoginResult {
+            user_id : None ,
+            certification_result: false
+        }
+    } else {
+        // 既に会員登録されている
+        result = LoginResult {
+            user_id : Some(user[0].id.to_string()) ,
+            certification_result: true
+        }
+    }
+    Ok(result)
 }
 
 #[derive(Debug, Deserialize, Serialize)]

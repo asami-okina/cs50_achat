@@ -20,3 +20,48 @@ cargo run --bin insert
   cargo runの実行
 */
 cargo run --bin main
+
+
+/*
+  debugger
+*/
+react-devtools -h
+
+/*
+  node.js
+*/
+node server.js
+
+/*
+  ngrok
+*/
+ngrok start client wss --config ./ngrok.yml
+
+/*
+  フロント起動方法
+*/
+①ngrokを起動
+ngrok start client wss --config ./ngrok.yml
+
+②以下2ファイルのURLを変更
+1. websocket.js
+// 8000ポートの方を記載
+export const sock = new WebSocket("wss://b8f7-217-178-24-119.jp.ngrok.io");
+
+2.src/constants/api.ts
+// 開発用(毎回URLが変わるため、手動で変更)(3000ポートの方)
+export const API_SERVER_URL = 'https://7676-217-178-24-119.jp.ngrok.io'
+
+③node.jsの場合
+1. app.tsxのmock用である以下をコメントアウト
+```
+// mock service
+import 'react-native-url-polyfill/auto';
+const { native } = require('./src/mocks/native');
+// bypass: デフォルトの設定だと、モックされていないAPIリクエストに対してコンソールに警告が表示される。
+// 消したいときは、onUnhandledRequestの設定値をbypassに変更する
+native.listen({ onUnhandledRequest: 'bypass' })
+```
+
+2. node.jsを起動
+node server.js
