@@ -33,6 +33,7 @@ async fn main(){
         // handler: 何らかの処理要求が発生した時に起動されるプログラムのこと
         // handlerはアプリケーションのロジックが存在する場所
         let app = Router::new()
+        .route("/api/getAllUsers", get(handler_get_all_users))
         .route("/api/signup/isAvailableUserIdValidation/:user_id", get(is_available_user_id_validation))
         .route("/api/signup", post(sign_up))
         .route("/api/login", post(log_in))
@@ -46,64 +47,23 @@ async fn main(){
         
 }
 
-// 会員登録
-async fn sign_up(body_json: Json<Value>) -> Json<Value> {
-    // user_idの取得
-    let user_id = body_json.0.get("user_id")
-    .unwrap()
-    .as_str()
-    .unwrap();
-
-    // mailの取得
-    let mail = body_json.0.get("mail")
-    .unwrap()
-    .as_str()
-    .unwrap();
-
-    // passwordの取得
-    let password = body_json.0.get("password")
-    .unwrap()
-    .as_str()
-    .unwrap();
-
+/*
+  全ユーザ情報を取得
+*/
+// handler
+async fn handler_get_all_users() -> Json<Value> {
     let pool = MySqlPool::connect(&env::var("DATABASE_URL").unwrap()).await.unwrap();
-    let users = get_users(&pool).await.unwrap();
-    // println!("{:?}", users);
-    // // DBへの追加
-    // use a_chat_api::models::NewUser;
-    // use a_chat_api::schema::user as user_schema;
-    // let connection = establish_connection();
-    // let new_user = 
-    //     NewUser {achat.monster
-    //         id: user_id.to_string(),
-    //         nickname: None,
-    //         mail: mail.to_string(),
-    //         password:password.to_string(),
-    //         profile_image: None,
-    //         delete_flag: false,
-    //         search_flag: true,
-    //         created_at: 1654063149,
-    //         updated_at: None
-    //     };
-
-    // // INSERT処理を実行
-    // diesel::insert_into(user_schema::dsl::user)
-    //     .values(new_user)
-    //     .execute(&connection)
-    //     .expect("Error saving new user");
-    // println!("{:?}",get_user());
+    let users = get_all_users(&pool).await.unwrap();
     Json(json!({ "users": users }))
-
-    // Json(json!({ "user_id": user_id }))
 }
 
+// SQL実行部分
 use a_chat_api::models::User;
-
-async fn get_users(pool: &MySqlPool) -> anyhow::Result<Vec<User>> {
+async fn get_all_users(pool: &MySqlPool) -> anyhow::Result<Vec<User>> {
     let users = sqlx::query!(
         r#"
-SELECT *
-FROM user
+            SELECT *
+            FROM user
         "#
     )
     .fetch_all(pool)
@@ -133,6 +93,57 @@ FROM user
           result.push(user);
     }
     Ok(result)
+}
+
+// 会員登録
+async fn sign_up(body_json: Json<Value>) -> Json<Value> {
+    // user_idの取得
+    let user_id = body_json.0.get("user_id")
+    .unwrap()
+    .as_str()
+    .unwrap();
+
+    // mailの取得
+    let mail = body_json.0.get("mail")
+    .unwrap()
+    .as_str()
+    .unwrap();
+
+    // passwordの取得
+    let password = body_json.0.get("password")
+    .unwrap()
+    .as_str()
+    .unwrap();
+
+    let pool = MySqlPool::connect(&env::var("DATABASE_URL").unwrap()).await.unwrap();
+    let users = get_all_users(&pool).await.unwrap();
+    // println!("{:?}", users);
+    // // DBへの追加
+    // use a_chat_api::models::NewUser;
+    // use a_chat_api::schema::user as user_schema;
+    // let connection = establish_connection();
+    // let new_user = 
+    //     NewUser {achat.monster
+    //         id: user_id.to_string(),
+    //         nickname: None,
+    //         mail: mail.to_string(),
+    //         password:password.to_string(),
+    //         profile_image: None,
+    //         delete_flag: false,
+    //         search_flag: true,
+    //         created_at: 1654063149,
+    //         updated_at: None
+    //     };
+
+    // // INSERT処理を実行
+    // diesel::insert_into(user_schema::dsl::user)
+    //     .values(new_user)
+    //     .execute(&connection)
+    //     .expect("Error saving new user");
+    // println!("{:?}",get_user());
+    Json(json!({ "users": users }))
+
+    // Json(json!({ "user_id": user_id }))
 }
 
 // シリアライズ: RustのオブジェクトをJSON形式に変換
