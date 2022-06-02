@@ -36,7 +36,7 @@ async fn main(){
     let app = Router::new()
         .route("/api/getAllUsers", get(handler_get_all_users))
         .route("/api/signup", post(handler_sign_up))
-        .route("/api/signup/isAvailableUserIdValidation/:user_id", get(is_available_user_id_validation))
+        .route("/api/signup/isAvailableUserIdValidation/:user_id", get(handler_is_available_user_id_validation))
         .route("/api/login", post(log_in))
         .route("/api/users/:user_id/home", get(search_name));
 
@@ -145,18 +145,49 @@ VALUES ( ?, ? , ? , ? )
     Ok(())
 }
 
-// シリアライズ: RustのオブジェクトをJSON形式に変換
-// デシリアライズ : JSON形式をRustのオブジェクトに変換
+/*
+  登録するユーザーIDが使用可能かどうかチェック
+*/
+// handler
+async fn handler_is_available_user_id_validation(Path(params): Path<IsAvailableUserIdValidationParams>) -> Json<Value> {
+    let user_id = params.user_id;
+
+    let pool = MySqlPool::connect(&env::var("DATABASE_URL").unwrap()).await.unwrap();
+    let is_available_user_id_validation = is_available_user_id_validation(&pool, &user_id).await.unwrap();
+    Json(json!({ "is_available_user_id_validation": is_available_user_id_validation }))
+}
+
 #[derive(Debug, Deserialize, Serialize)]
 struct IsAvailableUserIdValidationParams {
     user_id: String,
 }
 
 // userIdがあれば、登録するユーザーIDが使用可能かどうかチェック
-async fn is_available_user_id_validation(Path(params): Path<IsAvailableUserIdValidationParams>) -> Json<Value> {
-    let user_id = params.user_id;
-    Json(json!({ "user_id": user_id  }))
+async fn is_available_user_id_validation(pool: &MySqlPool, user_id:&str) -> anyhow::Result<bool>{
+    let user = sqlx::query!(
+        r#"
+            SELECT *
+            FROM user
+            WHERE id = ?
+        "#,
+        user_id
+    )
+    .fetch_all(pool)
+    .await
+    .unwrap();
+
+    let mut result;
+
+    if user.len() == 0 {
+        // まだ該当user_idは使用されていない
+        result = true
+    } else {
+        // 既に該当user_idは使用されている
+        result = false
+    }
+    Ok(result)
 }
+
 // ログイン
 async fn log_in(body_json: Json<Value>) -> Json<Value> {
     // mailの取得
