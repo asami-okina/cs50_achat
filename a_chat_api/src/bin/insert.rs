@@ -33,6 +33,17 @@ fn main() {
             created_at: 1654063209,
             updated_at: None
         },
+        NewUser {
+            id: String::from("pcAsami1"),
+            nickname: Some(String::from("FANP")),
+            mail: String::from("pcAsami1@g.com"),
+            password: String::from("pcAsami1"),
+            profile_image: Some(String::from("https://pbs.twimg.com/profile_images/1257586310077796352/XWNIr3Fr_400x400.jpg")),
+            delete_flag: false,
+            search_flag: true,
+            created_at: 1654063149,
+            updated_at: None
+        },
     ];
 
     // INSERT処理を実行
@@ -50,6 +61,10 @@ fn main() {
     let new_direct_chat_room = vec![
         NewDirectChatRoom {
             id: 1,
+            created_at: 1654063149
+        },
+        NewDirectChatRoom {
+            id: 2,
             created_at: 1654063149
         }
     ];
@@ -85,6 +100,24 @@ fn main() {
             entry_date: 1654063149,
             last_read_time: 1654063149
         },
+        NewDirectMember {
+            id: 3,
+            direct_chat_room_id: 2,
+            user_id: String::from("pcAsami"),
+            delete_flag: false,
+            hidden_flag: false,
+            entry_date: 1654063149,
+            last_read_time: 1654063149
+        },
+        NewDirectMember {
+            id: 4,
+            direct_chat_room_id: 2,
+            user_id: String::from("pcAsami1"),
+            delete_flag: false,
+            hidden_flag: false,
+            entry_date: 1654063149,
+            last_read_time: 1654063149
+        },
     ];
 
     // INSERT処理を実行
@@ -114,6 +147,13 @@ fn main() {
             direct_chat_room_id: 1,
             created_at: 1654063149,
         },
+        NewFollow {
+            id: 3,
+            to_user_id: String::from("pcAsami1"),
+            from_user_id: String::from("pcAsami"),
+            direct_chat_room_id: 1,
+            created_at: 1654063149,
+        },
     ];
 
     // INSERT処理を実行
@@ -131,7 +171,14 @@ fn main() {
         NewGroupChatRoom {
             id: 1,
             group_name: String::from("FANP"),
-            group_image: String::from("https://pbs.twimg.com/media/E16OXztUYAIpisv?format=jpg&name=large"),
+            group_image: Some(String::from("https://pbs.twimg.com/media/E16OXztUYAIpisv?format=jpg&name=large")),
+            created_at: 1654063149,
+            delete_flag: false
+        },
+        NewGroupChatRoom {
+            id: 2,
+            group_name: String::from("FANP"),
+            group_image: Some(String::from("https://pbs.twimg.com/media/E16OXztUYAIpisv?format=jpg&name=large")),
             created_at: 1654063149,
             delete_flag: false
         },
@@ -162,6 +209,24 @@ fn main() {
             id: 2,
             group_chat_room_id: 1,
             user_id: String::from("spAsami"),
+            delete_flag: false,
+            hidden_flag: false,
+            entry_date: 1654063149,
+            last_read_time: 1654063149,
+        },
+        NewGroupMember {
+            id: 3,
+            group_chat_room_id: 2,
+            user_id: String::from("pcAsami"),
+            delete_flag: false,
+            hidden_flag: false,
+            entry_date: 1654063149,
+            last_read_time: 1654063149,
+        },
+        NewGroupMember {
+            id: 4,
+            group_chat_room_id: 2,
+            user_id: String::from("pcAsami1"),
             delete_flag: false,
             hidden_flag: false,
             entry_date: 1654063149,

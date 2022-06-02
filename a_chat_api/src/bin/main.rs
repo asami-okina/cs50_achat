@@ -270,9 +270,15 @@ async fn handler_search_name(
     // unwrap_or_default: Okの場合値を返し、Errの場合値の型のデフォルトを返す
     let Query(search_name_query) = search_name_query.unwrap_or_default();
     let search_text = search_name_query.search_text;
+
+    // friends
     let pool = MySqlPool::connect(&env::var("DATABASE_URL").unwrap()).await.unwrap();
-    let friends = search_name(&pool, &user_id, &search_text).await.unwrap();
-    Json(json!({ "friends": friends  }))
+    let friends = search_name_friends(&pool, &user_id, &search_text).await.unwrap();
+    
+    // groups
+    let pool = MySqlPool::connect(&env::var("DATABASE_URL").unwrap()).await.unwrap();
+    let groups = search_name_groups(&pool, &user_id, &search_text).await.unwrap();
+    Json(json!({ "friends": friends, "groups": groups  }))
 }
 
 #[derive(Debug, Deserialize, Serialize)]
@@ -283,8 +289,8 @@ struct SearchNameFriendList {
     friend_nickname: Option<String>
 }
 
-// SQL実行部分
-async fn search_name(pool: &MySqlPool, user_id: &str, search_text: &str) -> anyhow::Result<Vec<SearchNameFriendList>> {
+// SQL実行部分(Friends)
+async fn search_name_friends(pool: &MySqlPool, user_id: &str, search_text: &str) -> anyhow::Result<Vec<SearchNameFriendList>> {
     // 取得したいデータ
     // "direct_chat_room_id": "1",
     // "friend_use_id": "asami111",
@@ -359,6 +365,65 @@ async fn search_name(pool: &MySqlPool, user_id: &str, search_text: &str) -> anyh
             },
           };
           result.push(friend);
+    }
+
+    Ok(result)
+}
+
+#[derive(Debug, Deserialize, Serialize)]
+struct SearchNameGroupList {
+    group_chat_room_id: String,
+    group_name: String,
+    group_image: Option<String>
+}
+
+// SQL実行部分(Groups)
+async fn search_name_groups(pool: &MySqlPool, user_id: &str, search_text: &str) -> anyhow::Result<Vec<SearchNameGroupList>> {
+    // 取得したいデータ
+    // "group_chat_room_id": "12",
+    // "group_name": "検索結果グループ",
+    // "group_image": null)
+    
+    // 条件
+    // ①group_memberテーブルのuser_idが自分のuser_idであるかつdelete_flagとhidden_flagがfalseであるgroup_chat_room_id
+    // ②①の取得結果のgroup_chat_room_idのうち、group_nameが一致
+    let search_name_group_list = sqlx::query!(
+        r#"
+            SELECT
+            g.id as group_chat_room_id,
+            g.group_name as group_name,
+            g.group_image as group_image
+            FROM
+                group_chat_room as g
+                LEFT JOIN
+                    group_member as gm
+                ON  g.id = gm.group_chat_room_id
+            WHERE
+                gm.user_id = ?
+            AND gm.delete_flag = FALSE
+            AND gm.hidden_flag = FALSE
+            AND g.group_name = ?
+            AND g.delete_flag = FALSE
+        "#,
+        user_id,
+        search_text
+    )
+    .fetch_all(pool)
+    .await
+    .unwrap();
+
+    let mut result:Vec<SearchNameGroupList> = vec![];
+
+    for row in &search_name_group_list {
+        let group = SearchNameGroupList {
+            group_chat_room_id: row.group_chat_room_id.to_string(),
+            group_name: row.group_name.to_string(),
+            group_image:  match &row.group_image {
+                Some(group_image) => Some(group_image.to_string()),
+                None => None
+            },
+          };
+          result.push(group);
     }
 
     Ok(result)

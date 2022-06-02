@@ -47,51 +47,6 @@ pub struct User {
 }
 
 /*
-  user一覧取得
-*/
-impl QueryableByName<DB> for User {
-  fn build<R: diesel::row::NamedRow<diesel::mysql::Mysql>>(
-      row: &R,
-  ) -> diesel::deserialize::Result<Self> {
-      Ok(User {
-        id: row.get("id")?,
-        nickname: row.get("nickname")?,
-        mail: row.get("mail")?,
-        password: row.get("password")?,
-        profile_image: row.get("profile_image")?,
-        delete_flag: row.get("delete_flag")?,
-        search_flag: row.get("search_flag")?,
-        created_at: row.get("created_at")?,
-        updated_at: row.get("updated_at")?,
-      })
-  }
-}
-
-pub fn get_user() -> Vec<User> {
-  let connection: MysqlConnection = establish_connection();
-  let user: Vec<User> = sql_query(
-      "
-      SELECT
-          id,
-          nickname,
-          mail,
-          password,
-          profile_image,
-          delete_flag,
-          search_flag,
-          created_at,
-          updated_at
-      FROM
-          user
-      ",
-  )
-  .load(&connection)
-  .unwrap();
-
-  user
-}
-
-/*
   direct_chat_roomテーブル
 */
 use crate::schema::direct_chat_room;
@@ -179,7 +134,7 @@ use crate::schema::group_chat_room;
 pub struct NewGroupChatRoom {
     pub id: u64,
     pub group_name: String,
-    pub group_image: String,
+    pub group_image: Option<String>,
     pub created_at: i32,
     pub delete_flag: bool
 }
@@ -189,7 +144,7 @@ pub struct NewGroupChatRoom {
 pub struct GroupChatRoom {
   pub id: u64,
   pub group_name: String,
-  pub group_image: String,
+  pub group_image: Option<String>,
   pub created_at: i32,
   pub delete_flag: bool
 }

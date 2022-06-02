@@ -31,7 +31,7 @@ table! {
     group_chat_room (id) {
         id -> Unsigned<Bigint>,
         group_name -> Varchar,
-        group_image -> Varchar,
+        group_image -> Nullable<Varchar>,
         created_at -> Integer,
         delete_flag -> Bool,
     }

@@ -34,7 +34,7 @@ CREATE TABLE group_chat_room
 (
     id SERIAL PRIMARY KEY,
     group_name VARCHAR(255) NOT NULL,
-    group_image VARCHAR(255) NOT NULL,
+    group_image VARCHAR(255) NULL,
     created_at INT NOT NULL,
     delete_flag BOOLEAN NOT NULL default 0
 );
