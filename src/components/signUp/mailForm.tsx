@@ -1,6 +1,7 @@
 // libs
 import React, { useState } from 'react';
 import { Text, View, Image, TextInput, Pressable } from 'react-native';
+import { API_SERVER_URL } from "../../constants/api"
 
 // components
 import { MailFormDescription } from './_description/mailFormDescription';
@@ -13,7 +14,9 @@ export function MailForm({
 	isCorrectMail,
 	setIsCorrectMail,
 	emailText,
-	onChangeEmailText
+	onChangeEmailText,
+	isAvailableMail,
+	setIsAvailableMail
 }) {
 
 	// メールアドレスの説明文表示
@@ -34,6 +37,33 @@ export function MailForm({
 			setDisplayMailDescription(true);
 		}
 		setIsCorrectMail(regexp.test(emailText))
+	}
+
+	// メールアドレス(使用可能かどうか)のバリデーション
+	async function _isAvailableMailValidation() {
+		try {
+			// paramsを生成
+			const params = { "mail": emailText }
+			const query_params = new URLSearchParams(params);
+
+			// APIリクエスト
+			const response = await fetch(API_SERVER_URL + `/api/signup/isAvailableMailValidation?${query_params}`, {
+				method: "GET",
+				headers: {
+					"Content-Type": "application/json"
+				},
+			})
+
+			// レスポンスをJSONにする
+			const parse_response = await response.json()
+			if (parse_response.isAvailableMail) {
+				setIsAvailableMail(true)
+			} else {
+				setIsAvailableMail(false)
+			}
+		} catch (e) {
+			console.error(e)
+		}
 	}
 
 	return (
@@ -67,6 +97,8 @@ export function MailForm({
 									setDefaultMailBorderColor(true)
 									// メールアドレスアイコンのデフォルト表示
 									setDefaultDisplayMailIcons(false)
+									// メールアドレス(使用可能かどうか)のバリデーション
+									_isAvailableMailValidation()
 								}}
 							/>
 						</View>
@@ -74,7 +106,7 @@ export function MailForm({
 				</View>
 			</View>
 			{/* メールアドレスの説明文 */}
-			<MailFormDescription isCorrectMail={isCorrectMail} displayMailDescription={displayMailDescription} defaultDisplayMailIcons={defaultDisplayMailIcons} />
+			<MailFormDescription isCorrectMail={isCorrectMail} isAvailableMail={isAvailableMail} displayMailDescription={displayMailDescription} defaultDisplayMailIcons={defaultDisplayMailIcons} />
 		</View>
 	)
 }

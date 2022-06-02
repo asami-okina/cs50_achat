@@ -34,13 +34,14 @@ node server.js
 
 /*
   ngrok
+  in-memory-serverディレクトリ内にて実行
 */
 ngrok start client wss --config ./ngrok.yml
 
 /*
   フロント起動方法
 */
-①ngrokを起動
+①ngrokを起動(in-memory-serverディレクトリ内にて実行)
 ngrok start client wss --config ./ngrok.yml
 
 ②以下2ファイルのURLを変更
@@ -65,3 +66,6 @@ native.listen({ onUnhandledRequest: 'bypass' })
 
 2. node.jsを起動
 node server.js
+
+3. expoを起動
+expo start

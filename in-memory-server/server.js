@@ -259,6 +259,16 @@ app.get('/api/signup/isAvailableUserIdValidation', (req, res, ctx) => {
 		}),
 	)
 })
+// mailがあれば、登録するmailが使用可能かどうかチェック
+app.get('/api/signup/isAvailableMailValidation', (req, res, ctx) => {
+	const mail = req.param("mail")
+	// 登録するmailが使用可能かどうかチェック
+	return res.status(200).send(
+		JSON.stringify({
+			"isAvailableMail": true,
+		}),
+	)
+})
 // ログイン認証
 app.post('/api/login', (req, res, ctx) => {
 	const mail = req.param("mail")

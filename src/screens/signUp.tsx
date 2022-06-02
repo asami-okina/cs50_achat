@@ -35,6 +35,9 @@ export function SignUp({ navigation }) {
 	// ユーザーIDのバリデーション(使用可能かどうか)
 	const [isAvailableUserId, setIsAvailableUserId] = useState(false)
 
+	// メールアドレスのバリデーション(使用可能かどうか)
+	const [isAvailableMail, setIsAvailableMail] = useState(false)
+
 	// メールアドレス入力フォーム
 	const [emailText, onChangeEmailText] = useState("");
 	// パスワード入力フォーム
@@ -60,6 +63,8 @@ export function SignUp({ navigation }) {
 						setIsCorrectMail={setIsCorrectMail}
 						emailText={emailText}
 						onChangeEmailText={onChangeEmailText}
+						setIsAvailableMail={setIsAvailableMail}
+						isAvailableMail={isAvailableMail}
 					/>
 					{/* Password */}
 					<PasswordForm
