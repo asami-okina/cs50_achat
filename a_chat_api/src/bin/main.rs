@@ -34,7 +34,8 @@ async fn main(){
         .route("/api/users/:user_id/groups", get(handler_fetch_group_list))
         .route("/api/users/:user_id/groups/leave", post(handler_leave_group))
         .route("/api/users/:user_id/groups/add", post(handler_add_group))
-        .route("/api/users/:user_id/group-count", get(handler_fetch_group_count));
+        .route("/api/users/:user_id/group-count", get(handler_fetch_group_count))
+        .route("/api/users/:user_id/friend-count", get(handler_fetch_friend_count));
 
 
 
@@ -666,4 +667,40 @@ async fn fetch_group_count(pool: &MySqlPool, user_id:&str) -> anyhow::Result<i64
     .unwrap();
 
     Ok(group_count[0].group_count)
+}
+
+/*
+   ユーザの友達数取得
+*/
+// handler
+#[derive(Debug, Deserialize, Serialize)]
+struct FetchFriendCountPath {
+    user_id: String,
+}
+async fn handler_fetch_friend_count(Path(path): Path<FetchFriendCountPath>) -> Json<Value> {
+    let user_id = path.user_id;
+
+    let pool = MySqlPool::connect(&env::var("DATABASE_URL").unwrap()).await.unwrap();
+    let friend_count = fetch_friend_count(&pool, &user_id).await.unwrap();
+    Json(json!({ "friend_count": friend_count }))
+}
+
+// SQL実行部分
+async fn fetch_friend_count(pool: &MySqlPool, user_id:&str) -> anyhow::Result<i64>{
+    let friend_count = sqlx::query!(
+        r#"
+            SELECT
+                COUNT(*) as friend_count
+            FROM
+                follow
+            WHERE
+                from_user_id = ?
+            "#,
+        user_id
+    )
+    .fetch_all(pool)
+    .await
+    .unwrap();
+
+    Ok(friend_count[0].friend_count)
 }
