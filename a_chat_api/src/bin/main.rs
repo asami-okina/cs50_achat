@@ -32,7 +32,8 @@ async fn main(){
         .route("/api/login", post(handler_log_in))
         .route("/api/users/:user_id/home", get(handler_search_name))
         .route("/api/users/:user_id/groups", get(handler_fetch_group_list))
-        .route("/api/users/:user_id/groups", post(handler_leave_group));
+        .route("/api/users/:user_id/groups/leave", post(handler_leave_group))
+        .route("/api/users/:user_id/groups/add", post(handler_add_group));
 
     // localhost:3000 で hyper と共に実行する
     axum::Server::bind(&"0.0.0.0:3000".parse().unwrap())
@@ -501,28 +502,17 @@ async fn fetch_group_list(pool: &MySqlPool, user_id:&str) -> anyhow::Result<Vec<
 struct LeaveGroupPath {
     user_id: String,
 }
-
-#[derive(Debug, Deserialize, Serialize)]
-struct LeaveGroupQuery {
-    group_chat_room_id: String,
-}
-
-// デフォルト値の取得
-impl Default for LeaveGroupQuery {
-    fn default() -> Self {
-        Self { group_chat_room_id: String::from("") }
-    }
-}
-
-// handler
 async fn handler_leave_group(
     Path(path): Path<LeaveGroupPath>,
-    leave_group_query: Option<Query<LeaveGroupQuery>>,
+    body_json: Json<Value>
 ) -> () {
     let user_id = path.user_id;
-    // unwrap_or_default: Okの場合値を返し、Errの場合値の型のデフォルトを返す
-    let Query(leave_group_query) = leave_group_query.unwrap_or_default();
-    let group_chat_room_id = leave_group_query.group_chat_room_id;
+
+    // group_chat_room_idの取得
+    let group_chat_room_id = body_json.0.get("group_chat_room_id")
+    .unwrap()
+    .as_str()
+    .unwrap();
 
     // friends
     let pool = MySqlPool::connect(&env::var("DATABASE_URL").unwrap()).await.unwrap();
@@ -547,4 +537,90 @@ async fn leave_group(pool: &MySqlPool, user_id:&str, group_chat_room_id: &str) -
     .await?
     .rows_affected();
     Ok(())
+}
+
+/*
+  グループ追加
+*/
+// handler
+
+#[derive(Debug, Deserialize, Serialize)]
+struct AddGroupJson {
+    group_image: Option<String>,
+    group_name: String,
+    group_member_user_ids: Vec<String>,
+}
+
+#[derive(Debug, Deserialize, Serialize)]
+struct AddGroupResult {
+    group_image: Option<String>,
+    group_name: String,
+    group_chat_room_id : String
+}
+
+// handler
+async fn handler_add_group(
+    body_json: Json<AddGroupJson>
+) -> Json<Value> {
+    // group_imageの取得
+    let group_image = body_json.group_image.as_ref().unwrap();
+
+    // group_nameの取得
+    let group_name = &body_json.group_name;
+
+    // group_member_user_idsの取得
+    let group_member_user_ids = &body_json.group_member_user_ids;
+
+    let pool = MySqlPool::connect(&env::var("DATABASE_URL").unwrap()).await.unwrap();
+    let result = add_group(&pool, &group_image, &group_name, &group_member_user_ids).await.unwrap();
+    Json(json!({ "group_info": result }))
+}
+
+// SQL実行部分
+async fn add_group(pool: &MySqlPool, group_image:&str, group_name: &str, group_member_user_ids: &Vec<String>) -> anyhow::Result<AddGroupResult> {
+    let now = SystemTime::now().duration_since(SystemTime::UNIX_EPOCH).unwrap().as_secs();
+
+    // group_chat_roomテーブルの追加
+    let group_chat_room_id = sqlx::query!(
+        r#"
+            INSERT INTO group_chat_room ( group_name, group_image, created_at )
+            VALUES ( ?, ? , ? )
+        "#,
+        &group_name,
+        &group_image,
+        &now
+    )
+    .execute(pool)
+    .await
+    .unwrap()
+    .last_insert_id();
+
+    // group_memberテーブルの追加
+    for user_id in group_member_user_ids {
+        sqlx::query!(
+            r#"
+                INSERT INTO group_member ( group_chat_room_id, user_id, entry_date )
+                VALUES ( ?, ? , ? )
+            "#,
+            &group_chat_room_id,
+            user_id,
+            &now
+        )
+        .execute(pool)
+        .await
+        .unwrap();
+    }
+    println!("{}", &group_image.len());
+
+    let result = AddGroupResult {
+        group_image: if group_image.len() != 0 {Some(group_image.to_string())} else {None},
+        group_name: group_name.to_string(),
+        group_chat_room_id : group_chat_room_id.to_string()
+    };
+
+    // group_chat_room、group_memberテーブルのレコード削除SQL
+    // DELETE FROM group_member WHERE group_chat_room_id = 【対象id】;
+    // DELETE FROM group_chat_room WHERE id = 【対象group_chat_room_id】;
+    
+    Ok(result)
 }

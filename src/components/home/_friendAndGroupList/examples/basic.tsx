@@ -160,7 +160,7 @@ export default function Basic({ navigation, groupList, friendList, type, setModa
 			const bodyData = {
 				"groupChatRoomId": groupChatRoomId
 			}
-			const response = await fetch(API_SERVER_URL + `/api/users/${userId}/groups`, {
+			const response = await fetch(API_SERVER_URL + `/api/users/${userId}/groups/leave`, {
 				method: "DELETE",
 				headers: {
 					"Content-Type": "application/json"

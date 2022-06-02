@@ -356,13 +356,13 @@ app.get('/api/users/:userId/groups', (req, res, ctx) => {
 	)
 })
 // グループから脱退
-app.delete('/api/users/:userId/groups', (req, res, ctx) => {
+app.delete('/api/users/:userId/groups/leave', (req, res, ctx) => {
 	const userId = req.param("userId")
 	const groupChatRoomId = req.param("groupChatRoomId")
 	return res.status(200).send("")
 })
 // グループ追加
-app.post('/api/users/:userId/groups', (req, res, ctx) => {
+app.post('/api/users/:userId/groups/add', (req, res, ctx) => {
 	const groupImage = req.param("groupImage")
 	const groupName = req.param("groupName")
 	const groupMemberUserIds = req.param("groupMemberUserIds")
