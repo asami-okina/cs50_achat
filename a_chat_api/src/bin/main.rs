@@ -22,6 +22,7 @@ use structopt::StructOpt;
 use std::error;
 use std::env;
 use dotenv::dotenv;
+use std::time::SystemTime;
 
 #[tokio::main]
 async fn main(){
@@ -30,12 +31,12 @@ async fn main(){
     // 外部モジュールの呼び出し(2015年版)
     // component::header::headers();
     //単一ルートでアプリケーションを構築する
-        // handler: 何らかの処理要求が発生した時に起動されるプログラムのこと
-        // handlerはアプリケーションのロジックが存在する場所
-        let app = Router::new()
+    // handler: 何らかの処理要求が発生した時に起動されるプログラムのこと
+    // handlerはアプリケーションのロジックが存在する場所
+    let app = Router::new()
         .route("/api/getAllUsers", get(handler_get_all_users))
+        .route("/api/signup", post(handler_sign_up))
         .route("/api/signup/isAvailableUserIdValidation/:user_id", get(is_available_user_id_validation))
-        .route("/api/signup", post(sign_up))
         .route("/api/login", post(log_in))
         .route("/api/users/:user_id/home", get(search_name));
 
@@ -95,8 +96,11 @@ async fn get_all_users(pool: &MySqlPool) -> anyhow::Result<Vec<User>> {
     Ok(result)
 }
 
-// 会員登録
-async fn sign_up(body_json: Json<Value>) -> Json<Value> {
+/*
+  会員登録
+*/
+// handler
+async fn handler_sign_up(body_json: Json<Value>) -> Json<Value> {
     // user_idの取得
     let user_id = body_json.0.get("user_id")
     .unwrap()
@@ -116,34 +120,29 @@ async fn sign_up(body_json: Json<Value>) -> Json<Value> {
     .unwrap();
 
     let pool = MySqlPool::connect(&env::var("DATABASE_URL").unwrap()).await.unwrap();
-    let users = get_all_users(&pool).await.unwrap();
-    // println!("{:?}", users);
-    // // DBへの追加
-    // use a_chat_api::models::NewUser;
-    // use a_chat_api::schema::user as user_schema;
-    // let connection = establish_connection();
-    // let new_user = 
-    //     NewUser {achat.monster
-    //         id: user_id.to_string(),
-    //         nickname: None,
-    //         mail: mail.to_string(),
-    //         password:password.to_string(),
-    //         profile_image: None,
-    //         delete_flag: false,
-    //         search_flag: true,
-    //         created_at: 1654063149,
-    //         updated_at: None
-    //     };
+    sign_up(&pool, user_id, mail, password).await.unwrap();
 
-    // // INSERT処理を実行
-    // diesel::insert_into(user_schema::dsl::user)
-    //     .values(new_user)
-    //     .execute(&connection)
-    //     .expect("Error saving new user");
-    // println!("{:?}",get_user());
-    Json(json!({ "users": users }))
+    Json(json!({ "user_id": user_id }))
+}
 
-    // Json(json!({ "user_id": user_id }))
+// 会員登録
+async fn sign_up(pool: &MySqlPool, user_id:&str, mail: &str, password: &str) -> anyhow::Result<()> {
+    let now = SystemTime::now().duration_since(SystemTime::UNIX_EPOCH).unwrap().as_secs();
+    sqlx::query!(
+        r#"
+INSERT INTO user ( id, mail, password, created_at )
+VALUES ( ?, ? , ? , ? )
+        "#,
+        user_id,
+        mail,
+        password,
+        now
+    )
+    .execute(pool)
+    .await
+    .unwrap();
+    
+    Ok(())
 }
 
 // シリアライズ: RustのオブジェクトをJSON形式に変換

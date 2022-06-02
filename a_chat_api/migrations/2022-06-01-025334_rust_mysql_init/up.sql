@@ -6,8 +6,8 @@ CREATE TABLE user
     mail VARCHAR(255) NOT NULL,
     password VARCHAR(255) NOT NULL,
     profile_image VARCHAR(255) NULL,
-    delete_flag BOOLEAN NOT NULL,
-    search_flag BOOLEAN NOT NULL,
+    delete_flag BOOLEAN NOT NULL default 0,
+    search_flag BOOLEAN NOT NULL default 0,
     created_at INT NOT NULL,
     updated_at INT NULL
 );
@@ -36,7 +36,7 @@ CREATE TABLE group_chat_room
     group_name VARCHAR(255) NOT NULL,
     group_image VARCHAR(255) NOT NULL,
     created_at INT NOT NULL,
-    delete_flag BOOLEAN
+    delete_flag BOOLEAN NOT NULL default 0
 );
 
 
@@ -67,10 +67,10 @@ CREATE TABLE direct_member
     id SERIAL PRIMARY KEY,
     direct_chat_room_id bigint unsigned NOT NULL,
     user_id VARCHAR(100) NOT NULL,
-    delete_flag BOOLEAN,
-    hidden_flag BOOLEAN,
+    delete_flag BOOLEAN NOT NULL default 0,
+    hidden_flag BOOLEAN NOT NULL default 0,
     entry_date INT NOT NULL,
-    last_read_time INT,
+    last_read_time INT NULL,
     FOREIGN KEY(direct_chat_room_id) REFERENCES direct_chat_room(id),
     FOREIGN KEY(user_id) REFERENCES user(id)
 );
@@ -80,10 +80,10 @@ CREATE TABLE group_member
     id SERIAL PRIMARY KEY,
     group_chat_room_id bigint unsigned NOT NULL,
     user_id VARCHAR(100) NOT NULL,
-    delete_flag BOOLEAN,
-    hidden_flag BOOLEAN,
+    delete_flag BOOLEAN NOT NULL default 0,
+    hidden_flag BOOLEAN NOT NULL default 0,
     entry_date INT NOT NULL,
-    last_read_time INT,
+    last_read_time INT NULL,
     FOREIGN KEY(group_chat_room_id) REFERENCES group_chat_room(id),
     FOREIGN KEY(user_id) REFERENCES user(id)
 );
