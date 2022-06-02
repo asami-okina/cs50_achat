@@ -5,7 +5,7 @@ use axum::{
     response::Json,
     extract::{Path,Query},
     http::{Request, header::HeaderMap},
-    body::{Bytes, Body},
+    body::{Bytes, Body}, Error,
 };
 mod component;
 // シリアライズ: RustのオブジェクトをJSON形式に変換
@@ -14,12 +14,19 @@ use serde::{Serialize, Deserialize};
 use serde_json::{Value, json};
 use std::collections::HashMap;
 
-
 use diesel::prelude::*;
 use a_chat_api::utils::establish_connection;
 
+use sqlx::mysql::MySqlPool;
+use structopt::StructOpt;
+use std::error;
+use std::env;
+use dotenv::dotenv;
+
 #[tokio::main]
-async fn main() {
+async fn main(){
+    // .endファイルの中身の変数を取得し、環境変数として使用できるようにする
+    dotenv().ok();
     // 外部モジュールの呼び出し(2015年版)
     // component::header::headers();
     //単一ルートでアプリケーションを構築する
@@ -59,8 +66,9 @@ async fn sign_up(body_json: Json<Value>) -> Json<Value> {
     .as_str()
     .unwrap();
 
-    use a_chat_api::models::get_user;
-
+    let pool = MySqlPool::connect(&env::var("DATABASE_URL").unwrap()).await.unwrap();
+    let users = get_users(&pool).await.unwrap();
+    // println!("{:?}", users);
     // // DBへの追加
     // use a_chat_api::models::NewUser;
     // use a_chat_api::schema::user as user_schema;
@@ -83,9 +91,48 @@ async fn sign_up(body_json: Json<Value>) -> Json<Value> {
     //     .values(new_user)
     //     .execute(&connection)
     //     .expect("Error saving new user");
-    println!("{:?}",get_user());
+    // println!("{:?}",get_user());
+    Json(json!({ "users": users }))
 
-    Json(json!({ "user_id": user_id }))
+    // Json(json!({ "user_id": user_id }))
+}
+
+use a_chat_api::models::User;
+
+async fn get_users(pool: &MySqlPool) -> anyhow::Result<Vec<User>> {
+    let users = sqlx::query!(
+        r#"
+SELECT *
+FROM user
+        "#
+    )
+    .fetch_all(pool)
+    .await
+    .unwrap();
+
+    let mut result:Vec<User> = vec![];
+
+    for row in &users {
+        let user = User {
+            id: row.id.to_string(),
+            nickname:  match &row.nickname {
+                Some(nickname) => Some(nickname.to_string()),
+                None => None
+            },
+            mail: row.mail.to_string(),
+            password: row.password.to_string(),
+            profile_image:  match &row.profile_image {
+                Some(profile_image) => Some(profile_image.to_string()),
+                None => None
+            },
+            delete_flag: if row.delete_flag == 1 {true} else {false},
+            search_flag: if row.search_flag == 1 {true} else {false},
+            created_at: row.created_at,
+            updated_at: row.updated_at
+          };
+          result.push(user);
+    }
+    Ok(result)
 }
 
 // シリアライズ: RustのオブジェクトをJSON形式に変換

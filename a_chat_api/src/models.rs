@@ -4,6 +4,7 @@ use diesel::prelude::*;
 use crate::utils::establish_connection;
 use diesel::sql_query;
 type DB = diesel::mysql::Mysql;
+use serde::{Serialize, Deserialize};
 /*
   userテーブル
 */
@@ -32,7 +33,7 @@ pub struct NewUser {
 }
 
 // SELECT用
-#[derive(Debug, Queryable)]
+#[derive(Debug, Queryable,Serialize)]
 pub struct User {
   pub id: String,
   pub nickname: Option<String>,
