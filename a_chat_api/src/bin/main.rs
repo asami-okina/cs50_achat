@@ -33,7 +33,10 @@ async fn main(){
         .route("/api/users/:user_id/home", get(handler_search_name))
         .route("/api/users/:user_id/groups", get(handler_fetch_group_list))
         .route("/api/users/:user_id/groups/leave", post(handler_leave_group))
-        .route("/api/users/:user_id/groups/add", post(handler_add_group));
+        .route("/api/users/:user_id/groups/add", post(handler_add_group))
+        .route("/api/users/:user_id/group-count", get(handler_fetch_group_count));
+
+
 
     // localhost:3000 で hyper と共に実行する
     axum::Server::bind(&"0.0.0.0:3000".parse().unwrap())
@@ -144,17 +147,16 @@ VALUES ( ?, ? , ? , ? )
   登録するユーザーIDが使用可能かどうかチェック
 */
 // handler
-async fn handler_is_available_user_id_validation(Path(path): Path<IsAvailableUserIdValidationParams>) -> Json<Value> {
+#[derive(Debug, Deserialize, Serialize)]
+struct IsAvailableUserIdValidationPath {
+    user_id: String,
+}
+async fn handler_is_available_user_id_validation(Path(path): Path<IsAvailableUserIdValidationPath>) -> Json<Value> {
     let user_id = path.user_id;
 
     let pool = MySqlPool::connect(&env::var("DATABASE_URL").unwrap()).await.unwrap();
     let is_available_user_id_validation = is_available_user_id_validation(&pool, &user_id).await.unwrap();
     Json(json!({ "is_available_user_id_validation": is_available_user_id_validation }))
-}
-
-#[derive(Debug, Deserialize, Serialize)]
-struct IsAvailableUserIdValidationParams {
-    user_id: String,
 }
 
 // SQL実行部分
@@ -623,4 +625,45 @@ async fn add_group(pool: &MySqlPool, group_image:&str, group_name: &str, group_m
     // DELETE FROM group_chat_room WHERE id = 【対象group_chat_room_id】;
     
     Ok(result)
+}
+
+/*
+  ユーザーの所属するグループ数取得
+*/
+// handler
+#[derive(Debug, Deserialize, Serialize)]
+struct FetchGroupCountPath {
+    user_id: String,
+}
+async fn handler_fetch_group_count(Path(path): Path<FetchGroupCountPath>) -> Json<Value> {
+    let user_id = path.user_id;
+
+    let pool = MySqlPool::connect(&env::var("DATABASE_URL").unwrap()).await.unwrap();
+    let group_count = fetch_group_count(&pool, &user_id).await.unwrap();
+    Json(json!({ "group_count": group_count }))
+}
+
+// SQL実行部分
+async fn fetch_group_count(pool: &MySqlPool, user_id:&str) -> anyhow::Result<i64>{
+    let group_count = sqlx::query!(
+        r#"
+            SELECT
+                COUNT(*) as group_count
+            FROM
+                group_member as gm
+                LEFT JOIN
+                    group_chat_room as g
+                ON  gm.group_chat_room_id = g.id
+            WHERE
+                gm.user_id = ?
+            AND gm.leave_flag = FALSE
+            AND g.delete_flag = FALSE
+            "#,
+        user_id
+    )
+    .fetch_all(pool)
+    .await
+    .unwrap();
+
+    Ok(group_count[0].group_count)
 }
