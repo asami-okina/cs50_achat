@@ -10,8 +10,8 @@ table! {
         id -> Unsigned<Bigint>,
         direct_chat_room_id -> Unsigned<Bigint>,
         user_id -> Varchar,
-        delete_flag -> Bool,
-        hidden_flag -> Bool,
+        message_delete_flag -> Bool,
+        message_hidden_flag -> Bool,
         entry_date -> Integer,
         last_read_time -> Nullable<Integer>,
     }
@@ -42,8 +42,9 @@ table! {
         id -> Unsigned<Bigint>,
         group_chat_room_id -> Unsigned<Bigint>,
         user_id -> Varchar,
-        delete_flag -> Bool,
-        hidden_flag -> Bool,
+        leave_flag -> Bool,
+        message_delete_flag -> Bool,
+        message_hidden_flag -> Bool,
         entry_date -> Integer,
         last_read_time -> Nullable<Integer>,
     }

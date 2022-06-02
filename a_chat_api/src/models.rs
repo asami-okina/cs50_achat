@@ -79,8 +79,8 @@ pub struct NewDirectMember {
     pub id: u64,
     pub direct_chat_room_id: u64,
     pub user_id: String,
-    pub delete_flag: bool,
-    pub hidden_flag: bool,
+    pub message_delete_flag: bool,
+    pub message_hidden_flag: bool,
     pub entry_date: i32,
     pub last_read_time: i32
 }
@@ -91,8 +91,8 @@ pub struct DirectMember {
   pub id: u64,
   pub direct_chat_room_id: u64,
   pub user_id: String,
-  pub delete_flag: bool,
-  pub hidden_flag: bool,
+  pub message_delete_flag: bool,
+  pub message_hidden_flag: bool,
   pub entry_date: i32,
   pub last_read_time: i32
 }
@@ -161,8 +161,9 @@ pub struct NewGroupMember {
     pub id: u64,
     pub group_chat_room_id: u64,
     pub user_id: String,
-    pub delete_flag: bool,
-    pub hidden_flag: bool,
+    pub message_delete_flag: bool,
+    pub message_hidden_flag: bool,
+    pub leave_flag: bool,
     pub entry_date: i32,
     pub last_read_time: i32,
 
@@ -174,8 +175,9 @@ pub struct GroupMember {
   pub id: u64,
   pub group_chat_room_id: u64,
   pub user_id: String,
-  pub delete_flag: bool,
-  pub hidden_flag: bool,
+  pub message_delete_flag: bool,
+  pub message_hidden_flag: bool,
+  pub leave_flag: bool,
   pub entry_date: i32,
   pub last_read_time: i32,
 }

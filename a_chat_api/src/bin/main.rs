@@ -26,11 +26,12 @@ async fn main(){
     // handler: 何らかの処理要求が発生した時に起動されるプログラムのこと
     // handlerはアプリケーションのロジックが存在する場所
     let app = Router::new()
-        .route("/api/getAllUsers", get(handler_get_all_users))
+        .route("/api/getAllUsers", get(handler_fetch_all_users))
         .route("/api/signup", post(handler_sign_up))
         .route("/api/signup/isAvailableUserIdValidation/:user_id", get(handler_is_available_user_id_validation))
         .route("/api/login", post(handler_log_in))
-        .route("/api/users/:user_id/home", get(handler_search_name));
+        .route("/api/users/:user_id/home", get(handler_search_name))
+        .route("/api/users/:user_id/groups", get(handler_fetch_group_list));
 
     // localhost:3000 で hyper と共に実行する
     axum::Server::bind(&"0.0.0.0:3000".parse().unwrap())
@@ -44,15 +45,15 @@ async fn main(){
   全ユーザ情報を取得
 */
 // handler
-async fn handler_get_all_users() -> Json<Value> {
+async fn handler_fetch_all_users() -> Json<Value> {
     let pool = MySqlPool::connect(&env::var("DATABASE_URL").unwrap()).await.unwrap();
-    let users = get_all_users(&pool).await.unwrap();
+    let users = fetch_all_users(&pool).await.unwrap();
     Json(json!({ "users": users }))
 }
 
 // SQL実行部分
 use a_chat_api::models::User;
-async fn get_all_users(pool: &MySqlPool) -> anyhow::Result<Vec<User>> {
+async fn fetch_all_users(pool: &MySqlPool) -> anyhow::Result<Vec<User>> {
     let users = sqlx::query!(
         r#"
             SELECT *
@@ -282,7 +283,7 @@ async fn handler_search_name(
 }
 
 #[derive(Debug, Deserialize, Serialize)]
-struct SearchNameFriendList {
+struct SearchNameFriendListResult {
     direct_chat_room_id: String,
     friend_use_id: String,
     friend_profile_image: Option<String>,
@@ -290,7 +291,7 @@ struct SearchNameFriendList {
 }
 
 // SQL実行部分(Friends)
-async fn search_name_friends(pool: &MySqlPool, user_id: &str, search_text: &str) -> anyhow::Result<Vec<SearchNameFriendList>> {
+async fn search_name_friends(pool: &MySqlPool, user_id: &str, search_text: &str) -> anyhow::Result<Vec<SearchNameFriendListResult>> {
     // 取得したいデータ
     // "direct_chat_room_id": "1",
     // "friend_use_id": "asami111",
@@ -300,7 +301,7 @@ async fn search_name_friends(pool: &MySqlPool, user_id: &str, search_text: &str)
     // 条件
     // ①userテーブルのnicknameが一致
     // ②followテーブルのfrom_user_idが自分の場合のto_user_idが友達のuser_id
-    // ②direct_memberテーブルのdeleteフラグとhiddenフラグがfalseである
+    // ②direct_memberテーブルのdeleteフラグがfalseである(非表示の友達も表示する)
     let search_name_friend_list = sqlx::query!(
         r#"
             SELECT
@@ -337,8 +338,6 @@ async fn search_name_friends(pool: &MySqlPool, user_id: &str, search_text: &str)
                         direct_member
                     WHERE
                         user_id = ?
-                    AND delete_flag = 0
-                    AND hidden_flag = 0
                 )
         "#,
         search_text,
@@ -349,10 +348,10 @@ async fn search_name_friends(pool: &MySqlPool, user_id: &str, search_text: &str)
     .await
     .unwrap();
 
-    let mut result:Vec<SearchNameFriendList> = vec![];
+    let mut result:Vec<SearchNameFriendListResult> = vec![];
 
     for row in &search_name_friend_list {
-        let friend = SearchNameFriendList {
+        let friend = SearchNameFriendListResult {
             direct_chat_room_id: row.direct_chat_room_id.unwrap().to_string(),
             friend_use_id: row.friend_user_id.to_string(),
             friend_profile_image:  match &row.friend_profile_image {
@@ -371,14 +370,14 @@ async fn search_name_friends(pool: &MySqlPool, user_id: &str, search_text: &str)
 }
 
 #[derive(Debug, Deserialize, Serialize)]
-struct SearchNameGroupList {
+struct SearchNameGroupListResult {
     group_chat_room_id: String,
     group_name: String,
     group_image: Option<String>
 }
 
 // SQL実行部分(Groups)
-async fn search_name_groups(pool: &MySqlPool, user_id: &str, search_text: &str) -> anyhow::Result<Vec<SearchNameGroupList>> {
+async fn search_name_groups(pool: &MySqlPool, user_id: &str, search_text: &str) -> anyhow::Result<Vec<SearchNameGroupListResult>> {
     // 取得したいデータ
     // "group_chat_room_id": "12",
     // "group_name": "検索結果グループ",
@@ -400,8 +399,7 @@ async fn search_name_groups(pool: &MySqlPool, user_id: &str, search_text: &str) 
                 ON  g.id = gm.group_chat_room_id
             WHERE
                 gm.user_id = ?
-            AND gm.delete_flag = FALSE
-            AND gm.hidden_flag = FALSE
+            AND gm.leave_flag = FALSE
             AND g.group_name = ?
             AND g.delete_flag = FALSE
         "#,
@@ -412,10 +410,10 @@ async fn search_name_groups(pool: &MySqlPool, user_id: &str, search_text: &str) 
     .await
     .unwrap();
 
-    let mut result:Vec<SearchNameGroupList> = vec![];
+    let mut result:Vec<SearchNameGroupListResult> = vec![];
 
     for row in &search_name_group_list {
-        let group = SearchNameGroupList {
+        let group = SearchNameGroupListResult {
             group_chat_room_id: row.group_chat_room_id.to_string(),
             group_name: row.group_name.to_string(),
             group_image:  match &row.group_image {
@@ -426,5 +424,68 @@ async fn search_name_groups(pool: &MySqlPool, user_id: &str, search_text: &str) 
           result.push(group);
     }
 
+    Ok(result)
+}
+
+/*
+  ユーザが所属するグループ一覧
+*/
+// handler
+#[derive(Debug, Deserialize, Serialize)]
+struct FetchGroupListParams {
+    user_id: String,
+}
+async fn handler_fetch_group_list(Path(params): Path<FetchGroupListParams>) -> Json<Value> {
+    let user_id = params.user_id;
+
+    let pool = MySqlPool::connect(&env::var("DATABASE_URL").unwrap()).await.unwrap();
+    let group_list = fetch_group_list(&pool, &user_id).await.unwrap();
+    Json(json!({ "groups": group_list }))
+}
+
+#[derive(Debug, Deserialize, Serialize)]
+struct FetchGroupListResult {
+    group_chat_room_id: String,
+    group_name: String,
+    group_image: Option<String>
+}
+
+// SQL実行部分(Groups)
+async fn fetch_group_list(pool: &MySqlPool, user_id:&str) -> anyhow::Result<Vec<FetchGroupListResult>>{
+    let group_list = sqlx::query!(
+        r#"
+            SELECT
+                g.id as group_chat_room_id,
+                g.group_name as group_name,
+                g.group_image as group_image
+            FROM
+                group_chat_room as g
+                LEFT JOIN
+                    group_member as gm
+                ON  g.id = gm.group_chat_room_id
+            WHERE
+                gm.user_id = ?
+            AND gm.leave_flag = FALSE
+            AND g.delete_flag = FALSE
+        "#,
+        user_id
+    )
+    .fetch_all(pool)
+    .await
+    .unwrap();
+
+    let mut result:Vec<FetchGroupListResult> = vec![];
+
+    for row in &group_list {
+        let group = FetchGroupListResult {
+            group_chat_room_id: row.group_chat_room_id.to_string(),
+            group_name: row.group_name.to_string(),
+            group_image:  match &row.group_image {
+                Some(group_image) => Some(group_image.to_string()),
+                None => None
+            },
+          };
+          result.push(group);
+    }
     Ok(result)
 }
