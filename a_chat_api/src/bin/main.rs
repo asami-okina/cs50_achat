@@ -176,7 +176,7 @@ async fn is_available_user_id_validation(pool: &MySqlPool, user_id:&str) -> anyh
     .await
     .unwrap();
 
-    let mut result;
+    let result;
 
     if user.len() == 0 {
         // まだ該当user_idは使用されていない
