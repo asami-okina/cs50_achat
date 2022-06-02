@@ -31,8 +31,8 @@ async fn main(){
         .route("/api/signup/isAvailableUserIdValidation/:user_id", get(handler_is_available_user_id_validation))
         .route("/api/login", post(handler_log_in))
         .route("/api/users/:user_id/home", get(handler_search_name))
-        .route("/api/users/:user_id/groups", get(handler_fetch_group_list));
-        // .route("/api/users/:user_id/groups", post(handler_leave_group));
+        .route("/api/users/:user_id/groups", get(handler_fetch_group_list))
+        .route("/api/users/:user_id/groups", post(handler_leave_group));
 
     // localhost:3000 で hyper と共に実行する
     axum::Server::bind(&"0.0.0.0:3000".parse().unwrap())
@@ -497,14 +497,54 @@ async fn fetch_group_list(pool: &MySqlPool, user_id:&str) -> anyhow::Result<Vec<
 // handler
 // pathはクエリの一部
 // paramsは?以降
-// #[derive(Debug, Deserialize, Serialize)]
-// struct LeaveGroupPath {
-//     user_id: String,
-// }
-// async fn handler_fetch_group_list(Path(path): Path<FetchGroLeaveGroupPathupListParams>) -> Json<Value> {
-//     let user_id = path.user_id;
+#[derive(Debug, Deserialize, Serialize)]
+struct LeaveGroupPath {
+    user_id: String,
+}
 
-//     let pool = MySqlPool::connect(&env::var("DATABASE_URL").unwrap()).await.unwrap();
-//     let group_list = fetch_group_list(&pool, &user_id).await.unwrap();
-//     Json(json!({ "groups": group_list }))
-// }
+#[derive(Debug, Deserialize, Serialize)]
+struct LeaveGroupQuery {
+    group_chat_room_id: String,
+}
+
+// デフォルト値の取得
+impl Default for LeaveGroupQuery {
+    fn default() -> Self {
+        Self { group_chat_room_id: String::from("") }
+    }
+}
+
+// handler
+async fn handler_leave_group(
+    Path(path): Path<LeaveGroupPath>,
+    leave_group_query: Option<Query<LeaveGroupQuery>>,
+) -> () {
+    let user_id = path.user_id;
+    // unwrap_or_default: Okの場合値を返し、Errの場合値の型のデフォルトを返す
+    let Query(leave_group_query) = leave_group_query.unwrap_or_default();
+    let group_chat_room_id = leave_group_query.group_chat_room_id;
+
+    // friends
+    let pool = MySqlPool::connect(&env::var("DATABASE_URL").unwrap()).await.unwrap();
+    leave_group(&pool, &user_id, &group_chat_room_id).await.unwrap();
+}
+// SQL実行部分
+async fn leave_group(pool: &MySqlPool, user_id:&str, group_chat_room_id: &str) -> anyhow::Result<()>{
+    sqlx::query!(
+        r#"
+            UPDATE
+                group_member
+            SET
+                leave_flag = TRUE
+            WHERE
+                group_chat_room_id = ?
+            AND user_id = ?
+        "#,
+        group_chat_room_id,
+        user_id
+    )
+    .execute(pool)
+    .await?
+    .rows_affected();
+    Ok(())
+}
