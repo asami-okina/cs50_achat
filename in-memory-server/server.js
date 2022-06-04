@@ -517,53 +517,54 @@ app.post('/api/users/:userId/profile', (req, res, ctx) => {
 	}
 	return res.status(200).send("")
 }),
-	app.get('/api/users/:userId/user', (req, res, ctx) => {
-		const searchUserId = req.params.searchUserId
-		const userId = req.param("userId")
+// ユーザーID検索にヒットしたユーザー情報(プロフィール画像、ニックネーム)
+app.get('/api/users/:userId/user', (req, res, ctx) => {
+	const searchUserId = req.params.searchUserId
+	const userId = req.param("userId")
 
-		// 既に友達になっている場合
-		if (searchUserId === "1") {
-			return res.status(400).send(
-				JSON.stringify(
-					{
-						"already_follow_requested": true,
-						"exist": true,
-						"friend_use_id": "pcAsami",
-						"friend_profile_image": sp_profileInfo.profileImage,
-						"friend_nickname": "pcAsami"
-					}
-				),
+	// 既に友達になっている場合
+	if (searchUserId === "1") {
+		return res.status(400).send(
+			JSON.stringify(
+				{
+					"already_follow_requested": true,
+					"exist": true,
+					"friend_use_id": "pcAsami",
+					"friend_profile_image": sp_profileInfo.profileImage,
+					"friend_nickname": "pcAsami"
+				}
+			),
 
-			)
-		} else if (searchUserId === "bb") {
-			// 該当ユーザーIDが存在しない場合
-			return res.status(400).send(
-				JSON.stringify(
-					{
-						"already_follow_requested": false,
-						"exist": false,
-						"friend_use_id": null,
-						"friend_profile_image": null,
-						"friend_nickname": null
-					}
-				),
+		)
+	} else if (searchUserId === "bb") {
+		// 該当ユーザーIDが存在しない場合
+		return res.status(400).send(
+			JSON.stringify(
+				{
+					"already_follow_requested": false,
+					"exist": false,
+					"friend_use_id": null,
+					"friend_profile_image": null,
+					"friend_nickname": null
+				}
+			),
 
-			)
-		} else {
-			// まだ友達になっていない場合
-			return res.status(200).send(
-				JSON.stringify(
-					{
-						"already_follow_requested": false,
-						"exist": true,
-						"friend_use_id": "friend 11",
-						"friend_profile_image": null,
-						"friend_nickname": "friend 11"
-					}
-				),
-			)
-		}
-	})
+		)
+	} else {
+		// まだ友達になっていない場合
+		return res.status(200).send(
+			JSON.stringify(
+				{
+					"already_follow_requested": false,
+					"exist": true,
+					"friend_use_id": "friend 11",
+					"friend_profile_image": null,
+					"friend_nickname": "friend 11"
+				}
+			),
+		)
+	}
+})
 // チャットルーム一覧取得
 app.get('/api/users/:userId/chatRoom', (req, res, ctx) => {
 	const searchText = req.params.searchText
