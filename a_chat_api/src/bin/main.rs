@@ -534,7 +534,7 @@ async fn handler_leave_group(
 
     // group_chat_room_idの取得
     let group_chat_room_id = body_json.0.get("group_chat_room_id")
-    .unwrap()
+    .unwrap() // group_chat_room_idはNOT NULLなのでunwrap()使える
     .as_str()
     .unwrap();
 
@@ -746,7 +746,7 @@ struct FetchFriendListPath {
 
 #[derive(Debug, Deserialize, Serialize)]
 struct FetchFriendListResult {
-    direct_chat_room_id: String,
+    direct_chat_room_id: u64,
     friend_use_id: String,
     friend_profile_image: Option<String>,
     friend_nickname: Option<String>
@@ -771,7 +771,7 @@ async fn fetch_friend_list(pool: &MySqlPool, user_id:&str) -> anyhow::Result<Vec
                 u.nickname as friend_nickname
             FROM
                 user as u
-                LEFT JOIN
+                INNER JOIN
                     follow as f
                 ON  u.id = f.to_user_id
             WHERE
@@ -794,7 +794,7 @@ async fn fetch_friend_list(pool: &MySqlPool, user_id:&str) -> anyhow::Result<Vec
 
     for row in &friend_list {
         let friend = FetchFriendListResult {
-            direct_chat_room_id: row.direct_chat_room_id.unwrap().to_string(),
+            direct_chat_room_id: row.direct_chat_room_id,
             friend_use_id: row.friend_use_id.to_string(),
             friend_profile_image:  match &row.friend_profile_image {
                 Some(friend_profile_image) => Some(friend_profile_image.to_string()),
