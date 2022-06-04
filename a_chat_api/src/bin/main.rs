@@ -1264,11 +1264,11 @@ async fn handler_fetch_friend_info_by_friend_user_id(
 // SQL実行部分(Friends)
 async fn fetch_friend_info_by_friend_user_id(pool: &MySqlPool, user_id: &str, search_user_id: &str) -> anyhow::Result<FetchFriendInfoByUserIdResult> {
     // パターン
-    // ①該当のユーザーIDが存在しない OK
-    // ②該当のユーザーIDが存在する OK 
-        // 1. すでに友達である OK
+    // ①該当のユーザーIDが存在しない
+    // ②該当のユーザーIDが存在する
+        // 1. すでに友達である
         // 2. まだ友達ではない
-            // (1) search_flagがtrue OK
+            // (1) search_flagがtrue
             // (2) search_flagがfalse
     
     // 該当のユーザーIDが存在しているか
