@@ -37,7 +37,8 @@ async fn main(){
         .route("/api/users/:user_id/group-count", get(handler_fetch_group_count))
         .route("/api/users/:user_id/friend-count", get(handler_fetch_friend_count))
         .route("/api/users/:user_id/friends", get(handler_fetch_friend_list))
-        .route("/api/users/:user_id/friends", post(handler_add_friend));
+        .route("/api/users/:user_id/friends", post(handler_add_friend))
+        .route("/api/users/:user_id/profile", get(handler_fetch_profile_by_user_id));
 
     // localhost:3000 で hyper と共に実行する
     axum::Server::bind(&"0.0.0.0:3000".parse().unwrap())
@@ -1020,4 +1021,64 @@ async fn add_friend_result(pool: &MySqlPool,friend_user_id: &str, direct_chat_ro
     };
 
     Ok(result)
+}
+
+/*
+  ユーザーIDに紐づくニックネーム、プロフィール画像の取得
+*/
+// handler
+#[derive(Debug, Deserialize, Serialize)]
+struct FetchProfileByUserIdPath {
+    user_id: String,
+}
+
+#[derive(Debug, Deserialize, Serialize)]
+struct FetchProfileByUserIdResult {
+    user_id: String,
+    nickname: Option<String>,
+    profile_image: Option<String>,
+    search_flag: bool
+}
+
+async fn handler_fetch_profile_by_user_id(Path(path): Path<FetchFriendListPath>) -> Json<Value> {
+    let user_id = path.user_id;
+
+    let pool = MySqlPool::connect(&env::var("DATABASE_URL").unwrap()).await.unwrap();
+    let profile = fetch_profile_by_user_id(&pool, &user_id).await.unwrap();
+    Json(json!({ "friend_list": profile }))
+}
+
+// SQL実行部分
+async fn fetch_profile_by_user_id(pool: &MySqlPool, user_id:&str) -> anyhow::Result<FetchProfileByUserIdResult>{
+    let result = sqlx::query!(
+        r#"
+        SELECT
+            nickname,
+            profile_image,
+            search_flag
+        FROM
+            user
+        WHERE
+            id = ?
+            "#,
+        user_id
+    )
+    .fetch_all(pool)
+    .await
+    .unwrap();
+
+    let profile_info = FetchProfileByUserIdResult {
+        user_id: user_id.to_string(),
+        nickname: match &result[0].nickname {
+            Some(nickname) => Some(nickname.to_string()),
+            None => None
+        },
+        profile_image: match &result[0].profile_image {
+            Some(profile_image) => Some(profile_image.to_string()),
+            None => None
+        },
+        search_flag: if result[0].search_flag == 1 { true } else { false }
+    };
+
+    Ok(profile_info)
 }
