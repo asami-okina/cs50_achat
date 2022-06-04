@@ -44,6 +44,50 @@ fn main() {
             created_at: 1654063149,
             updated_at: None
         },
+        NewUser {
+            id: String::from("pcAsami2"),
+            nickname: Some(String::from("pcAsami2")),
+            mail: String::from("pcAsami2@g.com"),
+            password: String::from("pcAsami2"),
+            profile_image: Some(String::from("https://pbs.twimg.com/profile_images/1257586310077796352/XWNIr3Fr_400x400.jpg")),
+            delete_flag: false,
+            search_flag: true,
+            created_at: 1654063149,
+            updated_at: None
+        },
+        NewUser {
+            id: String::from("pcAsami3"),
+            nickname: Some(String::from("pcAsami3")),
+            mail: String::from("pcAsami3@g.com"),
+            password: String::from("pcAsami3"),
+            profile_image: Some(String::from("https://pbs.twimg.com/profile_images/1257586310077796352/XWNIr3Fr_400x400.jpg")),
+            delete_flag: false,
+            search_flag: true,
+            created_at: 1654063149,
+            updated_at: None
+        },
+        NewUser {
+            id: String::from("pcAsami4"),
+            nickname: Some(String::from("pcAsami4")),
+            mail: String::from("pcAsami4@g.com"),
+            password: String::from("pcAsami4"),
+            profile_image: Some(String::from("https://pbs.twimg.com/profile_images/1257586310077796352/XWNIr3Fr_400x400.jpg")),
+            delete_flag: false,
+            search_flag: true,
+            created_at: 1654063149,
+            updated_at: None
+        },
+        NewUser {
+            id: String::from("pcAsami5"),
+            nickname: Some(String::from("pcAsami5")),
+            mail: String::from("pcAsami5@g.com"),
+            password: String::from("pcAsami5"),
+            profile_image: Some(String::from("https://pbs.twimg.com/profile_images/1257586310077796352/XWNIr3Fr_400x400.jpg")),
+            delete_flag: false,
+            search_flag: true,
+            created_at: 1654063149,
+            updated_at: None
+        },
     ];
 
     // INSERT処理を実行

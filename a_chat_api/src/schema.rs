@@ -13,7 +13,7 @@ table! {
         message_delete_flag -> Bool,
         message_hidden_flag -> Bool,
         entry_date -> Integer,
-        last_read_time -> Nullable<Integer>,
+        last_read_time -> Integer,
     }
 }
 

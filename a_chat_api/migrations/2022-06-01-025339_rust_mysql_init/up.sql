@@ -70,7 +70,7 @@ CREATE TABLE direct_member
     message_delete_flag BOOLEAN NOT NULL default 0,
     message_hidden_flag BOOLEAN NOT NULL default 0,
     entry_date INT NOT NULL,
-    last_read_time INT NULL,
+    last_read_time INT NOT NULL,
     FOREIGN KEY(direct_chat_room_id) REFERENCES direct_chat_room(id),
     FOREIGN KEY(user_id) REFERENCES user(id)
 );
