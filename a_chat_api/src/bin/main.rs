@@ -38,7 +38,8 @@ async fn main(){
         .route("/api/users/:user_id/friend-count", get(handler_fetch_friend_count))
         .route("/api/users/:user_id/friends", get(handler_fetch_friend_list))
         .route("/api/users/:user_id/friends", post(handler_add_friend))
-        .route("/api/users/:user_id/profile", get(handler_fetch_profile_by_user_id));
+        .route("/api/users/:user_id/profile", get(handler_fetch_profile_by_user_id))
+        .route("/api/users/:user_id/profile", post(handler_update_profile));
 
     // localhost:3000 で hyper と共に実行する
     axum::Server::bind(&"0.0.0.0:3000".parse().unwrap())
@@ -1081,4 +1082,133 @@ async fn fetch_profile_by_user_id(pool: &MySqlPool, user_id:&str) -> anyhow::Res
     };
 
     Ok(profile_info)
+}
+
+/*
+  プロフィールの更新
+*/
+// handler
+#[derive(Debug, Deserialize, Serialize)]
+struct UpdateProfilePath {
+    user_id: String
+}
+#[derive(Debug, Deserialize, Serialize)]
+struct UpdateProfileJson {
+    nickname: Option<String>,
+    profile_image: Option<String>,
+    search_flag: Option<bool>
+}
+
+#[derive(Debug, Deserialize, Serialize)]
+enum UpdateProfileResultEnum {
+    UpdateNicknameResult {
+        nickname: Option<String>,
+    },
+    UpdateProfileImageGResult {
+        profile_image: Option<String>,
+    },
+    UpdateSearchFlagResult {
+        search_flag: Option<bool>
+    }    
+}
+
+// handler
+async fn handler_update_profile(
+    Path(path): Path<UpdateProfilePath>,
+    body_json: Json<UpdateProfileJson>
+) -> Json<Value> {
+    // user_idの取得
+    let user_id = path.user_id;
+
+    // nicknameの取得
+    let nickname = match &body_json.nickname{
+        Some(nickname) => Some(nickname),
+        None => None
+    };
+
+    // profile_imageの取得
+    let profile_image = match &body_json.profile_image{
+        Some(profile_image) => Some(profile_image),
+        None => None
+    };
+
+    // search_flagの取得
+    let search_flag = match &body_json.search_flag{
+        Some(search_flag) => Some(search_flag),
+        None => None
+    };
+
+    let pool = MySqlPool::connect(&env::var("DATABASE_URL").unwrap()).await.unwrap();
+    let result = update_profile(&pool, &user_id, nickname, profile_image, search_flag).await.unwrap();
+    Json(json!({ "group_info": result }))
+}
+
+// SQL実行部分
+async fn update_profile(pool: &MySqlPool, user_id: &str, nickname:Option<&String>, profile_image:Option<&String>, search_flag:Option<&bool>) -> anyhow::Result<()> {
+    let now = SystemTime::now().duration_since(SystemTime::UNIX_EPOCH).unwrap().as_secs();
+    
+    // nicknameの更新
+    if let Some(_) = nickname {
+        sqlx::query!(
+            r#"
+                UPDATE
+                    user
+                SET
+                    nickname = ?,
+                    updated_at = ?
+                WHERE
+                id = ?
+            "#,
+            nickname,
+            now,
+            user_id,
+        )
+        .execute(pool)
+        .await?
+        .rows_affected();
+    }
+
+    // profile_imageの更新
+    if let Some(_) = profile_image {
+        sqlx::query!(
+            r#"
+                UPDATE
+                    user
+                SET
+                    profile_image = ?,
+                    updated_at = ?
+                WHERE
+                    id = ?
+            "#,
+            profile_image,
+            now,
+            user_id
+        )
+        .execute(pool)
+        .await?
+        .rows_affected();
+    }
+
+    // search_flagの更新
+    if let Some(_) = search_flag {
+        sqlx::query!(
+            r#"
+                UPDATE
+                    user
+                SET
+                    search_flag = ?,
+                    updated_at = ?
+                WHERE
+                    id = ?
+            "#,
+            search_flag,
+            now,
+            user_id
+        )
+        .execute(pool)
+        .await?
+        .rows_affected();
+    }
+    
+    Ok(())
 }
