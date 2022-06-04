@@ -288,15 +288,23 @@ async fn handler_search_name(
 }
 
 #[derive(Debug, Deserialize, Serialize)]
-struct SearchNameFriendListResult {
-    direct_chat_room_id: String,
-    friend_use_id: String,
-    friend_profile_image: Option<String>,
-    friend_nickname: Option<String>
+enum SearchNameFriendListResultEnum {
+    SearchNameFriendListNoneResult {
+        direct_chat_room_id: Option<u64>,
+        friend_use_id: Option<String>,
+        friend_profile_image: Option<String>,
+        friend_nickname: Option<String>
+    },
+    SearchNameFriendListResult {
+        direct_chat_room_id: u64,
+        friend_use_id: String,
+        friend_profile_image: Option<String>,
+        friend_nickname: Option<String>
+    }
 }
 
 // SQL実行部分(Friends)
-async fn search_name_friends(pool: &MySqlPool, user_id: &str, search_text: &str) -> anyhow::Result<Vec<SearchNameFriendListResult>> {
+async fn search_name_friends(pool: &MySqlPool, user_id: &str, search_text: &str) -> anyhow::Result<Vec<SearchNameFriendListResultEnum>> {
     // 取得したいデータ
     // "direct_chat_room_id": "1",
     // "friend_use_id": "asami111",
@@ -307,6 +315,7 @@ async fn search_name_friends(pool: &MySqlPool, user_id: &str, search_text: &str)
     // ①userテーブルのnicknameが一致
     // ②followテーブルのfrom_user_idが自分の場合のto_user_idが友達のuser_id
     // ②direct_memberテーブルのdeleteフラグがfalseである(非表示の友達も表示する)
+    
     let search_name_friend_list = sqlx::query!(
         r#"
             SELECT
@@ -316,7 +325,7 @@ async fn search_name_friends(pool: &MySqlPool, user_id: &str, search_text: &str)
                 f.direct_chat_room_id as direct_chat_room_id
             FROM
                 user as u
-                LEFT JOIN
+                INNER JOIN
                     follow as f
                 ON  u.id = f.to_user_id
             WHERE
@@ -353,22 +362,34 @@ async fn search_name_friends(pool: &MySqlPool, user_id: &str, search_text: &str)
     .await
     .unwrap();
 
-    let mut result:Vec<SearchNameFriendListResult> = vec![];
+    let mut result:Vec<SearchNameFriendListResultEnum> = vec![];
 
-    for row in &search_name_friend_list {
-        let friend = SearchNameFriendListResult {
-            direct_chat_room_id: row.direct_chat_room_id.unwrap().to_string(),
-            friend_use_id: row.friend_user_id.to_string(),
-            friend_profile_image:  match &row.friend_profile_image {
-                Some(friend_profile_image) => Some(friend_profile_image.to_string()),
-                None => None
-            },
-            friend_nickname:  match &row.friend_nickname {
-                Some(friend_nickname) => Some(friend_nickname.to_string()),
-                None => None
-            },
-          };
-          result.push(friend);
+    if search_name_friend_list.len() == 0 {
+        result.push(
+            SearchNameFriendListResultEnum::SearchNameFriendListNoneResult {
+                direct_chat_room_id: None,
+                friend_use_id: None,
+                friend_profile_image: None,
+                friend_nickname: None,
+            }
+        )
+    } else {
+        let mut result:Vec<SearchNameFriendListResultEnum> = vec![];
+        for row in &search_name_friend_list {
+            let friend = SearchNameFriendListResultEnum::SearchNameFriendListResult {
+                direct_chat_room_id: row.direct_chat_room_id, 
+                friend_use_id: row.friend_user_id.to_string(),
+                friend_profile_image:  match &row.friend_profile_image {
+                    Some(friend_profile_image) => Some(friend_profile_image.to_string()),
+                    None => None
+                },
+                friend_nickname:  match &row.friend_nickname {
+                    Some(friend_nickname) => Some(friend_nickname.to_string()),
+                    None => None
+                },
+              };
+              result.push(friend);
+        }
     }
 
     Ok(result)
@@ -566,7 +587,10 @@ async fn handler_add_group(
     body_json: Json<AddGroupJson>
 ) -> Json<Value> {
     // group_imageの取得
-    let group_image = body_json.group_image.as_ref().unwrap();
+    let group_image = match &body_json.group_image{
+        Some(group_image) => Some(group_image),
+        None => None
+    };
 
     // group_nameの取得
     let group_name = &body_json.group_name;
@@ -575,12 +599,12 @@ async fn handler_add_group(
     let group_member_user_ids = &body_json.group_member_user_ids;
 
     let pool = MySqlPool::connect(&env::var("DATABASE_URL").unwrap()).await.unwrap();
-    let result = add_group(&pool, &group_image, &group_name, &group_member_user_ids).await.unwrap();
+    let result = add_group(&pool, group_image, &group_name, &group_member_user_ids).await.unwrap();
     Json(json!({ "group_info": result }))
 }
 
 // SQL実行部分
-async fn add_group(pool: &MySqlPool, group_image:&str, group_name: &str, group_member_user_ids: &Vec<String>) -> anyhow::Result<AddGroupResult> {
+async fn add_group(pool: &MySqlPool, group_image:Option<&String>, group_name: &str, group_member_user_ids: &Vec<String>) -> anyhow::Result<AddGroupResult> {
     let now = SystemTime::now().duration_since(SystemTime::UNIX_EPOCH).unwrap().as_secs();
 
     // group_chat_roomテーブルの追加
@@ -615,7 +639,14 @@ async fn add_group(pool: &MySqlPool, group_image:&str, group_name: &str, group_m
     }
 
     let result = AddGroupResult {
-        group_image: if group_image.len() != 0 {Some(group_image.to_string())} else {None},
+        // group_image: match group_image {
+        //     Some(group_image) => Some(group_image),
+        //     None => None
+        // },
+        group_image: match group_image{
+            Some(group_image) => Some(group_image.clone()), // &StringをStringにするには、.clone()を行う
+            None => None
+        },
         group_name: group_name.to_string(),
         group_chat_room_id : group_chat_room_id.to_string()
     };
