@@ -420,7 +420,7 @@ async fn search_name_groups(pool: &MySqlPool, user_id: &str, search_text: &str) 
             g.group_image as group_image
             FROM
                 group_chat_room as g
-                LEFT JOIN
+                INNER JOIN
                     group_member as gm
                 ON  g.id = gm.group_chat_room_id
             WHERE
@@ -486,7 +486,7 @@ async fn fetch_group_list(pool: &MySqlPool, user_id:&str) -> anyhow::Result<Vec<
                 g.group_image as group_image
             FROM
                 group_chat_room as g
-                LEFT JOIN
+                INNER JOIN
                     group_member as gm
                 ON  g.id = gm.group_chat_room_id
             WHERE
@@ -682,7 +682,7 @@ async fn fetch_group_count(pool: &MySqlPool, user_id:&str) -> anyhow::Result<i64
                 COUNT(*) as group_count
             FROM
                 group_member as gm
-                LEFT JOIN
+                INNER JOIN
                     group_chat_room as g
                 ON  gm.group_chat_room_id = g.id
             WHERE
