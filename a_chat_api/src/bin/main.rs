@@ -1427,9 +1427,14 @@ impl Default for FetchChatRoomListQuery {
 #[serde(tag = "type")]
 enum FetchChatRoomListResultEnum {
     // 検索にヒットしない場合(何も返さない)
-    FetchChatRoomListNoHitsInSearchResult {
-    }, 
+    None,
     // 検索にヒットした場合(友達)
+    Some(Vec<FetchChatRoomListResultEnumItem>)
+}
+
+#[derive(Debug, Deserialize, Serialize)]
+#[serde(tag = "type")]
+enum FetchChatRoomListResultEnumItem {
     FetchChatRoomListSearchHitsFriendResult {
         direct_chat_room_id: u64,
         friend_user_id: String,
@@ -1469,8 +1474,8 @@ async fn handler_fetch_chat_room_list(
 }
 
 // SQL実行部分(Friends)
-async fn fetch_chat_room_list(pool: &MySqlPool, user_id: &str, search_text: Option<String>) -> anyhow::Result<Vec<FetchChatRoomListResultEnum>> {
-    let mut result_list:Vec<FetchChatRoomListResultEnum> = vec![];
+async fn fetch_chat_room_list(pool: &MySqlPool, user_id: &str, search_text: Option<String>) -> anyhow::Result<FetchChatRoomListResultEnum> {
+    let mut result_list = vec![];
     match search_text {
         Some(search_text) => {
         // search_textがある場合、user_idに紐づくチャットルーム一覧をsearch_textで更に絞る
@@ -1577,7 +1582,7 @@ async fn fetch_chat_room_list(pool: &MySqlPool, user_id: &str, search_text: Opti
             // グループ
         },
     };
-  Ok(result_list)  
+  Ok(FetchChatRoomListResultEnum::Some(result_list))  
 }
 
 
@@ -1716,7 +1721,7 @@ async fn fetch_chat_room_list_last_message_info_unread_count(pool: &MySqlPool, d
 }
 
 // 友達の場合の戻り値を生成
-async fn make_chat_room_list_result_list_friend(pool: &MySqlPool, direct_chat_room_id: &u64, &own_last_read_time:&i32, friend_user_id:&String, friend_nickname:Option<&String>,friend_profile_image: Option<&String> , mut result_list:Vec<FetchChatRoomListResultEnum>) -> anyhow::Result<Vec<FetchChatRoomListResultEnum>>{
+async fn make_chat_room_list_result_list_friend(pool: &MySqlPool, direct_chat_room_id: &u64, &own_last_read_time:&i32, friend_user_id:&String, friend_nickname:Option<&String>,friend_profile_image: Option<&String> , mut result_list:Vec<FetchChatRoomListResultEnumItem>) -> anyhow::Result<Vec<FetchChatRoomListResultEnumItem>>{
      // 最終メッセージ情報の取得
      let last_message_info = fetch_chat_room_list_last_message_info(&pool, &direct_chat_room_id).await.unwrap();
      match last_message_info {
@@ -1730,7 +1735,7 @@ async fn make_chat_room_list_result_list_friend(pool: &MySqlPool, direct_chat_ro
              // 相手のメッセージ送信時間が自分のチャット確認時間より後(大きい)の件数を取得
              let unread_count = fetch_chat_room_list_last_message_info_unread_count(&pool, &direct_chat_room_id, &own_last_read_time, &friend_user_id).await.unwrap();
 
-             let result = FetchChatRoomListResultEnum::FetchChatRoomListSearchHitsFriendResult {
+             let result = FetchChatRoomListResultEnumItem::FetchChatRoomListSearchHitsFriendResult {
                  direct_chat_room_id: direct_chat_room_id.clone(),
                  friend_user_id: friend_user_id.to_string(),
                  friend_nickname: match &friend_nickname{
