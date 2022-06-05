@@ -15,6 +15,7 @@ use sqlx::mysql::MySqlPool;
 use std::env;
 use dotenv::dotenv;
 use std::time::SystemTime;
+use std::collections::HashMap;
 
 #[tokio::main]
 async fn main(){
@@ -40,7 +41,9 @@ async fn main(){
         .route("/api/users/:user_id/friends", post(handler_add_friend))
         .route("/api/users/:user_id/profile", get(handler_fetch_profile_by_user_id))
         .route("/api/users/:user_id/profile", post(handler_update_profile))
-        .route("/api/users/:user_id/user", get(handler_fetch_friend_info_by_friend_user_id));
+        .route("/api/users/:user_id/user", get(handler_fetch_friend_info_by_friend_user_id))
+        .route("/api/users/:user_id/chatRoom", get(handler_fetch_chat_room_list));
+
 
     // localhost:3000 で hyper と共に実行する
     axum::Server::bind(&"0.0.0.0:3000".parse().unwrap())
@@ -1246,7 +1249,7 @@ struct FetchFriendInfoByUserIdResult {
 
 // handler
 async fn handler_fetch_friend_info_by_friend_user_id(
-    Path(path): Path<SearchNamePath>,
+    Path(path): Path<FetchFriendInfoByUserIdPath>,
     query: Option<Query<FetchFriendInfoByUserIdQuery>>,
 ) -> Json<Value> {
     let user_id = path.user_id;
@@ -1320,7 +1323,7 @@ async fn fetch_friend_info_by_friend_user_id(pool: &MySqlPool, user_id: &str, se
         .unwrap();
 
         let search_flag:bool = if   search_friend_user_info[0].search_flag == 1 { true } else { false };
-        println!("{:?}", search_flag);
+
         // 既に友達になっているかのチェック
         let result = sqlx::query!(
             r#"
@@ -1340,7 +1343,6 @@ async fn fetch_friend_info_by_friend_user_id(pool: &MySqlPool, user_id: &str, se
         .unwrap();
 
         let already_follow_requested = if result[0].already_follow_requested == 1 { true } else { false };
-        println!("{:?} already_follow_requested", already_follow_requested);
 
         if !already_follow_requested {
             // まだ友達になっていない場合
@@ -1399,4 +1401,237 @@ async fn fetch_friend_info_by_friend_user_id(pool: &MySqlPool, user_id: &str, se
 
         }
     }
+}
+
+/*
+  チャットルーム一覧取得
+*/
+#[derive(Debug, Deserialize, Serialize)]
+struct FetchChatRoomListPath {
+    user_id: String,
+}
+
+#[derive(Debug, Deserialize, Serialize)]
+struct FetchChatRoomListQuery {
+    search_text: Option<String>,
+}
+
+// デフォルト値の取得
+impl Default for FetchChatRoomListQuery {
+    fn default() -> Self {
+        Self { search_text: None }
+    }
+}
+
+#[derive(Debug, Deserialize, Serialize)]
+#[serde(tag = "type")]
+enum FetchChatRoomListResultEnum {
+    // 検索にヒットしない場合(何も返さない)
+    FetchChatRoomListNoHitsInSearchResult {
+    }, 
+    // 検索にヒットした場合(友達)
+    FetchChatRoomListSearchHitsFriendResult {
+        direct_chat_room_id: u64,
+        friend_user_id: String,
+        friend_nickname: Option<String>,
+        friend_profile_image: Option<String>,
+        last_message_content: Option<String>,
+        last_message_created_at: Option<i32>,
+        unread_count: i64
+    },
+    // 検索にヒットした場合(グループ)
+    FetchChatRoomListSearchHitsGroupResult {
+        group_chat_room_id: u64,
+        group_name: String,
+        group_image: Option<String>,
+        last_message_content: Option<String>,
+        last_message_created_at: Option<i32>,
+        group_member_user_id: Vec<String>,
+        unread_count: i64
+    }
+}
+
+// handler
+async fn handler_fetch_chat_room_list(
+    Path(path): Path<FetchChatRoomListPath>,
+    query: Option<Query<FetchChatRoomListQuery>>,
+) -> Json<Value> {
+    let user_id = path.user_id;
+    // unwrap_or_default: Okの場合値を返し、Errの場合値の型のデフォルトを返す
+    let Query(query) = query.unwrap_or_default();
+    let search_text = query.search_text;
+
+    // friends
+    let pool = MySqlPool::connect(&env::var("DATABASE_URL").unwrap()).await.unwrap();
+    let result = fetch_chat_room_list(&pool, &user_id, search_text).await.unwrap();
+    
+    Json(json!({ "result": result }))
+}
+
+// SQL実行部分(Friends)
+async fn fetch_chat_room_list(pool: &MySqlPool, user_id: &str, search_text: Option<String>) -> anyhow::Result<Vec<FetchChatRoomListResultEnum>> {
+    let mut result_list:Vec<FetchChatRoomListResultEnum> = vec![];
+    match search_text {
+        Some(search_text) => {
+        // search_textがある場合、user_idに紐づくチャットルーム一覧をsearch_textで更に絞る
+        // 友達
+
+        // グループ
+        },
+        None => {
+            // search_textがない場合、user_idに紐づくチャットルーム一覧を取得
+            // 友達
+            // 該当userが関わるdirect_chat_room_idの取得
+            let result = sqlx::query!(
+                r#"
+                    SELECT
+                        direct_chat_room_id
+                    FROM
+                        direct_member
+                    WHERE
+                        user_id = ?
+                    AND message_delete_flag = FALSE
+                    AND message_hidden_flag = FALSE
+                    "#,
+                    user_id
+            )
+            .fetch_all(pool)
+            .await
+            .unwrap();
+
+            let mut direct_chat_room_list:Vec<u64> = vec![];
+
+            // direct_chat_room_idをvecに入れ直す
+            for list in &result{
+                direct_chat_room_list.push(list.direct_chat_room_id);
+            }
+
+            // direct_chat_room_idごとに以下を実行
+            for direct_chat_room_id in &direct_chat_room_list {
+                // direct_chat_room_idに紐づく2つのuser_idのうち、自分ではないuser_idの取得
+                // 自分ではないuser_idのニックネーム、プロフィール画像を取得
+                let result = sqlx::query!(
+                    r#"
+                        SELECT
+                            dm.direct_chat_room_id as direct_chat_room_id,
+                            dm.user_id as friend_user_id,
+                            u.nickname as friend_nickname,
+                            u.profile_image as friend_profile_image
+                        FROM
+                            direct_member as dm
+                            INNER JOIN
+                                user as u
+                            ON  u.id = dm.user_id
+                        WHERE
+                            dm.direct_chat_room_id = ?
+                        AND dm.user_id != ?
+                        "#,
+                        direct_chat_room_id,
+                        user_id
+                )
+                .fetch_all(pool)
+                .await
+                .unwrap();
+                
+                let friend_user_id = &result[0].friend_user_id;
+                let friend_nickname = &result[0].friend_nickname;
+                let friend_profile_image = &result[0].friend_profile_image;
+
+                // 自分のuser_id、direct_chat_room_idでlast_read_timeを取得
+                let result = sqlx::query!(
+                    r#"
+                        SELECT
+                            last_read_time
+                        FROM
+                            direct_member
+                        WHERE
+                            user_id = ?
+                        AND direct_chat_room_id = ?
+                        "#,
+                        user_id,
+                        direct_chat_room_id,
+                )
+                .fetch_all(pool)
+                .await
+                .unwrap();
+
+                let own_last_read_time = result[0].last_read_time;
+
+                // 最終メッセージ情報の取得
+                let result = sqlx::query!(
+                    r#"
+                        SELECT
+                            direct_chat_room_id,
+                            sender_id,
+                            content,
+                            created_at
+                        FROM
+                            message
+                        WHERE
+                            direct_chat_room_id = ?
+                        ORDER BY
+                            created_at DESC
+                        LIMIT 1
+                        "#,
+                        direct_chat_room_id
+                )
+                .fetch_all(pool)
+                .await
+                .unwrap();
+
+                if result.len() == 0{
+                    // まだ該当の友達とメッセージのやり取りをしたことがない場合
+                    println!("やりとり無");
+                } else {
+                    // 過去に該当の友達とメッセージのやりとりをしたことがある場合
+                    println!("やりとり有");
+                    let last_message_content = &result[0].content;
+                    let last_message_created_at = &result[0].created_at;
+
+                    // unread_countの取得
+                    // 相手のメッセージ送信時間が自分のチャット確認時間より後(大きい)の件数を取得
+                    let result = sqlx::query!(
+                        r#"
+                            SELECT
+                                COUNT(*) as unread_count
+                            FROM
+                                message
+                            WHERE
+                                direct_chat_room_id = ?
+                            AND created_at > ?
+                            AND sender_id = ?
+                            "#,
+                            direct_chat_room_id,
+                            own_last_read_time,
+                            friend_user_id
+                    )
+                    .fetch_all(pool)
+                    .await
+                    .unwrap();
+
+                    let unread_count = &result[0].unread_count;
+
+                    let result = FetchChatRoomListResultEnum::FetchChatRoomListSearchHitsFriendResult {
+                        direct_chat_room_id: direct_chat_room_id.clone(),
+                        friend_user_id: friend_user_id.to_string(),
+                        friend_nickname: match &friend_nickname{
+                            Some(friend_nickname) => Some(friend_nickname.to_string()),
+                            None => None
+                        },
+                        friend_profile_image: match &friend_profile_image{
+                            Some(friend_profile_image) => Some(friend_profile_image.to_string()),
+                            None => None
+                        },
+                        last_message_content: Some(last_message_content.to_string()),
+                        last_message_created_at: Some(*last_message_created_at),
+                        unread_count: *unread_count
+                    };
+
+                    result_list.push(result);
+                }
+            }
+            // グループ
+        },
+    };
+  Ok(result_list)  
 }
