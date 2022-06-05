@@ -1521,100 +1521,47 @@ async fn fetch_chat_room_list(pool: &MySqlPool, user_id: &str, search_text: Opti
                 let friend_profile_image = &result[0].friend_profile_image;
     
                 // 自分のuser_id、direct_chat_room_idでlast_read_timeを取得
-                let result = sqlx::query!(
-                    r#"
-                        SELECT
-                            last_read_time
-                        FROM
-                            direct_member
-                        WHERE
-                            user_id = ?
-                        AND direct_chat_room_id = ?
-                        "#,
-                        user_id,
-                        direct_chat_room_id,
-                )
-                .fetch_all(pool)
-                .await
-                .unwrap();
-    
-                let own_last_read_time = result[0].last_read_time;
+                let own_last_read_time = fetch_chat_room_list_own_last_read_time(&pool, &user_id, &direct_chat_room_id).await.unwrap();
     
                 // 最終メッセージ情報の取得
-                let result = sqlx::query!(
-                    r#"
-                        SELECT
-                            direct_chat_room_id,
-                            sender_id,
-                            content,
-                            created_at
-                        FROM
-                            message
-                        WHERE
-                            direct_chat_room_id = ?
-                        ORDER BY
-                            created_at DESC
-                        LIMIT 1
-                        "#,
-                        direct_chat_room_id
-                )
-                .fetch_all(pool)
-                .await
-                .unwrap();
-    
-                if result.len() == 0{
-                    // まだ該当の友達とメッセージのやり取りをしたことがない場合
-                    println!("やりとり無");
-                } else {
-                    // 過去に該当の友達とメッセージのやりとりをしたことがある場合
-                    println!("やりとり有");
-                    let last_message_content = &result[0].content;
-                    let last_message_created_at = &result[0].created_at;
-    
-                    // unread_countの取得
-                    // 相手のメッセージ送信時間が自分のチャット確認時間より後(大きい)の件数を取得
-                    let result = sqlx::query!(
-                        r#"
-                            SELECT
-                                COUNT(*) as unread_count
-                            FROM
-                                message
-                            WHERE
-                                direct_chat_room_id = ?
-                            AND created_at > ?
-                            AND sender_id = ?
-                            "#,
-                            direct_chat_room_id,
-                            own_last_read_time,
-                            friend_user_id
-                    )
-                    .fetch_all(pool)
-                    .await
-                    .unwrap();
-    
-                    let unread_count = &result[0].unread_count;
-    
-                    let result = FetchChatRoomListResultEnum::FetchChatRoomListSearchHitsFriendResult {
-                        direct_chat_room_id: direct_chat_room_id.clone(),
-                        friend_user_id: friend_user_id.to_string(),
-                        friend_nickname: match &friend_nickname{
-                            Some(friend_nickname) => Some(friend_nickname.to_string()),
-                            None => None
-                        },
-                        friend_profile_image: match &friend_profile_image{
-                            Some(friend_profile_image) => Some(friend_profile_image.to_string()),
-                            None => None
-                        },
-                        last_message_content: Some(last_message_content.to_string()),
-                        last_message_created_at: Some(*last_message_created_at),
-                        unread_count: *unread_count
-                    };
-    
-                    result_list.push(result);
-                }
+                let last_message_info = fetch_chat_room_list_last_message_info(&pool, &direct_chat_room_id).await.unwrap();
+                match last_message_info {
+                    FetchChatRoomListLastMessageInfoEnum::Some(last_message_info) => {
+                        // 過去に該当の友達とメッセージのやりとりをしたことがある場合
+                        println!("やりとり有");
+                        let last_message_content = &last_message_info[0].content;
+                        let last_message_created_at = &last_message_info[0].created_at;
+        
+                        // unread_countの取得
+                        // 相手のメッセージ送信時間が自分のチャット確認時間より後(大きい)の件数を取得
+                        let unread_count = fetch_chat_room_list_last_message_info_unread_count(&pool, &direct_chat_room_id, &own_last_read_time, &friend_user_id).await.unwrap();
+        
+                        let result = FetchChatRoomListResultEnum::FetchChatRoomListSearchHitsFriendResult {
+                            direct_chat_room_id: direct_chat_room_id.clone(),
+                            friend_user_id: friend_user_id.to_string(),
+                            friend_nickname: match &friend_nickname{
+                                Some(friend_nickname) => Some(friend_nickname.to_string()),
+                                None => None
+                            },
+                            friend_profile_image: match &friend_profile_image{
+                                Some(friend_profile_image) => Some(friend_profile_image.to_string()),
+                                None => None
+                            },
+                            last_message_content: Some(last_message_content.to_string()),
+                            last_message_created_at: Some(*last_message_created_at),
+                            unread_count: unread_count
+                        };
+        
+                        result_list.push(result);
+
+                    },
+                    FetchChatRoomListLastMessageInfoEnum::None => {
+                        // まだ該当の友達とメッセージのやり取りをしたことがない場合
+                        println!("やりとり無");
+                    }
+                };
             }
         }
-
 
         // グループ
         // search_textが友達のgroup_nameと一致
@@ -1657,97 +1604,44 @@ async fn fetch_chat_room_list(pool: &MySqlPool, user_id: &str, search_text: Opti
                 let friend_profile_image = &result[0].friend_profile_image;
 
                 // 自分のuser_id、direct_chat_room_idでlast_read_timeを取得
-                let result = sqlx::query!(
-                    r#"
-                        SELECT
-                            last_read_time
-                        FROM
-                            direct_member
-                        WHERE
-                            user_id = ?
-                        AND direct_chat_room_id = ?
-                        "#,
-                        user_id,
-                        direct_chat_room_id,
-                )
-                .fetch_all(pool)
-                .await
-                .unwrap();
-
-                let own_last_read_time = result[0].last_read_time;
-
+                let own_last_read_time = fetch_chat_room_list_own_last_read_time(&pool, &user_id, &direct_chat_room_id).await.unwrap();
                 // 最終メッセージ情報の取得
-                let result = sqlx::query!(
-                    r#"
-                        SELECT
-                            direct_chat_room_id,
-                            sender_id,
-                            content,
-                            created_at
-                        FROM
-                            message
-                        WHERE
-                            direct_chat_room_id = ?
-                        ORDER BY
-                            created_at DESC
-                        LIMIT 1
-                        "#,
-                        direct_chat_room_id
-                )
-                .fetch_all(pool)
-                .await
-                .unwrap();
+                let last_message_info = fetch_chat_room_list_last_message_info(&pool, &direct_chat_room_id).await.unwrap();
+                match last_message_info {
+                    FetchChatRoomListLastMessageInfoEnum::Some(last_message_info) => {
+                        // 過去に該当の友達とメッセージのやりとりをしたことがある場合
+                        println!("やりとり有");
+                        let last_message_content = &last_message_info[0].content;
+                        let last_message_created_at = &last_message_info[0].created_at;
+        
+                        // unread_countの取得
+                        // 相手のメッセージ送信時間が自分のチャット確認時間より後(大きい)の件数を取得
+                        let unread_count = fetch_chat_room_list_last_message_info_unread_count(&pool, &direct_chat_room_id, &own_last_read_time, &friend_user_id).await.unwrap();
+        
+                        let result = FetchChatRoomListResultEnum::FetchChatRoomListSearchHitsFriendResult {
+                            direct_chat_room_id: direct_chat_room_id.clone(),
+                            friend_user_id: friend_user_id.to_string(),
+                            friend_nickname: match &friend_nickname{
+                                Some(friend_nickname) => Some(friend_nickname.to_string()),
+                                None => None
+                            },
+                            friend_profile_image: match &friend_profile_image{
+                                Some(friend_profile_image) => Some(friend_profile_image.to_string()),
+                                None => None
+                            },
+                            last_message_content: Some(last_message_content.to_string()),
+                            last_message_created_at: Some(*last_message_created_at),
+                            unread_count: unread_count
+                        };
+        
+                        result_list.push(result);
 
-                if result.len() == 0{
-                    // まだ該当の友達とメッセージのやり取りをしたことがない場合
-                    println!("やりとり無");
-                } else {
-                    // 過去に該当の友達とメッセージのやりとりをしたことがある場合
-                    println!("やりとり有");
-                    let last_message_content = &result[0].content;
-                    let last_message_created_at = &result[0].created_at;
-
-                    // unread_countの取得
-                    // 相手のメッセージ送信時間が自分のチャット確認時間より後(大きい)の件数を取得
-                    let result = sqlx::query!(
-                        r#"
-                            SELECT
-                                COUNT(*) as unread_count
-                            FROM
-                                message
-                            WHERE
-                                direct_chat_room_id = ?
-                            AND created_at > ?
-                            AND sender_id = ?
-                            "#,
-                            direct_chat_room_id,
-                            own_last_read_time,
-                            friend_user_id
-                    )
-                    .fetch_all(pool)
-                    .await
-                    .unwrap();
-
-                    let unread_count = &result[0].unread_count;
-
-                    let result = FetchChatRoomListResultEnum::FetchChatRoomListSearchHitsFriendResult {
-                        direct_chat_room_id: direct_chat_room_id.clone(),
-                        friend_user_id: friend_user_id.to_string(),
-                        friend_nickname: match &friend_nickname{
-                            Some(friend_nickname) => Some(friend_nickname.to_string()),
-                            None => None
-                        },
-                        friend_profile_image: match &friend_profile_image{
-                            Some(friend_profile_image) => Some(friend_profile_image.to_string()),
-                            None => None
-                        },
-                        last_message_content: Some(last_message_content.to_string()),
-                        last_message_created_at: Some(*last_message_created_at),
-                        unread_count: *unread_count
-                    };
-
-                    result_list.push(result);
-                }
+                    },
+                    FetchChatRoomListLastMessageInfoEnum::None => {
+                        // まだ該当の友達とメッセージのやり取りをしたことがない場合
+                        println!("やりとり無");
+                    }
+                };
             }
             // グループ
         },
@@ -1755,6 +1649,8 @@ async fn fetch_chat_room_list(pool: &MySqlPool, user_id: &str, search_text: Opti
   Ok(result_list)  
 }
 
+
+// 該当userが関わるdirect_chat_room_idの取得
 async fn fetch_chat_room_list_direct_chat_room_id(pool: &MySqlPool, user_id:&str) -> anyhow::Result<Vec<u64>>{
     let result = sqlx::query!(
         r#"
@@ -1781,6 +1677,111 @@ async fn fetch_chat_room_list_direct_chat_room_id(pool: &MySqlPool, user_id:&str
         direct_chat_room_list.push(list.direct_chat_room_id);
     }
     Ok(direct_chat_room_list)
+}
+
+// 自分のuser_id、direct_chat_room_idでlast_read_timeを取得
+async fn fetch_chat_room_list_own_last_read_time(pool: &MySqlPool, user_id:&str, direct_chat_room_id: &u64) -> anyhow::Result<i32>{
+    let result = sqlx::query!(
+        r#"
+            SELECT
+                last_read_time
+            FROM
+                direct_member
+            WHERE
+                user_id = ?
+            AND direct_chat_room_id = ?
+            "#,
+            user_id,
+            direct_chat_room_id,
+    )
+    .fetch_all(pool)
+    .await
+    .unwrap();
+
+    let own_last_read_time = result[0].last_read_time;
+    Ok(own_last_read_time)
+}
+
+#[derive(Debug, Deserialize, Serialize)]
+struct  FetchChatRoomListLastMessageInfoResult {
+    direct_chat_room_id: u64,
+    sender_id: String,
+    content: String,
+    created_at: i32
+}
+
+#[derive(Debug, Deserialize, Serialize)]
+enum FetchChatRoomListLastMessageInfoEnum {
+    None,
+    Some(Vec<FetchChatRoomListLastMessageInfoResult>)
+}
+
+// 最終メッセージ情報の取得
+async fn fetch_chat_room_list_last_message_info(pool: &MySqlPool, direct_chat_room_id: &u64) -> anyhow::Result<FetchChatRoomListLastMessageInfoEnum>{
+    let result = sqlx::query!(
+        r#"
+            SELECT
+                direct_chat_room_id,
+                sender_id,
+                content,
+                created_at
+            FROM
+                message
+            WHERE
+                direct_chat_room_id = ?
+            ORDER BY
+                created_at DESC
+            LIMIT 1
+            "#,
+            direct_chat_room_id
+    )
+    .fetch_all(pool)
+    .await
+    .unwrap();
+
+    let mut message_info_list = vec![];
+
+    if result.len() == 0 {
+        // メッセージがない場合
+        return Ok(FetchChatRoomListLastMessageInfoEnum::None)
+    } else {
+        for list in &result {
+            let pre_result = FetchChatRoomListLastMessageInfoResult {
+                direct_chat_room_id: list.direct_chat_room_id.unwrap(), // direct_chat_room_idは必ず値が入るため、unwrap()を許容
+                sender_id: list.sender_id.clone(),
+                content: list.content.clone(),
+                created_at: list.created_at
+            };
+            message_info_list.push(pre_result);
+        }
+        Ok(FetchChatRoomListLastMessageInfoEnum::Some(message_info_list))
+    }
+
+}
+
+// unread_countの取得
+async fn fetch_chat_room_list_last_message_info_unread_count(pool: &MySqlPool, direct_chat_room_id: &u64, &own_last_read_time: &i32, friend_user_id:&str) -> anyhow::Result<i64>{
+    let result = sqlx::query!(
+        r#"
+            SELECT
+                COUNT(*) as unread_count
+            FROM
+                message
+            WHERE
+                direct_chat_room_id = ?
+            AND created_at > ?
+            AND sender_id = ?
+            "#,
+            direct_chat_room_id,
+            own_last_read_time,
+            friend_user_id
+    )
+    .fetch_all(pool)
+    .await
+    .unwrap();
+
+    let unread_count = &result[0].unread_count;
+    Ok(*unread_count)
 }
 
 //　次やること
