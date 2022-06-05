@@ -1465,7 +1465,7 @@ async fn handler_fetch_chat_room_list(
     let pool = MySqlPool::connect(&env::var("DATABASE_URL").unwrap()).await.unwrap();
     let result = fetch_chat_room_list(&pool, &user_id, search_text).await.unwrap();
     
-    Json(json!({ "result": result }))
+    Json(json!({ "chat_room_list": result }))
 }
 
 // SQL実行部分(Friends)
@@ -1474,37 +1474,156 @@ async fn fetch_chat_room_list(pool: &MySqlPool, user_id: &str, search_text: Opti
     match search_text {
         Some(search_text) => {
         // search_textがある場合、user_idに紐づくチャットルーム一覧をsearch_textで更に絞る
+        // search_textが友達のnicknameと一致
         // 友達
+        // 該当userが関わるdirect_chat_room_idの取得
+        let direct_chat_room_list = fetch_chat_room_list_direct_chat_room_id(&pool, &user_id).await.unwrap();
 
-        // グループ
-        },
-        None => {
-            // search_textがない場合、user_idに紐づくチャットルーム一覧を取得
-            // 友達
-            // 該当userが関わるdirect_chat_room_idの取得
+        // direct_chat_room_idごとに以下を実行
+        for direct_chat_room_id in &direct_chat_room_list {
+            // direct_chat_room_idに紐づく2つのuser_idのうち、自分ではないuser_idの取得
+            // 自分ではないuser_idのニックネーム、プロフィール画像を取得
+            // かつ、相手のnick_nameがsearch_textに一致する
+            let like_query = format!("{}{}{}", "%", search_text, "%");
+
             let result = sqlx::query!(
                 r#"
                     SELECT
-                        direct_chat_room_id
+                        dm.direct_chat_room_id as direct_chat_room_id,
+                        dm.user_id as friend_user_id,
+                        u.nickname as friend_nickname,
+                        u.profile_image as friend_profile_image
                     FROM
-                        direct_member
+                        direct_member as dm
+                        INNER JOIN
+                            user as u
+                        ON  u.id = dm.user_id
                     WHERE
-                        user_id = ?
-                    AND message_delete_flag = FALSE
-                    AND message_hidden_flag = FALSE
+                        dm.direct_chat_room_id = ?
+                    AND dm.user_id != ?
+                    and u.nickname LIKE ?
                     "#,
-                    user_id
+                    direct_chat_room_id,
+                    user_id,
+                    like_query
             )
             .fetch_all(pool)
             .await
             .unwrap();
 
-            let mut direct_chat_room_list:Vec<u64> = vec![];
-
-            // direct_chat_room_idをvecに入れ直す
-            for list in &result{
-                direct_chat_room_list.push(list.direct_chat_room_id);
+            if result.len() == 0 {
+                // direct_chat_room_idに紐づく相手のuser_idがsearch_textにヒットしない場合
+                continue
+            } else {
+                // direct_chat_room_idに紐づく相手のuser_idがsearch_textにヒットした場合
+                let friend_user_id = &result[0].friend_user_id;
+                let friend_nickname = &result[0].friend_nickname;
+                let friend_profile_image = &result[0].friend_profile_image;
+    
+                // 自分のuser_id、direct_chat_room_idでlast_read_timeを取得
+                let result = sqlx::query!(
+                    r#"
+                        SELECT
+                            last_read_time
+                        FROM
+                            direct_member
+                        WHERE
+                            user_id = ?
+                        AND direct_chat_room_id = ?
+                        "#,
+                        user_id,
+                        direct_chat_room_id,
+                )
+                .fetch_all(pool)
+                .await
+                .unwrap();
+    
+                let own_last_read_time = result[0].last_read_time;
+    
+                // 最終メッセージ情報の取得
+                let result = sqlx::query!(
+                    r#"
+                        SELECT
+                            direct_chat_room_id,
+                            sender_id,
+                            content,
+                            created_at
+                        FROM
+                            message
+                        WHERE
+                            direct_chat_room_id = ?
+                        ORDER BY
+                            created_at DESC
+                        LIMIT 1
+                        "#,
+                        direct_chat_room_id
+                )
+                .fetch_all(pool)
+                .await
+                .unwrap();
+    
+                if result.len() == 0{
+                    // まだ該当の友達とメッセージのやり取りをしたことがない場合
+                    println!("やりとり無");
+                } else {
+                    // 過去に該当の友達とメッセージのやりとりをしたことがある場合
+                    println!("やりとり有");
+                    let last_message_content = &result[0].content;
+                    let last_message_created_at = &result[0].created_at;
+    
+                    // unread_countの取得
+                    // 相手のメッセージ送信時間が自分のチャット確認時間より後(大きい)の件数を取得
+                    let result = sqlx::query!(
+                        r#"
+                            SELECT
+                                COUNT(*) as unread_count
+                            FROM
+                                message
+                            WHERE
+                                direct_chat_room_id = ?
+                            AND created_at > ?
+                            AND sender_id = ?
+                            "#,
+                            direct_chat_room_id,
+                            own_last_read_time,
+                            friend_user_id
+                    )
+                    .fetch_all(pool)
+                    .await
+                    .unwrap();
+    
+                    let unread_count = &result[0].unread_count;
+    
+                    let result = FetchChatRoomListResultEnum::FetchChatRoomListSearchHitsFriendResult {
+                        direct_chat_room_id: direct_chat_room_id.clone(),
+                        friend_user_id: friend_user_id.to_string(),
+                        friend_nickname: match &friend_nickname{
+                            Some(friend_nickname) => Some(friend_nickname.to_string()),
+                            None => None
+                        },
+                        friend_profile_image: match &friend_profile_image{
+                            Some(friend_profile_image) => Some(friend_profile_image.to_string()),
+                            None => None
+                        },
+                        last_message_content: Some(last_message_content.to_string()),
+                        last_message_created_at: Some(*last_message_created_at),
+                        unread_count: *unread_count
+                    };
+    
+                    result_list.push(result);
+                }
             }
+        }
+
+
+        // グループ
+        // search_textが友達のgroup_nameと一致
+        },
+        None => {
+            // search_textがない場合、user_idに紐づくチャットルーム一覧を取得
+            // 友達
+            // 該当userが関わるdirect_chat_room_idの取得
+            let direct_chat_room_list = fetch_chat_room_list_direct_chat_room_id(&pool, &user_id).await.unwrap();
 
             // direct_chat_room_idごとに以下を実行
             for direct_chat_room_id in &direct_chat_room_list {
@@ -1635,3 +1754,35 @@ async fn fetch_chat_room_list(pool: &MySqlPool, user_id: &str, search_text: Opti
     };
   Ok(result_list)  
 }
+
+async fn fetch_chat_room_list_direct_chat_room_id(pool: &MySqlPool, user_id:&str) -> anyhow::Result<Vec<u64>>{
+    let result = sqlx::query!(
+        r#"
+            SELECT
+                direct_chat_room_id
+            FROM
+                direct_member
+            WHERE
+                user_id = ?
+            AND message_delete_flag = FALSE
+            AND message_hidden_flag = FALSE
+            "#,
+            user_id
+    )
+    .fetch_all(pool)
+    .await
+    .unwrap();
+
+
+    let mut direct_chat_room_list:Vec<u64> = vec![];
+
+    // direct_chat_room_idをvecに入れ直す
+    for list in &result{
+        direct_chat_room_list.push(list.direct_chat_room_id);
+    }
+    Ok(direct_chat_room_list)
+}
+
+//　次やること
+// ①friendをまとめられるところまとめる(search_textあり、なし実装済み)
+// ②messageテーブルのlast_created_atをマストにする(マイグレーション、addfriendのクエリ追加)
