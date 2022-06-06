@@ -632,11 +632,12 @@ async fn add_group(pool: &MySqlPool, group_image:Option<&String>, group_name: &s
     for user_id in group_member_user_ids {
         sqlx::query!(
             r#"
-                INSERT INTO group_member ( group_chat_room_id, user_id, entry_date )
-                VALUES ( ?, ? , ? )
+                INSERT INTO group_member ( group_chat_room_id, user_id, entry_date, last_read_time )
+                VALUES ( ?, ? , ?, ? )
             "#,
             &group_chat_room_id,
             user_id,
+            &now,
             &now
         )
         .execute(pool)
@@ -1764,4 +1765,3 @@ async fn make_chat_room_list_result_list_friend(pool: &MySqlPool, direct_chat_ro
 
 //　次やること
 // ①friendをまとめられるところまとめる(search_textあり、なし実装済み)
-// ②messageテーブルのlast_created_atをマストにする(マイグレーション、addfriendのクエリ追加)
