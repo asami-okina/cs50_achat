@@ -42,7 +42,7 @@ async fn main(){
         .route("/api/users/:user_id/profile", get(handler_fetch_profile_by_user_id))
         .route("/api/users/:user_id/profile", post(handler_update_profile))
         .route("/api/users/:user_id/user", get(handler_fetch_friend_info_by_friend_user_id))
-        .route("/api/users/:user_id/chatRoom", get(handler_fetch_chat_room_list));
+        .route("/api/users/:user_id/chat-room", get(handler_fetch_chat_room_list));
 
 
     // localhost:3000 で hyper と共に実行する
@@ -1425,7 +1425,6 @@ impl Default for FetchChatRoomListQuery {
 }
 
 #[derive(Debug, Deserialize, Serialize)]
-#[serde(tag = "type")]
 enum FetchChatRoomListResultEnum {
     // 検索にヒットしない場合(何も返さない)
     None,
