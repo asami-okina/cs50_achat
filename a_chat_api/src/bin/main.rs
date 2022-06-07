@@ -1434,6 +1434,7 @@ enum FetchChatRoomListResultEnum {
 
 #[derive(Debug, Deserialize, Serialize)]
 #[serde(tag = "type")]
+
 enum FetchChatRoomListResultEnumItem {
     FetchChatRoomListSearchHitsFriendResult {
         direct_chat_room_id: u64,
@@ -1469,8 +1470,15 @@ async fn handler_fetch_chat_room_list(
     // friends
     let pool = MySqlPool::connect(&env::var("DATABASE_URL").unwrap()).await.unwrap();
     let result = fetch_chat_room_list(&pool, &user_id, search_text).await.unwrap();
-    
-    Json(json!({ "chat_room_list": result }))
+
+    match result {
+        FetchChatRoomListResultEnum::Some(res) => {
+            Json(json!({ "chat_room_list": res }))
+        }, 
+        FetchChatRoomListResultEnum::None => {
+            Json(json!({ "chat_room_list": null }))
+        }
+    }
 }
 
 // SQL実行部分(Friends)
@@ -1582,7 +1590,8 @@ async fn fetch_chat_room_list(pool: &MySqlPool, user_id: &str, search_text: Opti
             // グループ
         },
     };
-  Ok(FetchChatRoomListResultEnum::Some(result_list))  
+
+    Ok(FetchChatRoomListResultEnum::Some(result_list))  
 }
 
 
