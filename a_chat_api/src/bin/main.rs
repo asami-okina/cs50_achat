@@ -1697,28 +1697,9 @@ async fn fetch_chat_room_list_group(pool: &MySqlPool, user_id: &str, search_text
                 let group_image = &result[0].group_image;
 
                 // グループメンバーのuser_idを取得
-                let result = sqlx::query!(
-                    r#"
-                        SELECT
-                            user_id
-                        FROM
-                            group_member
-                        WHERE
-                            group_chat_room_id = ?
-                        AND leave_flag = FALSE
-                        "#,
-                        group_chat_room_id
-                )
-                .fetch_all(pool)
-                .await
-                .unwrap();
-                let mut group_member_user_ids = vec![];
+                let group_member_user_ids: Vec<String> = fetch_group_member_user_ids(&pool, &group_chat_room_id).await.unwrap();
 
-                for list in &result {
-                    group_member_user_ids.push(list.user_id.clone());
-                }
-    
-                // 自分のuser_id、group_chat_room_idでlast_read_timeを取得
+                // 自分のuser_id、direct_chat_room_idでlast_read_timeを取得(Group)
                 let own_last_read_time = fetch_chat_room_list_own_last_read_time_group(&pool, &user_id, &group_chat_room_id).await.unwrap();
 
                 // グループの場合の戻り値を生成
@@ -1756,26 +1737,7 @@ async fn fetch_chat_room_list_group(pool: &MySqlPool, user_id: &str, search_text
                 let group_image = &result[0].group_image;
 
                 // グループメンバーのuser_idを取得
-                let result = sqlx::query!(
-                    r#"
-                        SELECT
-                            user_id
-                        FROM
-                            group_member
-                        WHERE
-                            group_chat_room_id = ?
-                        AND leave_flag = FALSE
-                        "#,
-                        group_chat_room_id
-                )
-                .fetch_all(pool)
-                .await
-                .unwrap();
-                let mut group_member_user_ids = vec![];
-
-                for list in &result {
-                    group_member_user_ids.push(list.user_id.clone());
-                }
+                let group_member_user_ids: Vec<String> = fetch_group_member_user_ids(&pool, &group_chat_room_id).await.unwrap();
 
                 // 自分のuser_id、group_chat_room_idでlast_read_timeを取得
                 let own_last_read_time = fetch_chat_room_list_own_last_read_time_group(&pool, &user_id, &group_chat_room_id).await.unwrap();
@@ -1787,6 +1749,31 @@ async fn fetch_chat_room_list_group(pool: &MySqlPool, user_id: &str, search_text
     };
 
     Ok(FetchChatRoomListResultEnum::Some(result_list))  
+}
+
+// group_member_user_idsの取得(Group)
+async fn fetch_group_member_user_ids(pool: &MySqlPool,group_chat_room_id: &u64) -> anyhow::Result<Vec<String>> {
+    let result = sqlx::query!(
+        r#"
+            SELECT
+                user_id
+            FROM
+                group_member
+            WHERE
+                group_chat_room_id = ?
+            AND leave_flag = FALSE
+            "#,
+            group_chat_room_id
+    )
+    .fetch_all(pool)
+    .await
+    .unwrap();
+    let mut group_member_user_ids = vec![];
+
+    for list in &result {
+        group_member_user_ids.push(list.user_id.clone());
+    }
+    Ok(group_member_user_ids)
 }
 
 // 該当userが関わるdirect_chat_room_idの取得
