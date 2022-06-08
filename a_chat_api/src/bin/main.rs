@@ -12,11 +12,9 @@ use serde::{Serialize, Deserialize};
 use serde_json::{Value, json};
 
 use sqlx::mysql::MySqlPool;
-use tokio::net::lookup_host;
 use std::{env, fmt::Debug};
 use dotenv::dotenv;
 use std::time::SystemTime;
-use std::collections::HashMap;
 
 #[tokio::main]
 async fn main(){
@@ -1507,28 +1505,15 @@ async fn handler_fetch_chat_room_list(
 
     // ソート
     // ①ソートするために、last_message_created_atをvecに抽出
-    let all_result_last_message_created_at_list = last_message_created_at_list(&all_result);
+    let all_result_last_message_created_at_list:Vec<i32> = last_message_created_at_list(&all_result);
 
     // ②①の配列で数値の比較を行い、同じindexを使用して大元のvecの並び替えを行う
-    let sorted_all_result = sort_last_message_created_at_list(&mut all_result, all_result_last_message_created_at_list);
+    let sorted_all_result:&mut Vec<FetchChatRoomListResultEnumItem> = sort_last_message_created_at_list(&mut all_result, all_result_last_message_created_at_list);
 
     Json(json!({ "chat_room_list": sorted_all_result }))
 }
 
-
-// ソートするために、last_message_created_atをvecに抽出
-fn sort_last_message_created_at_list(all_result: &mut Vec<FetchChatRoomListResultEnumItem>, all_result_last_message_created_at_list:Vec<i32>) -> &mut Vec<FetchChatRoomListResultEnumItem> {
-    for i in 0..all_result.len() {
-      for j in 0..all_result.len() - i - 1 {
-        if all_result_last_message_created_at_list[j + 1] < all_result_last_message_created_at_list[j] {
-          all_result.swap(j, j + 1);
-        }
-      }
-    }
-    all_result
-}
-
-// last_message_created_atの配列作成
+// ①ソートするために、last_message_created_atをvecに抽出
 fn last_message_created_at_list(array: &Vec<FetchChatRoomListResultEnumItem>) -> Vec<i32> {
     let mut total_list = vec![];
 
@@ -1543,6 +1528,18 @@ fn last_message_created_at_list(array: &Vec<FetchChatRoomListResultEnumItem>) ->
         }
     }
     total_list
+}
+
+// ②①の配列で数値の比較を行い、同じindexを使用して大元のvecの並び替えを行う
+fn sort_last_message_created_at_list(all_result: &mut Vec<FetchChatRoomListResultEnumItem>, all_result_last_message_created_at_list:Vec<i32>) -> &mut Vec<FetchChatRoomListResultEnumItem> {
+    for i in 0..all_result.len() {
+      for j in 0..all_result.len() - i - 1 {
+        if all_result_last_message_created_at_list[j + 1] < all_result_last_message_created_at_list[j] {
+          all_result.swap(j, j + 1);
+        }
+      }
+    }
+    all_result
 }
 
 // SQL実行部分(Friends)
