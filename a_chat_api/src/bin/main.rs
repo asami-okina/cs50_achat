@@ -13,7 +13,7 @@ use serde_json::{Value, json};
 
 use sqlx::mysql::MySqlPool;
 use tokio::net::lookup_host;
-use std::env;
+use std::{env, fmt::Debug};
 use dotenv::dotenv;
 use std::time::SystemTime;
 use std::collections::HashMap;
@@ -1293,7 +1293,6 @@ async fn fetch_friend_info_by_friend_user_id(pool: &MySqlPool, user_id: &str, se
     .unwrap();
 
     let exist_user_id:bool = if  exist_user_id[0].exist_user_id == 1 { true } else { false };
-    println!("{:?} exist_user_id", exist_user_id);
 
     if !exist_user_id {
         // 該当のユーザーIDが存在していない場合
@@ -1437,25 +1436,31 @@ enum FetchChatRoomListResultEnum {
 #[serde(tag = "type")]
 
 enum FetchChatRoomListResultEnumItem {
-    FetchChatRoomListSearchHitsFriendResult {
-        direct_chat_room_id: u64,
-        friend_user_id: String,
-        friend_nickname: Option<String>,
-        friend_profile_image: Option<String>,
-        last_message_content: Option<String>,
-        last_message_created_at: Option<i32>,
-        unread_count: i64
-    },
+    FetchChatRoomListSearchHitsFriendResult(FetchChatRoomListSearchHitsFriendResult),
     // 検索にヒットした場合(グループ)
-    FetchChatRoomListSearchHitsGroupResult {
-        group_chat_room_id: u64,
-        group_name: String,
-        group_image: Option<String>,
-        last_message_content: Option<String>,
-        last_message_created_at: Option<i32>,
-        group_member_user_id: Vec<String>,
-        unread_count: i64
-    }
+    FetchChatRoomListSearchHitsGroupResult(FetchChatRoomListSearchHitsGroupResult)
+}
+
+#[derive(Debug, Deserialize, Serialize)]
+struct FetchChatRoomListSearchHitsFriendResult {
+    direct_chat_room_id: u64,
+    friend_user_id: String,
+    friend_nickname: Option<String>,
+    friend_profile_image: Option<String>,
+    last_message_content: Option<String>,
+    last_message_created_at: i32,
+    unread_count: i64
+}
+
+#[derive(Debug, Deserialize, Serialize)]
+struct FetchChatRoomListSearchHitsGroupResult {
+    group_chat_room_id: u64,
+    group_name: String,
+    group_image: Option<String>,
+    last_message_content: Option<String>,
+    last_message_created_at: i32,
+    group_member_user_id: Vec<String>,
+    unread_count: i64
 }
 
 // handler
@@ -1500,7 +1505,44 @@ async fn handler_fetch_chat_room_list(
         }
     }
 
-    Json(json!({ "chat_room_list": all_result }))
+    // ソート
+    // ①ソートするために、last_message_created_atをvecに抽出
+    let all_result_last_message_created_at_list = last_message_created_at_list(&all_result);
+
+    // ②①の配列で数値の比較を行い、同じindexを使用して大元のvecの並び替えを行う
+    let sorted_all_result = sort_last_message_created_at_list(&mut all_result, all_result_last_message_created_at_list);
+
+    Json(json!({ "chat_room_list": sorted_all_result }))
+}
+
+
+// ソートするために、last_message_created_atをvecに抽出
+fn sort_last_message_created_at_list(all_result: &mut Vec<FetchChatRoomListResultEnumItem>, all_result_last_message_created_at_list:Vec<i32>) -> &mut Vec<FetchChatRoomListResultEnumItem> {
+    for i in 0..all_result.len() {
+      for j in 0..all_result.len() - i - 1 {
+        if all_result_last_message_created_at_list[j + 1] < all_result_last_message_created_at_list[j] {
+          all_result.swap(j, j + 1);
+        }
+      }
+    }
+    all_result
+}
+
+// last_message_created_atの配列作成
+fn last_message_created_at_list(array: &Vec<FetchChatRoomListResultEnumItem>) -> Vec<i32> {
+    let mut total_list = vec![];
+
+    for i in 0..array.len() {
+        match &array[i] {
+            FetchChatRoomListResultEnumItem::FetchChatRoomListSearchHitsFriendResult(res) => {
+                total_list.push(res.last_message_created_at)
+            },
+            FetchChatRoomListResultEnumItem::FetchChatRoomListSearchHitsGroupResult(res) => {
+                total_list.push(res.last_message_created_at)
+            }
+        }
+    }
+    total_list
 }
 
 // SQL実行部分(Friends)
@@ -1614,7 +1656,6 @@ async fn fetch_chat_room_list_friend(pool: &MySqlPool, user_id: &str, search_tex
 
 // SQL実行部分(Group)
 async fn fetch_chat_room_list_group(pool: &MySqlPool, user_id: &str, search_text: Option<String>) -> anyhow::Result<FetchChatRoomListResultEnum> {
-    println!("きた");
     let mut result_list = vec![];
     match search_text {
         Some(search_text) => {
@@ -2026,7 +2067,6 @@ async fn make_chat_room_list_result_list_friend(pool: &MySqlPool, direct_chat_ro
      match last_message_info {
          FetchChatRoomListLastMessageInfoFriendEnum::Some(last_message_info) => {
              // 過去に該当の友達とメッセージのやりとりをしたことがある場合
-             println!("やりとり有");
              let last_message_content = &last_message_info[0].content;
              let last_message_created_at = &last_message_info[0].created_at;
 
@@ -2034,7 +2074,7 @@ async fn make_chat_room_list_result_list_friend(pool: &MySqlPool, direct_chat_ro
              // 相手のメッセージ送信時間が自分のチャット確認時間より後(大きい)の件数を取得
              let unread_count = fetch_chat_room_list_last_message_info_unread_count_friend(&pool, &direct_chat_room_id, &own_last_read_time, &friend_user_id).await.unwrap();
 
-             let result = FetchChatRoomListResultEnumItem::FetchChatRoomListSearchHitsFriendResult {
+             let result = FetchChatRoomListResultEnumItem::FetchChatRoomListSearchHitsFriendResult ( FetchChatRoomListSearchHitsFriendResult {
                  direct_chat_room_id: direct_chat_room_id.clone(),
                  friend_user_id: friend_user_id.to_string(),
                  friend_nickname: match &friend_nickname{
@@ -2046,16 +2086,15 @@ async fn make_chat_room_list_result_list_friend(pool: &MySqlPool, direct_chat_ro
                      None => None
                  },
                  last_message_content: Some(last_message_content.to_string()),
-                 last_message_created_at: Some(*last_message_created_at),
+                 last_message_created_at: *last_message_created_at,
                  unread_count: unread_count
-             };
+             });
 
              result_list.push(result);
 
          },
          FetchChatRoomListLastMessageInfoFriendEnum::None => {
              // まだ該当の友達とメッセージのやり取りをしたことがない場合
-             println!("やりとり無");
          }
      };
      Ok(result_list)
@@ -2068,7 +2107,6 @@ async fn make_chat_room_list_result_list_group(pool: &MySqlPool, group_chat_room
     match last_message_info {
         FetchChatRoomListLastMessageInfoGroupEnum::Some(last_message_info) => {
             // 過去に該当の友達とメッセージのやりとりをしたことがある場合
-            println!("やりとり有");
             let last_message_content = &last_message_info[0].content;
             let last_message_created_at = &last_message_info[0].created_at;
 
@@ -2076,7 +2114,7 @@ async fn make_chat_room_list_result_list_group(pool: &MySqlPool, group_chat_room
             // 相手のメッセージ送信時間が自分のチャット確認時間より後(大きい)の件数を取得
             let unread_count = fetch_chat_room_list_last_message_info_unread_count_group(&pool, &group_chat_room_id, &own_last_read_time, &own_user_id).await.unwrap();
 
-            let result = FetchChatRoomListResultEnumItem::FetchChatRoomListSearchHitsGroupResult {
+            let result = FetchChatRoomListResultEnumItem::FetchChatRoomListSearchHitsGroupResult ( FetchChatRoomListSearchHitsGroupResult {
                 group_chat_room_id: group_chat_room_id.clone(),
                 group_name: group_name.clone(),
                 group_image: match &group_image{
@@ -2085,16 +2123,15 @@ async fn make_chat_room_list_result_list_group(pool: &MySqlPool, group_chat_room
                 },
                 group_member_user_id: group_member_user_ids,
                 last_message_content: Some(last_message_content.to_string()),
-                last_message_created_at: Some(*last_message_created_at),
+                last_message_created_at: *last_message_created_at,
                 unread_count: unread_count
-            };
+            });
 
             result_list.push(result);
 
         },
         FetchChatRoomListLastMessageInfoGroupEnum::None => {
             // まだ該当の友達とメッセージのやり取りをしたことがない場合
-            println!("やりとり無");
         }
     };
     Ok(result_list)
