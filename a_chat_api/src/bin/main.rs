@@ -1471,22 +1471,36 @@ async fn handler_fetch_chat_room_list(
 
     // friends
     let pool = MySqlPool::connect(&env::var("DATABASE_URL").unwrap()).await.unwrap();
-    let result = fetch_chat_room_list_friend(&pool, &user_id, search_text).await.unwrap();
+    let friend_result = fetch_chat_room_list_friend(&pool, &user_id, search_text).await.unwrap();
 
     // group
     let pool = MySqlPool::connect(&env::var("DATABASE_URL").unwrap()).await.unwrap();
-    let result = fetch_chat_room_list_group(&pool, &user_id,search_text_group).await.unwrap();
+    let group_result = fetch_chat_room_list_group(&pool, &user_id,search_text_group).await.unwrap();
 
-    // 最後はfriendsとgroupを合わせる
+    // friendsとgroupのリストを合算させる
+    let mut all_result = vec![];
 
-    match result {
+    match friend_result {
         FetchChatRoomListResultEnum::Some(res) => {
-            Json(json!({ "chat_room_list": res }))
+            for friend_list in res {
+                all_result.push(friend_list);
+            }
         }, 
         FetchChatRoomListResultEnum::None => {
-            Json(json!({ "chat_room_list": null }))
         }
     }
+
+    match group_result {
+        FetchChatRoomListResultEnum::Some(res) => {
+            for group_result in res {
+                all_result.push(group_result);
+            }
+        }, 
+        FetchChatRoomListResultEnum::None => {
+        }
+    }
+
+    Json(json!({ "chat_room_list": all_result }))
 }
 
 // SQL実行部分(Friends)
