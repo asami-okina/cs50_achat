@@ -2165,7 +2165,7 @@ async fn handler_update_chat_room_hidden_or_delete(
 
     let pool = MySqlPool::connect(&env::var("DATABASE_URL").unwrap()).await.unwrap();
     update_chat_room_hidden_or_delete(&pool, &user_id, direct_chat_room_id, group_chat_room_id, &update_type).await.unwrap();
-    Json(json!({ "status_code": 400 }))
+    Json(json!({ "status_code": 200 }))
 }
 
 // SQL実行部分
