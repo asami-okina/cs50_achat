@@ -2313,7 +2313,7 @@ async fn handler_fetch_message_by_chat_room_id(
     let messages = fetch_message_by_chat_room_id(&pool, chat_room_type, chat_room_id).await.unwrap();
     
     if let FetchMessageByChatRoomIdResultEnum::Some(m) = messages {
-        return Json(json!({ "messages": m }))
+        Json(json!({ "messages": m }))
     }
 
     else {
@@ -2326,15 +2326,32 @@ enum FetchMessageByChatRoomIdResultEnum {
     // 検索にヒットしない場合(何も返さない)
     None,
     // 検索にヒットした場合
-    Some(Vec<FetchMessageByChatRoomIdResult>)
+    Some(Vec<FetchMessageByChatRoomIdResultTypeEnum>)
 }
 
 #[derive(Debug, Deserialize, Serialize)]
-struct FetchMessageByChatRoomIdResult {
+#[serde(tag = "type")]
+enum FetchMessageByChatRoomIdResultTypeEnum {
+    // メッセージ内容がTextの場合
+    FetchMessageByChatRoomIdTextResult(FetchMessageByChatRoomIdTextResult),
+    // メッセージ内容がImageの場合
+    FetchMessageByChatRoomIdImageResult(FetchMessageByChatRoomIdImageResult)
+}
+
+#[derive(Debug, Deserialize, Serialize)]
+// メッセージ内容がtextの場合
+struct FetchMessageByChatRoomIdTextResult {
     _id: u64, // messageテーブルのid
     created_at: i32, // messageテーブルのcreated_at
     user: FetchMessageByChatRoomIdUserResult,
     text: Option<String>, // messageテーブルのcontent(type_idがtextのもの)
+}
+
+#[derive(Debug, Deserialize, Serialize)]
+struct FetchMessageByChatRoomIdImageResult {
+    _id: u64, // messageテーブルのid
+    created_at: i32, // messageテーブルのcreated_at
+    user: FetchMessageByChatRoomIdUserResult,
     image: Option<String>, // messageテーブルのcontent(type_idがimageのもの)
 }
 
@@ -2367,7 +2384,7 @@ async fn fetch_message_by_chat_room_id(pool: &MySqlPool, chat_room_type: FetchMe
 
 
 // resultの型に変換(Friend)
-async fn parse_friend_fetch_message_by_chat_room_id_result(pool: &MySqlPool, chat_room_id: &Option<u64>) -> anyhow::Result<Vec<FetchMessageByChatRoomIdResult>> {
+async fn parse_friend_fetch_message_by_chat_room_id_result(pool: &MySqlPool, chat_room_id: &Option<u64>) -> anyhow::Result<Vec<FetchMessageByChatRoomIdResultTypeEnum>> {
     let result = sqlx::query!(
         r#"
             SELECT
@@ -2394,7 +2411,7 @@ async fn parse_friend_fetch_message_by_chat_room_id_result(pool: &MySqlPool, cha
     .await
     .unwrap();
 
-    let mut messages:Vec<FetchMessageByChatRoomIdResult> = vec![];
+    let mut messages:Vec<FetchMessageByChatRoomIdResultTypeEnum> = vec![];
 
     for list in &result {
         let text_sender_info = FetchMessageByChatRoomIdUserResult {
@@ -2404,13 +2421,14 @@ async fn parse_friend_fetch_message_by_chat_room_id_result(pool: &MySqlPool, cha
         };
         // textの場合
         if list.content_type_id == 1 {
-            let message_list = FetchMessageByChatRoomIdResult {
-                _id: list.message_id, // messageテーブルのid
-                created_at: list.created_at, // messageテーブルのcreated_at
-                user: text_sender_info,
-                text: Some(list.content.clone()), // messageテーブルのcontent(type_idがtextのもの)
-                image: None, // messageテーブルのcontent(type_idがimageのもの)
-              };
+            let message_list = FetchMessageByChatRoomIdResultTypeEnum::FetchMessageByChatRoomIdTextResult(
+                FetchMessageByChatRoomIdTextResult {
+                    _id: list.message_id, // messageテーブルのid
+                    created_at: list.created_at, // messageテーブルのcreated_at
+                    user: text_sender_info,
+                    text: Some(list.content.clone()), // messageテーブルのcontent(type_idがtextのもの)
+                  }
+            );
               messages.push(message_list);
         }
         let image_sender_info = FetchMessageByChatRoomIdUserResult {
@@ -2421,13 +2439,14 @@ async fn parse_friend_fetch_message_by_chat_room_id_result(pool: &MySqlPool, cha
 
         // imageの場合
         if list.content_type_id == 2 {
-            let message_list = FetchMessageByChatRoomIdResult {
-                _id: list.message_id, // messageテーブルのid
-                created_at: list.created_at, // messageテーブルのcreated_at
-                user: image_sender_info,
-                text: None, // messageテーブルのcontent(type_idがtextのもの)
-                image: Some(list.content.clone()), // messageテーブルのcontent(type_idがimageのもの)
-                };
+            let message_list = FetchMessageByChatRoomIdResultTypeEnum::FetchMessageByChatRoomIdImageResult(
+                FetchMessageByChatRoomIdImageResult {
+                    _id: list.message_id, // messageテーブルのid
+                    created_at: list.created_at, // messageテーブルのcreated_at
+                    user: image_sender_info,
+                    image: Some(list.content.clone()), // messageテーブルのcontent(type_idがimageのもの)
+                    }
+            );
                 messages.push(message_list);
         }
     }
@@ -2436,7 +2455,7 @@ async fn parse_friend_fetch_message_by_chat_room_id_result(pool: &MySqlPool, cha
 }
 
 // resultの型に変換(Group)
-async fn parse_group_fetch_message_by_chat_room_id_result(pool: &MySqlPool, chat_room_id: &Option<u64>) -> anyhow::Result<Vec<FetchMessageByChatRoomIdResult>> {
+async fn parse_group_fetch_message_by_chat_room_id_result(pool: &MySqlPool, chat_room_id: &Option<u64>) -> anyhow::Result<Vec<FetchMessageByChatRoomIdResultTypeEnum>> {
     let result = sqlx::query!(
         r#"
             SELECT
@@ -2463,7 +2482,7 @@ async fn parse_group_fetch_message_by_chat_room_id_result(pool: &MySqlPool, chat
     .await
     .unwrap();
 
-    let mut messages:Vec<FetchMessageByChatRoomIdResult> = vec![];
+    let mut messages:Vec<FetchMessageByChatRoomIdResultTypeEnum> = vec![];
 
     for list in &result {
         let text_sender_info = FetchMessageByChatRoomIdUserResult {
@@ -2471,34 +2490,36 @@ async fn parse_group_fetch_message_by_chat_room_id_result(pool: &MySqlPool, chat
             name: list.sender_nickname.clone(),
             avatar: list.sender_profile_image.clone()
         };
-        // textの場合
-        if list.content_type_id == 1 {
-            let message_list = FetchMessageByChatRoomIdResult {
+      // textの場合
+      if list.content_type_id == 1 {
+        let message_list = FetchMessageByChatRoomIdResultTypeEnum::FetchMessageByChatRoomIdTextResult(
+            FetchMessageByChatRoomIdTextResult {
                 _id: list.message_id, // messageテーブルのid
                 created_at: list.created_at, // messageテーブルのcreated_at
                 user: text_sender_info,
                 text: Some(list.content.clone()), // messageテーブルのcontent(type_idがtextのもの)
-                image: None, // messageテーブルのcontent(type_idがimageのもの)
-              };
-              messages.push(message_list);
-        }
-        let image_sender_info = FetchMessageByChatRoomIdUserResult {
-            _id: list.sender_user_id.clone(),
-            name: list.sender_nickname.clone(),
-            avatar: list.sender_profile_image.clone()
-        };
+              }
+        );
+          messages.push(message_list);
+    }
+    let image_sender_info = FetchMessageByChatRoomIdUserResult {
+        _id: list.sender_user_id.clone(),
+        name: list.sender_nickname.clone(),
+        avatar: list.sender_profile_image.clone()
+    };
 
-        // imageの場合
-        if list.content_type_id == 2 {
-            let message_list = FetchMessageByChatRoomIdResult {
+    // imageの場合
+    if list.content_type_id == 2 {
+        let message_list = FetchMessageByChatRoomIdResultTypeEnum::FetchMessageByChatRoomIdImageResult(
+            FetchMessageByChatRoomIdImageResult {
                 _id: list.message_id, // messageテーブルのid
                 created_at: list.created_at, // messageテーブルのcreated_at
                 user: image_sender_info,
-                text: None, // messageテーブルのcontent(type_idがtextのもの)
                 image: Some(list.content.clone()), // messageテーブルのcontent(type_idがimageのもの)
-                };
-                messages.push(message_list);
-        }
+                }
+        );
+            messages.push(message_list);
+    }
     }
 
     Ok(messages)
