@@ -42,7 +42,8 @@ async fn main(){
         .route("/api/users/:user_id/profile", post(handler_update_profile))
         .route("/api/users/:user_id/user", get(handler_fetch_friend_info_by_friend_user_id))
         .route("/api/users/:user_id/chat-room", get(handler_fetch_chat_room_list))
-        .route("/api/users/:user_id/chat-room", post(handler_update_chat_room_hidden_or_delete));
+        .route("/api/users/:user_id/chat-room", post(handler_update_chat_room_hidden_or_delete))
+        .route("/api/users/:user_id/message", get(handler_fetch_message_by_chat_room_id));
 
 
     // localhost:3000 で hyper と共に実行する
@@ -2266,4 +2267,200 @@ async fn update_chat_room_hidden_or_delete(pool: &MySqlPool, user_id: &str, dire
     }
     
     Ok(())
+}
+
+/*
+  チャット履歴取得
+*/
+#[derive(Debug, Deserialize, Serialize)]
+struct FetchMessageByChatRoomIdPath {
+    user_id: String,
+}
+
+#[derive(Debug, Deserialize, Serialize)]
+struct FetchMessageByChatRoomIdQuery {
+    chat_room_type: FetchMessageByChatRoomIdQueryType,
+    chat_room_id: Option<u64>
+}
+
+#[derive(Debug, Deserialize, Serialize,PartialEq)]
+enum FetchMessageByChatRoomIdQueryType {
+    DirectChatRoomId,
+    GroupChatRoomId,
+    None
+}
+
+// デフォルト値の取得
+impl Default for FetchMessageByChatRoomIdQuery {
+    fn default() -> Self {
+        // direct_chat_room_id,group_chat_room_id、どちらかをnullで渡すとunwrapがpanicしてしまうため、typeで渡す
+        Self { chat_room_type: FetchMessageByChatRoomIdQueryType::None, chat_room_id: None}
+    }
+}
+
+// handler
+async fn handler_fetch_message_by_chat_room_id(
+    Path(path): Path<FetchMessageByChatRoomIdPath>,
+    query: Option<Query<FetchMessageByChatRoomIdQuery>>,
+) -> Json<Value> {
+    let _user_id = path.user_id;
+    // unwrap_or_default: Okの場合値を返し、Errの場合値の型のデフォルトを返す
+    let Query(query) = query.unwrap();
+    println!("{:?}",query);
+    let chat_room_type = query.chat_room_type;
+    let chat_room_id = query.chat_room_id;
+
+    let pool = MySqlPool::connect(&env::var("DATABASE_URL").unwrap()).await.unwrap();
+    let messages = fetch_message_by_chat_room_id(&pool, chat_room_type, chat_room_id).await.unwrap();
+    
+    Json(json!({ "messages": messages }))
+}
+
+#[derive(Debug, Deserialize, Serialize)]
+enum FetchMessageByChatRoomIdResultEnum {
+    // 検索にヒットしない場合(何も返さない)
+    None,
+    // 検索にヒットした場合
+    Some(Vec<FetchMessageByChatRoomIdResult>)
+}
+
+#[derive(Debug, Deserialize, Serialize)]
+struct FetchMessageByChatRoomIdResult {
+    _id: u64, // messageテーブルのid
+    created_at: i32, // messageテーブルのcreated_at
+    user: FetchMessageByChatRoomIdUserResult,
+    text: Option<String>, // messageテーブルのcontent(type_idがtextのもの)
+    image: Option<String>, // messageテーブルのcontent(type_idがimageのもの)
+}
+
+#[derive(Debug, Deserialize, Serialize)]
+struct FetchMessageByChatRoomIdUserResult {
+    _id: String, // messageテーブルのsender_id
+    name: Option<String>, // messageテーブルのsender_idに紐づくuserテーブルのnickname
+    avatar: Option<String>, //  messageテーブルのsender_idに紐づくuserテーブルのprofile_image
+}
+
+// SQL実行部分
+async fn fetch_message_by_chat_room_id(pool: &MySqlPool, chat_room_type: FetchMessageByChatRoomIdQueryType, chat_room_id: Option<u64>) -> anyhow::Result<FetchMessageByChatRoomIdResultEnum> {
+    // direct_chat_room_idが存在する場合
+    if chat_room_type == FetchMessageByChatRoomIdQueryType::DirectChatRoomId {
+       let  messages = parse_friend_fetch_message_by_chat_room_id_result(&pool, &chat_room_id).await.unwrap();
+        return Ok(FetchMessageByChatRoomIdResultEnum::Some(messages))
+    }
+
+    // group_chat_room_idが存在する場合
+    else if chat_room_type == FetchMessageByChatRoomIdQueryType::GroupChatRoomId {
+        let messages = parse_group_fetch_message_by_chat_room_id_result(&pool, &chat_room_id).await.unwrap();
+        return Ok(FetchMessageByChatRoomIdResultEnum::Some(messages))
+    }
+
+    // 該当しない場合
+    else {
+        return Ok(FetchMessageByChatRoomIdResultEnum::None)
+    }
+}
+
+
+// resultの型に変換(Friend)
+async fn parse_friend_fetch_message_by_chat_room_id_result(pool: &MySqlPool, chat_room_id: &Option<u64>) -> anyhow::Result<Vec<FetchMessageByChatRoomIdResult>> {
+    let result = sqlx::query!(
+        r#"
+            SELECT
+                m.id as message_id,
+                m.created_at as created_at,
+                m.content as content,
+                m.content_type_id as content_type_id,
+                u.profile_image as sender_profile_image,
+                u.nickname as sender_nickname,
+                u.id as sender_user_id
+            FROM
+                message as m
+                INNER JOIN
+                    user as u
+                ON  m.sender_id = u.id
+            WHERE
+                m.direct_chat_room_id = ?
+            ORDER BY
+                m.created_at
+            "#,
+            chat_room_id
+    )
+    .fetch_all(pool)
+    .await
+    .unwrap();
+
+    let mut messages:Vec<FetchMessageByChatRoomIdResult> = vec![];
+
+    for list in &result {
+        let sender_info = FetchMessageByChatRoomIdUserResult {
+            _id: list.sender_user_id.clone(),
+            name: list.sender_nickname.clone(),
+            avatar: list.sender_profile_image.clone()
+        };
+        // textの場合
+        if list.content_type_id == 1 {
+            let message_list = FetchMessageByChatRoomIdResult {
+                _id: list.message_id, // messageテーブルのid
+                created_at: list.created_at, // messageテーブルのcreated_at
+                user: sender_info,
+                text: Some(list.content.clone()), // messageテーブルのcontent(type_idがtextのもの)
+                image: None, // messageテーブルのcontent(type_idがimageのもの)
+              };
+              messages.push(message_list);
+        }
+    }
+
+    Ok(messages)
+}
+
+// resultの型に変換(Group)
+async fn parse_group_fetch_message_by_chat_room_id_result(pool: &MySqlPool, chat_room_id: &Option<u64>) -> anyhow::Result<Vec<FetchMessageByChatRoomIdResult>> {
+    let result = sqlx::query!(
+        r#"
+            SELECT
+                m.id as message_id,
+                m.created_at as created_at,
+                m.content as content,
+                m.content_type_id as content_type_id,
+                u.profile_image as sender_profile_image,
+                u.nickname as sender_nickname,
+                u.id as sender_user_id
+            FROM
+                message as m
+                INNER JOIN
+                    user as u
+                ON  m.sender_id = u.id
+            WHERE
+                m.group_chat_room_id = ?
+            ORDER BY
+                m.created_at
+            "#,
+            chat_room_id
+    )
+    .fetch_all(pool)
+    .await
+    .unwrap();
+
+    let mut messages:Vec<FetchMessageByChatRoomIdResult> = vec![];
+
+    for list in &result {
+        let sender_info = FetchMessageByChatRoomIdUserResult {
+            _id: list.sender_user_id.clone(),
+            name: list.sender_nickname.clone(),
+            avatar: list.sender_profile_image.clone()
+        };
+        // textの場合
+        if list.content_type_id == 1 {
+            let message_list = FetchMessageByChatRoomIdResult {
+                _id: list.message_id, // messageテーブルのid
+                created_at: list.created_at, // messageテーブルのcreated_at
+                user: sender_info,
+                text: Some(list.content.clone()), // messageテーブルのcontent(type_idがtextのもの)
+                image: None, // messageテーブルのcontent(type_idがimageのもの)
+              };
+              messages.push(message_list);
+        }
+    }
+
+    Ok(messages)
 }

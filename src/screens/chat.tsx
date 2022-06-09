@@ -72,7 +72,7 @@ export function Chat({ navigation, route }) {
 
 
 	// チャットルームIDに紐づくチャット履歴の取得
-	async function _fetchChatByChatRoomId() {
+	async function _fetchMessageByChatRoomId() {
 		try {
 			// paramsを生成
 			const params = { "groupChatRoomId": groupChatRoomId, "directChatRoomId": directChatRoomId }
@@ -117,13 +117,26 @@ export function Chat({ navigation, route }) {
 	async function _postMessage(messages) {
 		try {
 			// APIリクエスト
-			const bodyData = {
-				"directChatRoomId": directChatRoomId,
-				"groupChatRoomId": groupChatRoomId,
-				"content": messages[0]["text"] ? messages[0]["text"] : messages[0]["image"],
-				"type": messages[0]["text"] ? "text" : "image",
-				"created_at": messages[0]["createdAt"],
-				"all": messages[0]
+			let bodyData = {}
+			if (directChatRoomId) {
+				bodyData = {
+					"chat_room_type": "DirectChatRoomId", // Rustでenumのためキャメルケース
+					"chat_room_id": directChatRoomId,
+					"content": messages[0]["text"] ? messages[0]["text"] : messages[0]["image"],
+					"type": messages[0]["text"] ? "text" : "image",
+					"created_at": messages[0]["createdAt"],
+					"all": messages[0]
+				}
+			}
+			if (groupChatRoomId) {
+				bodyData = {
+					"chat_room_type": "GroupChatRoomId", // Rustでenumのためキャメルケース
+					"chat_room_id": directChatRoomId,
+					"content": messages[0]["text"] ? messages[0]["text"] : messages[0]["image"],
+					"type": messages[0]["text"] ? "text" : "image",
+					"created_at": messages[0]["createdAt"],
+					"all": messages[0]
+				}
 			}
 			const response = await fetch(API_SERVER_URL + `/api/users/:userId/message`, {
 				method: "POST",
@@ -493,7 +506,7 @@ export function Chat({ navigation, route }) {
 
 	useEffect(() => {
 		// チャットルームIDに紐づくチャット履歴の取得
-		_fetchChatByChatRoomId()
+		_fetchMessageByChatRoomId()
 		// 最終既読日時の更新
 		_updateLastReadTime()
 		// directChatRoomId/groupChatRoomIdに紐づくメンバーのユーザーIDを取得
