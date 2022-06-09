@@ -2306,14 +2306,19 @@ async fn handler_fetch_message_by_chat_room_id(
     let _user_id = path.user_id;
     // unwrap_or_default: Okの場合値を返し、Errの場合値の型のデフォルトを返す
     let Query(query) = query.unwrap();
-    println!("{:?}",query);
     let chat_room_type = query.chat_room_type;
     let chat_room_id = query.chat_room_id;
 
     let pool = MySqlPool::connect(&env::var("DATABASE_URL").unwrap()).await.unwrap();
     let messages = fetch_message_by_chat_room_id(&pool, chat_room_type, chat_room_id).await.unwrap();
     
-    Json(json!({ "messages": messages }))
+    if let FetchMessageByChatRoomIdResultEnum::Some(m) = messages {
+        return Json(json!({ "messages": m }))
+    }
+
+    else {
+        return Json(json!({ "messages": null }))
+    }
 }
 
 #[derive(Debug, Deserialize, Serialize)]
