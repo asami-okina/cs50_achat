@@ -2397,7 +2397,7 @@ async fn parse_friend_fetch_message_by_chat_room_id_result(pool: &MySqlPool, cha
     let mut messages:Vec<FetchMessageByChatRoomIdResult> = vec![];
 
     for list in &result {
-        let sender_info = FetchMessageByChatRoomIdUserResult {
+        let text_sender_info = FetchMessageByChatRoomIdUserResult {
             _id: list.sender_user_id.clone(),
             name: list.sender_nickname.clone(),
             avatar: list.sender_profile_image.clone()
@@ -2407,11 +2407,28 @@ async fn parse_friend_fetch_message_by_chat_room_id_result(pool: &MySqlPool, cha
             let message_list = FetchMessageByChatRoomIdResult {
                 _id: list.message_id, // messageテーブルのid
                 created_at: list.created_at, // messageテーブルのcreated_at
-                user: sender_info,
+                user: text_sender_info,
                 text: Some(list.content.clone()), // messageテーブルのcontent(type_idがtextのもの)
                 image: None, // messageテーブルのcontent(type_idがimageのもの)
               };
               messages.push(message_list);
+        }
+        let image_sender_info = FetchMessageByChatRoomIdUserResult {
+            _id: list.sender_user_id.clone(),
+            name: list.sender_nickname.clone(),
+            avatar: list.sender_profile_image.clone()
+        };
+
+        // imageの場合
+        if list.content_type_id == 2 {
+            let message_list = FetchMessageByChatRoomIdResult {
+                _id: list.message_id, // messageテーブルのid
+                created_at: list.created_at, // messageテーブルのcreated_at
+                user: image_sender_info,
+                text: None, // messageテーブルのcontent(type_idがtextのもの)
+                image: Some(list.content.clone()), // messageテーブルのcontent(type_idがimageのもの)
+                };
+                messages.push(message_list);
         }
     }
 
@@ -2449,7 +2466,7 @@ async fn parse_group_fetch_message_by_chat_room_id_result(pool: &MySqlPool, chat
     let mut messages:Vec<FetchMessageByChatRoomIdResult> = vec![];
 
     for list in &result {
-        let sender_info = FetchMessageByChatRoomIdUserResult {
+        let text_sender_info = FetchMessageByChatRoomIdUserResult {
             _id: list.sender_user_id.clone(),
             name: list.sender_nickname.clone(),
             avatar: list.sender_profile_image.clone()
@@ -2459,11 +2476,28 @@ async fn parse_group_fetch_message_by_chat_room_id_result(pool: &MySqlPool, chat
             let message_list = FetchMessageByChatRoomIdResult {
                 _id: list.message_id, // messageテーブルのid
                 created_at: list.created_at, // messageテーブルのcreated_at
-                user: sender_info,
+                user: text_sender_info,
                 text: Some(list.content.clone()), // messageテーブルのcontent(type_idがtextのもの)
                 image: None, // messageテーブルのcontent(type_idがimageのもの)
               };
               messages.push(message_list);
+        }
+        let image_sender_info = FetchMessageByChatRoomIdUserResult {
+            _id: list.sender_user_id.clone(),
+            name: list.sender_nickname.clone(),
+            avatar: list.sender_profile_image.clone()
+        };
+
+        // imageの場合
+        if list.content_type_id == 2 {
+            let message_list = FetchMessageByChatRoomIdResult {
+                _id: list.message_id, // messageテーブルのid
+                created_at: list.created_at, // messageテーブルのcreated_at
+                user: image_sender_info,
+                text: None, // messageテーブルのcontent(type_idがtextのもの)
+                image: Some(list.content.clone()), // messageテーブルのcontent(type_idがimageのもの)
+                };
+                messages.push(message_list);
         }
     }
 
