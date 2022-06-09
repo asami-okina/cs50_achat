@@ -1532,15 +1532,18 @@ fn last_message_created_at_list(array: &Vec<FetchChatRoomListResultEnumItem>) ->
 
 // ②①の配列で数値の比較を行い、同じindexを使用して大元のvecの並び替えを行う
 fn sort_last_message_created_at_list(all_result: &mut Vec<FetchChatRoomListResultEnumItem>, all_result_last_message_created_at_list:Vec<i32>) -> &mut Vec<FetchChatRoomListResultEnumItem> {
+    let mut all_result_last_message_created_at_list = all_result_last_message_created_at_list.clone();
     for i in 0..all_result.len() {
       for j in 0..all_result.len() - i - 1 {
         if all_result_last_message_created_at_list[j + 1] < all_result_last_message_created_at_list[j] {
-          all_result.swap(j, j + 1);
+            all_result_last_message_created_at_list.swap(j, j + 1);
+            all_result.swap(j, j + 1);
         }
       }
     }
     all_result
 }
+
 
 // SQL実行部分(Friends)
 async fn fetch_chat_room_list_friend(pool: &MySqlPool, user_id: &str, search_text: Option<String>) -> anyhow::Result<FetchChatRoomListResultEnum> {
