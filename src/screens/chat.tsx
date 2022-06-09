@@ -96,7 +96,13 @@ export function Chat({ navigation, route }) {
 	async function _fetchUserIdsByDirectOrGroupChatRoomId() {
 		try {
 			// paramsを生成
-			const params = { "groupChatRoomId": groupChatRoomId, "directChatRoomId": directChatRoomId }
+			let params;
+			if (directChatRoomId) {
+				params = { "chat_room_type": "DirectChatRoomId", "chat_room_id": directChatRoomId }
+			}
+			if (groupChatRoomId) {
+				params = { "chat_room_type": "GroupChatRoomId", "chat_room_id": groupChatRoomId }
+			}
 			const query_params = new URLSearchParams(params);
 			// APIリクエスト
 			const response = await fetch(API_SERVER_URL + `/api/users/${userId}/chat?${query_params}`, {
@@ -123,9 +129,10 @@ export function Chat({ navigation, route }) {
 					"chat_room_type": "DirectChatRoomId", // Rustでenumのためキャメルケース
 					"chat_room_id": directChatRoomId,
 					"content": messages[0]["text"] ? messages[0]["text"] : messages[0]["image"],
-					"type": messages[0]["text"] ? "text" : "image",
+					"content_type": messages[0]["text"] ? "Text" : "Image",
+					"sendr_user_id": messages[0]["user_id"],
 					"created_at": messages[0]["createdAt"],
-					"all": messages[0]
+					// "all": messages[0] // mock用のため、rustでは不要
 				}
 			}
 			if (groupChatRoomId) {
@@ -133,9 +140,10 @@ export function Chat({ navigation, route }) {
 					"chat_room_type": "GroupChatRoomId", // Rustでenumのためキャメルケース
 					"chat_room_id": directChatRoomId,
 					"content": messages[0]["text"] ? messages[0]["text"] : messages[0]["image"],
-					"type": messages[0]["text"] ? "text" : "image",
+					"content_type": messages[0]["text"] ? "Text" : "Image",
+					"sendr_user_id": messages[0]["user_id"],
 					"created_at": messages[0]["createdAt"],
-					"all": messages[0]
+					// "all": messages[0] // mock用のため、rustでは不要
 				}
 			}
 			const response = await fetch(API_SERVER_URL + `/api/users/:userId/message`, {
@@ -177,8 +185,10 @@ export function Chat({ navigation, route }) {
 		if (image && messages.length === 0) {
 			messages = [
 				{
-					"_id": uuid.v4(),
-					"createdAt": new Date(),
+					// "_id": uuid.v4(),
+					"_id": null, // バックエンドで発行したい(messageテーブルのid)
+					// "createdAt": new Date(),
+					"createdAt": null, // バックエンドで発行したい(messageテーブルのcreated_at)
 					"text": "",
 					"user": {
 						"_id": userId,
@@ -193,12 +203,22 @@ export function Chat({ navigation, route }) {
 		}
 		// messagesに要素追加
 		messages[0]["type"] = "sendMessage"
-		messages[0]["sendUserId"] = sendUserIds
-		messages[0]["userId"] = userId
-		messages[0]["groupChatRoomId"] = groupChatRoomId
-		messages[0]["directChatRoomId"] = directChatRoomId
+		messages[0]["sendUserIds"] = sendUserIds // 送るべきユーザーID
+		messages[0]["user_id"] = userId // 送った人のユーザーID
+
+		if(directChatRoomId) {
+			messages[0]["chat_room_type"] = "DirectChatRoomId"
+			messages[0]["chat_room_id"] = directChatRoomId
+		}
+
+		if(groupChatRoomId) {
+			messages[0]["chat_room_type"] = "GroupChatRoomId"
+			messages[0]["chat_room_id"] = groupChatRoomId
+		}
+
 		// websocketでメッセージをサーバーに送る
-		sock.send(JSON.stringify(messages))
+		// ★websocketは一旦やめておき、実装予定
+		// sock.send(JSON.stringify(messages))
 		_postMessage(messages)
 		setImage('')
 		// メッセージ更新API実行

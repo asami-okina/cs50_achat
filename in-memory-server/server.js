@@ -33,7 +33,7 @@ s.on("connection", ws => {
 			if (parseMessage[0]?.type === "sendMessage") {
 				// クライアントの中で、送るべきユーザーIDが一致するユーザーにのみメッセージ送信
 				// parseMessage[0]?.sendUserId: 送るべきユーザーID
-				parseMessage[0]?.sendUserId.forEach((userId) => {
+				parseMessage[0]?.sendUserIds.forEach((userId) => {
 					s.clients.forEach(client => {
 						if (userId === client.userId) {
 							client.send(JSON.stringify(parseMessage));
@@ -674,29 +674,29 @@ app.get('/api/users/:userId/message', (req, res, ctx) => {
 // チャット送信
 app.post('/api/users/:userId/message', (req, res, ctx) => {
 	const userId = req.param("userId")
-	const directChatRoomId = req.param("directChatRoomId")
-	const groupChatRoomId = req.param("groupChatRoomId")
-	const type = req.param("type")
+	const chat_room_type = req.param("chat_room_type") // DirectChatRoomId or GroupChatRoomId
+	const chat_room_id = req.param("chat_room_id")
+	const content_type = req.param("content_type")
 	const content = req.param("content")
-	const created_at = req.param("created_at")
-	// mockserviceworker甩に以下保持
-	const all = req.param("all")
+	const sender_user_id = req.param("sender_user_id")
+	// // mockserviceworker甩に以下保持
+	// const all = req.param("all")
 
-	// 配列の最初に追加
-	// 本番時は、バックエンドにて詳細実装する
-	if (directChatRoomId === "friend 1") {
-		temporaryMessages_friend1 = [all, ...temporaryMessages_friend1]
-	}
-	if (directChatRoomId === "friend 11") {
-		temporaryMessages_friend11 = [all, ...temporaryMessages_friend11]
-	}
-	if (groupChatRoomId === "group 1") {
-		temporaryMessages_group1 = [all, ...temporaryMessages_group1]
-	}
-	if (groupChatRoomId === "group 6") {
-		temporaryMessages_group6 = [all, ...temporaryMessages_group6]
-	}
-	return res.status(200).send("")
+	// // 配列の最初に追加
+	// // 本番時は、バックエンドにて詳細実装する
+	// if (directChatRoomId === "friend 1") {
+	// 	temporaryMessages_friend1 = [all, ...temporaryMessages_friend1]
+	// }
+	// if (directChatRoomId === "friend 11") {
+	// 	temporaryMessages_friend11 = [all, ...temporaryMessages_friend11]
+	// }
+	// if (groupChatRoomId === "group 1") {
+	// 	temporaryMessages_group1 = [all, ...temporaryMessages_group1]
+	// }
+	// if (groupChatRoomId === "group 6") {
+	// 	temporaryMessages_group6 = [all, ...temporaryMessages_group6]
+	// }
+	// return res.status(200).send("")
 })
 // 最終既読日時の更新
 app.post('/api/users/:userId/lastReadTime', (req, res, ctx) => {
