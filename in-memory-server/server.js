@@ -679,7 +679,7 @@ app.post('/api/users/:userId/message', (req, res, ctx) => {
 	const content_type = req.param("content_type")
 	const content = req.param("content")
 	const sender_user_id = req.param("sender_user_id")
-	// // mockserviceworker甩に以下保持
+	// // mockserviceworker甩に以下保持(Rust用にallを削除)
 	// const all = req.param("all")
 
 	// // 配列の最初に追加
@@ -699,11 +699,10 @@ app.post('/api/users/:userId/message', (req, res, ctx) => {
 	// return res.status(200).send("")
 })
 // 最終既読日時の更新
-app.post('/api/users/:userId/lastReadTime', (req, res, ctx) => {
-	const userId = req.param("userId")
-	const directChatRoomId = req.param("directChatRoomId")
-	const groupChatRoomId = req.param("groupChatRoomId")
-	const lasReadTime = req.param("lasReadTime")
+app.post('/api/users/:userId/last-read-time', (req, res, ctx) => {
+	const user_id = req.param("user_id")
+	const chat_room_id = req.param("chat_room_id")
+	const content_type = req.param("content_type")
 	return res.status(200).send("")
 })
 // グループメンバーの追加

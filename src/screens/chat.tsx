@@ -132,7 +132,6 @@ export function Chat({ navigation, route }) {
 					"content_type": messages[0]["text"] ? "Text" : "Image",
 					"sendr_user_id": messages[0]["user_id"],
 					"created_at": messages[0]["createdAt"],
-					// "all": messages[0] // mock用のため、rustでは不要
 				}
 			}
 			if (groupChatRoomId) {
@@ -143,7 +142,6 @@ export function Chat({ navigation, route }) {
 					"content_type": messages[0]["text"] ? "Text" : "Image",
 					"sendr_user_id": messages[0]["user_id"],
 					"created_at": messages[0]["createdAt"],
-					// "all": messages[0] // mock用のため、rustでは不要
 				}
 			}
 			const response = await fetch(API_SERVER_URL + `/api/users/:userId/message`, {
@@ -162,12 +160,20 @@ export function Chat({ navigation, route }) {
 	async function _updateLastReadTime() {
 		try {
 			// APIリクエスト
-			const bodyData = {
-				"directChatRoomId": directChatRoomId,
-				"groupChatRoomId": groupChatRoomId,
-				"lasReadTime": new Date(),
+			let bodyData;
+			if (directChatRoomId) {
+				bodyData = {
+					"chat_room_type": "DirectChatRoomId", // Rustでenumのためキャメルケース
+					"chat_room_id": directChatRoomId,
+				}
 			}
-			const response = await fetch(API_SERVER_URL + `/api/users/:userId/lastReadTime`, {
+			if (groupChatRoomId) {
+				bodyData = {
+					"chat_room_type": "GroupChatRoomId", // Rustでenumのためキャメルケース
+					"chat_room_id": directChatRoomId,
+				}
+			}
+			const response = await fetch(API_SERVER_URL + `/api/users/:user_id/last-read-time`, {
 				method: "POST",
 				headers: {
 					"Content-Type": "application/json"
