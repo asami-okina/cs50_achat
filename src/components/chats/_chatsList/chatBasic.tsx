@@ -81,7 +81,7 @@ export default function ChatBasic({ navigation, chatRoomList, setDeleteModalVisi
 				"userId": userId,
 				"directChatRoomId": directChatRoomId,
 				"groupChatRoomId": groupChatRoomId,
-				"type": clickedType
+				"update_type": clickedType
 			}
 			const response = await fetch(API_SERVER_URL + `/api/users/${userId}/chatRoom`, {
 				method: "POST",

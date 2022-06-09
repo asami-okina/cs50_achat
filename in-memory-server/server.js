@@ -614,11 +614,11 @@ app.post('/api/users/:userId/chatRoom', (req, res, ctx) => {
 	const userId = req.param("userId")
 	const directChatRoomId = req.param("directChatRoomId")
 	const groupChatRoomId = req.param("groupChatRoomId")
-	const type = req.param("type")
-	if (type === "Hidden") {
+	const update_type = req.param("update_type") // update_typeに更新
+	if (update_type === "Hidden") {
 		return res.status(200).send("")
 	}
-	if (type === "Delete") {
+	if (update_type === "Delete") {
 		return res.status(200).send("")
 	}
 })
