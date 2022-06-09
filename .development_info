@@ -39,7 +39,14 @@ node server.js
 ngrok start client wss --config ./ngrok.yml
 
 /*
-  フロント起動方法
+  ngrok
+  a_chat_apiディレクトリ内にて実行
+*/
+// rustの場合(websocket導入時にnodeと合わせる)
+ngrok http 3000
+
+/*
+  全体起動方法(node)
 */
 ①ngrokを起動(in-memory-serverディレクトリ内にて実行)
 ngrok start client wss --config ./ngrok.yml
@@ -68,4 +75,21 @@ native.listen({ onUnhandledRequest: 'bypass' })
 node server.js
 
 3. expoを起動
+expo start
+
+/*
+  全体起動方法(rust)
+*/
+①ngrokを起動(a_chat_apiディレクトリ内にて実行)
+ngrok http 3000
+
+②以下1ファイルのURLを変更
+1.src/constants/api.ts
+// 開発用(毎回URLが変わるため、手動で変更)(3000ポートの方)
+export const API_SERVER_URL = 'https://7676-217-178-24-119.jp.ngrok.io'
+
+③rustを起動
+cargo run --bin main
+
+④expoを起動
 expo start
