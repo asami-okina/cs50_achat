@@ -126,10 +126,19 @@ export function Button({
 								_addFriend()
 							}
 							if (enable && link && scene !== "ProfileSettingNickName") {
-								// サインアップ
-								_signUp().then(() => {
+								console.log('scene',scene)
+								console.log('link',link)
+								// welcomeページからsignupページに遷移
+								if (scene == "Welcome" && link == "SignUp"){
 									navigation.navigate(link)
-								})
+								}
+								// signUpページからhomeページに遷移
+								if(scene == "SignUp" && link == "Home"){
+								// サインアップ
+									_signUp().then(() => {
+										navigation.navigate(link)
+									})
+								}
 							}
 						}}
 					>

@@ -53,21 +53,18 @@ export function UserIdForm({
 	// ユーザーID(使用可能かどうか)のバリデーション
 	async function _isAvailableUserIdValidation() {
 		try {
-			// paramsを生成
-			const params = { "userId": userIdText }
-			const query_params = new URLSearchParams(params);
-
 			// APIリクエスト
-			const response = await fetch(API_SERVER_URL + `/api/signup/isAvailableUserIdValidation?${query_params}`, {
-				method: "GET",
-				headers: {
-					"Content-Type": "application/json"
-				},
-			})
+				const response = await fetch(API_SERVER_URL + `/api/signup/isAvailableUserIdValidation/${userIdText}`, {
+					method: "GET",
+					headers: {
+						"Content-Type": "application/json"
+					},
+				})
 
 			// レスポンスをJSONにする
 			const parse_response = await response.json()
-			if (parse_response.isAvailableUserId) {
+
+			if (parse_response.is_available_user_id_validation) {
 				setIsAvailableUserId(true)
 			} else {
 				setIsAvailableUserId(false)
