@@ -28,7 +28,7 @@ async fn main(){
     let app = Router::new()
         .route("/api/fetch-all-users", get(handler_fetch_all_users))
         .route("/api/signup", post(handler_sign_up))
-        .route("/api/signup/isAvailableUserIdValidation/:user_id", get(handler_is_available_user_id_validation))
+        .route("/api/signup/is_available_user_id_validation/:user_id", get(handler_is_available_user_id_validation))
         .route("/api/login", post(handler_log_in))
         .route("/api/users/:user_id/home", get(handler_search_name))
         .route("/api/users/:user_id/groups", get(handler_fetch_group_list))
