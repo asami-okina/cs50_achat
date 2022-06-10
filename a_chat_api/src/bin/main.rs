@@ -2592,7 +2592,7 @@ async fn handler_post_message(
 async fn post_message(pool: &MySqlPool, chat_room_type: &PostMessageChatRoomIdTypeEnum, chat_room_id: &u64, content: &String, content_type: &PostMessageContentTypeEnum, sender_user_id: &String ) -> anyhow::Result<()> {
     let now = SystemTime::now().duration_since(SystemTime::UNIX_EPOCH).unwrap().as_secs();
     // content_typeが「Text」の場合は「1」、「Image」の場合は「２」
-    let content_type_id = if content_type == &PostMessageContentTypeEnum:: Text {1} else {2};
+    let content_type_id = if content_type == &PostMessageContentTypeEnum::Text {1} else {2};
 
     if chat_room_type == &PostMessageChatRoomIdTypeEnum::DirectChatRoomId {
         sqlx::query!(

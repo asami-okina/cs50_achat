@@ -26,6 +26,9 @@ import { sameStyles } from '../constants/styles/sameStyles'
 // layouts
 import { MAIN_NAVY_COLOR, MAIN_WHITE_COLOR, FOOTER_HEIGHT, CONTENT_WIDTH, SEARCH_FORM_BORDER_RADIUS, SEND_BUTTON_HEIGHT, STANDARD_FONT, MAIN_YELLOW_COLOR, IPHONE_X_BOTTOM_SPACE, OPERATION_SCREEN_HEIGHT_IPHONE_X } from '../constants/layout'
 
+// type
+type ChatRoomIdType = "DirectChatRoomId" | "GroupChatRoomId";
+
 export function Chat({ navigation, route }) {
 	// 引数を取得
 	// addGroupMemberName: 今後、○○がグループに参加しました。というメッセージに使用する
@@ -130,33 +133,69 @@ export function Chat({ navigation, route }) {
 		try {
 			// APIリクエスト
 			let bodyData = {}
+			let chat_room_type:ChatRoomIdType;
+			let chat_room_id;
+
 			if (directChatRoomId) {
+				chat_room_type = "DirectChatRoomId"
+				chat_room_id = directChatRoomId
+			} else {
+				chat_room_type = "GroupChatRoomId"
+				chat_room_id = groupChatRoomId
+			}
+
+			// テキストと画像両方ある場合は、2回メッセージを送信する
+			if (messages[0]["text"] && messages[0]["image"]) {
+				// 1回目の送信(テキストのみ)
 				bodyData = {
-					"chat_room_type": "DirectChatRoomId", // Rustでenumのためキャメルケース
-					"chat_room_id": directChatRoomId,
+					"chat_room_type": chat_room_type, // Rustでenumのためキャメルケース
+					"chat_room_id": chat_room_id,
+					"content": messages[0]["text"],
+					"content_type": "Text",
+					"sendr_user_id": messages[0]["user_id"],
+					"created_at": messages[0]["createdAt"],
+				}
+				let response = await fetch(API_SERVER_URL + `/api/users/:user_id/message`, {
+					method: "POST",
+					headers: {
+						"Content-Type": "application/json"
+					},
+					body: JSON.stringify(bodyData),
+				})
+				// 2回目の送信(画像のみ)
+				bodyData = {
+					"chat_room_type": chat_room_type, // Rustでenumのためキャメルケース
+					"chat_room_id": chat_room_id,
+					"content": messages[0]["image"],
+					"content_type": "Image",
+					"sendr_user_id": messages[0]["user_id"],
+					"created_at": messages[0]["createdAt"],
+				}
+				response = await fetch(API_SERVER_URL + `/api/users/:user_id/message`, {
+					method: "POST",
+					headers: {
+						"Content-Type": "application/json"
+					},
+					body: JSON.stringify(bodyData),
+				})
+			} else {
+				// テキスト、画像どちらか1つのみの場合
+				bodyData = {
+					"chat_room_type": chat_room_type, // Rustでenumのためキャメルケース
+					"chat_room_id": chat_room_id,
 					"content": messages[0]["text"] ? messages[0]["text"] : messages[0]["image"],
 					"content_type": messages[0]["text"] ? "Text" : "Image",
 					"sendr_user_id": messages[0]["user_id"],
 					"created_at": messages[0]["createdAt"],
 				}
+				const response = await fetch(API_SERVER_URL + `/api/users/:user_id/message`, {
+					method: "POST",
+					headers: {
+						"Content-Type": "application/json"
+					},
+					body: JSON.stringify(bodyData),
+				})
 			}
-			if (groupChatRoomId) {
-				bodyData = {
-					"chat_room_type": "GroupChatRoomId", // Rustでenumのためキャメルケース
-					"chat_room_id": groupChatRoomId,
-					"content": messages[0]["text"] ? messages[0]["text"] : messages[0]["image"],
-					"content_type": messages[0]["text"] ? "Text" : "Image",
-					"sendr_user_id": messages[0]["user_id"],
-					"created_at": messages[0]["createdAt"],
-				}
-			}
-			const response = await fetch(API_SERVER_URL + `/api/users/:userId/message`, {
-				method: "POST",
-				headers: {
-					"Content-Type": "application/json"
-				},
-				body: JSON.stringify(bodyData),
-			})
 		} catch (e) {
 			console.error(e)
 		}

@@ -288,7 +288,7 @@ app.post('/api/login', (req, res, ctx) => {
 	)
 })
 // ニックネームまたはグループ名の検索でヒットするユーザーまたはグループ情報の取得
-app.get(`/api/users/:userId/home`, (req, res, ctx) => {
+app.get(`/api/users/:user_id/home`, (req, res, ctx) => {
 	// userIdの取得
 	const userId = req.param("userId")
 	// search文言の取得
@@ -347,7 +347,7 @@ app.get(`/api/users/:userId/home`, (req, res, ctx) => {
 	)
 })
 // ユーザが所属するグループ一覧
-app.get('/api/users/:userId/groups', (req, res, ctx) => {
+app.get('/api/users/:user_id/groups', (req, res, ctx) => {
 	const userId = req.param("userId")
 	return res.status(200).send(
 		JSON.stringify(
@@ -356,13 +356,13 @@ app.get('/api/users/:userId/groups', (req, res, ctx) => {
 	)
 })
 // グループから脱退
-app.delete('/api/users/:userId/groups/leave', (req, res, ctx) => {
+app.delete('/api/users/:user_id/groups/leave', (req, res, ctx) => {
 	const userId = req.param("userId")
 	const groupChatRoomId = req.param("groupChatRoomId")
 	return res.status(200).send("")
 })
 // グループ追加
-app.post('/api/users/:userId/groups/add', (req, res, ctx) => {
+app.post('/api/users/:user_id/groups/add', (req, res, ctx) => {
 	const groupImage = req.param("groupImage")
 	const groupName = req.param("groupName")
 	const groupMemberUserIds = req.param("groupMemberUserIds")
@@ -388,12 +388,12 @@ app.post('/api/users/:userId/groups/add', (req, res, ctx) => {
 	)
 })
 // ユーザーの所属するグループ数
-app.get('/api/users/:userId/group-count', (req, res, ctx) => {
+app.get('/api/users/:user_id/group-count', (req, res, ctx) => {
 	const userId = req.param("userId")
 	return res.status(200).send(`${groups.length}`)
 })
 // ユーザの友達数
-app.get('/api/users/:userId/friend-count', (req, res, ctx) => {
+app.get('/api/users/:user_id/friend-count', (req, res, ctx) => {
 	const userId = req.param("userId")
 	let friends;
 	if (userId === "pcAsami") {
@@ -407,7 +407,7 @@ app.get('/api/users/:userId/friend-count', (req, res, ctx) => {
 	)
 })
 // ユーザーの友達一覧
-app.get('/api/users/:userId/friends', (req, res, ctx) => {
+app.get('/api/users/:user_id/friends', (req, res, ctx) => {
 	const userId = req.param("userId")
 	let friends;
 	if (userId === "pcAsami") {
@@ -423,7 +423,7 @@ app.get('/api/users/:userId/friends', (req, res, ctx) => {
 	)
 })
 // 友達追加
-app.post('/api/users/:userId/friends', (req, res, ctx) => {
+app.post('/api/users/:user_id/friends', (req, res, ctx) => {
 	const friendUserId = req.param("friendUserId")
 	const ownUserId = req.param("ownUserId")
 	// mock用
@@ -457,7 +457,7 @@ app.post('/api/users/:userId/friends', (req, res, ctx) => {
 	)
 })
 // ユーザーIDに紐づくニックネーム、プロフィール画像の取得
-app.get(`/api/users/:userId/profile`, (req, res, ctx) => {
+app.get(`/api/users/:user_id/profile`, (req, res, ctx) => {
 	// userIdの取得
 	const userId = req.param("userId")
 	if (userId === "pcAsami") {
@@ -474,7 +474,7 @@ app.get(`/api/users/:userId/profile`, (req, res, ctx) => {
 	}
 })
 // プロフィールの更新
-app.post('/api/users/:userId/profile', (req, res, ctx) => {
+app.post('/api/users/:user_id/profile', (req, res, ctx) => {
 	const nickName = req.param("nickName")
 	const profileImage = req.param("profileImage")
 
@@ -518,7 +518,7 @@ app.post('/api/users/:userId/profile', (req, res, ctx) => {
 	return res.status(200).send("")
 }),
 // ユーザーID検索にヒットしたユーザー情報(プロフィール画像、ニックネーム)
-app.get('/api/users/:userId/user', (req, res, ctx) => {
+app.get('/api/users/:user_id/user', (req, res, ctx) => {
 	const searchUserId = req.params.searchUserId
 	const userId = req.param("userId")
 
@@ -566,7 +566,7 @@ app.get('/api/users/:userId/user', (req, res, ctx) => {
 	}
 })
 // チャットルーム一覧取得
-app.get('/api/users/:userId/chatRoom', (req, res, ctx) => {
+app.get('/api/users/:user_id/chatRoom', (req, res, ctx) => {
 	const searchText = req.params.searchText
 	const userId = req.param("userId")
 	const result = []
@@ -610,7 +610,7 @@ app.get('/api/users/:userId/chatRoom', (req, res, ctx) => {
 	}
 })
 // チャットの表示/非表示、削除API
-app.post('/api/users/:userId/chatRoom', (req, res, ctx) => {
+app.post('/api/users/:user_id/chatRoom', (req, res, ctx) => {
 	const userId = req.param("userId")
 	const directChatRoomId = req.param("directChatRoomId")
 	const groupChatRoomId = req.param("groupChatRoomId")
@@ -623,7 +623,7 @@ app.post('/api/users/:userId/chatRoom', (req, res, ctx) => {
 	}
 })
 // チャット履歴取得
-app.get('/api/users/:userId/message', (req, res, ctx) => {
+app.get('/api/users/:user_id/message', (req, res, ctx) => {
 	const chat_room_type = req.param("chat_room_type")
 	const chat_room_id = req.param("chat_room_id")
 
@@ -666,7 +666,7 @@ app.get('/api/users/:userId/message', (req, res, ctx) => {
 	}
 })
 // チャット送信
-app.post('/api/users/:userId/message', (req, res, ctx) => {
+app.post('/api/users/:user_id/message', (req, res, ctx) => {
 	const userId = req.param("userId")
 	const chat_room_type = req.param("chat_room_type") // DirectChatRoomId or GroupChatRoomId
 	const chat_room_id = req.param("chat_room_id")
@@ -693,14 +693,14 @@ app.post('/api/users/:userId/message', (req, res, ctx) => {
 	// return res.status(200).send("")
 })
 // 最終既読日時の更新
-app.post('/api/users/:userId/last-read-time', (req, res, ctx) => {
+app.post('/api/users/:user_id/last-read-time', (req, res, ctx) => {
 	const user_id = req.param("user_id")
 	const chat_room_id = req.param("chat_room_id")
 	const content_type = req.param("content_type")
 	return res.status(200).send("")
 })
 // グループメンバーの追加
-app.post('/api/users/:userId/group-member', (req, res, ctx) => {
+app.post('/api/users/:user_id/group-member', (req, res, ctx) => {
 	const groupChatRoomId = req.param("groupChatRoomId")
 	const adduserIds = req.param("adduserIds")
 	let newData = []
@@ -721,7 +721,7 @@ app.post('/api/users/:userId/group-member', (req, res, ctx) => {
 	)
 })
 // 該当友達とのdirectChatRoomIdを取得
-app.get('/api/users/:userId/friend', (req, res, ctx) => {
+app.get('/api/users/:user_id/friend', (req, res, ctx) => {
 	const friend_user_id = req.params.friend_user_id
 	const userId = req.param("userId")
 	// mock甩にfriends配列から取得
@@ -746,7 +746,7 @@ app.get('/api/users/:userId/friend', (req, res, ctx) => {
 	)
 })
 // directChatRoomId/groupChatRoomIdに紐づくメンバーのユーザーIDを取得(自分も含む)
-app.get('/api/users/:userId/chat', (req, res, ctx) => {
+app.get('/api/users/:user_id/chat', (req, res, ctx) => {
 	const chat_room_type = req.param("chat_room_type") // DirectChatRoomId or GroupChatRoomId
 	const chat_room_id = req.param("chat_room_id")
 	const userId = req.param("userId")

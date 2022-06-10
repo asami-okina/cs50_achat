@@ -729,7 +729,7 @@ export const handlers = [
 		)
 	}),
 	// ニックネームまたはグループ名の検索でヒットするユーザーまたはグループ情報の取得
-	rest.get(url + `/api/users/:userId/home`, (req, res, ctx) => {
+	rest.get(url + `/api/users/:user_id/home`, (req, res, ctx) => {
 		// userIdの取得
 		const { userId } = req.params
 		// search文言の取得
@@ -783,7 +783,7 @@ export const handlers = [
 		)
 	}),
 	// ユーザが所属するグループ一覧
-	rest.get(url + '/api/users/:userId/groups', (req, res, ctx) => {
+	rest.get(url + '/api/users/:user_id/groups', (req, res, ctx) => {
 		const { userId } = req.params
 		return res(
 			ctx.status(200),
@@ -793,7 +793,7 @@ export const handlers = [
 		)
 	}),
 	// グループから脱退
-	rest.delete(url + '/api/users/:userId/groups', (req, res, ctx) => {
+	rest.delete(url + '/api/users/:user_id/groups', (req, res, ctx) => {
 		const { userId } = req.params
 		const { groupChatRoomId } = req.body
 		return res(
@@ -802,7 +802,7 @@ export const handlers = [
 		)
 	}),
 	// グループ追加
-	rest.post(url + '/api/users/:userId/groups', (req, res, ctx) => {
+	rest.post(url + '/api/users/:user_id/groups', (req, res, ctx) => {
 		const { groupImage } = req.body
 		const { groupName } = req.body
 		const { groupMemberUserIds } = req.body
@@ -828,7 +828,7 @@ export const handlers = [
 		)
 	}),
 	// ユーザーの所属するグループ数
-	rest.get(url + '/api/users/:userId/group-count', (req, res, ctx) => {
+	rest.get(url + '/api/users/:user_id/group-count', (req, res, ctx) => {
 		const { userId } = req.params
 		return res(
 			ctx.status(200),
@@ -836,7 +836,7 @@ export const handlers = [
 		)
 	}),
 	// ユーザの友達数
-	rest.get(url + '/api/users/:userId/friend-count', (req, res, ctx) => {
+	rest.get(url + '/api/users/:user_id/friend-count', (req, res, ctx) => {
 		const { userId } = req.params
 		return res(
 			ctx.status(200),
@@ -844,7 +844,7 @@ export const handlers = [
 		)
 	}),
 	// ユーザーの友達一覧
-	rest.get(url + '/api/users/:userId/friends', (req, res, ctx) => {
+	rest.get(url + '/api/users/:user_id/friends', (req, res, ctx) => {
 		const { userId } = req.params
 		return res(
 			ctx.status(200),
@@ -854,7 +854,7 @@ export const handlers = [
 		)
 	}),
 	// 友達追加
-	rest.post(url + '/api/users/:userId/friends', (req, res, ctx) => {
+	rest.post(url + '/api/users/:user_id/friends', (req, res, ctx) => {
 		const { friendUserId } = req.body
 		const { ownUserId } = req.body
 		// mock用
@@ -878,7 +878,7 @@ export const handlers = [
 		)
 	}),
 	// ユーザーIDに紐づくニックネーム、プロフィール画像の取得
-	rest.get(url + `/api/users/:userId/profile`, (req, res, ctx) => {
+	rest.get(url + `/api/users/:user_id/profile`, (req, res, ctx) => {
 		// userIdの取得
 		const { userId } = req.params
 		return res(
@@ -888,7 +888,7 @@ export const handlers = [
 		)
 	}),
 	// プロフィールの更新
-	rest.post(url + '/api/users/:userId/profile', (req, res, ctx) => {
+	rest.post(url + '/api/users/:user_id/profile', (req, res, ctx) => {
 		const { nickName } = req.body
 		const { profileImage } = req.body
 
@@ -940,7 +940,7 @@ export const handlers = [
 			ctx.status(200)
 		)
 	}),
-	rest.get(url + '/api/users/:userId/user', (req, res, ctx) => {
+	rest.get(url + '/api/users/:user_id/user', (req, res, ctx) => {
 		const parsedUrl = new URL(req.url)
 		const searchUserId = parsedUrl.searchParams.get("searchUserId")
 		const { userId } = req.params
@@ -992,7 +992,7 @@ export const handlers = [
 		}
 	}),
 	// チャットルーム一覧取得
-	rest.get(url + '/api/users/:userId/chatRoom', (req, res, ctx) => {
+	rest.get(url + '/api/users/:user_id/chatRoom', (req, res, ctx) => {
 		const parsedUrl = new URL(req.url)
 		const searchText = parsedUrl.searchParams.get("searchText")
 		const { userId } = req.params
@@ -1028,7 +1028,7 @@ export const handlers = [
 		}
 	}),
 	// チャットの表示/非表示、削除API
-	rest.post(url + '/api/users/:userId/chatRoom', (req, res, ctx) => {
+	rest.post(url + '/api/users/:user_id/chatRoom', (req, res, ctx) => {
 		const { userId } = req.body
 		const { directChatRoomId } = req.body
 		const { groupChatRoomId } = req.body
@@ -1047,7 +1047,7 @@ export const handlers = [
 		}
 	}),
 	// チャット履歴取得
-	rest.get(url + '/api/users/:userId/message', (req, res, ctx) => {
+	rest.get(url + '/api/users/:user_id/message', (req, res, ctx) => {
 		const parsedUrl = new URL(req.url)
 		const groupChatRoomId = parsedUrl.searchParams.get("groupChatRoomId")
 		const directChatRoomId = parsedUrl.searchParams.get("directChatRoomId")
@@ -1211,7 +1211,7 @@ export const handlers = [
 		}
 	}),
 	// チャット送信
-	rest.post(url + '/api/users/:userId/message', (req, res, ctx) => {
+	rest.post(url + '/api/users/:user_id/message', (req, res, ctx) => {
 		const { userId } = req.body
 		const { directChatRoomId } = req.body
 		const { groupChatRoomId } = req.body
@@ -1279,7 +1279,7 @@ export const handlers = [
 		)
 	}),
 	// 最終既読日時の更新
-	rest.post(url + '/api/users/:userId/lastReadTime', (req, res, ctx) => {
+	rest.post(url + '/api/users/:user_id/lastReadTime', (req, res, ctx) => {
 		const { userId } = req.body
 		const { directChatRoomId } = req.body
 		const { groupChatRoomId } = req.body
@@ -1290,7 +1290,7 @@ export const handlers = [
 		)
 	}),
 	// グループメンバーの追加
-	rest.post(url + '/api/users/:userId/group-member', (req, res, ctx) => {
+	rest.post(url + '/api/users/:user_id/group-member', (req, res, ctx) => {
 		const { groupChatRoomId } = req.body
 		const { adduserIds } = req.body
 		let newData = []
@@ -1313,7 +1313,7 @@ export const handlers = [
 		)
 	}),
 	// 該当友達とのdirectChatRoomIdを取得
-	rest.get(url + '/api/users/:userId/friend', (req, res, ctx) => {
+	rest.get(url + '/api/users/:user_id/friend', (req, res, ctx) => {
 		const parsedUrl = new URL(req.url)
 		const friendUserId = parsedUrl.searchParams.get("friendUserId")
 		const { userId } = req.params
