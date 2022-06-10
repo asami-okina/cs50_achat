@@ -2889,20 +2889,20 @@ async fn handler_fetch_user_ids_by_direct_or_group_chat_room_id(
     Path(path): Path<FetchUserIdsByDirectOrGroupChatRoomIdPath>,
     query: Option<Query<FetchUserIdsByDirectOrGroupChatRoomIdQuery>>,
 ) -> Json<Value> {
-    let user_id = path.user_id;
+    let _user_id = path.user_id;
     // unwrap_or_default: Okの場合値を返し、Errの場合値の型のデフォルトを返す
     let Query(query) = query.unwrap_or_default();
     let chat_room_type = query.chat_room_type;
     let chat_room_id = query.chat_room_id;
 
     let pool = MySqlPool::connect(&env::var("DATABASE_URL").unwrap()).await.unwrap();
-    let result = fetch_user_ids_by_direct_or_group_chat_room_id(&pool, &user_id, &chat_room_type, chat_room_id).await.unwrap();
+    let result = fetch_user_ids_by_direct_or_group_chat_room_id(&pool, &chat_room_type, chat_room_id).await.unwrap();
     
     Json(json!({ "result": result, "char_room_type": &chat_room_type }))
 }
 
 // SQL実行部分
-async fn fetch_user_ids_by_direct_or_group_chat_room_id(pool: &MySqlPool, user_id: &str, chat_room_type: &FetchUserIdsByDirectOrGroupChatRoomIdQueryType, chat_room_id: Option<u64>) -> anyhow::Result<Vec<String>> {
+async fn fetch_user_ids_by_direct_or_group_chat_room_id(pool: &MySqlPool, chat_room_type: &FetchUserIdsByDirectOrGroupChatRoomIdQueryType, chat_room_id: Option<u64>) -> anyhow::Result<Vec<String>> {
     let mut result_list:Vec<String> = vec![];
     
     if chat_room_type == &FetchUserIdsByDirectOrGroupChatRoomIdQueryType::DirectChatRoomId {
