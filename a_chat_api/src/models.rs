@@ -1,10 +1,5 @@
 // DBの操作に用いる構造体をまとめる
-use diesel::deserialize::QueryableByName;
-use diesel::prelude::*;
-use crate::utils::establish_connection;
-use diesel::sql_query;
-type DB = diesel::mysql::Mysql;
-use serde::{Serialize, Deserialize};
+use serde::{Serialize};
 /*
   userテーブル
 */
