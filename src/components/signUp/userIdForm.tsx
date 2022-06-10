@@ -54,7 +54,7 @@ export function UserIdForm({
 	async function _isAvailableUserIdValidation() {
 		try {
 			// APIリクエスト
-				const response = await fetch(API_SERVER_URL + `/api/signup/isAvailableUserIdValidation/${userIdText}`, {
+				const response = await fetch(API_SERVER_URL + `/api/signup/is_available_user_id_validation/${userIdText}`, {
 					method: "GET",
 					headers: {
 						"Content-Type": "application/json"

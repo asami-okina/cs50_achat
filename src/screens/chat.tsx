@@ -75,7 +75,13 @@ export function Chat({ navigation, route }) {
 	async function _fetchMessageByChatRoomId() {
 		try {
 			// paramsを生成
-			const params = { "groupChatRoomId": groupChatRoomId, "directChatRoomId": directChatRoomId }
+			let params;
+			if (directChatRoomId) {
+				params = { "chat_room_type": "DirectChatRoomId", "chat_room_id": directChatRoomId }
+			}
+			if (groupChatRoomId) {
+				params = { "chat_room_type": "GroupChatRoomId", "chat_room_id": groupChatRoomId }
+			}
 			const query_params = new URLSearchParams(params);
 			// APIリクエスト
 			const response = await fetch(API_SERVER_URL + `/api/users/${userId}/message?${query_params}`, {
@@ -113,7 +119,7 @@ export function Chat({ navigation, route }) {
 			})
 			// レスポンスをJSONにする
 			const parse_response = await response.json()
-			setSendUserIds(parse_response.userIds)
+			setSendUserIds(parse_response.user_ids)
 		} catch (e) {
 			console.error(e)
 		}
@@ -497,7 +503,7 @@ export function Chat({ navigation, route }) {
 	async function fetchDirectChatRoomIdByUserId(friendUserId) {
 		try {
 			// paramsを生成
-			const params = { "friendUserId": friendUserId }
+			const params = { "friend_user_id": friendUserId }
 			const query_params = new URLSearchParams(params);
 			// APIリクエスト
 			const response = await fetch(API_SERVER_URL + `/api/users/${userId}/friend?${query_params}`, {
@@ -509,9 +515,9 @@ export function Chat({ navigation, route }) {
 			// レスポンスをJSONにする
 			const parse_response = await response.json()
 			// グループトーク画面でクリックした人と既に友達かどうか
-			setSelectedUserAlreadyFriend(parse_response.alreadyFriend)
+			setSelectedUserAlreadyFriend(parse_response.already_friend)
 			// グループトーク画面で、クリックした人とのdirectChatRoomId(ない場合は、まだ友達ではない)
-			setSelectedFriendDirectChatRoomId(parse_response.directChatRoomId)
+			setSelectedFriendDirectChatRoomId(parse_response.direct_chat_room_id)
 			// グループトーク画面でユーザーアイコンをクリックしたかどうか
 			setClickedUserIcon(true)
 		} catch (e) {

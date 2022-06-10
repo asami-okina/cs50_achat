@@ -624,19 +624,19 @@ app.post('/api/users/:userId/chatRoom', (req, res, ctx) => {
 })
 // チャット履歴取得
 app.get('/api/users/:userId/message', (req, res, ctx) => {
-	const groupChatRoomId = req.param("groupChatRoomId")
-	const directChatRoomId = req.param("directChatRoomId")
+	const chat_room_type = req.param("chat_room_type")
+	const chat_room_id = req.param("chat_room_id")
 
 	// 友達とのチャットの場合
-	if (directChatRoomId) {
-		if (directChatRoomId === "friend 1") {
+	if (chat_room_type === "DirectChatRoomId") {
+		if (chat_room_id === "friend 1") {
 			return res.status(200).send(
 				JSON.stringify(
 					temporaryMessages_friend1
 				),
 			)
 		}
-		if (directChatRoomId === "friend 11") {
+		if (chat_room_id === "friend 11") {
 			return res.status(200).send(
 				JSON.stringify(
 					temporaryMessages_friend11
@@ -646,21 +646,15 @@ app.get('/api/users/:userId/message', (req, res, ctx) => {
 
 	}
 	// グループチャットの場合
-	if (groupChatRoomId) {
-		// 本番は、以下を使用
-		// return res.status(200).send(
-		// 	JSON.stringify(
-		// 		temporaryMessages
-		// 	),
-		// )
-		if (groupChatRoomId === "group 1") {
+	if (chat_room_type === "GroupChatRoomId") {
+		if (chat_room_id === "group 1") {
 			return res.status(200).send(
 				JSON.stringify(
 					temporaryMessages_group1
 				),
 			)
 		}
-		if (groupChatRoomId === "group 6") {
+		if (chat_room_id === "group 6") {
 			return res.status(200).send(
 				JSON.stringify(
 					temporaryMessages_group6
@@ -728,16 +722,16 @@ app.post('/api/users/:userId/group-member', (req, res, ctx) => {
 })
 // 該当友達とのdirectChatRoomIdを取得
 app.get('/api/users/:userId/friend', (req, res, ctx) => {
-	const friendUserId = req.params.friendUserId
+	const friend_user_id = req.params.friend_user_id
 	const userId = req.param("userId")
 	// mock甩にfriends配列から取得
 	for (let i = 0; i < friends.length; i++) {
-		if (friends[i].friend_use_id === friendUserId)
+		if (friends[i].friend_use_id === friend_user_id)
 			return res.status(200).send(
 				JSON.stringify(
 					{
-						"directChatRoomId": friends[i].direct_chat_room_id,
-						"alreadyFriend": true
+						"direct_chat_room_id": friends[i].direct_chat_room_id,
+						"already_friend": true // すでに友達かどうか
 					}
 				),
 			)
@@ -745,26 +739,26 @@ app.get('/api/users/:userId/friend', (req, res, ctx) => {
 	return res.status(200).send(
 		JSON.stringify(
 			{
-				"directChatRoomId": null,
-				"alreadyFriend": false
+				"direct_chat_room_id": null,
+				"already_friend": false
 			}
 		),
 	)
 })
-// 該当友達とのdirectChatRoomIdを取得
+// directChatRoomId/groupChatRoomIdに紐づくメンバーのユーザーIDを取得(自分も含む)
 app.get('/api/users/:userId/chat', (req, res, ctx) => {
-	const groupChatRoomId = req.param("groupChatRoomId")
-	const directChatRoomId = req.param("directChatRoomId")
+	const chat_room_type = req.param("chat_room_type") // DirectChatRoomId or GroupChatRoomId
+	const chat_room_id = req.param("chat_room_id")
 	const userId = req.param("userId")
 	// グループの場合
-	if (groupChatRoomId) {
-		let userIds = []
+	if (chat_room_type === "GroupChatRoomId") {
+		let user_ids = []
 		groups.forEach((group) => {
-			if (group.group_chat_room_id === groupChatRoomId) {
+			if (group.group_chat_room_id === chat_room_id) {
 				return res.status(200).send(
 					JSON.stringify(
 						{
-							"userIds": group.group_member_user_id
+							"user_ids": group.group_member_user_id
 						}
 					),
 				)
@@ -772,15 +766,15 @@ app.get('/api/users/:userId/chat', (req, res, ctx) => {
 		})
 	}
 	// 友達の場合
-	if (directChatRoomId) {
+	if (chat_room_type === "DirectChatRoomId") {
 		// 携帯の場合
 		if (userId === "pcAsami") {
 			pc_friends.forEach((friend) => {
-				if (friend.direct_chat_room_id === directChatRoomId) {
+				if (friend.direct_chat_room_id === chat_room_id) {
 					return res.status(200).send(
 						JSON.stringify(
 							{
-								"userIds": [friend.friend_use_id, userId]
+								"user_ids": [friend.friend_use_id, userId]
 							}
 						),
 					)
@@ -794,7 +788,7 @@ app.get('/api/users/:userId/chat', (req, res, ctx) => {
 					return res.status(200).send(
 						JSON.stringify(
 							{
-								"userIds": [friend.friend_use_id, userId]
+								"user_ids": [friend.friend_use_id, userId]
 							}
 						),
 					)
@@ -802,14 +796,6 @@ app.get('/api/users/:userId/chat', (req, res, ctx) => {
 			})
 		}
 	}
-	// return res.status(200).send(
-	// 	JSON.stringify(
-	// 		{
-	// 			"directChatRoomId": null,
-	// 			"alreadyFriend": false
-	// 		}
-	// 	),
-	// )
 })
 
 app.listen(3000, function () {
