@@ -164,6 +164,7 @@ struct IsAvailableUserIdValidationPath {
     user_id: String,
 }
 async fn handler_is_available_user_id_validation(Path(path): Path<IsAvailableUserIdValidationPath>) -> Json<Value> {
+    println!("kita");
     let user_id = path.user_id;
 
     let pool = MySqlPool::connect(&env::var("DATABASE_URL").unwrap()).await.unwrap();
