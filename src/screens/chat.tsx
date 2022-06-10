@@ -143,7 +143,7 @@ export function Chat({ navigation, route }) {
 			if (groupChatRoomId) {
 				bodyData = {
 					"chat_room_type": "GroupChatRoomId", // Rustでenumのためキャメルケース
-					"chat_room_id": directChatRoomId,
+					"chat_room_id": groupChatRoomId,
 					"content": messages[0]["text"] ? messages[0]["text"] : messages[0]["image"],
 					"content_type": messages[0]["text"] ? "Text" : "Image",
 					"sendr_user_id": messages[0]["user_id"],
