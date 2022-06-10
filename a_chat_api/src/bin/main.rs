@@ -26,7 +26,7 @@ async fn main(){
     // handler: 何らかの処理要求が発生した時に起動されるプログラムのこと
     // handlerはアプリケーションのロジックが存在する場所
     let app = Router::new()
-        .route("/api/getAllUsers", get(handler_fetch_all_users))
+        .route("/api/fetch-all-users", get(handler_fetch_all_users))
         .route("/api/signup", post(handler_sign_up))
         .route("/api/signup/isAvailableUserIdValidation/:user_id", get(handler_is_available_user_id_validation))
         .route("/api/login", post(handler_log_in))
