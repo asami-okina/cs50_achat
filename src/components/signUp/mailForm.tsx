@@ -9,6 +9,16 @@ import { MailFormDescription } from './_description/mailFormDescription';
 // constantsSearchStyles
 import { searchStyles } from '../../constants/styles/searchStyles'
 
+type MailFormPropsType = {
+	inputAccessoryViewID: string;
+	isCorrectMail: boolean;
+	setIsCorrectMail: React.Dispatch<React.SetStateAction<boolean>>;
+	emailText: string;
+	onChangeEmailText: React.Dispatch<React.SetStateAction<string>>;
+	isAvailableMail: boolean;
+	setIsAvailableMail: React.Dispatch<React.SetStateAction<boolean>>;
+}
+
 export function MailForm({
 	inputAccessoryViewID,
 	isCorrectMail,
@@ -20,11 +30,11 @@ export function MailForm({
 }) {
 
 	// メールアドレスの説明文表示
-	const [displayMailDescription, setDisplayMailDescription] = useState(false);
+	const [displayMailDescription, setDisplayMailDescription] = useState<boolean>(false);
 	// メールアドレスアイコンのデフォルト表示
-	const [defaultDisplayMailIcons, setDefaultDisplayMailIcons] = useState(false)
+	const [defaultDisplayMailIcons, setDefaultDisplayMailIcons] = useState<boolean>(false)
 	// メールアドレスの入力フォームの枠線のデフォルト表示
-	const [defaultMailBorderColor, setDefaultMailBorderColor] = useState(false)
+	const [defaultMailBorderColor, setDefaultMailBorderColor] = useState<boolean>(false)
 
 	// メールフォームのラベル化
 	let textInputEmail;
@@ -47,7 +57,7 @@ export function MailForm({
 			const query_params = new URLSearchParams(params);
 
 			// APIリクエスト
-			const response = await fetch(API_SERVER_URL + `/api/signup/isAvailableMailValidation?${query_params}`, {
+			const response = await fetch(API_SERVER_URL + `/api/signup/is_available_mail_validation?${query_params}`, {
 				method: "GET",
 				headers: {
 					"Content-Type": "application/json"
@@ -56,7 +66,7 @@ export function MailForm({
 
 			// レスポンスをJSONにする
 			const parse_response = await response.json()
-			if (parse_response.isAvailableMail) {
+			if (parse_response.is_available_mail) {
 				setIsAvailableMail(true)
 			} else {
 				setIsAvailableMail(false)

@@ -9,6 +9,16 @@ import { MAIN_GRAY_COLOR } from '../../constants/layout'
 // constantsSearchStyles
 import { searchStyles } from '../../constants/styles/searchStyles'
 
+type PasswordFormPropsType = {
+	inputAccessoryViewID: string;
+	isCorrectPassewordSymbol: boolean;
+	setIsCorrectPassewordSymbol:  React.Dispatch<React.SetStateAction<boolean>>;
+	isCorrectPassewordStringCount: boolean;
+	setIsCorrectPassewordStringCount: React.Dispatch<React.SetStateAction<boolean>>;
+	passwordText: string;
+	onChangePasswordText: React.Dispatch<React.SetStateAction<string>>;
+}
+
 export function PasswordForm({
 	inputAccessoryViewID,
 	isCorrectPassewordSymbol,
@@ -18,16 +28,16 @@ export function PasswordForm({
 	passwordText,
 	onChangePasswordText
 
-}) {
+}:PasswordFormPropsType) {
 
 	// パスワードの説明文表示
-	const [displayPasswordDescription, setDisplayPasswordDescription] = useState(false);
+	const [displayPasswordDescription, setDisplayPasswordDescription] = useState<boolean>(false);
 	// パスワードの表示/非表示アイコン
 	const { passwordVisibility, rightIcon, handlePasswordVisibility } = useTogglePasswordVisibility();
 	// パスワードアイコンのデフォルト表示
-	const [defaultDisplayPasswordIcons, setDefaultDisplayPasswordIcons] = useState(false)
+	const [defaultDisplayPasswordIcons, setDefaultDisplayPasswordIcons] = useState<boolean>(false)
 	// パスワードの入力フォームの枠線のデフォルト表示
-	const [defaultPasswordBorderColor, setDefaultPasswordBorderColor] = useState(false)
+	const [defaultPasswordBorderColor, setDefaultPasswordBorderColor] = useState<boolean>(false)
 
 	// パスワードフォームのラベル化
 	let textInputPassword;

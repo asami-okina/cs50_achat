@@ -28,6 +28,7 @@ async fn main(){
     let app = Router::new()
         .route("/api/fetch-all-users", get(handler_fetch_all_users))
         .route("/api/signup", post(handler_sign_up))
+        .route("/api/signup/is_available_mail_validation", get(handler_is_available_mail_validation))
         .route("/api/signup/is_available_user_id_validation/:user_id", get(handler_is_available_user_id_validation))
         .route("/api/login", post(handler_log_in))
         .route("/api/users/:user_id/home", get(handler_search_name))
@@ -156,6 +157,62 @@ VALUES ( ?, ? , ? , ? )
 }
 
 /*
+  登録するメールアドレスが使用可能かどうかチェック
+*/
+// handler
+#[derive(Debug, Deserialize, Serialize)]
+struct IsAvailableMailValidationQyery {
+    mail: String,
+}
+
+// デフォルト値の取得
+impl Default for IsAvailableMailValidationQyery {
+    fn default() -> Self {
+        Self { mail: String::from("") }
+    }
+}
+
+// handler
+async fn handler_is_available_mail_validation(
+    query: Option<Query<IsAvailableMailValidationQyery>>,
+) -> Json<Value> {
+    // unwrap_or_default: Okの場合値を返し、Errの場合値の型のデフォルトを返す
+    let Query(query) = query.unwrap_or_default();
+    let mail = query.mail;
+
+    let pool = MySqlPool::connect(&env::var("DATABASE_URL").unwrap()).await.unwrap();
+    let is_available_mail = is_available_mail_validation(&pool, &mail).await.unwrap();
+    
+    Json(json!({ "is_available_mail": is_available_mail, }))
+}
+
+// SQL実行部分
+async fn is_available_mail_validation(pool: &MySqlPool, mail:&str) -> anyhow::Result<bool>{
+    let user = sqlx::query!(
+        r#"
+            SELECT *
+            FROM user
+            WHERE mail = ?
+        "#,
+        mail
+    )
+    .fetch_all(pool)
+    .await
+    .unwrap();
+
+    let result;
+
+    if user.len() == 0 {
+        // まだ該当メールアドレスは使用されていない
+        result = true
+    } else {
+        // 既に該当メールアドレスは使用されている
+        result = false
+    }
+    Ok(result)
+}
+
+/*
   登録するユーザーIDが使用可能かどうかチェック
 */
 // handler
@@ -164,7 +221,6 @@ struct IsAvailableUserIdValidationPath {
     user_id: String,
 }
 async fn handler_is_available_user_id_validation(Path(path): Path<IsAvailableUserIdValidationPath>) -> Json<Value> {
-    println!("kita");
     let user_id = path.user_id;
 
     let pool = MySqlPool::connect(&env::var("DATABASE_URL").unwrap()).await.unwrap();

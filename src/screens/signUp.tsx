@@ -17,33 +17,33 @@ import { sameStyles } from '../constants/styles/sameStyles'
 
 export function SignUp({ navigation }) {
 	// キーボードに完了ボタンを表示
-	const inputAccessoryViewID = 'uniqueID';
+	const inputAccessoryViewID:string = 'uniqueID';
 
 	// バリデーション
 	// メールアドレスのバリデーション
-	const [isCorrectMail, setIsCorrectMail] = useState(false);
+	const [isCorrectMail, setIsCorrectMail] = useState<boolean>(false);
 
 	// パスワードのバリデーション(半角英数字記号)
-	const [isCorrectPassewordSymbol, setIsCorrectPassewordSymbol] = useState(false);
+	const [isCorrectPassewordSymbol, setIsCorrectPassewordSymbol] = useState<boolean>(false);
 	// パスワードのバリデーション(文字数)
-	const [isCorrectPassewordStringCount, setIsCorrectPassewordStringCount] = useState(false);
+	const [isCorrectPassewordStringCount, setIsCorrectPassewordStringCount] = useState<boolean>(false);
 
 	// ユーザーIDのバリデーション(半角英数字)
-	const [isCorrectUserIdSymbol, setIsCorrectUserIdSymbol] = useState(false);
+	const [isCorrectUserIdSymbol, setIsCorrectUserIdSymbol] = useState<boolean>(false);
 	// ユーザーIDのバリデーション(文字数)
-	const [isCorrectUserIdStringCount, setIsCorrectUserIdStringCount] = useState(false);
+	const [isCorrectUserIdStringCount, setIsCorrectUserIdStringCount] = useState<boolean>(false);
 	// ユーザーIDのバリデーション(使用可能かどうか)
-	const [isAvailableUserId, setIsAvailableUserId] = useState(false)
+	const [isAvailableUserId, setIsAvailableUserId] = useState<boolean>(false)
 
 	// メールアドレスのバリデーション(使用可能かどうか)
-	const [isAvailableMail, setIsAvailableMail] = useState(false)
+	const [isAvailableMail, setIsAvailableMail] = useState<boolean>(false)
 
 	// メールアドレス入力フォーム
-	const [emailText, onChangeEmailText] = useState("");
+	const [emailText, onChangeEmailText] = useState<string>("");
 	// パスワード入力フォーム
-	const [passwordText, onChangePasswordText] = useState("");
+	const [passwordText, onChangePasswordText] = useState<string>("");
 	// ユーザーID入力フォーム
-	const [userIdText, onChangeUserIdText] = useState("");
+	const [userIdText, onChangeUserIdText] = useState<string>("");
 
 	return (
 		<KeyboardAvoidingView behavior="padding" style={sameStyles.screenContainerStyle}>
