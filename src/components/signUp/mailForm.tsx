@@ -27,7 +27,7 @@ export function MailForm({
 	onChangeEmailText,
 	isAvailableMail,
 	setIsAvailableMail
-}) {
+}:MailFormPropsType) {
 
 	// メールアドレスの説明文表示
 	const [displayMailDescription, setDisplayMailDescription] = useState<boolean>(false);

@@ -18,19 +18,19 @@ import { sameStyles } from '../constants/styles/sameStyles'
 
 export function LogIn({ navigation }) {
 	// キーボードに完了ボタンを表示
-	const inputAccessoryViewID = 'uniqueID';
+	const inputAccessoryViewID: string = 'uniqueID';
 
 	// メールアドレスの入力フォーム
-	const [emailText, setEmailText] = useState("");
+	const [emailText, setEmailText] = useState<string>("");
 
 	// パスワードの入力フォーム
-	const [passwordText, setPasswordText] = useState("");
+	const [passwordText, setPasswordText] = useState<string>("");
 
 	// メールアドレスもしくはパスワード入力中
-	const [onFocusInputMailOrPasseword, setOnFocusInputMailOrPasseword] = useState(false)
+	const [onFocusInputMailOrPasseword, setOnFocusInputMailOrPasseword] = useState<boolean>(false)
 
 	// ログインボタンをしたかどうか
-	const [executedLoginAuthentication, setExecutedLoginAuthentication] = useState(false)
+	const [executedLoginAuthentication, setExecutedLoginAuthentication] = useState<boolean>(false)
 
 	// ログイン認証
 	async function _loginAuthentication() {
@@ -50,14 +50,14 @@ export function LogIn({ navigation }) {
 
 			// レスポンスをJSONにする
 			const parse_response = await response.json()
-			if (parse_response.certificationResult) {
-							// ローカルストレージにユーザーIDを保存
-			await storage.save({
-				key: "key",
-				data: {
-					userId: parse_response.userId,
-				},
-			});
+			if (parse_response.certification_result) {
+				// ローカルストレージにユーザーIDを保存
+				await storage.save({
+					key: "key",
+					data: {
+						userId: parse_response.user_id,
+					},
+				});
 				// Home画面へ遷移
 				navigation.navigate('Home')
 			} else {

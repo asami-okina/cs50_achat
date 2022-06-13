@@ -12,6 +12,15 @@ import { MAIN_GRAY_COLOR } from '../../constants/layout';
 // constantsSearchStyles
 import { searchStyles } from '../../constants/styles/searchStyles'
 
+type PasswordFormPropsType = {
+	inputAccessoryViewID: string;
+	passwordText: string;
+	setPasswordText: React.Dispatch<React.SetStateAction<string>>;
+	executedLoginAuthentication: boolean;
+	onFocusInputMailOrPasseword: boolean;
+	setOnFocusInputMailOrPasseword: React.Dispatch<React.SetStateAction<boolean>>;
+}
+
 export function PasswordForm({
 	inputAccessoryViewID,
 	passwordText,
@@ -19,7 +28,7 @@ export function PasswordForm({
 	executedLoginAuthentication,
 	onFocusInputMailOrPasseword,
 	setOnFocusInputMailOrPasseword,
-}) {
+}: PasswordFormPropsType) {
 	// パスワードの表示/非表示アイコン
 	const { passwordVisibility, rightIcon, handlePasswordVisibility } = useTogglePasswordVisibility();
 

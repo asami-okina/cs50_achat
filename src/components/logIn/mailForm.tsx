@@ -5,6 +5,15 @@ import { Text, View, Image, TextInput, Pressable } from 'react-native';
 // constantsSearchStyles
 import { searchStyles } from '../../constants/styles/searchStyles'
 
+type MailFormPropsType = {
+	inputAccessoryViewID: string;
+	emailText: string;
+	setEmailText:  React.Dispatch<React.SetStateAction<string>>;
+	executedLoginAuthentication: boolean;
+	onFocusInputMailOrPasseword: boolean;
+	setOnFocusInputMailOrPasseword: React.Dispatch<React.SetStateAction<boolean>>;
+}
+
 export function MailForm({
 	inputAccessoryViewID,
 	emailText,
@@ -12,7 +21,7 @@ export function MailForm({
 	executedLoginAuthentication,
 	onFocusInputMailOrPasseword,
 	setOnFocusInputMailOrPasseword,
-}) {
+}: MailFormPropsType) {
 	// メールフォームのラベル化
 	let textInputEmail;
 	return (

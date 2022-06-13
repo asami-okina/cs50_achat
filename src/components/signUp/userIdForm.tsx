@@ -138,11 +138,3 @@ export function UserIdForm({
 		</View>
 	)
 }
-
-
-// やったこと
-// _isAvailableUserIdValidationの動作確認
-// userIdForm.tsxの型
-
-// 次やること
-// 関連ファイルの型、次の関数を組み込み
