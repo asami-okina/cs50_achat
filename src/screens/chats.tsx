@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { View, SafeAreaView, KeyboardAvoidingView } from 'react-native';
 import { useIsFocused } from '@react-navigation/native'
 import { storage } from '../../storage'
+import { StackScreenProps } from '@react-navigation/stack';
 
 // components
 import { Footer } from '../components/common/footer'
@@ -18,7 +19,9 @@ import { sameStyles } from '../constants/styles/sameStyles'
 // layouts
 import { IPHONE_X_BOTTOM_SPACE } from '../constants/layout'
 
-export function Chats({ navigation }) {
+type MainProps = StackScreenProps<RootStackParamListType, 'Chats'>;
+
+export function Chats({ navigation }:MainProps) {
 	// ユーザーID(今後は認証から取得するようにする)
 	const [userId, setUserId] = useState(null)
 
@@ -122,9 +125,6 @@ export function Chats({ navigation }) {
 		}
 	}, [searchText])
 
-	// 検索フォームのラベル化
-	let textInputSearch;
-
 	return (
 		<KeyboardAvoidingView behavior="padding" style={sameStyles.screenContainerStyle}>
 			<SafeAreaView style={sameStyles.screenContainerStyle}>
@@ -135,7 +135,7 @@ export function Chats({ navigation }) {
 				<View style={sameStyles.topMarginViewStyle}></View>
 				{/* 丸みを帯びている白いトップ部分 */}
 				<TopAreaWrapper type={"searchForm"}>
-					<SearchForm setSearchText={_autoSuggestSearchChatByNickNameOrGroupName} searchText={searchText} textInputSearch={textInputSearch} searchName={_searchChatByNickNameOrGroupName} fetchGroupCount={null} fetchFriendCount={null} setIsDuringSearch={setIsDuringSearch} placeholder={"Search by name"} />
+					<SearchForm setSearchText={_autoSuggestSearchChatByNickNameOrGroupName} searchText={searchText} searchName={_searchChatByNickNameOrGroupName} fetchGroupCount={null} fetchFriendCount={null} setIsDuringSearch={setIsDuringSearch} placeholder={"Search by name"} />
 				</TopAreaWrapper>
 				{/* トップ部分を除くメイン部分: iphoneXの場合は、底のマージンを考慮 */}
 				<View style={IPHONE_X_BOTTOM_SPACE === 0 ? sameStyles.withFooterMainContainerNoneBottomButtonStyle : sameStyles.withFooterMainContainerIphoneXNoneBottomButtonStyle}>

@@ -2,7 +2,6 @@
 import React, { useEffect, useState, useCallback } from 'react';
 import { View, SafeAreaView, KeyboardAvoidingView, StyleSheet, Image, Text, Pressable } from 'react-native';
 import { GiftedChat, Send, Bubble, InputToolbar, MessageText, LoadEarlier, Day, Time, Actions } from 'react-native-gifted-chat'
-import uuid from 'react-native-uuid';
 import { addMessages } from "../components/chat/messages"
 import _ from 'lodash';
 import moment from "moment"
@@ -15,6 +14,7 @@ import * as FileSystem from 'expo-file-system';
 import { API_SERVER_URL } from "../constants/api"
 import { storage } from '../../storage'
 import { sock } from "../../websocket"
+import { StackScreenProps } from '@react-navigation/stack';
 
 // components
 import { TopAreaWrapper } from "../components/common/topAreaWrapper"
@@ -29,7 +29,9 @@ import { MAIN_NAVY_COLOR, MAIN_WHITE_COLOR, FOOTER_HEIGHT, CONTENT_WIDTH, SEARCH
 // type
 type ChatRoomIdType = "DirectChatRoomId" | "GroupChatRoomId";
 
-export function Chat({ navigation, route }) {
+type MainProps = StackScreenProps<RootStackParamListType, 'Chat'>;
+
+export function Chat({ navigation, route }: MainProps) {
 	// 引数を取得
 	// addGroupMemberName: 今後、○○がグループに参加しました。というメッセージに使用する
 	const { groupChatRoomId, directChatRoomId, profileImage, name, groupMemberUserId, addGroupMemberName } = route.params

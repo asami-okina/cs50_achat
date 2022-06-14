@@ -356,23 +356,15 @@ async fn handler_search_name(
 }
 
 #[derive(Debug, Deserialize, Serialize)]
-enum SearchNameFriendListResultEnum {
-    SearchNameFriendListNoneResult {
-        direct_chat_room_id: Option<u64>,
-        friend_use_id: Option<String>,
-        friend_profile_image: Option<String>,
-        friend_nickname: Option<String>
-    },
-    SearchNameFriendListResult {
-        direct_chat_room_id: u64,
-        friend_use_id: String,
-        friend_profile_image: Option<String>,
-        friend_nickname: Option<String>
-    }
+struct SearchNameFriendListResult {
+    direct_chat_room_id: u64,
+    friend_use_id: String,
+    friend_profile_image: Option<String>,
+    friend_nickname: Option<String>
 }
 
 // SQL実行部分(Friends)
-async fn search_name_friends(pool: &MySqlPool, user_id: &str, search_text: &str) -> anyhow::Result<Vec<SearchNameFriendListResultEnum>> {
+async fn search_name_friends(pool: &MySqlPool, user_id: &str, search_text: &str) -> anyhow::Result<Vec<SearchNameFriendListResult>> {
     // 取得したいデータ
     // "direct_chat_room_id": "1",
     // "friend_use_id": "asami111",
@@ -383,7 +375,7 @@ async fn search_name_friends(pool: &MySqlPool, user_id: &str, search_text: &str)
     // ①userテーブルのnicknameが一致
     // ②followテーブルのfrom_user_idが自分の場合のto_user_idが友達のuser_id
     // ②direct_memberテーブルのdeleteフラグがfalseである(非表示の友達も表示する)
-    
+    let like_query = format!("{}{}{}", "%", search_text, "%");
     let search_name_friend_list = sqlx::query!(
         r#"
             SELECT
@@ -403,7 +395,7 @@ async fn search_name_friends(pool: &MySqlPool, user_id: &str, search_text: &str)
                     FROM
                         user
                     WHERE
-                        nickname = ?
+                        nickname LIKE ?
                 )
             AND u.id IN(
                     SELECT
@@ -422,7 +414,7 @@ async fn search_name_friends(pool: &MySqlPool, user_id: &str, search_text: &str)
                         user_id = ?
                 )
         "#,
-        search_text,
+        like_query,
         user_id,
         user_id
     )
@@ -430,21 +422,9 @@ async fn search_name_friends(pool: &MySqlPool, user_id: &str, search_text: &str)
     .await
     .unwrap();
 
-    let mut result:Vec<SearchNameFriendListResultEnum> = vec![];
-
-    if search_name_friend_list.len() == 0 {
-        result.push(
-            SearchNameFriendListResultEnum::SearchNameFriendListNoneResult {
-                direct_chat_room_id: None,
-                friend_use_id: None,
-                friend_profile_image: None,
-                friend_nickname: None,
-            }
-        )
-    } else {
-        let mut result:Vec<SearchNameFriendListResultEnum> = vec![];
+    let mut result:Vec<SearchNameFriendListResult> = vec![];
         for row in &search_name_friend_list {
-            let friend = SearchNameFriendListResultEnum::SearchNameFriendListResult {
+            let friend = SearchNameFriendListResult {
                 direct_chat_room_id: row.direct_chat_room_id, 
                 friend_use_id: row.friend_user_id.to_string(),
                 friend_profile_image:  match &row.friend_profile_image {
@@ -458,7 +438,6 @@ async fn search_name_friends(pool: &MySqlPool, user_id: &str, search_text: &str)
               };
               result.push(friend);
         }
-    }
 
     Ok(result)
 }
@@ -480,6 +459,7 @@ async fn search_name_groups(pool: &MySqlPool, user_id: &str, search_text: &str) 
     // 条件
     // ①group_memberテーブルのuser_idが自分のuser_idであるかつdelete_flagとhidden_flagがfalseであるgroup_chat_room_id
     // ②①の取得結果のgroup_chat_room_idのうち、group_nameが一致
+    let like_query = format!("{}{}{}", "%", search_text, "%");
     let search_name_group_list = sqlx::query!(
         r#"
             SELECT
@@ -494,11 +474,11 @@ async fn search_name_groups(pool: &MySqlPool, user_id: &str, search_text: &str) 
             WHERE
                 gm.user_id = ?
             AND gm.leave_flag = FALSE
-            AND g.group_name = ?
+            AND g.group_name LIKE ?
             AND g.delete_flag = FALSE
         "#,
         user_id,
-        search_text
+        like_query
     )
     .fetch_all(pool)
     .await

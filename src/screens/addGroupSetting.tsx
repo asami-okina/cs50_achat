@@ -3,6 +3,7 @@ import React, { useState, useEffect, useMemo } from 'react';
 import { View, SafeAreaView, KeyboardAvoidingView } from 'react-native';
 import { API_SERVER_URL } from "../constants/api"
 import { storage } from '../../storage'
+import { StackScreenProps } from '@react-navigation/stack';
 
 // components
 import { AddGroupTitle } from '../components/addGroup/addGroupTitle'
@@ -17,10 +18,9 @@ import { sameStyles } from '../constants/styles/sameStyles'
 // layouts
 import { IPHONE_X_BOTTOM_SPACE } from '../constants/layout'
 
+type MainProps = StackScreenProps<RootStackParamListType, 'AddGroupSetting'>;
 
-// script自体の読み込みは1回。あしたはここから。image,nameのひきつぎ
-
-export function AddGroupSetting({ route, navigation }) {
+export function AddGroupSetting({ route, navigation }: MainProps) {
 	// ユーザーID(今後は認証から取得するようにする)
 	const [userId, setUserId] = useState(null)
 

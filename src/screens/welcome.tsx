@@ -1,6 +1,7 @@
 // libs
 import React from 'react';
 import { View, SafeAreaView } from 'react-native';
+import { StackScreenProps } from '@react-navigation/stack';
 
 // components
 import { Button } from '../components/common/button'
@@ -12,7 +13,9 @@ import { TopAreaWrapper } from "../components/common/topAreaWrapper"
 // sameStyles
 import { sameStyles } from '../constants/styles/sameStyles'
 
-export function Welcome({ navigation }) {
+type MainProps = StackScreenProps<RootStackParamListType, 'Welcome'>;
+
+export function Welcome({ navigation }: MainProps) {
 	return (
 		<SafeAreaView style={sameStyles.screenContainerStyle}>
 			{/* 画面一番上にある青色の余白部分 */}

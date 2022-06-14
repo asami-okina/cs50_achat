@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { View, SafeAreaView, KeyboardAvoidingView, StyleSheet } from 'react-native';
 import { useIsFocused } from '@react-navigation/native'
 import { storage } from '../../storage'
+import { StackScreenProps } from '@react-navigation/stack';
 
 // components
 import { TopAreaWrapper } from "../components/common/topAreaWrapper"
@@ -14,7 +15,9 @@ import { API_SERVER_URL } from "../constants/api"
 // sameStyles
 import { sameStyles } from '../constants/styles/sameStyles'
 
-export function Profile({ navigation }) {
+type MainProps = StackScreenProps<RootStackParamListType, 'Profile'>;
+
+export function Profile({ navigation }: MainProps) {
 	// ユーザーID(今後は認証から取得するようにする)
 	const [userId, setUserId] = useState(null)
 

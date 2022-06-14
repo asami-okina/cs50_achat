@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { View, SafeAreaView, KeyboardAvoidingView } from 'react-native';
 import { API_SERVER_URL } from "../constants/api"
 import { storage } from "../../storage"
+import { StackScreenProps } from '@react-navigation/stack';
 
 // components
 import { Footer } from '../components/common/footer'
@@ -20,7 +21,9 @@ import { sameStyles } from '../constants/styles/sameStyles'
 // layouts
 import { IPHONE_X_BOTTOM_SPACE } from '../constants/layout'
 
-export function AddGroup({ route, navigation }) {
+type MainProps = StackScreenProps<RootStackParamListType, 'AddGroup'>;
+
+export function AddGroup({ route, navigation }: MainProps) {
 	const { groupName, groupImage, backFriendList } = route.params
 	// ユーザーID(今後は認証から取得するようにする)
 	const [userId, setUserId] = useState(null)
@@ -85,9 +88,6 @@ export function AddGroup({ route, navigation }) {
 			console.error(e)
 		}
 	}
-
-	// 検索フォームのラベル化
-	let textInputSearch;
 
 	// 選択された友達リストの追加
 	const _addFriendList = (rowKey, type) => {
@@ -195,7 +195,7 @@ export function AddGroup({ route, navigation }) {
 				<View style={sameStyles.topMarginViewStyle}></View>
 				{/* 丸みを帯びている白いトップ部分 */}
 				<TopAreaWrapper type={"searchForm"}>
-					<SearchForm setSearchText={setSearchText} searchText={searchText} textInputSearch={textInputSearch} searchName={_searchName} fetchGroupCount={null} fetchFriendCount={null} setIsDuringSearch={setIsDuringSearch} placeholder={"Search by name"} />
+					<SearchForm setSearchText={setSearchText} searchText={searchText} searchName={_searchName} fetchGroupCount={null} fetchFriendCount={null} setIsDuringSearch={setIsDuringSearch} placeholder={"Search by name"} />
 				</TopAreaWrapper>
 				{/* トップ部分を除くメイン部分: iphoneXの場合は、底のマージンを考慮 */}
 				<View style={IPHONE_X_BOTTOM_SPACE === 0 ? sameStyles.withFooterMainContainerStyle : sameStyles.withFooterMainContainerIphoneXStyle}>

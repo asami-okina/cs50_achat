@@ -3,6 +3,16 @@ import React from 'react';
 import { Text, View, Pressable, StyleSheet } from 'react-native';
 import { MAIN_NAVY_COLOR, CONTENT_WIDTH, MAIN_GRAY_COLOR, TAB_FONT, MAIN_WHITE_COLOR, TAB_HEIGHT, TAB_TITLE_TEXT_SIZE } from '../../constants/layout'
 
+
+type FriendOrGroupSelectTabPropsType = {
+	setOpenFriendList: React.Dispatch<React.SetStateAction<boolean>>;
+	setOpenGroupList: React.Dispatch<React.SetStateAction<boolean>>;
+	openFriendList: boolean;
+	openGroupList: boolean;
+	friendCount: number;
+	groupCount: number;
+}
+
 export function FriendOrGroupSelectTab({
 	setOpenFriendList,
 	setOpenGroupList,
@@ -10,7 +20,7 @@ export function FriendOrGroupSelectTab({
 	openGroupList,
 	friendCount,
 	groupCount
-}) {
+}: FriendOrGroupSelectTabPropsType) {
 	return (
 		<View style={styles.wrapperStyle}>
 			<View style={styles.containerStyle}>

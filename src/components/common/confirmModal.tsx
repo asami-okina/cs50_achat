@@ -5,13 +5,21 @@ import { View, Text, Modal, Pressable, StyleSheet } from 'react-native';
 // layouts
 import { MAIN_NAVY_COLOR, MAIN_PINK_COLOR, MAIN_GRAY_COLOR, MORDAL_WIDTH, MORDAL_TEXT_CONTENT_WIDTH, STANDARD_FONT, MAIN_WHITE_COLOR } from '../../constants/layout'
 
+type ConfirmModalPropsType = {
+	modalVisible: boolean;
+	setModalVisible: React.Dispatch<React.SetStateAction<boolean>>;
+	setClickedCancelMordal: React.Dispatch<React.SetStateAction<boolean>>;
+	setClickedOkMordal: React.Dispatch<React.SetStateAction<boolean>>;
+	modalText: string;
+}
+
 export function ConfirmModal({
 	modalVisible,
 	setModalVisible,
 	setClickedCancelMordal,
 	setClickedOkMordal,
 	modalText
-}) {
+}:ConfirmModalPropsType) {
 	return (
 		<Modal
 			animationType="slide"

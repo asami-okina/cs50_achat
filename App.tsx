@@ -32,7 +32,7 @@ import {
 	MPLUS1p_100Thin, MPLUS1p_300Light, MPLUS1p_400Regular, MPLUS1p_500Medium, MPLUS1p_700Bold, MPLUS1p_800ExtraBold, MPLUS1p_900Black,
 } from '@expo-google-fonts/m-plus-1p';
 
-const Stack = createNativeStackNavigator();
+const Stack = createNativeStackNavigator<RootStackParamListType>();
 
 // Node.jsを使うため、mock serviceはコメントアウト
 // // mock service
@@ -66,9 +66,9 @@ function App() {
 			<NavigationContainer>
 				<Stack.Navigator>
 					{/* あとで更新 */}
-					<Stack.Screen name="Welcome" component={Welcome} options={{ headerShown: false }} />
-					<Stack.Screen name="SignUp" component={SignUp} options={{ headerShown: false }} />
-					<Stack.Screen name="LogIn" component={LogIn} options={{ headerShown: false }} />
+					{/* <Stack.Screen name="Welcome" component={Welcome} options={{ headerShown: false }} /> */}
+					{/* <Stack.Screen name="SignUp" component={SignUp} options={{ headerShown: false }} /> */}
+					{/* <Stack.Screen name="LogIn" component={LogIn} options={{ headerShown: false }} /> */}
 					<Stack.Screen name="Home" component={Home} options={{ headerShown: false }} />
 					<Stack.Screen name="Footer" component={Footer} options={{ headerShown: false }} />
 					<Stack.Screen name="Button" component={Button} options={{ headerShown: false }} />

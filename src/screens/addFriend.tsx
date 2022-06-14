@@ -3,6 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { View, SafeAreaView, KeyboardAvoidingView, StyleSheet } from 'react-native';
 import { API_SERVER_URL } from "../constants/api"
 import { storage } from '../../storage';
+import { StackScreenProps } from '@react-navigation/stack';
 
 // components
 import { Footer } from '../components/common/footer'
@@ -18,7 +19,9 @@ import { sameStyles } from '../constants/styles/sameStyles'
 // layouts
 import { IPHONE_X_BOTTOM_SPACE } from '../constants/layout'
 
-export function AddFriend({ navigation }) {
+type MainProps = StackScreenProps<RootStackParamListType, 'AddFriend'>;
+
+export function AddFriend({ navigation }: MainProps) {
 	// ユーザーID(今後は認証から取得するようにする)
 	const [userId, setUserId] = useState(null)
 
@@ -82,10 +85,6 @@ export function AddFriend({ navigation }) {
 		})
 	}, [])
 
-
-	// 検索フォームのラベル化
-	let textInputSearch;
-
 	return (
 		<KeyboardAvoidingView behavior="padding" style={sameStyles.screenContainerStyle}>
 			<SafeAreaView style={sameStyles.screenContainerStyle}>
@@ -99,7 +98,7 @@ export function AddFriend({ navigation }) {
 				<View style={IPHONE_X_BOTTOM_SPACE === 0 ? sameStyles.withFooterMainContainerNoneBottomButtonStyle : sameStyles.withFooterMainContainerIphoneXNoneBottomButtonStyle}>
 					{/* 検索フォーム */}
 					<View style={styles.searchFormContainerStyle}>
-						<SearchForm setSearchText={setSearchText} searchText={searchText} textInputSearch={textInputSearch} searchName={_searchId} fetchGroupCount={null} fetchFriendCount={null} setIsDuringSearch={null} placeholder={"Search by frinend's userID"} />
+						<SearchForm setSearchText={setSearchText} searchText={searchText} searchName={_searchId} fetchGroupCount={null} fetchFriendCount={null} setIsDuringSearch={null} placeholder={"Search by frinend's userID"} />
 					</View>
 					{/* 検索結果が存在する場合 */}
 					{friendInfo && existUserId && (

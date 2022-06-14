@@ -1,6 +1,7 @@
 // libs
 import React from 'react';
 import { Text, View, Pressable, Image, StyleSheet } from 'react-native';
+import { StackScreenProps } from '@react-navigation/stack';
 
 // layouts
 import { FOOTER_HEIGHT, MAIN_NAVY_COLOR, MAIN_WHITE_COLOR, STANDARD_FONT } from '../../constants/layout'

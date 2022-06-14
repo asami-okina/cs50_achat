@@ -2,6 +2,8 @@
 import React, { useState } from 'react';
 import { View, SafeAreaView, ScrollView, KeyboardAvoidingView, Text } from 'react-native';
 import {storage}from '../../storage'
+import { StackScreenProps } from '@react-navigation/stack';
+
 
 // components
 import { ToSignUpOrLoginTextArea } from '../components/common/toSignUpOrLoginTextArea'
@@ -16,7 +18,9 @@ import { API_SERVER_URL } from "../constants/api"
 // sameStyles
 import { sameStyles } from '../constants/styles/sameStyles'
 
-export function LogIn({ navigation }) {
+type MainProps = StackScreenProps<RootStackParamListType, 'LogIn'>;
+
+export function LogIn({ navigation }: MainProps) {
 	// キーボードに完了ボタンを表示
 	const inputAccessoryViewID: string = 'uniqueID';
 

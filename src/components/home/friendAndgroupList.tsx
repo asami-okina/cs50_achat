@@ -8,6 +8,20 @@ import { CONTENT_WIDTH, MAIN_WHITE_COLOR } from '../../constants/layout'
 // components
 import { ListItem } from './_friendAndGroupList/listItem'
 
+type FriendAndGroupListlPropsType = {
+	navigation: any;
+	type: string;
+	setModalVisible: React.Dispatch<React.SetStateAction<boolean>>;
+	clickedCancelMordal: boolean;
+	setClickedCancelMordal: React.Dispatch<React.SetStateAction<boolean>>;
+	clickedOkMordal: boolean;
+	setClickedOkMordal: React.Dispatch<React.SetStateAction<boolean>>;
+	openFriendList: boolean;
+	friendList: FriendListPropsType[] | null;
+	openGroupList: boolean;
+	groupList: GroupListPropsType[] | null;
+}
+
 export function FriendAndGroupList({
 	navigation,
 	type,
@@ -19,8 +33,8 @@ export function FriendAndGroupList({
 	openFriendList,
 	friendList,
 	openGroupList,
-	groupList
-}) {
+	groupList,
+}: FriendAndGroupListlPropsType) {
 	return (
 		<View style={styles.groupAndFriendWrapperStyle}>
 			<View style={styles.groupAndFriendContainerStyle}>

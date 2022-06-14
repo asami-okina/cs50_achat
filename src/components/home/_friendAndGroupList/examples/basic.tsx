@@ -22,7 +22,6 @@ export default function Basic({ navigation, groupList, friendList, type, setModa
 		type === "Group" ? groupList.map((_, i) => ({ ..._, key: `${i}` }))
 			: friendList.map((_, i) => ({ ..._, key: `${i}` }))
 	);
-
 	// friendListの更新
 	useEffect(() => {
 		if (friendList) {

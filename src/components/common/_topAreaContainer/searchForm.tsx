@@ -1,6 +1,7 @@
 // libs
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, Pressable, Image, TextInput, StyleSheet } from 'react-native';
+import { storage } from "../../../../storage"
 
 // constantsSearchStyles
 import { searchStyles } from '../../../constants/styles/searchStyles'
@@ -8,22 +9,41 @@ import { searchStyles } from '../../../constants/styles/searchStyles'
 // layouts
 import { ICON_SIZE } from '../../../constants/layout'
 
+type SearchFormPropsType = {
+	setSearchText: React.Dispatch<React.SetStateAction<string>>;
+	searchText: string;
+	searchName: (searchText: string) => Promise<void>;
+	fetchGroupCount: (userId: string) => Promise<void>;
+	fetchFriendCount:(userId: string) => Promise<void>;
+	setIsDuringSearch: React.Dispatch<React.SetStateAction<boolean>>;
+	placeholder: string;
+}
 
 // 丸みを帯びている白いトップ部分
 export function SearchForm({
 	setSearchText,
 	searchText,
-	textInputSearch,
 	searchName,
 	fetchGroupCount,
 	fetchFriendCount,
 	setIsDuringSearch,
 	placeholder
-}) {
+}: SearchFormPropsType) {
 
 	// 検索フォームの削除アイコン表示/非表示
-	const [deleteIconDisplay, setDeleteIconDisplay] = useState(false)
-	const userId = "asami11"
+	const [deleteIconDisplay, setDeleteIconDisplay] = useState<boolean>(false)
+	const [userId, setUserId] = useState<string>(null)
+	// 検索フォームのラベル化
+	let textInputSearch;
+
+	// userIdの取得
+	useEffect(() => {
+		storage.load({
+			key: "key"
+		}).then((data) => {
+			setUserId(data.userId)
+		})
+	})
 	return (
 		<Pressable onPress={() => textInputSearch.focus()} >
 			<View style={searchStyles.searchViewStyle}>
@@ -40,20 +60,10 @@ export function SearchForm({
 					}}
 					onEndEditing={() => {
 						searchName(searchText)
-						// グループ数の再取得
-						if (fetchGroupCount) {
-							fetchGroupCount(userId)
-						}
-						// 友達数の再取得
-						if (fetchFriendCount) {
-							fetchFriendCount(userId)
-						}
-
 						// 検索中フラグをtrueにする
 						if (setIsDuringSearch) {
 							setIsDuringSearch(true)
 						}
-
 						// 削除アイコンの表示/非表示切り替え
 						setDeleteIconDisplay(true)
 					}}
@@ -61,7 +71,16 @@ export function SearchForm({
 				{deleteIconDisplay && (
 					<Pressable onPress={() => {
 						textInputSearch.clear();
-						// beforeとafterをmergeさせなきゃ
+						// グループ数の再取得
+						console.log('fetchGroupCount',fetchGroupCount)
+						if (fetchGroupCount) {
+							fetchGroupCount(userId)
+						}
+						// 友達数の再取得
+						if (fetchFriendCount) {
+							fetchFriendCount(userId)
+						}
+						
 						// 検索中フラグをfalseにする
 						if (setIsDuringSearch) {
 							setIsDuringSearch(false)

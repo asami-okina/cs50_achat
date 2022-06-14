@@ -1,6 +1,7 @@
 // libs
 import React, { useState } from 'react';
 import { View, SafeAreaView, ScrollView, KeyboardAvoidingView, Text } from 'react-native';
+import { StackScreenProps } from '@react-navigation/stack';
 
 // components
 import { MailForm } from '../components/signUp/mailForm';
@@ -15,7 +16,9 @@ import { Button } from '../components/common/button'
 // sameStyles
 import { sameStyles } from '../constants/styles/sameStyles'
 
-export function SignUp({ navigation }) {
+type MainProps = StackScreenProps<RootStackParamListType, 'SignUp'>;
+
+export function SignUp({ navigation }: MainProps) {
 	// キーボードに完了ボタンを表示
 	const inputAccessoryViewID:string = 'uniqueID';
 
