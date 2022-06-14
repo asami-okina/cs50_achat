@@ -49,7 +49,7 @@ export function Chat({ navigation, route }: MainProps) {
 
 	// マウント判定
 	const isMounted = useIsMounted()
-	const [sendUserIds, setSendUserIds] = useState(null)
+	const [sendUserIds, setSendUserIds] = useState<string[]>(null)
 
 	// メッセージを送信した場合に実行
 	useEffect(() => {
@@ -142,10 +142,10 @@ export function Chat({ navigation, route }: MainProps) {
 
 			if (directChatRoomId) {
 				chat_room_type = "DirectChatRoomId"
-				chat_room_id = directChatRoomId
+				chat_room_id = Number(directChatRoomId)
 			} else {
 				chat_room_type = "GroupChatRoomId"
-				chat_room_id = groupChatRoomId
+				chat_room_id = Number(groupChatRoomId)
 			}
 
 			// テキストと画像両方ある場合は、2回メッセージを送信する
@@ -156,7 +156,7 @@ export function Chat({ navigation, route }: MainProps) {
 					"chat_room_id": chat_room_id,
 					"content": messages[0]["text"],
 					"content_type": "Text",
-					"sendr_user_id": messages[0]["user_id"],
+					"sender_user_id": messages[0]["user_id"],
 					"created_at": messages[0]["createdAt"],
 				}
 				let response = await fetch(API_SERVER_URL + `/api/users/${userId}/message`, {
@@ -172,7 +172,7 @@ export function Chat({ navigation, route }: MainProps) {
 					"chat_room_id": chat_room_id,
 					"content": messages[0]["image"],
 					"content_type": "Image",
-					"sendr_user_id": messages[0]["user_id"],
+					"sender_user_id": messages[0]["user_id"],
 					"created_at": messages[0]["createdAt"],
 				}
 				response = await fetch(API_SERVER_URL + `/api/users/${userId}/message`, {
@@ -189,7 +189,7 @@ export function Chat({ navigation, route }: MainProps) {
 					"chat_room_id": chat_room_id,
 					"content": messages[0]["text"] ? messages[0]["text"] : messages[0]["image"],
 					"content_type": messages[0]["text"] ? "Text" : "Image",
-					"sendr_user_id": messages[0]["user_id"],
+					"sender_user_id": messages[0]["user_id"],
 					"created_at": messages[0]["createdAt"],
 				}
 				const response = await fetch(API_SERVER_URL + `/api/users/${userId}/message`, {

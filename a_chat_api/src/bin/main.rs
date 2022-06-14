@@ -2599,6 +2599,7 @@ async fn handler_post_message(
     Path(path): Path<PostMessagePath>,
     body_json: Json<PostMessageJson>
 ) -> Json<Value> {
+    println!("rustきた");
     // user_idの取得
     let _user_id = path.user_id;
 
@@ -2648,6 +2649,7 @@ async fn post_message(pool: &MySqlPool, chat_room_type: &PostMessageChatRoomIdTy
     }
 
     if chat_room_type == &PostMessageChatRoomIdTypeEnum::GroupChatRoomId {
+        println!("きた");
         sqlx::query!(
             r#"
                 INSERT INTO message ( content_type_id, sender_id, group_chat_room_id, content, created_at )

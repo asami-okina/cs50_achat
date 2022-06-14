@@ -34,8 +34,8 @@ type MessageType = {
 	type: string;
 	user: {
 		_id: string;
-		avatar: string;
-		name: string;
+		avatar?: string;
+		name?: string;
 	}
 
 }
