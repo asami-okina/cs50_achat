@@ -9,8 +9,8 @@ type RootStackParamListType = {
     AuthErrorText: undefined;
     ForgotPassword: undefined;
     Chats: undefined;
-    AddGroup: {groupName: string, groupImage: string, backFriendList: FriendListPropsType[]};
-    AddGroupSetting: { backGroupName: string, backGroupImage: string, friendList: FriendListPropsType[]};
+    AddGroup: {groupName: string, groupImage: string, backFriendList: NewFriendListPropsType[]};
+    AddGroupSetting: { backGroupName: string, backGroupImage: string, friendList: NewFriendListPropsType[]};
     AddFriend: undefined;
     Profile: undefined;
     EditNickName: undefined;

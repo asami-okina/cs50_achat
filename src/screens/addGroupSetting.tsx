@@ -21,18 +21,16 @@ import { IPHONE_X_BOTTOM_SPACE } from '../constants/layout'
 type MainProps = StackScreenProps<RootStackParamListType, 'AddGroupSetting'>;
 
 export function AddGroupSetting({ route, navigation }: MainProps) {
-	// ユーザーID(今後は認証から取得するようにする)
-	const [userId, setUserId] = useState(null)
-
 	const [friendList, setFriendList] = useState(route.params.friendList)
+	const [userId, setUserId] = useState<string>(null)
 	// グループ設定画面から、メンバー追加で戻ったときにグループ名とグループ画像を保持
 	const { backGroupName, backGroupImage } = route.params
 	const groupMemberCount = friendList.length + 1 // 自分を1としてカウントし、足す
 
 	// 自分のニックネーム
-	const [ownNickName, setOwnNickName] = useState('')
+	const [ownNickName, setOwnNickName] = useState<string>('')
 	// 自分のプロフィール画像
-	const [ownProfileImage, setOwnProfileImage] = useState('')
+	const [ownProfileImage, setOwnProfileImage] = useState<string>('')
 
 	const friendListNames = useMemo(() => {
 		// グループ名のplaceholderを生成
@@ -49,13 +47,13 @@ export function AddGroupSetting({ route, navigation }: MainProps) {
 	}, [friendList, ownNickName])
 
 	// グループ画像
-	const [image, setImage] = useState(null)
+	const [image, setImage] = useState<string>(null)
 
 	// グループ名
-	const [groupName, setGroupName] = useState(friendListNames)
+	const [groupName, setGroupName] = useState<string>(friendListNames)
 
 	// [自分の情報]ユーザーIDに紐づくニックネーム、プロフィール画像の取得
-	async function _fetchProfileByUserId(userId) {
+	async function _fetchProfileByUserId(userId: string) {
 		try {
 			// APIリクエスト
 			const response = await fetch(API_SERVER_URL + `/api/users/${userId}/profile`, {
@@ -66,12 +64,13 @@ export function AddGroupSetting({ route, navigation }: MainProps) {
 			})
 			// レスポンスをJSONにする
 			const parse_response = await response.json()
+
 			// 自分のニックネームの設定
-			if (parse_response.nickName) {
-				setOwnNickName(parse_response.nickName)
+			if (parse_response.profile.nickname) {
+				setOwnNickName(parse_response.profile.nickname)
 			}
-			if (parse_response.profileImage) {
-				setOwnProfileImage(parse_response.profileImage)
+			if (parse_response.profile.profile_image) {
+				setOwnProfileImage(parse_response.profile.profile_image)
 			}
 		} catch (e) {
 			console.error(e)

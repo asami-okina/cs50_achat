@@ -16,9 +16,11 @@ export function FriendListItem({
 }) {
 	let clicked = false
 	// 該当友達が選択されているかどうかの判定
-	const prevIndex = selectedFriendList.findIndex(item => item.friend_use_id === list.friend_use_id);
-	if (prevIndex !== -1) {
-		clicked = true
+	if (selectedFriendList !== null) {
+		const prevIndex = selectedFriendList.findIndex(item => item.friend_use_id === list.friend_use_id);
+		if (prevIndex !== -1) {
+			clicked = true
+		}
 	}
 	return (
 		<TouchableHighlight
@@ -38,7 +40,7 @@ export function FriendListItem({
 			<View style={styles.listBoxStyle}>
 				<View style={styles.listWrapperStyle}>
 					<View style={styles.listItemContainerStyle}>
-						<Image source={list.friend_profile_image} style={groupMemberUserId.includes(list.friend_use_id) ? styles.selectedProfileImageStyle : styles.profileImageStyle} />
+						<Image source={{uri: list.friend_profile_image}} style={groupMemberUserId.includes(list.friend_use_id) ? styles.selectedProfileImageStyle : styles.profileImageStyle} />
 						<Text style={groupMemberUserId.includes(list.friend_use_id) ? styles.selectedListItemNameStyle : styles.listItemNameStyle}>{list.friend_nickname}</Text>
 					</View>
 				</View>

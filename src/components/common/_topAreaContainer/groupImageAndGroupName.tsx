@@ -50,7 +50,6 @@ export function GroupImageAndGroupName({
 			<View style={styles.groupNameContainertyle}>
 				<Pressable onPress={() => groupNameLabel.focus()} >
 					<TextInput
-						// style={styles.input}
 						onChangeText={setGroupName}
 						value={groupName}
 						placeholder={friendListNames}

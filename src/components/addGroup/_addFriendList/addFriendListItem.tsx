@@ -21,7 +21,7 @@ export function AddFriendListItem({
 				<View style={selectedFriendStyles.closeImageContainerStyle}>
 				<Image source={require('../../../../assets/images/close-icon.png')} style={selectedFriendStyles.closeImageStyle} />
 				</View>
-				<Image source={list.friend_profile_image} style={selectedFriendStyles.profileImageStyle} />
+				<Image source={{uri: list.friend_profile_image}} style={selectedFriendStyles.profileImageStyle} />
 			<Text style={selectedFriendStyles.listItemNameStyle} numberOfLines={1} ellipsizeMode="tail">{list.friend_nickname}</Text>
 			</Pressable>
 		</View>

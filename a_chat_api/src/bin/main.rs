@@ -1093,7 +1093,7 @@ async fn handler_fetch_profile_by_user_id(Path(path): Path<FetchFriendListPath>)
 
     let pool = MySqlPool::connect(&env::var("DATABASE_URL").unwrap()).await.unwrap();
     let profile = fetch_profile_by_user_id(&pool, &user_id).await.unwrap();
-    Json(json!({ "friend_list": profile }))
+    Json(json!({ "profile": profile }))
 }
 
 // SQL実行部分

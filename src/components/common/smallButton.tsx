@@ -9,27 +9,28 @@ import { MAIN_NAVY_COLOR, MAIN_WHITE_COLOR, ADD_BUTTON_SIZE, CONTENT_WIDTH, BUTT
 
 export function SmallButton({ text, navigation, friendList, groupSetting, type, friendListNames, alreadyFriend, addGroupMemberGroupChatRoomId, addGroupMemberGroupImage, addGroupMemberGroupName, backGroupName, backGroupImage }) {
 	// ユーザーID(今後は認証から取得するようにする)
-	const [userId, setUserId] = useState(null)
+	const [userId, setUserId] = useState<string>(null)
 	// 自分を含めたグループメンバーのuserId
-	const [groupMemberUserIds, setGroupMemberUserIds] = useState([])
+	const [groupMemberUserIds, setGroupMemberUserIds] = useState<string[]>([])
 
-	const [groupChatRoomId, setGroupChatRoomId] = useState('')
+	const [groupChatRoomId, setGroupChatRoomId] = useState<string>('')
 
 	// グループに追加したメンバーの名前の配列
-	const [addGroupMemberName, setAddGroupMemberName] = useState([])
+	const [addGroupMemberName, setAddGroupMemberName] = useState<string[]>([])
 
 	// 友達追加したユーザーの情報
-	const [friendInfo, setFriendInfo] = useState(null)
+	const [friendInfo, setFriendInfo] = useState<FriendListPropsType[]|[]>([])
 
 	// グループ追加
 	async function _addGroup() {
 		try {
 			// APIリクエスト
 			const bodyData = {
-				"groupImage": groupSetting.image,
-				"groupName": groupSetting.groupName || friendListNames,
-				"groupMemberUserIds": groupMemberUserIds,
+				"group_image": groupSetting.image,
+				"group_name": groupSetting.groupName || friendListNames,
+				"group_member_user_ids": groupMemberUserIds,
 			}
+			console.log('bodyData',bodyData)
 			const response = await fetch(API_SERVER_URL + `/api/users/${userId}/groups/add`, {
 				method: "POST",
 				headers: {
@@ -40,8 +41,9 @@ export function SmallButton({ text, navigation, friendList, groupSetting, type, 
 			// レスポンスをJSONにする
 			const parse_response = await response.json()
 			// グループチャットルームIDを取得
-			const groupChatRoomId = parse_response.group_chat_room_id
+			const groupChatRoomId = parse_response.group_info.group_chat_room_id
 			setGroupChatRoomId(groupChatRoomId)
+			navigation.navigate('Chat', { "groupChatRoomId":  parse_response.group_info.group_chat_room_id, "directChatRoomId": null, "profileImage": parse_response.group_info.group_image, "name": parse_response.group_info.group_name })
 		} catch (e) {
 			console.error(e)
 		}
@@ -104,18 +106,6 @@ export function SmallButton({ text, navigation, friendList, groupSetting, type, 
 		}
 	}
 
-	// friendListからuserIdだけ取り出し、自分のuserIdも追加
-	useEffect(() => {
-		if (friendList && type === "addGroupSetting") {
-			let groupMemberUserIds = []
-			for (let i = 0; i < friendList.length; i++) {
-				groupMemberUserIds.push(friendList[i].friend_use_id)
-			}
-			groupMemberUserIds.push(userId)
-			setGroupMemberUserIds(groupMemberUserIds)
-		}
-	}, [friendList])
-
 	// グループメンバーに追加されたら、チャット画面に遷移
 	useEffect(() => {
 		if (addGroupMemberName.length !== 0) {
@@ -123,12 +113,12 @@ export function SmallButton({ text, navigation, friendList, groupSetting, type, 
 		}
 	}, [addGroupMemberName])
 
-	// 友達追加されたら、チャット画面に遷移
-	useEffect(() => {
-		if (friendInfo) {
-			navigation.navigate('Chat', { "groupChatRoomId": null, "directChatRoomId": friendInfo.direct_chat_room_id, "profileImage": friendInfo.friend_profile_image, "name": friendInfo.friend_nickname })
-		}
-	}, [friendInfo])
+	// // 友達追加されたら、チャット画面に遷移
+	// useEffect(() => {
+	// 	if (friendInfo) {
+	// 		navigation.navigate('Chat', { "groupChatRoomId": null, "directChatRoomId": friendInfo.direct_chat_room_id, "profileImage": friendInfo.friend_profile_image, "name": friendInfo.friend_nickname })
+	// 	}
+	// }, [friendInfo])
 
 	// ユーザーIDの取得
 	useEffect(() => {
@@ -138,6 +128,18 @@ export function SmallButton({ text, navigation, friendList, groupSetting, type, 
 			setUserId(data.userId)
 		})
 	}, [])
+
+	// friendListからuserIdだけ取り出し、自分のuserIdも追加
+	useEffect(() => {
+		if (friendList && type === "addGroupSetting" && userId) {
+			let groupMemberUserIds = []
+			for (let i = 0; i < friendList.length; i++) {
+				groupMemberUserIds.push(friendList[i].friend_use_id)
+			}
+			groupMemberUserIds.push(userId)
+			setGroupMemberUserIds(groupMemberUserIds)
+		}
+	}, [friendList,userId])
 
 	return (
 		<View style={styles.boxStyle}>
