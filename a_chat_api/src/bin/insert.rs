@@ -195,7 +195,7 @@ fn main() {
             id: 3,
             to_user_id: String::from("pcAsami1"),
             from_user_id: String::from("pcAsami"),
-            direct_chat_room_id: 1,
+            direct_chat_room_id: 2,
             created_at: 1654063149,
         },
     ];
