@@ -4,7 +4,7 @@ import { View, StyleSheet, TouchableHighlight, Image, Text } from 'react-native'
 
 
 // layouts
-import { CONTENT_WIDTH, MAIN_WHITE_COLOR, PROFILE_IMAGE_SIZE, STANDARD_FONT, ICON_SIZE, PROFILE_IMAGE_BORDER_RADIUS, MAIN_GRAY_COLOR } from '../../../constants/layout'
+import { CONTENT_WIDTH, MAIN_WHITE_COLOR, PROFILE_IMAGE_SIZE, STANDARD_FONT, ICON_SIZE, PROFILE_IMAGE_BORDER_RADIUS, MAIN_GRAY_COLOR, MAIN_NAVY_COLOR } from '../../../constants/layout'
 
 
 export function FriendListItem({
@@ -40,7 +40,12 @@ export function FriendListItem({
 			<View style={styles.listBoxStyle}>
 				<View style={styles.listWrapperStyle}>
 					<View style={styles.listItemContainerStyle}>
-						<Image source={{uri: list.friend_profile_image}} style={groupMemberUserId.includes(list.friend_use_id) ? styles.selectedProfileImageStyle : styles.profileImageStyle} />
+							{list.friend_profile_image && list.friend_use_id ? (
+								<Image source={{uri: list.friend_profile_image}} style={groupMemberUserId.includes(list.friend_use_id) ? styles.selectedProfileImageStyle : styles.profileImageStyle} />
+							) :
+							(
+								<View style={styles.profileImageNoneStyle}></View>
+							)}
 						<Text style={groupMemberUserId.includes(list.friend_use_id) ? styles.selectedListItemNameStyle : styles.listItemNameStyle}>{list.friend_nickname}</Text>
 					</View>
 				</View>
@@ -74,6 +79,12 @@ export const styles = StyleSheet.create({
 		width: PROFILE_IMAGE_SIZE,
 		height: PROFILE_IMAGE_SIZE,
 		borderRadius: PROFILE_IMAGE_BORDER_RADIUS
+	},
+	profileImageNoneStyle: {
+		width: PROFILE_IMAGE_SIZE,
+		height: PROFILE_IMAGE_SIZE,
+		borderRadius: PROFILE_IMAGE_BORDER_RADIUS,
+		backgroundColor: MAIN_NAVY_COLOR
 	},
 	listBoxStyle: {
 		flexDirection: "row",

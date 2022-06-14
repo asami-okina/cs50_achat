@@ -86,20 +86,21 @@ export function SmallButton({ text, navigation, friendList, groupSetting, type, 
 			setAddGroupMemberName(newDataUserNames)
 			// APIリクエスト
 			const bodyData = {
-				"groupChatRoomId": addGroupMemberGroupChatRoomId,
-				"adduserIds": newDataUserIds
+				"group_chat_room_id": addGroupMemberGroupChatRoomId,
+				"add_user_ids": newDataUserIds
 			}
-			const response = await fetch(API_SERVER_URL + `/api/users/${userId}/group-member`, {
-				method: "POST",
-				headers: {
-					"Content-Type": "application/json"
-				},
-				body: JSON.stringify(bodyData),
-			})
-			// レスポンスをJSONにする
-			const parse_response = await response.json()
-			// 新規に追加したユーザーIDのリスト
-			const adduserIds = parse_response.adduserIds
+			console.log('bodyData',bodyData)
+			// const response = await fetch(API_SERVER_URL + `/api/users/${userId}/group-member`, {
+			// 	method: "POST",
+			// 	headers: {
+			// 		"Content-Type": "application/json"
+			// 	},
+			// 	body: JSON.stringify(bodyData),
+			// })
+			// // レスポンスをJSONにする
+			// const parse_response = await response.json()
+			// // 新規に追加したユーザーIDのリスト
+			// const adduserIds = parse_response.adduserIds
 		} catch (e) {
 			console.error(e)
 		}

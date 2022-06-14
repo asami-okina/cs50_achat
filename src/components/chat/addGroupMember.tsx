@@ -23,34 +23,34 @@ export function AddGroupMember({ navigation, route }) {
 	// 引数を取得
 	const { groupChatRoomId, groupMemberUserId, image, name } = route.params
 	// ユーザーID(今後は認証から取得するようにする)
-	const [userId, setUserId] = useState(null)
+	const [userId, setUserId] = useState<string>(null)
 
 	// 検索フォームのテキスト
-	const [searchText, setSearchText] = useState('')
+	const [searchText, setSearchText] = useState<string>('')
 
 	// [検索前]APIから取得した友達一覧リスト
-	const [beforeFriendListSearch, setBeforeFriendListSearch] = useState([])
+	const [beforeFriendListSearch, setBeforeFriendListSearch] = useState<NewFriendListPropsType[]|[]>([])
 
 	// [検索後]APIから取得した友達一覧リスト
-	const [afterFriendListSearch, setAfterFriendListSearch] = useState([])
+	const [afterFriendListSearch, setAfterFriendListSearch] = useState<NewFriendListPropsType[]|[]>([])
 
 	// [検索前後]選択した友達一覧リスト
-	const [mergedSelectedFriendList, setMergerdSelectedFriendList] = useState([])
+	const [mergedSelectedFriendList, setMergerdSelectedFriendList] = useState<NewFriendListPropsType[]|[]>([])
 
 	// [検索前]選択した友達一覧リスト
-	const [beforeSelectedFriendList, setBeforeSelectedFriendList] = useState([])
+	const [beforeSelectedFriendList, setBeforeSelectedFriendList] = useState<NewFriendListPropsType[]|[]>([])
 
 	// [検索後]選択した友達一覧リスト
-	const [afterSelectedFriendList, setAfterSelectedFriendList] = useState([])
+	const [afterSelectedFriendList, setAfterSelectedFriendList] = useState<NewFriendListPropsType[]|[]>([])
 
 	// 検索中かどうか
-	const [isDuringSearch, setIsDuringSearch] = useState(false)
+	const [isDuringSearch, setIsDuringSearch] = useState<boolean>(false)
 
 	// ニックネームでヒットするユーザーの取得
-	async function _searchName(searchText) {
+	async function _searchName(searchText: string) {
 		try {
 			// paramsを生成
-			const params = { "search": searchText }
+			const params = { "search_text": searchText }
 			const query_params = new URLSearchParams(params);
 			// APIリクエスト
 			const response = await fetch(API_SERVER_URL + `/api/users/${userId}/home?${query_params}`, {
@@ -61,15 +61,16 @@ export function AddGroupMember({ navigation, route }) {
 			})
 			// レスポンスをJSONにする
 			const parse_response = await response.json()
+			console.log('parse_response',parse_response)
 			// 友達一覧のstateを更新
-			setAfterFriendListSearch(parse_response[0]["friend"].map((_, i) => ({ ..._, key: `${i + "after"}`, type: "after" })))
+			setAfterFriendListSearch(parse_response.friend.map((_, i) => ({ ..._, key: `${i + "after"}`, type: "after" })))
 		} catch (e) {
 			console.error(e)
 		}
 	}
 
 	// 友達一覧を取得
-	async function _fetchFriendList(userId) {
+	async function _fetchFriendList(userId: string) {
 		try {
 			// APIリクエスト
 			const response = await fetch(API_SERVER_URL + `/api/users/${userId}/friends`, {
@@ -80,7 +81,7 @@ export function AddGroupMember({ navigation, route }) {
 			})
 			// レスポンスをJSONにする
 			const parse_response = await response.json()
-			setBeforeFriendListSearch(parse_response.map((_, i) => ({ ..._, key: `${i + "before"}`, type: "before" })))
+			setBeforeFriendListSearch(parse_response.friend_list.map((_, i) => ({ ..._, key: `${i + "before"}`, type: "before" })))
 		} catch (e) {
 			console.error(e)
 		}

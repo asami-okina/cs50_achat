@@ -53,7 +53,7 @@ export function Chat({ navigation, route }: MainProps) {
 
 	// メッセージを送信した場合に実行
 	useEffect(() => {
-		
+
 		const handler = e => {
 			console.log("サーバーからメッセージを受信したときに呼び出されるイベント");
 			const newMessage = JSON.parse(e.data)
@@ -97,7 +97,7 @@ export function Chat({ navigation, route }: MainProps) {
 			})
 			// レスポンスをJSONにする
 			const parse_response = await response.json()
-			if(parse_response.messages.length !== 0){
+			if (parse_response.messages.length !== 0) {
 				setMessages(parse_response.messages)
 			} else {
 				setMessages([])
@@ -139,7 +139,7 @@ export function Chat({ navigation, route }: MainProps) {
 		try {
 			// APIリクエスト
 			let bodyData = {}
-			let chat_room_type:ChatRoomIdType;
+			let chat_room_type: ChatRoomIdType;
 			let chat_room_id;
 
 			if (directChatRoomId) {
@@ -161,7 +161,7 @@ export function Chat({ navigation, route }: MainProps) {
 					"sendr_user_id": messages[0]["user_id"],
 					"created_at": messages[0]["createdAt"],
 				}
-				let response = await fetch(API_SERVER_URL + `/api/users/:user_id/message`, {
+				let response = await fetch(API_SERVER_URL + `/api/users/${userId}/message`, {
 					method: "POST",
 					headers: {
 						"Content-Type": "application/json"
@@ -177,7 +177,7 @@ export function Chat({ navigation, route }: MainProps) {
 					"sendr_user_id": messages[0]["user_id"],
 					"created_at": messages[0]["createdAt"],
 				}
-				response = await fetch(API_SERVER_URL + `/api/users/:user_id/message`, {
+				response = await fetch(API_SERVER_URL + `/api/users/${userId}/message`, {
 					method: "POST",
 					headers: {
 						"Content-Type": "application/json"
@@ -194,7 +194,7 @@ export function Chat({ navigation, route }: MainProps) {
 					"sendr_user_id": messages[0]["user_id"],
 					"created_at": messages[0]["createdAt"],
 				}
-				const response = await fetch(API_SERVER_URL + `/api/users/:user_id/message`, {
+				const response = await fetch(API_SERVER_URL + `/api/users/${userId}/message`, {
 					method: "POST",
 					headers: {
 						"Content-Type": "application/json"
@@ -212,19 +212,21 @@ export function Chat({ navigation, route }: MainProps) {
 		try {
 			// APIリクエスト
 			let bodyData;
-			if (directChatRoomId) {
+
+			if (directChatRoomId !== null) {
 				bodyData = {
 					"chat_room_type": "DirectChatRoomId", // Rustでenumのためキャメルケース
-					"chat_room_id": directChatRoomId,
+					"chat_room_id": Number(directChatRoomId),
 				}
 			}
-			if (groupChatRoomId) {
+			if (groupChatRoomId !== null) {
 				bodyData = {
 					"chat_room_type": "GroupChatRoomId", // Rustでenumのためキャメルケース
-					"chat_room_id": directChatRoomId,
+					"chat_room_id": Number(groupChatRoomId),
 				}
 			}
-			const response = await fetch(API_SERVER_URL + `/api/users/:user_id/last-read-time`, {
+
+			const response = await fetch(API_SERVER_URL + `/api/users/${userId}/last-read-time`, {
 				method: "POST",
 				headers: {
 					"Content-Type": "application/json"
@@ -263,12 +265,12 @@ export function Chat({ navigation, route }: MainProps) {
 		messages[0]["sendUserIds"] = sendUserIds // 送るべきユーザーID
 		messages[0]["user_id"] = userId // 送った人のユーザーID
 
-		if(directChatRoomId) {
+		if (directChatRoomId) {
 			messages[0]["chat_room_type"] = "DirectChatRoomId"
 			messages[0]["chat_room_id"] = directChatRoomId
 		}
 
-		if(groupChatRoomId) {
+		if (groupChatRoomId) {
 			messages[0]["chat_room_type"] = "GroupChatRoomId"
 			messages[0]["chat_room_id"] = groupChatRoomId
 		}
@@ -583,12 +585,13 @@ export function Chat({ navigation, route }: MainProps) {
 
 	useEffect(() => {
 		// チャットルームIDに紐づくチャット履歴の取得
-		if((directChatRoomId || groupChatRoomId) &&  userId)
-		_fetchMessageByChatRoomId()
-		// // 最終既読日時の更新
-		// _updateLastReadTime()
+		if ((directChatRoomId || groupChatRoomId) && userId) {
+			_fetchMessageByChatRoomId()
+			// 最終既読日時の更新
+			_updateLastReadTime()
 		// // directChatRoomId/groupChatRoomIdに紐づくメンバーのユーザーIDを取得
 		// _fetchUserIdsByDirectOrGroupChatRoomId()
+		}
 	}, [userId])
 
 	useEffect(() => {
