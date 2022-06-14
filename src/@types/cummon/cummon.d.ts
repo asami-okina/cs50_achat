@@ -25,3 +25,17 @@ type NewGroupListPropsType = {
 	group_name: string;
 	group_image: string;
 }
+
+type MessageType = {
+	_id: number;
+	createdAt: number;
+	text: string;
+	image?: string;
+	type: string;
+	user: {
+		_id: string;
+		avatar: string;
+		name: string;
+	}
+
+}

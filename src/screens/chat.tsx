@@ -35,17 +35,17 @@ export function Chat({ navigation, route }: MainProps) {
 	// 引数を取得
 	// addGroupMemberName: 今後、○○がグループに参加しました。というメッセージに使用する
 	const { groupChatRoomId, directChatRoomId, profileImage, name, groupMemberUserId, addGroupMemberName } = route.params
-	const [loadEarlier, setLoadEarlier] = useState(false)
-	const [initialApiCount, setInitialApiCount] = useState(true)
+	const [loadEarlier, setLoadEarlier] = useState<boolean>(false)
+	const [initialApiCount, setInitialApiCount] = useState<boolean>(true)
 
 	// ユーザーID(今後は認証から取得するようにする)
-	const [userId, setUserId] = useState(null)
+	const [userId, setUserId] = useState<string>(null)
 
 	// メッセージ
-	const [messages, setMessages] = useState([]);
+	const [messages, setMessages] = useState<MessageType[] | []>([]);
 
 	// 画像
-	const [image, setImage] = useState('')
+	const [image, setImage] = useState<string>('')
 
 	// マウント判定
 	const isMounted = useIsMounted()
@@ -53,7 +53,6 @@ export function Chat({ navigation, route }: MainProps) {
 
 	// メッセージを送信した場合に実行
 	useEffect(() => {
-
 		const handler = e => {
 			console.log("サーバーからメッセージを受信したときに呼び出されるイベント");
 			const newMessage = JSON.parse(e.data)
@@ -63,7 +62,6 @@ export function Chat({ navigation, route }: MainProps) {
 				const messageGroupChatRoomId = newMessage[0].groupChatRoomId
 				if ((directChatRoomId !== null && directChatRoomId === messageDirectChatRoomId) || (groupChatRoomId !== null && groupChatRoomId === messageGroupChatRoomId)) {
 					setMessages(previousMessages => GiftedChat.append(previousMessages, newMessage))
-
 				}
 			}
 		}
@@ -112,11 +110,12 @@ export function Chat({ navigation, route }: MainProps) {
 		try {
 			// paramsを生成
 			let params;
+			console.log('きた')
 			if (directChatRoomId) {
-				params = { "chat_room_type": "DirectChatRoomId", "chat_room_id": directChatRoomId }
+				params = { "chat_room_type": "DirectChatRoomId", "chat_room_id": Number(directChatRoomId) }
 			}
 			if (groupChatRoomId) {
-				params = { "chat_room_type": "GroupChatRoomId", "chat_room_id": groupChatRoomId }
+				params = { "chat_room_type": "GroupChatRoomId", "chat_room_id": Number(groupChatRoomId) }
 			}
 			const query_params = new URLSearchParams(params);
 			// APIリクエスト
@@ -589,8 +588,8 @@ export function Chat({ navigation, route }: MainProps) {
 			_fetchMessageByChatRoomId()
 			// 最終既読日時の更新
 			_updateLastReadTime()
-		// // directChatRoomId/groupChatRoomIdに紐づくメンバーのユーザーIDを取得
-		// _fetchUserIdsByDirectOrGroupChatRoomId()
+			// directChatRoomId/groupChatRoomIdに紐づくメンバーのユーザーIDを取得
+			_fetchUserIdsByDirectOrGroupChatRoomId()
 		}
 	}, [userId])
 
@@ -633,7 +632,9 @@ export function Chat({ navigation, route }: MainProps) {
 				<View style={IPHONE_X_BOTTOM_SPACE === 0 ? sameStyles.mainContainerStyle : sameStyles.mainContainerIphoneXStyle}>
 					<GiftedChat
 						messages={messages}
-						onSend={messages => _onSendMessage(messages, image)}
+						onSend={messages => {
+							_onSendMessage(messages, image)
+						}}
 						user={{
 							_id: userId,
 						}}

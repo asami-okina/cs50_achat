@@ -1,22 +1,24 @@
 import uuid from 'react-native-uuid';
 
-export const addMessages = [
+export const addMessages:MessageType[] = [
 	{
 		_id: 101,
 		text: 'add Message',
-		createdAt: "2022-04-24T12:00:10.189Z",
+		createdAt: 1655193411,
+		type: "FetchMessageByChatRoomIdTextResult",
 		user: {
 			_id: "spAsami",
 			name: "spAsami",
 			avatar: "https://pbs.twimg.com/profile_images/1522452340611358720/8AqTz3iz_400x400.jpg",
-		},
+		}
 		// sent: true,
 		// received: false
 	},
 	{
 		_id: 102,
 		text: 'add Message',
-		createdAt: "2022-04-24T09:00:10.189Z",
+		createdAt: 1655193411,
+		type: "FetchMessageByChatRoomIdTextResult",
 		user: {
 			_id: "pcAsami",
 			name: "pcAsami",

@@ -2390,7 +2390,7 @@ struct FetchMessageByChatRoomIdTextResult {
 #[derive(Debug, Deserialize, Serialize)]
 struct FetchMessageByChatRoomIdImageResult {
     _id: u64, // messageテーブルのid
-    created_at: i32, // messageテーブルのcreated_at
+    createdAt: i32, // messageテーブルのcreated_at
     user: FetchMessageByChatRoomIdUserResult,
     image: Option<String>, // messageテーブルのcontent(type_idがimageのもの)
 }
@@ -2482,7 +2482,7 @@ async fn parse_friend_fetch_message_by_chat_room_id_result(pool: &MySqlPool, cha
             let message_list = FetchMessageByChatRoomIdResultTypeEnum::FetchMessageByChatRoomIdImageResult(
                 FetchMessageByChatRoomIdImageResult {
                     _id: list.message_id, // messageテーブルのid
-                    created_at: list.created_at, // messageテーブルのcreated_at
+                    createdAt: list.created_at, // messageテーブルのcreated_at
                     user: image_sender_info,
                     image: Some(list.content.clone()), // messageテーブルのcontent(type_idがimageのもの)
                     }
@@ -2553,7 +2553,7 @@ async fn parse_group_fetch_message_by_chat_room_id_result(pool: &MySqlPool, chat
         let message_list = FetchMessageByChatRoomIdResultTypeEnum::FetchMessageByChatRoomIdImageResult(
             FetchMessageByChatRoomIdImageResult {
                 _id: list.message_id, // messageテーブルのid
-                created_at: list.created_at, // messageテーブルのcreated_at
+                createdAt: list.created_at, // messageテーブルのcreated_at
                 user: image_sender_info,
                 image: Some(list.content.clone()), // messageテーブルのcontent(type_idがimageのもの)
                 }
@@ -2934,7 +2934,7 @@ async fn handler_fetch_user_ids_by_direct_or_group_chat_room_id(
     let pool = MySqlPool::connect(&env::var("DATABASE_URL").unwrap()).await.unwrap();
     let result = fetch_user_ids_by_direct_or_group_chat_room_id(&pool, &chat_room_type, chat_room_id).await.unwrap();
     
-    Json(json!({ "result": result, "char_room_type": &chat_room_type }))
+    Json(json!({ "user_ids": result, "char_room_type": &chat_room_type }))
 }
 
 // SQL実行部分
