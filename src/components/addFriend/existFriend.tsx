@@ -9,14 +9,19 @@ import { SmallButton } from '../common/smallButton';
 import { selectedFriendStyles } from '../../constants/styles/selectedFriendStyles'
 
 // layouts
-import { CONTENT_WIDTH, BIG_PROFILE_IMAGE_SIZE, STANDARD_FONT, MAIN_PINK_COLOR, PROFILE_IMAGE_BORDER_RADIUS } from '../../constants/layout'
+import { CONTENT_WIDTH, BIG_PROFILE_IMAGE_SIZE, STANDARD_FONT, MAIN_PINK_COLOR, PROFILE_IMAGE_BORDER_RADIUS, MAIN_NAVY_COLOR } from '../../constants/layout'
 
 export function ExistFriend({ navigation, friendInfo, alreadyFriend }) {
 
 	return (
 		<View style={styles.searchInfoWrapperStyle}>
 			<View style={styles.searchInfoContainerStyle}>
-				<Image source={{uri: friendInfo.friend_profile_image}} style={styles.profileImageStyle} />
+				{friendInfo.friend_profile_image ? (
+					<Image source={{uri: friendInfo.friend_profile_image}} style={styles.profileImageStyle} />
+				):
+				<View style={styles.circleStyle}></View>
+				}
+				{/* <Image source={{uri: friendInfo.friend_profile_image}} style={styles.profileImageStyle} /> */}
 				<Text style={selectedFriendStyles.bigProfilelistItemNameStyle}>{friendInfo.friend_nickname}</Text>
 			</View>
 			<SmallButton text={"Add"} navigation={navigation} friendList={friendInfo} groupSetting={null} type={"addFriend"} friendListNames={null} alreadyFriend={alreadyFriend} addGroupMemberGroupChatRoomId={null} addGroupMemberGroupImage={null} addGroupMemberGroupName={null} backGroupName={null} backGroupImage={null} />
@@ -46,6 +51,12 @@ const styles = StyleSheet.create({
 		width: BIG_PROFILE_IMAGE_SIZE,
 		height: BIG_PROFILE_IMAGE_SIZE,
 		borderRadius: PROFILE_IMAGE_BORDER_RADIUS,
+	},
+	circleStyle: {
+		width: BIG_PROFILE_IMAGE_SIZE,
+		height: BIG_PROFILE_IMAGE_SIZE,
+		borderRadius: PROFILE_IMAGE_BORDER_RADIUS,
+		backgroundColor: MAIN_NAVY_COLOR,
 	},
 	errorTextStyle: {
 		fontFamily: STANDARD_FONT,

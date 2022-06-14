@@ -53,8 +53,7 @@ export function SmallButton({ text, navigation, friendList, groupSetting, type, 
 		try {
 			// APIリクエスト
 			const bodyData = {
-				"friendUserId": friendList.friend_use_id,
-				"ownUserId": userId,
+				"friend_user_id": friendList.friend_use_id,
 			}
 			const response = await fetch(API_SERVER_URL + `/api/users/${userId}/friends`, {
 				method: "POST",
@@ -65,7 +64,7 @@ export function SmallButton({ text, navigation, friendList, groupSetting, type, 
 			})
 			// レスポンスをJSONにする
 			const parse_response = await response.json()
-			setFriendInfo(parse_response)
+			setFriendInfo(parse_response.friend_info)
 			// 友達チャットに遷移
 		} catch (e) {
 			console.error(e)
