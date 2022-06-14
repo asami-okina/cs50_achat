@@ -84,8 +84,6 @@ export default function Basic({
 	// スワップされた該当行をデフォルト状態に戻す
 	// ★rowMapの型がわからない(おそらくrowKeyの型はnumber)
 	const closeRow = (rowMap, rowKey) => {
-		console.log('rowMap', rowMap)
-		console.log('rowKey',rowKey)
 		if (rowMap[rowKey]) {
 			rowMap[rowKey].closeRow();
 		}
@@ -198,10 +196,10 @@ export default function Basic({
 		try {
 			// APIリクエスト
 			const bodyData = {
-				"groupChatRoomId": groupChatRoomId
+				"group_chat_room_id": groupChatRoomId
 			}
 			const response = await fetch(API_SERVER_URL + `/api/users/${userId}/groups/leave`, {
-				method: "DELETE",
+				method: "POST",
 				headers: {
 					"Content-Type": "application/json"
 				},
