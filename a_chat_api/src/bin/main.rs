@@ -2390,7 +2390,7 @@ struct FetchMessageByChatRoomIdTextResult {
 #[derive(Debug, Deserialize, Serialize)]
 struct FetchMessageByChatRoomIdImageResult {
     _id: u64, // messageテーブルのid
-    createdAt: i32, // messageテーブルのcreated_at
+    created_at: i32, // messageテーブルのcreated_at
     user: FetchMessageByChatRoomIdUserResult,
     image: Option<String>, // messageテーブルのcontent(type_idがimageのもの)
 }
@@ -2482,7 +2482,7 @@ async fn parse_friend_fetch_message_by_chat_room_id_result(pool: &MySqlPool, cha
             let message_list = FetchMessageByChatRoomIdResultTypeEnum::FetchMessageByChatRoomIdImageResult(
                 FetchMessageByChatRoomIdImageResult {
                     _id: list.message_id, // messageテーブルのid
-                    createdAt: list.created_at, // messageテーブルのcreated_at
+                    created_at: list.created_at, // messageテーブルのcreated_at
                     user: image_sender_info,
                     image: Some(list.content.clone()), // messageテーブルのcontent(type_idがimageのもの)
                     }
@@ -2553,7 +2553,7 @@ async fn parse_group_fetch_message_by_chat_room_id_result(pool: &MySqlPool, chat
         let message_list = FetchMessageByChatRoomIdResultTypeEnum::FetchMessageByChatRoomIdImageResult(
             FetchMessageByChatRoomIdImageResult {
                 _id: list.message_id, // messageテーブルのid
-                createdAt: list.created_at, // messageテーブルのcreated_at
+                created_at: list.created_at, // messageテーブルのcreated_at
                 user: image_sender_info,
                 image: Some(list.content.clone()), // messageテーブルのcontent(type_idがimageのもの)
                 }
