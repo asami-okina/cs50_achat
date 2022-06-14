@@ -30,7 +30,6 @@ export function SmallButton({ text, navigation, friendList, groupSetting, type, 
 				"group_name": groupSetting.groupName || friendListNames,
 				"group_member_user_ids": groupMemberUserIds,
 			}
-			console.log('bodyData',bodyData)
 			const response = await fetch(API_SERVER_URL + `/api/users/${userId}/groups/add`, {
 				method: "POST",
 				headers: {

@@ -18,6 +18,7 @@ type BasicPropsType = {
 	setClickedCancelMordal: React.Dispatch<React.SetStateAction<boolean>>;
 	clickedOkMordal: boolean;
 	setClickedOkMordal: React.Dispatch<React.SetStateAction<boolean>>;
+	setGroupCount: React.Dispatch<React.SetStateAction<number>>;
 }
 
 type NewListType = {
@@ -42,7 +43,8 @@ export default function Basic({
 	clickedCancelMordal,
 	setClickedCancelMordal,
 	clickedOkMordal,
-	setClickedOkMordal
+	setClickedOkMordal,
+	setGroupCount,
 }: BasicPropsType) {
 	// ユーザーID(今後は認証から取得するようにする)
 	const [userId, setUserId] = useState<string>(null)
@@ -100,6 +102,8 @@ export default function Basic({
 		const prevIndex = listData.findIndex(item => item.key === rowKey);
 		newData.splice(prevIndex, 1);
 		setListData(newData);
+		// グループ数の変更
+		setGroupCount(newData.length)
 	};
 
 	// ★dataの型がわからない
@@ -205,6 +209,7 @@ export default function Basic({
 				},
 				body: JSON.stringify(bodyData),
 			})
+			// グループ数の再取得
 		} catch (e) {
 			console.error(e)
 		}

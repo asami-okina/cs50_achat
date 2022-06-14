@@ -20,6 +20,7 @@ type FriendAndGroupListlPropsType = {
 	friendList: FriendListPropsType[] | null;
 	openGroupList: boolean;
 	groupList: GroupListPropsType[] | null;
+	setGroupCount: React.Dispatch<React.SetStateAction<number>>;
 }
 
 export function FriendAndGroupList({
@@ -34,6 +35,7 @@ export function FriendAndGroupList({
 	friendList,
 	openGroupList,
 	groupList,
+	setGroupCount,
 }: FriendAndGroupListlPropsType) {
 	return (
 		<View style={styles.groupAndFriendWrapperStyle}>
@@ -42,11 +44,11 @@ export function FriendAndGroupList({
 				</View>
 				{/* グループ一覧をmapで回して表示 */}
 				{type === "Group" && openGroupList && (
-					<ListItem navigation={navigation} groupList={groupList} friendList={null} type={"Group"} setModalVisible={setModalVisible} clickedCancelMordal={clickedCancelMordal} setClickedCancelMordal={setClickedCancelMordal} clickedOkMordal={clickedOkMordal} setClickedOkMordal={setClickedOkMordal} />
+					<ListItem navigation={navigation} groupList={groupList} friendList={null} type={"Group"} setModalVisible={setModalVisible} clickedCancelMordal={clickedCancelMordal} setClickedCancelMordal={setClickedCancelMordal} clickedOkMordal={clickedOkMordal} setClickedOkMordal={setClickedOkMordal} setGroupCount={setGroupCount} />
 				)}
 				{/* 友達一覧をmapで回して表示 */}
 				{type === "Friend" && openFriendList && (
-					<ListItem navigation={navigation} groupList={null} friendList={friendList} type={"Friend"} setModalVisible={setModalVisible} clickedCancelMordal={clickedCancelMordal} setClickedCancelMordal={setClickedCancelMordal} clickedOkMordal={clickedOkMordal} setClickedOkMordal={setClickedOkMordal} />
+					<ListItem navigation={navigation} groupList={null} friendList={friendList} type={"Friend"} setModalVisible={setModalVisible} clickedCancelMordal={clickedCancelMordal} setClickedCancelMordal={setClickedCancelMordal} clickedOkMordal={clickedOkMordal} setClickedOkMordal={setClickedOkMordal} setGroupCount={setGroupCount} />
 				)}
 			</View>
 		</View>

@@ -18,6 +18,7 @@ type ListItemPropsType = {
 	setClickedOkMordal: React.Dispatch<React.SetStateAction<boolean>>;
 	groupList: GroupListPropsType[];
 	friendList: FriendListPropsType[];
+	setGroupCount: React.Dispatch<React.SetStateAction<number>>;
 }
 
 export function ListItem({
@@ -30,16 +31,17 @@ export function ListItem({
 	setClickedOkMordal,
 	groupList,
 	friendList,
+	setGroupCount,
 }: ListItemPropsType) {
 	return (
 		<View style={styles.containerStyle}>
 			{/* groupの場合 */}
 			{groupList && groupList.length !== 0 && groupList !== undefined && (
-				<Basic navigation={navigation} groupList={groupList} friendList={null} type={type} setModalVisible={setModalVisible} clickedCancelMordal={clickedCancelMordal} setClickedCancelMordal={setClickedCancelMordal} clickedOkMordal={clickedOkMordal} setClickedOkMordal={setClickedOkMordal} />
+				<Basic navigation={navigation} groupList={groupList} friendList={null} type={type} setModalVisible={setModalVisible} clickedCancelMordal={clickedCancelMordal} setClickedCancelMordal={setClickedCancelMordal} clickedOkMordal={clickedOkMordal} setClickedOkMordal={setClickedOkMordal} setGroupCount={setGroupCount} />
 			)}
 			{/* friendの場合 */}
 			{friendList && friendList.length !== 0 && friendList !== undefined && (
-				<Basic navigation={navigation} groupList={null} friendList={friendList} type={type} setModalVisible={setModalVisible} clickedCancelMordal={clickedCancelMordal} setClickedCancelMordal={setClickedCancelMordal} clickedOkMordal={clickedOkMordal} setClickedOkMordal={setClickedOkMordal} />
+				<Basic navigation={navigation} groupList={null} friendList={friendList} type={type} setModalVisible={setModalVisible} clickedCancelMordal={clickedCancelMordal} setClickedCancelMordal={setClickedCancelMordal} clickedOkMordal={clickedOkMordal} setClickedOkMordal={setClickedOkMordal} setGroupCount={setGroupCount} />
 			)}
 		</View>
 	);

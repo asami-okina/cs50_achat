@@ -97,7 +97,11 @@ export function Chat({ navigation, route }: MainProps) {
 			})
 			// レスポンスをJSONにする
 			const parse_response = await response.json()
-			setMessages(parse_response)
+			if(parse_response.messages.length !== 0){
+				setMessages(parse_response.messages)
+			} else {
+				setMessages([])
+			}
 		} catch (e) {
 			console.error(e)
 		}
@@ -579,12 +583,13 @@ export function Chat({ navigation, route }: MainProps) {
 
 	useEffect(() => {
 		// チャットルームIDに紐づくチャット履歴の取得
+		if((directChatRoomId || groupChatRoomId) &&  userId)
 		_fetchMessageByChatRoomId()
-		// 最終既読日時の更新
-		_updateLastReadTime()
-		// directChatRoomId/groupChatRoomIdに紐づくメンバーのユーザーIDを取得
-		_fetchUserIdsByDirectOrGroupChatRoomId()
-	}, [directChatRoomId, groupChatRoomId, userId])
+		// // 最終既読日時の更新
+		// _updateLastReadTime()
+		// // directChatRoomId/groupChatRoomIdに紐づくメンバーのユーザーIDを取得
+		// _fetchUserIdsByDirectOrGroupChatRoomId()
+	}, [userId])
 
 	useEffect(() => {
 		// グループトーク画面でユーザーアイコンをクリックしたかどうかをfalseに戻す
