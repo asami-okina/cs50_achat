@@ -66,6 +66,7 @@ export function SmallButton({ text, navigation, friendList, groupSetting, type, 
 			const parse_response = await response.json()
 			setFriendInfo(parse_response.friend_info)
 			// 友達チャットに遷移
+			navigation.navigate('Chat', { "groupChatRoomId":  null, "directChatRoomId": parse_response.friend_info.direct_chat_room_id, "profileImage":  parse_response.friend_info.friend_profile_image, "name": parse_response.friend_info.friend_nickname })
 		} catch (e) {
 			console.error(e)
 		}

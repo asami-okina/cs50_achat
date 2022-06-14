@@ -122,9 +122,9 @@ export default function Basic({
 							{data.item.group_image ? (
 								<Image source={{ uri: data.item.group_image }} style={styles.profileImageStyle} />
 							) :
-								(
-									<View style={styles.profileImageNoneStyle}></View>
-								)}
+							(
+								<View style={styles.profileImageNoneStyle}></View>
+							)}
 							<Text style={styles.listItemNameStyle}>{data.item.group_name}</Text>
 						</View>
 					</View>
@@ -140,7 +140,12 @@ export default function Basic({
 				>
 					<View style={styles.listWrapperStyle}>
 						<View style={styles.listItemContainerStyle}>
-							<Image source={{ uri: data.item.friend_profile_image }} style={styles.profileImageStyle} />
+							{data.item.friend_profile_image ? (
+								<Image source={{ uri: data.item.friend_profile_image }} style={styles.profileImageStyle} />
+							) :
+							(
+								<View style={styles.profileImageNoneStyle}></View>
+							)}
 							<Text style={styles.listItemNameStyle}>{data.item.friend_nickname}</Text>
 						</View>
 					</View>
