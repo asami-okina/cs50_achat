@@ -5,12 +5,20 @@ import { Text, View, Image } from 'react-native';
 // constantsFormDescriptionStyles
 import { formDescriptionStyles } from '../../../constants/styles/formDescriptionStyles';
 
+
+type MailFormDescriptionPropsType = {
+	isCorrectMail: boolean;
+	displayMailDescription: boolean;
+	defaultDisplayMailIcons: boolean;
+	isAvailableMail: boolean;
+}
+
 export function MailFormDescription({
 	isCorrectMail,
 	displayMailDescription,
 	defaultDisplayMailIcons,
 	isAvailableMail
-}) {
+}:MailFormDescriptionPropsType) {
 	return (
 		<View>
 			{/* メールアドレスの説明文 */}

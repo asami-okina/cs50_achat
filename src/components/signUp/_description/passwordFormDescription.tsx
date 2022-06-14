@@ -5,12 +5,19 @@ import { Text, View, Image } from 'react-native';
 // constantsFormDescriptionStyles
 import { formDescriptionStyles } from '../../../constants/styles/formDescriptionStyles';
 
+type PasswordFormDescriptionPropsType = {
+	displayPasswordDescription: boolean;
+	isCorrectPassewordSymbol: boolean;
+	isCorrectPassewordStringCount: boolean;
+	defaultDisplayPasswordIcons: boolean;
+}
+
 export function PasswordFormDescription({
 	displayPasswordDescription,
 	isCorrectPassewordSymbol,
 	isCorrectPassewordStringCount,
 	defaultDisplayPasswordIcons,
-}) {
+}:PasswordFormDescriptionPropsType) {
 	return (
 		<View>
 			{displayPasswordDescription ? !isCorrectPassewordSymbol || !isCorrectPassewordStringCount ? (

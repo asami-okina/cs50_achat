@@ -5,13 +5,21 @@ import { Text, View, Image } from 'react-native';
 // constantsFormDescriptionStyles
 import { formDescriptionStyles } from '../../../constants/styles/formDescriptionStyles';
 
+type UserIdFormDescriptionPropsType = {
+	displayUserIdDescription: boolean;
+	isCorrectUserIdSymbol: boolean;
+	isCorrectUserIdStringCount: boolean;
+	isAvailableUserId: boolean;
+	defaultDisplayUserIcons: boolean;
+}
+
 export function UserIdFormDescription({
 	displayUserIdDescription,
 	isCorrectUserIdSymbol,
 	isCorrectUserIdStringCount,
 	isAvailableUserId,
 	defaultDisplayUserIcons
-}) {
+}:UserIdFormDescriptionPropsType) {
 	return (
 		<View>
 			{/* ユーザーIDの説明文 */}
