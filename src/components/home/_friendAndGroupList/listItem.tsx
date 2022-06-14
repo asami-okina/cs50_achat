@@ -8,6 +8,18 @@ import Basic from './examples/basic';
 // layouts
 import { MAIN_WHITE_COLOR } from '../../../constants/layout'
 
+type ListItemPropsType = {
+	navigation: any; // ★navigationの型がわからない。一番親のコンポーネントはできたけど、子コンポーネントとしてnavigationをもらう方法がわからなかった
+	type: string;
+	setModalVisible: React.Dispatch<React.SetStateAction<boolean>>;
+	clickedCancelMordal: boolean;
+	setClickedCancelMordal: React.Dispatch<React.SetStateAction<boolean>>;
+	clickedOkMordal: boolean;
+	setClickedOkMordal: React.Dispatch<React.SetStateAction<boolean>>;
+	groupList: GroupListPropsType[];
+	friendList: FriendListPropsType[];
+}
+
 export function ListItem({
 	navigation,
 	type,
@@ -18,7 +30,7 @@ export function ListItem({
 	setClickedOkMordal,
 	groupList,
 	friendList,
-}) {
+}: ListItemPropsType) {
 	return (
 		<View style={styles.containerStyle}>
 			{/* groupの場合 */}

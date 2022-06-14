@@ -9,7 +9,7 @@ import { TAB_TITLE_TEXT_SIZE, TAB_FONT, MAIN_NAVY_COLOR, CONTENT_WIDTH, STANDARD
 
 export function ProfileInfo({ navigation, nickName, setNickName, isEnabled, setIsEnabled }) {
 	// ユーザーID(今後は認証から取得するようにする)
-	const [userId, setUserId] = useState(null)
+	const [userId, setUserId] = useState<string>(null)
 
 	// 検索可能トグルの変更関数
 	const toggleSwitch = () => {

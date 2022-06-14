@@ -33,6 +33,7 @@ export function ProfileImage({ image, setImage }) {
 
 	const pickImage = async () => {
 		// No permissions request is necessary for launching the image library
+		// ★anyは対応時に修正
 		let result: any = await ImagePicker.launchImageLibraryAsync({
 			mediaTypes: ImagePicker.MediaTypeOptions.All,
 			allowsEditing: true,

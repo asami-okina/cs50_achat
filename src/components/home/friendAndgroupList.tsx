@@ -9,7 +9,7 @@ import { CONTENT_WIDTH, MAIN_WHITE_COLOR } from '../../constants/layout'
 import { ListItem } from './_friendAndGroupList/listItem'
 
 type FriendAndGroupListlPropsType = {
-	navigation: any;
+	navigation: any; // ★navigationの型がわからない。一番親のコンポーネントはできたけど、子コンポーネントとしてnavigationをもらう方法がわからなかった
 	type: string;
 	setModalVisible: React.Dispatch<React.SetStateAction<boolean>>;
 	clickedCancelMordal: boolean;

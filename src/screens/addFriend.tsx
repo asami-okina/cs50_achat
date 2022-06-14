@@ -23,12 +23,13 @@ type MainProps = StackScreenProps<RootStackParamListType, 'AddFriend'>;
 
 export function AddFriend({ navigation }: MainProps) {
 	// ユーザーID(今後は認証から取得するようにする)
-	const [userId, setUserId] = useState(null)
+	const [userId, setUserId] = useState<string>(null)
 
 	// 検索フォームのテキスト
-	const [searchText, setSearchText] = useState('')
+	const [searchText, setSearchText] = useState<string>('')
 
 	// ユーザーIDを条件にAPIから取得した友達情報
+	// ★anyはフロント組み込み時に具体的な型に修正する
 	const [friendInfo, setFriendInfo] = useState<any>(null)
 
 	// すでに友達になっているか
@@ -38,7 +39,7 @@ export function AddFriend({ navigation }: MainProps) {
 	const [existUserId, setExistUserId] = useState(true)
 
 	// ニックネームでヒットするユーザーの取得
-	async function _searchId(searchText) {
+	async function _searchId(searchText: string) {
 		try {
 			// paramsを生成
 			const params = { "searchUserId": searchText }

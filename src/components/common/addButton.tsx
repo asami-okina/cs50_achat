@@ -5,7 +5,13 @@ import { StyleSheet, TouchableOpacity, View, Image } from 'react-native';
 // layouts
 import { MAIN_NAVY_COLOR, MAIN_WHITE_COLOR, ADD_BUTTON_SIZE, CONTENT_WIDTH, BUTTON_BORDER_RADIUS, MAIN_BLACK_COLOR } from '../../constants/layout'
 
-export function AddButton({ navigation, openFriendList, openGroupList }) {
+type AddButtonPropsType = {
+	navigation: any; // ★navigationの型がわからない。一番親のコンポーネントはできたけど、子コンポーネントとしてnavigationをもらう方法がわからなかった
+	openFriendList: boolean;
+	openGroupList: boolean;
+}
+
+export function AddButton({ navigation, openFriendList, openGroupList }: AddButtonPropsType) {
 	return (
 		<View style={styles.boxStyle}>
 			<View style={styles.wrapperStyle}>

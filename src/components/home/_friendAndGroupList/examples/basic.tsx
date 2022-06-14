@@ -8,17 +8,52 @@ import { storage } from '../../../../../storage';
 // layouts
 import { CONTENT_WIDTH, PROFILE_IMAGE_SIZE, STANDARD_FONT, MAIN_WHITE_COLOR, MAIN_PINK_COLOR, PROFILE_IMAGE_BORDER_RADIUS, MAIN_NAVY_COLOR } from '../../../../constants/layout'
 
-export default function Basic({ navigation, groupList, friendList, type, setModalVisible, clickedCancelMordal, setClickedCancelMordal, clickedOkMordal, setClickedOkMordal }) {
+type BasicPropsType = {
+	navigation: any; // ★navigationの型がわからない。一番親のコンポーネントはできたけど、子コンポーネントとしてnavigationをもらう方法がわからなかった
+	groupList: GroupListPropsType[]| null;
+	friendList: FriendListPropsType[]| null;
+	type: string;
+	setModalVisible: React.Dispatch<React.SetStateAction<boolean>>;
+	clickedCancelMordal: boolean;
+	setClickedCancelMordal: React.Dispatch<React.SetStateAction<boolean>>;
+	clickedOkMordal: boolean;
+	setClickedOkMordal: React.Dispatch<React.SetStateAction<boolean>>;
+}
+
+type NewListType = {
+	key: string;
+	group_chat_room_id: string;
+	group_name: string;
+	group_image: string;
+} | {
+	key: string;
+	direct_chat_room_id: string;
+	friend_use_id: string;
+	friend_profile_image: string;
+	friend_nickname: string;
+}
+
+export default function Basic({
+	navigation,
+	groupList,
+	friendList,
+	type,
+	setModalVisible,
+	clickedCancelMordal,
+	setClickedCancelMordal,
+	clickedOkMordal,
+	setClickedOkMordal
+}: BasicPropsType) {
 	// ユーザーID(今後は認証から取得するようにする)
-	const [userId, setUserId] = useState(null)
+	const [userId, setUserId] = useState<string>(null)
 
 	// 削除時の確認モーダルでCancleの時は該当リストをデフォルト状態に戻す、Okの場合は該当リストを削除する甩に使用
-	const [rowMap, setRowMap] = useState('')
-	const [key, setkey] = useState('')
-	const [groupChatRoomId, setGroupChatRoomId] = useState('')
+	const [rowMap, setRowMap] = useState<string>('')
+	const [key, setkey] = useState<string>('')
+	const [groupChatRoomId, setGroupChatRoomId] = useState<string>('')
 
 	// 一覧のリストを作成
-	const [listData, setListData] = useState(
+	const [listData, setListData] = useState<NewFriendListPropsType[] | NewGroupListPropsType[] | NewListType[]>(
 		type === "Group" ? groupList.map((_, i) => ({ ..._, key: `${i}` }))
 			: friendList.map((_, i) => ({ ..._, key: `${i}` }))
 	);
@@ -47,7 +82,10 @@ export default function Basic({ navigation, groupList, friendList, type, setModa
 
 
 	// スワップされた該当行をデフォルト状態に戻す
+	// ★rowMapの型がわからない(おそらくrowKeyの型はnumber)
 	const closeRow = (rowMap, rowKey) => {
+		console.log('rowMap', rowMap)
+		console.log('rowKey',rowKey)
 		if (rowMap[rowKey]) {
 			rowMap[rowKey].closeRow();
 		}
@@ -55,6 +93,7 @@ export default function Basic({ navigation, groupList, friendList, type, setModa
 
 	// 全体リストから該当のリストを削除
 	// rowMap: オブジェクト , rowKey: 削除するindex
+	// ★rowMapの型がわからない(おそらくrowKeyの型はnumber)
 	const deleteRow = (rowMap, rowKey) => {
 		closeRow(rowMap, rowKey);
 		// Reactの差異を比較するのは、オブジェクト同士。そのため、新しくオブジェクトを作成する必要がある
@@ -65,6 +104,7 @@ export default function Basic({ navigation, groupList, friendList, type, setModa
 		setListData(newData);
 	};
 
+	// ★dataの型がわからない
 	const renderItem = data => (
 		<>
 			{type === "Group" && (
@@ -78,7 +118,7 @@ export default function Basic({ navigation, groupList, friendList, type, setModa
 					<View style={styles.listWrapperStyle}>
 						<View style={styles.listItemContainerStyle}>
 							{data.item.group_image ? (
-								<Image source={{uri: data.item.group_image}} style={styles.profileImageStyle} />
+								<Image source={{ uri: data.item.group_image }} style={styles.profileImageStyle} />
 							) :
 								(
 									<View style={styles.profileImageNoneStyle}></View>
@@ -98,7 +138,7 @@ export default function Basic({ navigation, groupList, friendList, type, setModa
 				>
 					<View style={styles.listWrapperStyle}>
 						<View style={styles.listItemContainerStyle}>
-							<Image source={{uri:data.item.friend_profile_image}} style={styles.profileImageStyle} />
+							<Image source={{ uri: data.item.friend_profile_image }} style={styles.profileImageStyle} />
 							<Text style={styles.listItemNameStyle}>{data.item.friend_nickname}</Text>
 						</View>
 					</View>
@@ -108,6 +148,7 @@ export default function Basic({ navigation, groupList, friendList, type, setModa
 	);
 
 	// スワップできるようにする
+	// ★rowMapの型がわからない(おそらくrowKeyの型はnumber)
 	const renderHiddenItem = (data, rowMap) => (
 		<View style={styles.rowBackStyle}>
 			{/* deleteボタン */}
@@ -153,7 +194,7 @@ export default function Basic({ navigation, groupList, friendList, type, setModa
 	}, [clickedCancelMordal, clickedOkMordal])
 
 	// グループから脱退
-	async function _leaveGroup(userId, groupChatRoomId) {
+	async function _leaveGroup(userId: string, groupChatRoomId: string) {
 		try {
 			// APIリクエスト
 			const bodyData = {

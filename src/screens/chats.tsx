@@ -150,7 +150,7 @@ export function Chats({ navigation }:MainProps) {
 					)}
 				</View>
 				{/*フッター */}
-				<Footer navigation={navigation} />
+				<Footer navigation={navigation}/>
 			</SafeAreaView>
 		</KeyboardAvoidingView>
 	);

@@ -473,7 +473,7 @@ export function Chat({ navigation, route }: MainProps) {
 
 	// イメージピッカー
 	const pickImage = async () => {
-		// No permissions request is necessary for launching the image library
+		// ★anyは修正する(未対応)
 		let result: any = await ImagePicker.launchImageLibraryAsync({
 			mediaTypes: ImagePicker.MediaTypeOptions.All,
 			allowsEditing: true,
