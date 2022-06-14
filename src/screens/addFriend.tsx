@@ -29,7 +29,6 @@ export function AddFriend({ navigation }: MainProps) {
 	const [searchText, setSearchText] = useState<string>('')
 
 	// ユーザーIDを条件にAPIから取得した友達情報
-	// ★anyはフロント組み込み時に具体的な型に修正する
 	const [friendInfo, setFriendInfo] = useState<any>(null)
 
 	// すでに友達になっているか
@@ -38,11 +37,11 @@ export function AddFriend({ navigation }: MainProps) {
 	// 該当ユーザーIDが存在する場合
 	const [existUserId, setExistUserId] = useState(true)
 
-	// ニックネームでヒットするユーザーの取得
+	// ユーザーID検索にヒットしたユーザー情報(プロフィール画像、ニックネーム)
 	async function _searchId(searchText: string) {
 		try {
 			// paramsを生成
-			const params = { "searchUserId": searchText }
+			const params = { "search_user_id": searchText }
 			const query_params = new URLSearchParams(params);
 			// APIリクエスト
 			const response = await fetch(API_SERVER_URL + `/api/users/${userId}/user?${query_params}`, {
@@ -51,27 +50,29 @@ export function AddFriend({ navigation }: MainProps) {
 					"Content-Type": "application/json"
 				},
 			})
-			// ステータスコードを取得
-			const parse_response_code = await response.status
 			// レスポンスをJSONにする
 			const parse_response = await response.json()
+			// すでに友達になっているかどうか
+			const already_follow_requested = parse_response.result.already_follow_requested
+			// 該当user_idが存在するかどうか
+			const exist_user_id = parse_response.result.exist_user_id
 			// 成功した場合
-			if (parse_response_code === 200) {
+			if (!already_follow_requested && exist_user_id) {
 				setAlreadyFriend(false)
 				setExistUserId(true)
 			}
 			// 既に友達になっている場合
-			if (parse_response_code === 400 && parse_response.already_follow_requested) {
+			if (already_follow_requested && exist_user_id) {
 				setAlreadyFriend(true)
 				setExistUserId(true)
 			}
 			// 該当のユーザーIDが存在しない場合
-			if (parse_response_code === 400 && !parse_response.exist) {
+			if (!exist_user_id) {
 				setAlreadyFriend(false)
 				setExistUserId(false)
 			}
 			// 友達一覧のstateを更新
-			setFriendInfo(parse_response)
+			setFriendInfo(parse_response.result)
 		} catch (e) {
 			console.error(e)
 		}

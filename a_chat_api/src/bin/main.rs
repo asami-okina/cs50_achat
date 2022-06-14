@@ -654,7 +654,7 @@ async fn handler_add_group(
 // SQL実行部分
 async fn add_group(pool: &MySqlPool, group_image:Option<&String>, group_name: &str, group_member_user_ids: &Vec<String>) -> anyhow::Result<AddGroupResult> {
     let now = SystemTime::now().duration_since(SystemTime::UNIX_EPOCH).unwrap().as_secs();
-
+    println!("{:?}",group_image);
     // group_chat_roomテーブルの追加
     let group_chat_room_id = sqlx::query!(
         r#"
@@ -894,7 +894,7 @@ async fn handler_add_friend(
 
     let pool = MySqlPool::connect(&env::var("DATABASE_URL").unwrap()).await.unwrap();
     let result = add_friend(&pool, &user_id, &friend_user_id).await.unwrap();
-    Json(json!({ "group_info": result }))
+    Json(json!({ "friend_info": result }))
 }
 
 // SQL実行部分
