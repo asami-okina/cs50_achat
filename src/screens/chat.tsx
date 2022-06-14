@@ -110,7 +110,6 @@ export function Chat({ navigation, route }: MainProps) {
 		try {
 			// paramsを生成
 			let params;
-			console.log('きた')
 			if (directChatRoomId) {
 				params = { "chat_room_type": "DirectChatRoomId", "chat_room_id": Number(directChatRoomId) }
 			}
