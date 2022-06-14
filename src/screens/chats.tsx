@@ -23,41 +23,41 @@ type MainProps = StackScreenProps<RootStackParamListType, 'Chats'>;
 
 export function Chats({ navigation }:MainProps) {
 	// ユーザーID(今後は認証から取得するようにする)
-	const [userId, setUserId] = useState(null)
+	const [userId, setUserId] = useState<string>(null)
 
 	// 検索フォーム
-	const [searchText, setSearchText] = useState('')
+	const [searchText, setSearchText] = useState<string>('')
 	// 検索中かどうか
-	const [isDuringSearch, setIsDuringSearch] = useState(false)
+	const [isDuringSearch, setIsDuringSearch] = useState<boolean>(false)
 
 	// グループ削除確認モーダル
-	const [deleteModalVisible, setDeleteModalVisible] = useState(false);
+	const [deleteModalVisible, setDeleteModalVisible] = useState<boolean>(false);
 	// 削除時の確認モーダルでCancelを押したかどうか
-	const [clickedDeleteCancelMordal, setClickedDeleteCancelMordal] = useState(false)
+	const [clickedDeleteCancelMordal, setClickedDeleteCancelMordal] = useState<boolean>(false)
 	// 削除時の確認モーダルでOkを押したかどうか
-	const [clickedDeleteOkMordal, setClickedDeleteOkMordal] = useState(false)
+	const [clickedDeleteOkMordal, setClickedDeleteOkMordal] = useState<boolean>(false)
 
 	// グループ非表示確認モーダル
-	const [hiddenModalVisible, setHiddenModalVisible] = useState(false);
+	const [hiddenModalVisible, setHiddenModalVisible] = useState<boolean>(false);
 	// 非表示時の確認モーダルでCancelを押したかどうか
-	const [clickedHiddenCancelMordal, setClickedHiddenCancelMordal] = useState(false)
+	const [clickedHiddenCancelMordal, setClickedHiddenCancelMordal] = useState<boolean>(false)
 	// 非表示時の確認モーダルでOkを押したかどうか
-	const [clickedHiddenOkMordal, setClickedHiddenOkMordal] = useState(false)
+	const [clickedHiddenOkMordal, setClickedHiddenOkMordal] = useState<boolean>(false)
 
 	// [検索前]APIから取得したグループ一覧リスト
-	const [beforeChatRoomListSearch, setBeforeChatRoomListSearch] = useState([])
+	const [beforeChatRoomListSearch, setBeforeChatRoomListSearch] = useState<FriendListPropsType[] | GroupListPropsType[]>([])
 	// [検索後]APIから取得したグループ一覧リスト
-	const [afterChatRoomListSearch, setAfterChatRoomListSearch] = useState([])
+	const [afterChatRoomListSearch, setAfterChatRoomListSearch] = useState<FriendListPropsType[]| GroupListPropsType[]>([])
 
 	// チャットルームIDに紐づくチャット履歴のparams甩
-	const [groupChatRoomId, setGroupChatRoomId] = useState('')
-	const [directChatRoomId, setDirectChatRoomId] = useState('')
+	const [groupChatRoomId, setGroupChatRoomId] = useState<string>('')
+	const [directChatRoomId, setDirectChatRoomId] = useState<string>('')
 
 	// 現在画面がフォーカスされているかをbooleanで保持
 	const isFocused = useIsFocused()
 
 	// ニックネームまたはグループ名の検索でヒットするチャット情報取得
-	async function _searchChatByNickNameOrGroupName(searchText) {
+	async function _searchChatByNickNameOrGroupName(searchText: string) {
 		try {
 			// paramsを生成
 			const params_search = { "searchText": searchText }
@@ -81,10 +81,10 @@ export function Chats({ navigation }:MainProps) {
 
 
 	// ユーザーIDに紐づくチャットルーム一覧を取得
-	async function _fetchChatsList(userId) {
+	async function _fetchChatsList(userId: string) {
 		try {
 			// APIリクエスト
-			const response = await fetch(API_SERVER_URL + `/api/users/${userId}/chatRoom`, {
+			const response = await fetch(API_SERVER_URL + `/api/users/${userId}/chat-room`, {
 				method: "GET",
 				headers: {
 					"Content-Type": "application/json"
@@ -92,14 +92,14 @@ export function Chats({ navigation }:MainProps) {
 			})
 			// レスポンスをJSONにする
 			const parse_response = await response.json()
-			setBeforeChatRoomListSearch(parse_response)
+			setBeforeChatRoomListSearch(parse_response.chat_room_list)
 		} catch (e) {
 			console.error(e)
 		}
 	}
 
 	// 文字追加or削除ごとにヒット(名前またはグループ名)したチャット一覧を表示
-	const _autoSuggestSearchChatByNickNameOrGroupName = (text) => {
+	const _autoSuggestSearchChatByNickNameOrGroupName = (text: string) => {
 		setSearchText(text)
 		_searchChatByNickNameOrGroupName(searchText)
 		if (setIsDuringSearch) {

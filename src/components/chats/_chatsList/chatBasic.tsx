@@ -14,17 +14,40 @@ import { MAIN_WHITE_COLOR } from '../../../constants/layout'
 
 export default function ChatBasic({ navigation, chatRoomList, setDeleteModalVisible, clickedDeleteCancelMordal, setClickedDeleteCancelMordal, clickedDeleteOkMordal, setClickedDeleteOkMordal, setHiddenModalVisible, clickedHiddenCancelMordal, setClickedHiddenCancelMordal, clickedHiddenOkMordal, setClickedHiddenOkMordal, setGroupChatRoomId, setDirectChatRoomId, groupChatRoomId, directChatRoomId }) {
 	// ユーザーID(今後は認証から取得するようにする)
-	const [userId, setUserId] = useState(null)
+	const [userId, setUserId] = useState<string>(null)
 
 	// 削除時の確認モーダルでCancleの時は該当リストをデフォルト状態に戻す、Okの場合は該当リストを削除する甩に使用
 	const [rowMap, setRowMap] = useState('')
-	const [key, setkey] = useState('')
+	const [key, setkey] = useState<string>('')
 
 	// HiddenかDeleteどちらをクリックされたか
-	const [clickedType, setClickedType] = useState('')
+	const [clickedType, setClickedType] = useState<string>('')
+
+	type ChatRoomListType = {
+		key: string;
+		direct_chat_room_id: number;
+		friend_nickname: string;
+		friend_profile_image: string;
+		friend_user_id: string;
+		last_message_content: string;
+		last_message_created_at: number;
+		type: string;
+		unread_count: number;
+	} |
+	{
+		key: string;
+		group_chat_room_id: number;
+		group_image: string;
+		group_member_user_id: string[];
+		group_name: string;
+		last_message_content: string;
+		last_message_created_at: number;
+		type: string;
+		unread_count: number;
+	}
 
 	// 一覧のリストを作成
-	const [listData, setListData] = useState(
+	const [listData, setListData] = useState<ChatRoomListType[]>(
 		chatRoomList.map((_, i) => ({ ..._, key: `${i}` }))
 	);
 
@@ -78,12 +101,11 @@ export default function ChatBasic({ navigation, chatRoomList, setDeleteModalVisi
 		try {
 			// APIリクエスト
 			const bodyData = {
-				"userId": userId,
-				"directChatRoomId": directChatRoomId,
-				"groupChatRoomId": groupChatRoomId,
+				"direct_chat_room_id": directChatRoomId,
+				"group_chat_room_id": groupChatRoomId,
 				"update_type": clickedType
 			}
-			const response = await fetch(API_SERVER_URL + `/api/users/${userId}/chatRoom`, {
+			const response = await fetch(API_SERVER_URL + `/api/users/${userId}/chat-room`, {
 				method: "POST",
 				headers: {
 					"Content-Type": "application/json"

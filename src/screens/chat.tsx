@@ -133,7 +133,7 @@ export function Chat({ navigation, route }: MainProps) {
 	}
 
 	// メッセージ送信
-	async function _postMessage(messages) {
+	async function _postMessage(messages: MessageType[]) {
 		try {
 			// APIリクエスト
 			let bodyData = {}
@@ -242,9 +242,7 @@ export function Chat({ navigation, route }: MainProps) {
 		if (image && messages.length === 0) {
 			messages = [
 				{
-					// "_id": uuid.v4(),
 					"_id": null, // バックエンドで発行したい(messageテーブルのid)
-					// "createdAt": new Date(),
 					"createdAt": null, // バックエンドで発行したい(messageテーブルのcreated_at)
 					"text": "",
 					"user": {
