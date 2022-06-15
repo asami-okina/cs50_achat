@@ -33,7 +33,7 @@ type ButtonPropsType = {
 	};
 }
 
-type FriendInfoType = {
+type AddedFriendInfoType = {
 	direct_chat_room_id: string;
 	friend_use_id: string;
 	friend_profile_image: Option<String>;
@@ -50,7 +50,7 @@ export function Button({
 }: ButtonPropsType) {
 	const [userId, setUserId] = useState<string>(null)
 	// 友達追加したユーザーの情報
-	const [friendInfo, setFriendInfo] = useState<FriendInfoType>(null)
+	const [friendInfo, setFriendInfo] = useState<AddedFriendInfoType>(null)
 
 	// 友達追加(ループチャット画面で友達ではないユーザーアイコンをクリックした場合、友だち追加する)
 	async function _addFriend() {

@@ -7,7 +7,37 @@ import { storage } from '../../../storage'
 // layouts
 import { MAIN_NAVY_COLOR, MAIN_WHITE_COLOR, ADD_BUTTON_SIZE, CONTENT_WIDTH, BUTTON_BORDER_RADIUS, MAIN_BLACK_COLOR, SMALL_BUTTON_WIDTH, MAIN_GRAY_COLOR } from '../../constants/layout'
 
-export function SmallButton({ text, navigation, friendList, groupSetting, type, friendListNames, alreadyFriend, addGroupMemberGroupChatRoomId, addGroupMemberGroupImage, addGroupMemberGroupName, backGroupName, backGroupImage }) {
+type SmallButtonType = {
+	text: string;
+	navigation: any; // ★修正予定
+	friendList: any;
+	groupSetting: {
+		groupName?: string;
+		image?: string;
+	};
+	type: string;
+	friendListNames: string;
+	alreadyFriend: boolean;
+	addGroupMemberGroupChatRoomId: string;
+	addGroupMemberGroupImage: string;
+	addGroupMemberGroupName: string;
+	backGroupName: string | null;
+	backGroupImage: string | null;
+}
+export function SmallButton({
+	text,
+	navigation,
+	friendList,
+	groupSetting,
+	type,
+	friendListNames,
+	alreadyFriend,
+	addGroupMemberGroupChatRoomId,
+	addGroupMemberGroupImage,
+	addGroupMemberGroupName,
+	backGroupName,
+	backGroupImage
+}: SmallButtonType) {
 	// ユーザーID(今後は認証から取得するようにする)
 	const [userId, setUserId] = useState<string>(null)
 	// 自分を含めたグループメンバーのuserId
@@ -19,7 +49,7 @@ export function SmallButton({ text, navigation, friendList, groupSetting, type, 
 	const [addGroupMemberName, setAddGroupMemberName] = useState<string[]>([])
 
 	// 友達追加したユーザーの情報
-	const [friendInfo, setFriendInfo] = useState<FriendListPropsType[]|[]>([])
+	const [friendInfo, setFriendInfo] = useState<FriendListPropsType[] | []>([])
 
 	// グループ追加
 	async function _addGroup() {
@@ -42,7 +72,7 @@ export function SmallButton({ text, navigation, friendList, groupSetting, type, 
 			// グループチャットルームIDを取得
 			const groupChatRoomId = parse_response.group_info.group_chat_room_id
 			setGroupChatRoomId(groupChatRoomId)
-			navigation.navigate('Chat', { "groupChatRoomId":  parse_response.group_info.group_chat_room_id, "directChatRoomId": null, "profileImage": parse_response.group_info.group_image, "name": parse_response.group_info.group_name })
+			navigation.navigate('Chat', { "groupChatRoomId": parse_response.group_info.group_chat_room_id, "directChatRoomId": null, "profileImage": parse_response.group_info.group_image, "name": parse_response.group_info.group_name })
 		} catch (e) {
 			console.error(e)
 		}
@@ -66,7 +96,7 @@ export function SmallButton({ text, navigation, friendList, groupSetting, type, 
 			const parse_response = await response.json()
 			setFriendInfo(parse_response.friend_info)
 			// 友達チャットに遷移
-			navigation.navigate('Chat', { "groupChatRoomId":  null, "directChatRoomId": parse_response.friend_info.direct_chat_room_id, "profileImage":  parse_response.friend_info.friend_profile_image, "name": parse_response.friend_info.friend_nickname })
+			navigation.navigate('Chat', { "groupChatRoomId": null, "directChatRoomId": parse_response.friend_info.direct_chat_room_id, "profileImage": parse_response.friend_info.friend_profile_image, "name": parse_response.friend_info.friend_nickname })
 		} catch (e) {
 			console.error(e)
 		}
@@ -89,18 +119,17 @@ export function SmallButton({ text, navigation, friendList, groupSetting, type, 
 				"group_chat_room_id": addGroupMemberGroupChatRoomId,
 				"add_user_ids": newDataUserIds
 			}
-			console.log('bodyData',bodyData)
-			// const response = await fetch(API_SERVER_URL + `/api/users/${userId}/group-member`, {
-			// 	method: "POST",
-			// 	headers: {
-			// 		"Content-Type": "application/json"
-			// 	},
-			// 	body: JSON.stringify(bodyData),
-			// })
-			// // レスポンスをJSONにする
-			// const parse_response = await response.json()
-			// // 新規に追加したユーザーIDのリスト
-			// const adduserIds = parse_response.adduserIds
+			const response = await fetch(API_SERVER_URL + `/api/users/${userId}/group-member`, {
+				method: "POST",
+				headers: {
+					"Content-Type": "application/json"
+				},
+				body: JSON.stringify(bodyData),
+			})
+			// レスポンスをJSONにする
+			const parse_response = await response.json()
+			// 新規に追加したユーザーIDのリスト
+			const adduserIds = parse_response.adduserIds
 		} catch (e) {
 			console.error(e)
 		}
@@ -112,13 +141,6 @@ export function SmallButton({ text, navigation, friendList, groupSetting, type, 
 			navigation.navigate('Chat', { "groupChatRoomId": addGroupMemberGroupChatRoomId, "directChatRoomId": null, "profileImage": addGroupMemberGroupImage, "name": addGroupMemberGroupName, "addGroupMemberName": addGroupMemberName })
 		}
 	}, [addGroupMemberName])
-
-	// // 友達追加されたら、チャット画面に遷移
-	// useEffect(() => {
-	// 	if (friendInfo) {
-	// 		navigation.navigate('Chat', { "groupChatRoomId": null, "directChatRoomId": friendInfo.direct_chat_room_id, "profileImage": friendInfo.friend_profile_image, "name": friendInfo.friend_nickname })
-	// 	}
-	// }, [friendInfo])
 
 	// ユーザーIDの取得
 	useEffect(() => {
@@ -139,7 +161,7 @@ export function SmallButton({ text, navigation, friendList, groupSetting, type, 
 			groupMemberUserIds.push(userId)
 			setGroupMemberUserIds(groupMemberUserIds)
 		}
-	}, [friendList,userId])
+	}, [friendList, userId])
 
 	return (
 		<View style={styles.boxStyle}>

@@ -29,19 +29,19 @@ export function AddGroupMember({ navigation, route }) {
 	const [searchText, setSearchText] = useState<string>('')
 
 	// [検索前]APIから取得した友達一覧リスト
-	const [beforeFriendListSearch, setBeforeFriendListSearch] = useState<NewFriendListPropsType[]|[]>([])
+	const [beforeFriendListSearch, setBeforeFriendListSearch] = useState<NewFriendListPropsType[]>([])
 
 	// [検索後]APIから取得した友達一覧リスト
-	const [afterFriendListSearch, setAfterFriendListSearch] = useState<NewFriendListPropsType[]|[]>([])
+	const [afterFriendListSearch, setAfterFriendListSearch] = useState<NewFriendListPropsType[]>([])
 
 	// [検索前後]選択した友達一覧リスト
-	const [mergedSelectedFriendList, setMergerdSelectedFriendList] = useState<NewFriendListPropsType[]|[]>([])
+	const [mergedSelectedFriendList, setMergerdSelectedFriendList] = useState<NewFriendListPropsType[]>([])
 
 	// [検索前]選択した友達一覧リスト
-	const [beforeSelectedFriendList, setBeforeSelectedFriendList] = useState<NewFriendListPropsType[]|[]>([])
+	const [beforeSelectedFriendList, setBeforeSelectedFriendList] = useState<NewFriendListPropsType[]>([])
 
 	// [検索後]選択した友達一覧リスト
-	const [afterSelectedFriendList, setAfterSelectedFriendList] = useState<NewFriendListPropsType[]|[]>([])
+	const [afterSelectedFriendList, setAfterSelectedFriendList] = useState<NewFriendListPropsType[]>([])
 
 	// 検索中かどうか
 	const [isDuringSearch, setIsDuringSearch] = useState<boolean>(false)

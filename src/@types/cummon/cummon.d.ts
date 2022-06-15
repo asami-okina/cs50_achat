@@ -51,3 +51,11 @@ type MessageType = {
 	}
 
 }
+
+type FriendInfoType = {
+	exist_user_id: boolean;
+	friend_search_flag: boolean;
+	friend_use_id: string;
+	friend_profile_image: string;
+	friend_nickname: string;
+}

@@ -29,7 +29,7 @@ export function AddFriend({ navigation }: MainProps) {
 	const [searchText, setSearchText] = useState<string>('')
 
 	// ユーザーIDを条件にAPIから取得した友達情報
-	const [friendInfo, setFriendInfo] = useState<any>(null)
+	const [friendInfo, setFriendInfo] = useState<FriendInfoType>(null)
 
 	// すでに友達になっているか
 	const [alreadyFriend, setAlreadyFriend] = useState(false)

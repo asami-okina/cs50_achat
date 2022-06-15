@@ -11,6 +11,11 @@ import { selectedFriendStyles } from '../../constants/styles/selectedFriendStyle
 // layouts
 import { CONTENT_WIDTH, BIG_PROFILE_IMAGE_SIZE, STANDARD_FONT, MAIN_PINK_COLOR, PROFILE_IMAGE_BORDER_RADIUS, MAIN_NAVY_COLOR } from '../../constants/layout'
 
+type ExistFriendType = {
+	navigation: any; // ★修正予定
+	friendInfo: FriendInfoType;
+	alreadyFriend: boolean;
+}
 export function ExistFriend({ navigation, friendInfo, alreadyFriend }) {
 
 	return (
