@@ -557,7 +557,6 @@ export function Chat({ navigation, route }: MainProps) {
 			})
 			// レスポンスをJSONにする
 			const parse_response = await response.json()
-			console.log('parse_response',parse_response)
 			// グループトーク画面でクリックした人と既に友達かどうか
 			setSelectedUserAlreadyFriend(parse_response.result.already_friend)
 			// グループトーク画面で、クリックした人とのdirectChatRoomId(ない場合は、まだ友達ではない)
