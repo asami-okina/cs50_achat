@@ -2,7 +2,11 @@ import React from 'react';
 import { Text, View, StyleSheet } from 'react-native';
 import { MAIN_NAVY_COLOR, MAIN_WHITE_COLOR, MAIN_TITLE_SIZE, MAIN_TITLE_FONT } from '../../constants/layout'
 
-export function HeadTitle({ title }) {
+type HeadTitleType = {
+	title: string;
+}
+
+export function HeadTitle({ title }: HeadTitleType) {
 	// フォントがダウンロードできたら、画面を出力する
 	return (
 		<View style={styles.headMessageContainerStyle}>
