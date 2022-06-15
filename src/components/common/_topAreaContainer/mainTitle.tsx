@@ -5,7 +5,26 @@ import { View, Text, StyleSheet, Image, Pressable } from 'react-native';
 // layouts
 import { TAB_FONT, MAIN_NAVY_COLOR, CONTENT_WIDTH, PROFILE_IMAGE_BORDER_RADIUS, BACK_ICOM_SIZE } from '../../../constants/layout'
 
-export function MainTitle({ navigation, title, link, props, groupChatRoomId, groupMemberUserId }) {
+type MainTitlPropsType = {
+	navigation: any; // ★修正予定
+	title: string;
+	link: string;
+	props : {
+		profileImage?: string;
+		name?: string;
+	}
+	groupChatRoomId: string;
+	groupMemberUserId: string[];
+}
+
+export function MainTitle({
+	navigation,
+	title,
+	link,
+	props,
+	groupChatRoomId,
+	groupMemberUserId
+}: MainTitlPropsType) {
 	return (
 		<View style={styles.titleWrapperStyle}>
 			<Pressable onPress={() => { navigation.navigate(link) }} >

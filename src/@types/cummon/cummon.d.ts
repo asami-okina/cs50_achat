@@ -1,3 +1,15 @@
+interface Some<T> {
+	type: "Some";
+	value: T;
+}
+
+interface None {
+	type: "None";
+	value: null;
+}
+
+type Option<T> = Some<T> | None;
+
 type FriendListPropsType = {
 	direct_chat_room_id: string;
 	friend_use_id: string;

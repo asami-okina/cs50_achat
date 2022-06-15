@@ -32,7 +32,7 @@ export function NotFriendModal({ route, navigation }) {
 				<View style={sameStyles.mainContainerStyle}>
 					<View style={styles.profileImageWrapperStyle} >
 						{friendImage ? (
-							<Image source={friendImage} style={{ width: 80, height: 80, borderRadius: PROFILE_IMAGE_BORDER_RADIUS, }} />
+							<Image source={{uri: friendImage}} style={{ width: 80, height: 80, borderRadius: PROFILE_IMAGE_BORDER_RADIUS, }} />
 						) :
 							<View style={styles.circleStyle}></View>
 						}

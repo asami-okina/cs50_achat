@@ -8,6 +8,38 @@ import { storage } from '../../../storage';
 // layouts
 import { MAIN_NAVY_COLOR, MAIN_WHITE_COLOR, BUTTON_HEIGHT, CONTENT_WIDTH, STANDARD_FONT, BUTTON_TEXT_SIZE, MAIN_GRAY_COLOR, BUTTON_BORDER_RADIUS } from '../../constants/layout'
 
+type ButtonPropsType = {
+	navigation: any; // ★修正予定
+	link: string;
+	buttonText: string;
+	enable: boolean;
+	scene: string;
+	propsList: {
+		directChatRoomId?: string;
+		friendImage?: string;
+		friendNickName?: string;
+		friendUserId?: string;
+		_updateNickName?: () => Promise<void>;
+		nickName?: string;
+		setNickName?: React.Dispatch<React.SetStateAction<string>>;
+		emailText?: string;
+		passwordText?: string;
+		executedLoginAuthentication?: boolean;
+		onFocusInputMailOrPasseword?: boolean;
+		onPressFunction?: () => Promise<void>;
+		email?: string;
+		password?: string;
+		userId?: string;
+	};
+}
+
+type FriendInfoType = {
+	direct_chat_room_id: string;
+	friend_use_id: string;
+	friend_profile_image: Option<String>;
+	friend_nickname: string;
+}
+
 export function Button({
 	navigation,
 	link,
@@ -15,19 +47,17 @@ export function Button({
 	enable,
 	scene,
 	propsList
-}) {
-	// ユーザーID(今後は認証から取得するようにする)
-	const [userId, setUserId] = useState(null)
+}: ButtonPropsType) {
+	const [userId, setUserId] = useState<string>(null)
 	// 友達追加したユーザーの情報
-	const [friendInfo, setFriendInfo] = useState(null)
-
-	// 友達追加
+	const [friendInfo, setFriendInfo] = useState<FriendInfoType>(null)
+	
+	// 友達追加(ループチャット画面で友達ではないユーザーアイコンをクリックした場合、友だち追加する)
 	async function _addFriend() {
 		try {
 			// APIリクエスト
 			const bodyData = {
-				"friendUserId": propsList.friendUserId,
-				"ownUserId": userId,
+				"friend_user_id": propsList.friendUserId,
 			}
 			const response = await fetch(API_SERVER_URL + `/api/users/${userId}/friends`, {
 				method: "POST",
@@ -38,42 +68,43 @@ export function Button({
 			})
 			// レスポンスをJSONにする
 			const parse_response = await response.json()
-			setFriendInfo(parse_response)
-			// 友達チャットに遷移
+			setFriendInfo(parse_response.friend_info)
+			// // 友達チャットに遷移
+			navigation.navigate('Chat', { "groupChatRoomId":  null, "directChatRoomId": parse_response.friend_info.direct_chat_room_id, "profileImage":  parse_response.friend_info.friend_profile_image, "name": parse_response.friend_info.friend_nickname })
 		} catch (e) {
 			console.error(e)
 		}
 	}
 
-		// 会員登録
-		async function _signUp() {
-			try {
-				// paramsを生成
-				const params = { "mail": propsList?.email, "password": propsList?.password, "userId": propsList?.userId, "type": "signUp" }
-				const query_params = new URLSearchParams(params);
-	
-				// APIリクエスト
-				const response = await fetch(API_SERVER_URL + `/api/signup?${query_params}`, {
-					method: "POST",
-					headers: {
-						"Content-Type": "application/json"
-					},
-				})
-	
-				// レスポンスをJSONにする
-				const parse_response = await response.json()
-				const response_user_id = parse_response.userId
-				// ローカルストレージにユーザーIDを保存
-				await storage.save({
-					key: "key",
-					data: {
-						userId: response_user_id,
-					},
-				});
-			} catch (e) {
-				console.error(e)
-			}
+	// 会員登録
+	async function _signUp() {
+		try {
+			// paramsを生成
+			const params = { "mail": propsList?.email, "password": propsList?.password, "userId": propsList?.userId, "type": "signUp" }
+			const query_params = new URLSearchParams(params);
+
+			// APIリクエスト
+			const response = await fetch(API_SERVER_URL + `/api/signup?${query_params}`, {
+				method: "POST",
+				headers: {
+					"Content-Type": "application/json"
+				},
+			})
+
+			// レスポンスをJSONにする
+			const parse_response = await response.json()
+			const response_user_id = parse_response.userId
+			// ローカルストレージにユーザーIDを保存
+			await storage.save({
+				key: "key",
+				data: {
+					userId: response_user_id,
+				},
+			});
+		} catch (e) {
+			console.error(e)
 		}
+	}
 
 
 	// 友達追加されたら、チャット画面に遷移
@@ -126,15 +157,15 @@ export function Button({
 								_addFriend()
 							}
 							if (enable && link && scene !== "ProfileSettingNickName") {
-								console.log('scene',scene)
-								console.log('link',link)
+								console.log('scene', scene)
+								console.log('link', link)
 								// welcomeページからsignupページに遷移
-								if (scene == "Welcome" && link == "SignUp"){
+								if (scene == "Welcome" && link == "SignUp") {
 									navigation.navigate(link)
 								}
 								// signUpページからhomeページに遷移
-								if(scene == "SignUp" && link == "Home"){
-								// サインアップ
+								if (scene == "SignUp" && link == "Home") {
+									// サインアップ
 									_signUp().then(() => {
 										navigation.navigate(link)
 									})
