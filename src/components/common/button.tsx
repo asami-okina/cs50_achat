@@ -80,20 +80,21 @@ export function Button({
 	async function _signUp() {
 		try {
 			// paramsを生成
-			const params = { "mail": propsList?.email, "password": propsList?.password, "userId": propsList?.userId, "type": "signUp" }
-			const query_params = new URLSearchParams(params);
+			const bodyData =  { "mail": propsList?.email, "password": propsList?.password, "user_id": propsList?.userId }
 
 			// APIリクエスト
-			const response = await fetch(API_SERVER_URL + `/api/signup?${query_params}`, {
+			const response = await fetch(API_SERVER_URL + `/api/signup`, {
 				method: "POST",
 				headers: {
 					"Content-Type": "application/json"
 				},
+				body: JSON.stringify(bodyData),
 			})
 
 			// レスポンスをJSONにする
 			const parse_response = await response.json()
-			const response_user_id = parse_response.userId
+			console.log('parse_response',parse_response)
+			const response_user_id = parse_response.user_id
 			// ローカルストレージにユーザーIDを保存
 			await storage.save({
 				key: "key",
