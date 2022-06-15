@@ -80,10 +80,10 @@ export function Chat({ navigation, route }: MainProps) {
 			// paramsを生成
 			let params;
 			if (directChatRoomId) {
-				params = { "chat_room_type": "DirectChatRoomId", "chat_room_id": directChatRoomId }
+				params = { "chat_room_type": "DirectChatRoomId", "chat_room_id": Number(directChatRoomId) }
 			}
 			if (groupChatRoomId) {
-				params = { "chat_room_type": "GroupChatRoomId", "chat_room_id": groupChatRoomId }
+				params = { "chat_room_type": "GroupChatRoomId", "chat_room_id": Number(groupChatRoomId) }
 			}
 			const query_params = new URLSearchParams(params);
 			// APIリクエスト

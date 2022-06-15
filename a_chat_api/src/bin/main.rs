@@ -141,8 +141,8 @@ async fn sign_up(pool: &MySqlPool, user_id:&str, mail: &str, password: &str) -> 
     let now = SystemTime::now().duration_since(SystemTime::UNIX_EPOCH).unwrap().as_secs();
     sqlx::query!(
         r#"
-INSERT INTO user ( id, nickname, mail, password, created_at )
-VALUES ( ?, ? , ? , ?, ? )
+            INSERT INTO user ( id, nickname, mail, password, created_at )
+            VALUES ( ?, ? , ? , ?, ? )
         "#,
         user_id,
         user_id,

@@ -9,7 +9,7 @@ type MainTitlPropsType = {
 	navigation: any; // ★修正予定
 	title: string;
 	link: string;
-	props : {
+	props: {
 		profileImage?: string;
 		name?: string;
 	}
@@ -25,6 +25,7 @@ export function MainTitle({
 	groupChatRoomId,
 	groupMemberUserId
 }: MainTitlPropsType) {
+	console.log('props', props)
 	return (
 		<View style={styles.titleWrapperStyle}>
 			<Pressable onPress={() => { navigation.navigate(link) }} >
@@ -42,12 +43,12 @@ export function MainTitle({
 								<Image source={{ uri: props.profileImage }} style={styles.circleStyle} />
 							) :
 							(
-								<Image source={props.profileImage} style={styles.circleStyle} />
+								<Image source={{ uri: props.profileImage }} style={styles.circleStyle} />
 							) : <View style={styles.circleStyle}></View>}
 					</View>
 					<View style={styles.nameAndAddCiecleContainerStyle}>
 						<Text style={styles.nameStyle} numberOfLines={1} ellipsizeMode="tail">{props.name}</Text>
-						{groupChatRoomId && (
+						{groupChatRoomId !== null && (
 							<Pressable onPress={() => {
 								navigation.navigate('AddGroupMember', { groupChatRoomId: groupChatRoomId, groupMemberUserId: groupMemberUserId, image: props.profileImage, name: props.name })
 							}}>
