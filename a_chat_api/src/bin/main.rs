@@ -1168,26 +1168,18 @@ async fn handler_update_profile(
     let user_id = path.user_id;
 
     // nicknameの取得
-    let nickname = match &body_json.nickname{
-        Some(nickname) => Some(nickname),
-        None => None
-    };
+    let nickname = &body_json.nickname;
+    
 
     // profile_imageの取得
-    let profile_image = match &body_json.profile_image{
-        Some(profile_image) => Some(profile_image),
-        None => None
-    };
+    let profile_image =&body_json.profile_image;
 
     // search_flagの取得
-    let search_flag = match &body_json.search_flag{
-        Some(search_flag) => Some(search_flag),
-        None => None
-    };
+    let search_flag = &body_json.search_flag;
 
     let pool = MySqlPool::connect(&env::var("DATABASE_URL").unwrap()).await.unwrap();
-    let result = update_profile(&pool, &user_id, nickname, profile_image, search_flag).await.unwrap();
-    Json(json!({ "group_info": result }))
+    update_profile(&pool, &user_id, nickname.as_ref(), profile_image.as_ref(), search_flag.as_ref()).await.unwrap();
+    Json(json!({ "status_code": 200 }))
 }
 
 // SQL実行部分

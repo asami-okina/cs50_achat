@@ -25,7 +25,7 @@ export function ProfileImage({
 		try {
 			// APIリクエスト
 			const bodyData = {
-				"profileImage": newImageUri,
+				"profile_image": newImageUri,
 			}
 			const response = await fetch(API_SERVER_URL + `/api/users/${userId}/profile`, {
 				method: "POST",
