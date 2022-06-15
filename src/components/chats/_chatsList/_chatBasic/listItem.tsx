@@ -5,12 +5,34 @@ import { View, StyleSheet, Pressable, Image, Text } from 'react-native';
 // layouts
 import { CONTENT_WIDTH, PROFILE_IMAGE_SIZE, STANDARD_FONT, MAIN_WHITE_COLOR, PROFILE_IMAGE_BORDER_RADIUS, MAIN_NAVY_COLOR, MAIN_GRAY_COLOR } from '../../../../constants/layout'
 
-export function ListItem({ navigation, profileImage, name, lastMessageCreationDate, lastMessageContent, unreadCount, groupChatRoomId, directChatRoomId, groupMemberUserId }) {
+
+type ListItemType = {
+	navigation: any;
+	profileImage: string;
+	name: string;
+	lastMessageCreationDate: number;
+	lastMessageContent: string;
+	unreadCount: number;
+	groupChatRoomId: string;
+	directChatRoomId: string;
+	groupMemberUserId: string[];
+}
+export function ListItem({
+	navigation,
+	profileImage,
+	name,
+	lastMessageCreationDate,
+	lastMessageContent,
+	unreadCount,
+	groupChatRoomId,
+	directChatRoomId,
+	groupMemberUserId
+}: ListItemType) {
 	return (
 		<Pressable style={styles.listWrapperStyle} onPress={() => { navigation.navigate('Chat', { "groupChatRoomId": groupChatRoomId, "directChatRoomId": directChatRoomId, "profileImage": profileImage, "name": name }) }}>
 			<View style={styles.imageContainerStyle}>
 				{profileImage ? (
-					<Image source={{uri:profileImage}} style={{ width: PROFILE_IMAGE_SIZE, height: PROFILE_IMAGE_SIZE, borderRadius: PROFILE_IMAGE_BORDER_RADIUS }} />
+					<Image source={{ uri: profileImage }} style={{ width: PROFILE_IMAGE_SIZE, height: PROFILE_IMAGE_SIZE, borderRadius: PROFILE_IMAGE_BORDER_RADIUS }} />
 				) :
 					<View style={styles.circleStyle}></View>
 				}

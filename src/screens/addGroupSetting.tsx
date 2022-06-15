@@ -21,7 +21,7 @@ import { IPHONE_X_BOTTOM_SPACE } from '../constants/layout'
 type MainProps = StackScreenProps<RootStackParamListType, 'AddGroupSetting'>;
 
 export function AddGroupSetting({ route, navigation }: MainProps) {
-	const [friendList, setFriendList] = useState(route.params.friendList)
+	const [friendList, setFriendList] = useState<NewFriendListPropsType[]>(route.params.friendList)
 	const [userId, setUserId] = useState<string>(null)
 	// グループ設定画面から、メンバー追加で戻ったときにグループ名とグループ画像を保持
 	const { backGroupName, backGroupImage } = route.params

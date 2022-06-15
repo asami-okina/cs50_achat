@@ -9,10 +9,15 @@ import { AddFriendListItem } from './_addFriendList/addFriendListItem'
 // constantsSelectedFriendStyles
 import { selectedFriendStyles } from "../../constants/styles/selectedFriendStyles"
 
+type AddFriendListType = {
+	selectedFriendList: NewFriendListPropsType[];
+	deleteFriendList: (rowKey: any, type: any) => void;
+}
+
 export function AddFriendList({
 	selectedFriendList,
 	deleteFriendList
-}) {
+}: AddFriendListType) {
 	// refの生成
 	const scrollViewRef = useRef<any>();
 	return (

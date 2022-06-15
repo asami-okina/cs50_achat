@@ -3,7 +3,7 @@ import React, { useRef, useEffect } from "react"
 // マウントされているか判定するカスタムフックス
 // 参考:https://usehooks-ts.com/react-hook/use-is-mounted
 export function useIsMounted() {
-	const isMounted = useRef(false)
+	const isMounted = useRef<boolean>(false)
 
 	useEffect(() => {
 		isMounted.current = true

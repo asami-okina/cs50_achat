@@ -5,7 +5,13 @@ import { View, StyleSheet, Text } from 'react-native';
 // layouts
 import { CONTENT_WIDTH, STANDARD_FONT, MAIN_GRAY_COLOR } from '../../../../constants/layout'
 
-export function NickNameStringCount({ wordCount }) {
+type NickNameStringCountType = {
+	wordCount: number
+}
+
+export function NickNameStringCount({
+	wordCount
+}: NickNameStringCountType) {
 
 	return (
 		<View style={styles.nickNameWrapperStyle}>

@@ -29,6 +29,7 @@ type NewFriendListPropsType = {
 	friend_use_id: string;
 	friend_profile_image: string;
 	friend_nickname: string;
+	type?: string;
 }
 
 type NewGroupListPropsType = {

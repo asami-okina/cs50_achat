@@ -5,7 +5,29 @@ import { View, StyleSheet, Text, TouchableOpacity } from 'react-native';
 // layouts
 import { MAIN_WHITE_COLOR, MAIN_PINK_COLOR } from '../../../../constants/layout'
 
-export function HiddenListItem({ setDeleteModalVisible, setHiddenModalVisible, setRowMap, setkey, setClickedType, rowMap, data, setGroupChatRoomId, setDirectChatRoomId }) {
+type HiddenListItemType = {
+	setDeleteModalVisible: React.Dispatch<React.SetStateAction<boolean>>;
+	setHiddenModalVisible: React.Dispatch<React.SetStateAction<boolean>>;
+	setRowMap: React.Dispatch<React.SetStateAction<string>>;
+	setkey: React.Dispatch<React.SetStateAction<string>>;
+	setClickedType: React.Dispatch<React.SetStateAction<string>>;
+	rowMap: string;
+	data: any; // ★修正予定
+	setGroupChatRoomId: React.Dispatch<React.SetStateAction<string>>;
+	setDirectChatRoomId: React.Dispatch<React.SetStateAction<string>>;
+}
+
+export function HiddenListItem({
+	setDeleteModalVisible,
+	setHiddenModalVisible,
+	setRowMap,
+	setkey,
+	setClickedType,
+	rowMap,
+	data,
+	setGroupChatRoomId,
+	setDirectChatRoomId
+}: HiddenListItemType) {
 	return (
 		<View style={styles.rowBackStyle}>
 			{/* deleteボタン */}

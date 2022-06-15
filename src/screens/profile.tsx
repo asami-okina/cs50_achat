@@ -17,24 +17,26 @@ import { sameStyles } from '../constants/styles/sameStyles'
 
 type MainProps = StackScreenProps<RootStackParamListType, 'Profile'>;
 
-export function Profile({ navigation }: MainProps) {
+export function Profile({
+	navigation
+}: MainProps) {
 	// ユーザーID(今後は認証から取得するようにする)
-	const [userId, setUserId] = useState(null)
+	const [userId, setUserId] = useState<string>(null)
 
 	// ニックネーム
-	const [nickName, setNickName] = useState("")
+	const [nickName, setNickName] = useState<string>("")
 
 	// プロフィール画像
-	const [profileImage, setProfileImage] = useState(null)
+	const [profileImage, setProfileImage] = useState<string>(null)
 
 	// 検索可能トグル
-	const [isEnabled, setIsEnabled] = useState(false);
+	const [isEnabled, setIsEnabled] = useState<boolean>(false);
 
 	// 現在画面がフォーカスされているかをbooleanで保持
 	const isFocused = useIsFocused()
 
 	// [自分の情報]ユーザーIDに紐づくニックネーム、プロフィール画像の取得
-	async function _fetchProfileByUserId(userId) {
+	async function _fetchProfileByUserId(userId: string) {
 		try {
 			// APIリクエスト
 			const response = await fetch(API_SERVER_URL + `/api/users/${userId}/profile`, {

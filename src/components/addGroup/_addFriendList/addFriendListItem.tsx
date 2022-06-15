@@ -9,20 +9,25 @@ import { ADD_FRIEND_WIDTH } from '../../../constants/layout'
 // constantsSelectedFriendStyles
 import { selectedFriendStyles } from '../../../constants/styles/selectedFriendStyles'
 
+type AddFriendListItemType = {
+	list: NewFriendListPropsType;
+	deleteFriendList: (rowKey: any, type: any) => void;
+}
+
 export function AddFriendListItem({
 	list,
 	deleteFriendList,
-}) {
+}: AddFriendListItemType) {
 	return (
 		<View style={styles.containerStyle} key={list.key} >
 			<Pressable onPress={() => {
 				deleteFriendList(list.key, list.type)
 			}}>
 				<View style={selectedFriendStyles.closeImageContainerStyle}>
-				<Image source={require('../../../../assets/images/close-icon.png')} style={selectedFriendStyles.closeImageStyle} />
+					<Image source={require('../../../../assets/images/close-icon.png')} style={selectedFriendStyles.closeImageStyle} />
 				</View>
-				<Image source={{uri: list.friend_profile_image}} style={selectedFriendStyles.profileImageStyle} />
-			<Text style={selectedFriendStyles.listItemNameStyle} numberOfLines={1} ellipsizeMode="tail">{list.friend_nickname}</Text>
+				<Image source={{ uri: list.friend_profile_image }} style={selectedFriendStyles.profileImageStyle} />
+				<Text style={selectedFriendStyles.listItemNameStyle} numberOfLines={1} ellipsizeMode="tail">{list.friend_nickname}</Text>
 			</Pressable>
 		</View>
 	);

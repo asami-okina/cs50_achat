@@ -8,12 +8,20 @@ import { storage } from '../../../storage';
 // layouts
 import { MAIN_NAVY_COLOR, PROFILE_IMAGE_BORDER_RADIUS } from '../../constants/layout'
 
-export function ProfileImage({ image, setImage }) {
+type ProfileImageType = {
+	image: string;
+	setImage: React.Dispatch<React.SetStateAction<string>>;
+}
+
+export function ProfileImage({
+	image,
+	setImage
+}: ProfileImageType) {
 	// ユーザーID(今後は認証から取得するようにする)
-	const [userId, setUserId] = useState(null)
+	const [userId, setUserId] = useState<string>(null)
 
 	// プロフィール画像の更新
-	async function _updateProfileImage(newImageUri) {
+	async function _updateProfileImage(newImageUri: string) {
 		try {
 			// APIリクエスト
 			const bodyData = {

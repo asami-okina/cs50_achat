@@ -16,17 +16,20 @@ type ExistFriendType = {
 	friendInfo: FriendInfoType;
 	alreadyFriend: boolean;
 }
-export function ExistFriend({ navigation, friendInfo, alreadyFriend }) {
+export function ExistFriend({
+	navigation,
+	friendInfo,
+	alreadyFriend
+}: ExistFriendType) {
 
 	return (
 		<View style={styles.searchInfoWrapperStyle}>
 			<View style={styles.searchInfoContainerStyle}>
 				{friendInfo.friend_profile_image ? (
-					<Image source={{uri: friendInfo.friend_profile_image}} style={styles.profileImageStyle} />
-				):
-				<View style={styles.circleStyle}></View>
+					<Image source={{ uri: friendInfo.friend_profile_image }} style={styles.profileImageStyle} />
+				) :
+					<View style={styles.circleStyle}></View>
 				}
-				{/* <Image source={{uri: friendInfo.friend_profile_image}} style={styles.profileImageStyle} /> */}
 				<Text style={selectedFriendStyles.bigProfilelistItemNameStyle}>{friendInfo.friend_nickname}</Text>
 			</View>
 			<SmallButton text={"Add"} navigation={navigation} friendList={friendInfo} groupSetting={null} type={"addFriend"} friendListNames={null} alreadyFriend={alreadyFriend} addGroupMemberGroupChatRoomId={null} addGroupMemberGroupImage={null} addGroupMemberGroupName={null} backGroupName={null} backGroupImage={null} />

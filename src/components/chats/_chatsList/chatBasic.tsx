@@ -12,12 +12,48 @@ import { HiddenListItem } from "./_chatBasic/hiddenListItem"
 // layouts
 import { MAIN_WHITE_COLOR } from '../../../constants/layout'
 
-export default function ChatBasic({ navigation, chatRoomList, setDeleteModalVisible, clickedDeleteCancelMordal, setClickedDeleteCancelMordal, clickedDeleteOkMordal, setClickedDeleteOkMordal, setHiddenModalVisible, clickedHiddenCancelMordal, setClickedHiddenCancelMordal, clickedHiddenOkMordal, setClickedHiddenOkMordal, setGroupChatRoomId, setDirectChatRoomId, groupChatRoomId, directChatRoomId }) {
+type ChatBasicType = {
+	navigation: any; // ★修正予定
+	chatRoomList: FriendListPropsType[] | GroupListPropsType[];
+	setDeleteModalVisible: React.Dispatch<React.SetStateAction<boolean>>;
+	clickedDeleteCancelMordal: boolean;
+	setClickedDeleteCancelMordal: React.Dispatch<React.SetStateAction<boolean>>;
+	clickedDeleteOkMordal: boolean;
+	setClickedDeleteOkMordal: React.Dispatch<React.SetStateAction<boolean>>;
+	setHiddenModalVisible: React.Dispatch<React.SetStateAction<boolean>>;
+	clickedHiddenCancelMordal: boolean;
+	setClickedHiddenCancelMordal: React.Dispatch<React.SetStateAction<boolean>>;
+	clickedHiddenOkMordal: boolean;
+	setClickedHiddenOkMordal: React.Dispatch<React.SetStateAction<boolean>>;
+	setGroupChatRoomId: React.Dispatch<React.SetStateAction<string>>;
+	setDirectChatRoomId: React.Dispatch<React.SetStateAction<string>>;
+	groupChatRoomId: string;
+	directChatRoomId: string;
+}
+
+export default function ChatBasic({
+	navigation,
+	chatRoomList,
+	setDeleteModalVisible,
+	clickedDeleteCancelMordal,
+	setClickedDeleteCancelMordal,
+	clickedDeleteOkMordal,
+	setClickedDeleteOkMordal,
+	setHiddenModalVisible,
+	clickedHiddenCancelMordal,
+	setClickedHiddenCancelMordal,
+	clickedHiddenOkMordal,
+	setClickedHiddenOkMordal,
+	setGroupChatRoomId,
+	setDirectChatRoomId,
+	groupChatRoomId,
+	directChatRoomId
+}: ChatBasicType) {
 	// ユーザーID(今後は認証から取得するようにする)
 	const [userId, setUserId] = useState<string>(null)
 
 	// 削除時の確認モーダルでCancleの時は該当リストをデフォルト状態に戻す、Okの場合は該当リストを削除する甩に使用
-	const [rowMap, setRowMap] = useState('')
+	const [rowMap, setRowMap] = useState<string>('')
 	const [key, setkey] = useState<string>('')
 
 	// HiddenかDeleteどちらをクリックされたか

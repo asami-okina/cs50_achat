@@ -11,9 +11,27 @@ import { PROFILE_IMAGE_SIZE, ADD_FRIEND_WIDTH } from '../../constants/layout'
 // constantsSelectedFriendStyles
 import { selectedFriendStyles } from '../../constants/styles/selectedFriendStyles'
 
-export function SelectedFriendSpace({ navigation, friendList, setFriendList, ownNickName, ownProfileImage,groupName, groupImage }) {
+type SelectedFriendSpaceType = {
+	navigation: any; // ★修正予定
+	friendList: NewFriendListPropsType[];
+	setFriendList: React.Dispatch<React.SetStateAction<NewFriendListPropsType[]>>;
+	ownNickName: string;
+	ownProfileImage: string;
+	groupName: string;
+	groupImage: string;
+}
+
+export function SelectedFriendSpace({
+	navigation,
+	friendList,
+	setFriendList,
+	ownNickName,
+	ownProfileImage,
+	groupName,
+	groupImage
+}: SelectedFriendSpaceType) {
 	// 選択された友達リストの削除
-	const _deleteFriendList = (rowKey) => {
+	const _deleteFriendList = (rowKey: string) => {
 		// 選択されたリストから該当リストを削除
 		// Reactの差異を比較するのは、オブジェクト同士。そのため、新しくオブジェクトを作成する必要がある
 		const newData = [...friendList];
@@ -24,13 +42,13 @@ export function SelectedFriendSpace({ navigation, friendList, setFriendList, own
 	}
 
 	// refの生成
-	const scrollViewRef = useRef<any>();
+	const scrollViewRef = useRef<any>(); // ★型後ほど修正
 
 	return (
 		<View style={selectedFriendStyles.wrapperStyle}>
 			<View style={selectedFriendStyles.containerStyle} >
 				{/* 追加ボタン */}
-				<Pressable style={styles.ownWrapperStyle} onPress={() => navigation.navigate('AddGroup',{"groupName": groupName, "groupImage": groupImage, "backFriendList": friendList})}>
+				<Pressable style={styles.ownWrapperStyle} onPress={() => navigation.navigate('AddGroup', { "groupName": groupName, "groupImage": groupImage, "backFriendList": friendList })}>
 					<View style={selectedFriendStyles.closeImageStyle}></View>
 					<Image source={require("../../../assets/images/add-circle.png")} style={selectedFriendStyles.profileImageStyle} />
 					<Text style={selectedFriendStyles.listItemNameStyle} numberOfLines={1} ellipsizeMode="tail"></Text>

@@ -10,10 +10,26 @@ import { Button } from "../../../common/button"
 // layouts
 import { STANDARD_FONT, MAIN_PINK_COLOR } from '../../../../constants/layout'
 
-export function ButtonContainer({ navigation, nickName, setNickName, wordCount, isValidInput, defaultInput }) {
+type ButtonContainerType = {
+	navigation: any; // ★修正予定
+	nickName: string;
+	setNickName: React.Dispatch<React.SetStateAction<string>>;
+	wordCount: number;
+	isValidInput: boolean;
+	defaultInput: boolean;
+}
+
+export function ButtonContainer({
+	navigation,
+	nickName,
+	setNickName,
+	wordCount,
+	isValidInput,
+	defaultInput
+}: ButtonContainerType) {
 
 	// ユーザーID(今後は認証から取得するようにする)
-	const [userId, setUserId] = useState(null)
+	const [userId, setUserId] = useState<string>(null)
 
 	// ニックネームの更新
 	async function _updateNickName() {

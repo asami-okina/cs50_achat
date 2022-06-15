@@ -8,9 +8,28 @@ import { searchStyles } from '../../../../constants/styles/searchStyles'
 // layouts
 import { CONTENT_WIDTH, STANDARD_FONT, MAIN_PINK_COLOR, MAIN_YELLOW_GREEN, IN_SEARCH_FORM_SIDE_MARGIN, ICON_SIZE } from '../../../../constants/layout'
 
-export function TextInputForm({ defaultInput, setDefaultInput, isValidInput, setIsValidInput, wordCount, setWordCount, nickName, setNickName }) {
+type TextInputFormType = {
+	defaultInput: boolean;
+	setDefaultInput: React.Dispatch<React.SetStateAction<boolean>>;
+	isValidInput: boolean;
+	setIsValidInput: React.Dispatch<React.SetStateAction<boolean>>;
+	wordCount: number;
+	setWordCount: React.Dispatch<React.SetStateAction<number>>;
+	nickName: string;
+	setNickName: React.Dispatch<React.SetStateAction<string>>;
+}
+export function TextInputForm({
+	defaultInput,
+	setDefaultInput,
+	isValidInput,
+	setIsValidInput,
+	wordCount,
+	setWordCount,
+	nickName,
+	setNickName
+}: TextInputFormType) {
 	// 検索フォームの削除アイコン表示/非表示
-	const [deleteIconDisplay, setDeleteIconDisplay] = useState(false)
+	const [deleteIconDisplay, setDeleteIconDisplay] = useState<boolean>(false)
 
 	const onChangeText = (text: string) => {
 		setNickName(text)

@@ -13,17 +13,23 @@ import { ButtonContainer } from "../_profileInfo/_editNickName/buttonContainer";
 // sameStyles
 import { sameStyles } from '../../../constants/styles/sameStyles'
 
-export function EditNickName({ navigation }) {
-	const [nickName, setNickName] = useState('')
+type EditNickNameType = {
+	navigation: any; // ★修正予定
+}
+
+export function EditNickName({
+	navigation
+}: EditNickNameType) {
+	const [nickName, setNickName] = useState<string>('')
 
 	// 入力文字数
 	const [wordCount, setWordCount] = useState<number>(0);
 
 	// 有効な入力かどうか
-	const [isValidInput, setIsValidInput] = useState(true)
+	const [isValidInput, setIsValidInput] = useState<boolean>(true)
 
 	// 未入力状態
-	const [defaultInput, setDefaultInput] = useState(true)
+	const [defaultInput, setDefaultInput] = useState<boolean>(true)
 
 	return (
 		<KeyboardAvoidingView behavior="padding" style={sameStyles.screenContainerStyle}>
