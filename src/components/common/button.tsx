@@ -51,7 +51,7 @@ export function Button({
 	const [userId, setUserId] = useState<string>(null)
 	// 友達追加したユーザーの情報
 	const [friendInfo, setFriendInfo] = useState<FriendInfoType>(null)
-	
+
 	// 友達追加(ループチャット画面で友達ではないユーザーアイコンをクリックした場合、友だち追加する)
 	async function _addFriend() {
 		try {
@@ -70,7 +70,7 @@ export function Button({
 			const parse_response = await response.json()
 			setFriendInfo(parse_response.friend_info)
 			// // 友達チャットに遷移
-			navigation.navigate('Chat', { "groupChatRoomId":  null, "directChatRoomId": parse_response.friend_info.direct_chat_room_id, "profileImage":  parse_response.friend_info.friend_profile_image, "name": parse_response.friend_info.friend_nickname })
+			navigation.navigate('Chat', { "groupChatRoomId": null, "directChatRoomId": parse_response.friend_info.direct_chat_room_id, "profileImage": parse_response.friend_info.friend_profile_image, "name": parse_response.friend_info.friend_nickname })
 		} catch (e) {
 			console.error(e)
 		}
@@ -105,14 +105,6 @@ export function Button({
 			console.error(e)
 		}
 	}
-
-
-	// 友達追加されたら、チャット画面に遷移
-	useEffect(() => {
-		if (friendInfo) {
-			navigation.navigate('Chat', { "groupChatRoomId": null, "directChatRoomId": friendInfo.direct_chat_room_id, "profileImage": friendInfo.friend_profile_image, "name": friendInfo.friend_nickname })
-		}
-	}, [friendInfo])
 
 	// ユーザーIDの取得
 	useEffect(() => {

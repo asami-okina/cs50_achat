@@ -15,9 +15,9 @@ import { MAIN_NAVY_COLOR, PROFILE_IMAGE_BORDER_RADIUS, TAB_TITLE_TEXT_SIZE, TAB_
 
 export function NotFriendModal({ route, navigation }) {
 	const { user, groupChatRoomId, groupImage, groupName, directChatRoomId } = route.params
-	const friendImage = user.avatar
-	const friendNickName = user.name
-	const friendUserId = user._id
+	const friendImage: string = user.avatar
+	const friendNickName: string = user.name
+	const friendUserId: string = user._id
 
 	return (
 		<KeyboardAvoidingView behavior="padding" style={sameStyles.screenContainerStyle}>
@@ -32,7 +32,7 @@ export function NotFriendModal({ route, navigation }) {
 				<View style={sameStyles.mainContainerStyle}>
 					<View style={styles.profileImageWrapperStyle} >
 						{friendImage ? (
-							<Image source={{uri: friendImage}} style={{ width: 80, height: 80, borderRadius: PROFILE_IMAGE_BORDER_RADIUS, }} />
+							<Image source={{ uri: friendImage }} style={{ width: 80, height: 80, borderRadius: PROFILE_IMAGE_BORDER_RADIUS, }} />
 						) :
 							<View style={styles.circleStyle}></View>
 						}

@@ -543,7 +543,7 @@ export function Chat({ navigation, route }: MainProps) {
 	const [selectedUserInfo, setSelectedUserInfo] = useState(null)
 
 	// 該当友達とのdirectChatRoomIdを取得
-	async function fetchDirectChatRoomIdByUserId(friendUserId) {
+	async function fetchDirectChatRoomIdByUserId(friendUserId: string) {
 		try {
 			// paramsを生成
 			const params = { "friend_user_id": friendUserId }
@@ -588,7 +588,7 @@ export function Chat({ navigation, route }: MainProps) {
 			// directChatRoomId/groupChatRoomIdに紐づくメンバーのユーザーIDを取得
 			_fetchUserIdsByDirectOrGroupChatRoomId()
 		}
-	}, [userId,directChatRoomId,groupChatRoomId])
+	}, [userId, directChatRoomId, groupChatRoomId])
 
 	useEffect(() => {
 		// グループトーク画面でユーザーアイコンをクリックしたかどうかをfalseに戻す
