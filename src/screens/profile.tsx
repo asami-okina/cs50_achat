@@ -35,7 +35,6 @@ export function Profile({
 	// 現在画面がフォーカスされているかをbooleanで保持
 	const isFocused = useIsFocused()
 
-	// [自分の情報]ユーザーIDに紐づくニックネーム、プロフィール画像の取得
 	async function _fetchProfileByUserId(userId: string) {
 		try {
 			// APIリクエスト
@@ -47,12 +46,19 @@ export function Profile({
 			})
 			// レスポンスをJSONにする
 			const parse_response = await response.json()
-			// // プロフィール画像の登録
-			setProfileImage(parse_response.profileImage)
-			// // ニックネームの登録
-			setNickName(parse_response.nickName)
-			// // 検索可能フラグの登録
-			setIsEnabled(parse_response.searchFlag)
+
+			// 自分のニックネームの設定
+			if (parse_response.profile.nickname) {
+				setNickName(parse_response.profile.nickname)
+			}
+			// 自分のプロフィール画像の設定
+			if (parse_response.profile.profile_image) {
+				setProfileImage(parse_response.profile.profile_image)
+			}
+			// 自分の検索可能フラグの設定
+			if (parse_response.profile.search_flag) {
+				setIsEnabled(parse_response.profile.search_flag)
+			}
 		} catch (e) {
 			console.error(e)
 		}
