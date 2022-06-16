@@ -59,7 +59,7 @@ export default function Basic({
 		type === "Group" ? groupList.map((_, i) => ({ ..._, key: `${i}` }))
 			: friendList.map((_, i) => ({ ..._, key: `${i}` }))
 	);
-	console.log('listData',listData)
+
 	// friendListの更新
 	useEffect(() => {
 		if (friendList) {
@@ -113,8 +113,7 @@ export default function Basic({
 			{type === "Group" && (
 				<TouchableHighlight
 					onPress={() => {
-						console.log('data',data)
-						navigation.navigate('Chat', { "groupChatRoomId": data.item.group_chat_room_id, "directChatRoomId": null, "profileImage": data.item.group_image, "name": data.item.group_name, "groupMemberUserId": data.item.group_member_user_id })
+						navigation.navigate('Chat', { "groupChatRoomId": data.item.group_chat_room_id, "directChatRoomId": null, "profileImage": data.item.group_image, "name": data.item.group_name, "groupMemberUserId": data.item.group_member_user_ids })
 					}}
 					style={styles.rowFrontStyle}
 					underlayColor={'#feffff'}

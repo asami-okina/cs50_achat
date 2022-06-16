@@ -61,7 +61,6 @@ export function AddGroupMember({ navigation, route }) {
 			})
 			// レスポンスをJSONにする
 			const parse_response = await response.json()
-			console.log('parse_response',parse_response)
 			// 友達一覧のstateを更新
 			setAfterFriendListSearch(parse_response.friend.map((_, i) => ({ ..._, key: `${i + "after"}`, type: "after" })))
 		} catch (e) {
@@ -171,7 +170,6 @@ export function AddGroupMember({ navigation, route }) {
 			_fetchFriendList(data.userId)
 		})
 	}, [])
-	console.log('groupMemberUserId',groupMemberUserId)
 
 	return (
 		<KeyboardAvoidingView behavior="padding" style={sameStyles.screenContainerStyle}>

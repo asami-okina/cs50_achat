@@ -116,7 +116,7 @@ export function SmallButton({
 			setAddGroupMemberName(newDataUserNames)
 			// APIリクエスト
 			const bodyData = {
-				"group_chat_room_id": addGroupMemberGroupChatRoomId,
+				"group_chat_room_id": Number(addGroupMemberGroupChatRoomId),
 				"add_user_ids": newDataUserIds
 			}
 			const response = await fetch(API_SERVER_URL + `/api/users/${userId}/group-member`, {
@@ -150,7 +150,7 @@ export function SmallButton({
 			setUserId(data.userId)
 		})
 	}, [])
-
+	
 	// friendListからuserIdだけ取り出し、自分のuserIdも追加
 	useEffect(() => {
 		if (friendList && type === "addGroupSetting" && userId) {
