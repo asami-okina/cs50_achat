@@ -1,10 +1,8 @@
 // libs
 import React from 'react';
 import { View, StyleSheet, Pressable, Image, Text } from 'react-native';
-
 // layouts
 import { CONTENT_WIDTH, PROFILE_IMAGE_SIZE, STANDARD_FONT, MAIN_WHITE_COLOR, PROFILE_IMAGE_BORDER_RADIUS, MAIN_NAVY_COLOR, MAIN_GRAY_COLOR } from '../../../../constants/layout'
-
 
 type ListItemType = {
 	navigation: any;
@@ -28,6 +26,8 @@ export function ListItem({
 	directChatRoomId,
 	groupMemberUserId
 }: ListItemType) {
+	let dateTime = new Date(lastMessageCreationDate * 1000);
+	let parseDateTime = dateTime.toLocaleString();
 	return (
 		<Pressable style={styles.listWrapperStyle} onPress={() => { navigation.navigate('Chat', { "groupChatRoomId": groupChatRoomId, "directChatRoomId": directChatRoomId, "profileImage": profileImage, "name": name }) }}>
 			<View style={styles.imageContainerStyle}>
@@ -40,7 +40,7 @@ export function ListItem({
 			<View style={styles.listSeparateWrapperStyle}>
 				<View style={[styles.listSeparateContainer, styles.listSeparateTopContainerStyle]}>
 					<Text style={[styles.textStyle, styles.nameStyle]}>{name}</Text>
-					<Text style={[styles.textStyle, styles.lastMessageCreationDateStyle]}>{lastMessageCreationDate}</Text>
+					<Text style={[styles.textStyle, styles.lastMessageCreationDateStyle]}>{parseDateTime}</Text>
 				</View>
 				<View style={styles.listSeparateContainer}>
 					<Text style={styles.textStyle}>{lastMessageContent}</Text>

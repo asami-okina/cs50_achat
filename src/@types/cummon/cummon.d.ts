@@ -60,3 +60,25 @@ type FriendInfoType = {
 	friend_profile_image: string;
 	friend_nickname: string;
 }
+
+type ChatRoomListType = {
+	key: string;
+	direct_chat_room_id: string;
+	friend_nickname: string;
+	friend_profile_image: string;
+	friend_user_id: string;
+	last_message_content: string;
+	last_message_created_at: number;
+	type: string;
+	unread_count: number;
+} | {
+	key: string;
+	group_chat_room_id: string;
+	group_image: string;
+	group_member_user_id: string[];
+	group_name: string;
+	last_message_content: string;
+	last_message_created_at: number;
+	type: string;
+	unread_count: number;
+}

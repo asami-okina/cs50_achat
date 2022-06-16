@@ -25,7 +25,6 @@ export function MainTitle({
 	groupChatRoomId,
 	groupMemberUserId
 }: MainTitlPropsType) {
-	console.log('props', props)
 	return (
 		<View style={styles.titleWrapperStyle}>
 			<Pressable onPress={() => { navigation.navigate(link) }} >

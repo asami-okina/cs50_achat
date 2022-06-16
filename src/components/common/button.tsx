@@ -93,7 +93,6 @@ export function Button({
 
 			// レスポンスをJSONにする
 			const parse_response = await response.json()
-			console.log('parse_response',parse_response)
 			const response_user_id = parse_response.user_id
 			// ローカルストレージにユーザーIDを保存
 			await storage.save({
@@ -150,8 +149,6 @@ export function Button({
 								_addFriend()
 							}
 							if (enable && link && scene !== "ProfileSettingNickName") {
-								console.log('scene', scene)
-								console.log('link', link)
 								// welcomeページからsignupページに遷移
 								if (scene == "Welcome" && link == "SignUp") {
 									navigation.navigate(link)

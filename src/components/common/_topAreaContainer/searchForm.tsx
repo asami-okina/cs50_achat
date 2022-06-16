@@ -72,7 +72,6 @@ export function SearchForm({
 					<Pressable onPress={() => {
 						textInputSearch.clear();
 						// グループ数の再取得
-						console.log('fetchGroupCount',fetchGroupCount)
 						if (fetchGroupCount) {
 							fetchGroupCount(userId)
 						}

@@ -14,7 +14,7 @@ import { MAIN_WHITE_COLOR } from '../../../constants/layout'
 
 type ChatBasicType = {
 	navigation: any; // ★修正予定
-	chatRoomList: FriendListPropsType[] | GroupListPropsType[];
+	chatRoomList: ChatRoomListType[];
 	setDeleteModalVisible: React.Dispatch<React.SetStateAction<boolean>>;
 	clickedDeleteCancelMordal: boolean;
 	setClickedDeleteCancelMordal: React.Dispatch<React.SetStateAction<boolean>>;
@@ -59,29 +59,6 @@ export default function ChatBasic({
 	// HiddenかDeleteどちらをクリックされたか
 	const [clickedType, setClickedType] = useState<string>('')
 
-	type ChatRoomListType = {
-		key: string;
-		direct_chat_room_id: number;
-		friend_nickname: string;
-		friend_profile_image: string;
-		friend_user_id: string;
-		last_message_content: string;
-		last_message_created_at: number;
-		type: string;
-		unread_count: number;
-	} |
-	{
-		key: string;
-		group_chat_room_id: number;
-		group_image: string;
-		group_member_user_id: string[];
-		group_name: string;
-		last_message_content: string;
-		last_message_created_at: number;
-		type: string;
-		unread_count: number;
-	}
-
 	// 一覧のリストを作成
 	const [listData, setListData] = useState<ChatRoomListType[]>(
 		chatRoomList.map((_, i) => ({ ..._, key: `${i}` }))
@@ -117,12 +94,12 @@ export default function ChatBasic({
 	const renderItem = data => (
 		<>
 			{/* 友達の場合 */}
-			{data.item.friends_user_id && (
-				<ListItem navigation={navigation} profileImage={data.item.friends_profile_image} name={data.item.friends_nick_name} lastMessageCreationDate={data.item.friends_last_message_creation_date} lastMessageContent={data.item.friends_last_message_content} unreadCount={data.item.unread_count} groupChatRoomId={null} directChatRoomId={data.item.direct_chat_room_id} groupMemberUserId={null} />
+			{data.item.friend_user_id && (
+				<ListItem navigation={navigation} profileImage={data.item.friend_profile_image} name={data.item.friend_nickname} lastMessageCreationDate={data.item.last_message_created_at} lastMessageContent={data.item.last_message_content} unreadCount={data.item.unread_count} groupChatRoomId={null} directChatRoomId={data.item.direct_chat_room_id} groupMemberUserId={null} />
 			)}
 			{/* グループの場合 */}
 			{data.item.group_chat_room_id && (
-				<ListItem navigation={navigation} profileImage={data.item.group_image} name={data.item.group_name} lastMessageCreationDate={data.item.group_last_message_creation_date} lastMessageContent={data.item.group_last_message_content} unreadCount={data.item.unread_count} groupChatRoomId={data.item.group_chat_room_id} directChatRoomId={null} groupMemberUserId={data.item.group_member_user_id} />
+				<ListItem navigation={navigation} profileImage={data.item.group_image} name={data.item.group_name} lastMessageCreationDate={data.item.last_message_created_at} lastMessageContent={data.item.last_message_content} unreadCount={data.item.unread_count} groupChatRoomId={data.item.group_chat_room_id} directChatRoomId={null} groupMemberUserId={data.item.group_member_user_id} />
 			)}
 		</>
 	);

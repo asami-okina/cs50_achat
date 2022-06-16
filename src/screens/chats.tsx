@@ -45,9 +45,9 @@ export function Chats({ navigation }:MainProps) {
 	const [clickedHiddenOkMordal, setClickedHiddenOkMordal] = useState<boolean>(false)
 
 	// [検索前]APIから取得したグループ一覧リスト
-	const [beforeChatRoomListSearch, setBeforeChatRoomListSearch] = useState<FriendListPropsType[] | GroupListPropsType[]>([])
+	const [beforeChatRoomListSearch, setBeforeChatRoomListSearch] = useState<ChatRoomListType[]>([])
 	// [検索後]APIから取得したグループ一覧リスト
-	const [afterChatRoomListSearch, setAfterChatRoomListSearch] = useState<FriendListPropsType[]| GroupListPropsType[]>([])
+	const [afterChatRoomListSearch, setAfterChatRoomListSearch] = useState<ChatRoomListType[]>([])
 
 	// チャットルームIDに紐づくチャット履歴のparams甩
 	const [groupChatRoomId, setGroupChatRoomId] = useState<string>('')
