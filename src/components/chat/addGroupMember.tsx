@@ -171,6 +171,7 @@ export function AddGroupMember({ navigation, route }) {
 			_fetchFriendList(data.userId)
 		})
 	}, [])
+	console.log('groupMemberUserId',groupMemberUserId)
 
 	return (
 		<KeyboardAvoidingView behavior="padding" style={sameStyles.screenContainerStyle}>

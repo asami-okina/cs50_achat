@@ -8,13 +8,21 @@ import { MAIN_WHITE_COLOR } from '../../constants/layout'
 // components
 import { FriendListItem } from '../addGroup/_friendList/friendListItem'
 
+type FriendListType = {
+	listData: NewFriendListPropsType[];
+	addFriendList: (rowKey: any, type: any) => void;
+	deleteFriendList: (rowKey: any, type: any) => void;
+	selectedFriendList: NewFriendListPropsType[];
+	groupMemberUserId: string[];
+}
+
 export function FriendList({
 	listData,
 	addFriendList,
 	deleteFriendList,
 	selectedFriendList,
 	groupMemberUserId,
-}) {
+}: FriendListType) {
 	return (
 		<ScrollView>
 			<View style={styles.wrapperStyle}>

@@ -6,6 +6,13 @@ import { View, StyleSheet, TouchableHighlight, Image, Text } from 'react-native'
 // layouts
 import { CONTENT_WIDTH, MAIN_WHITE_COLOR, PROFILE_IMAGE_SIZE, STANDARD_FONT, ICON_SIZE, PROFILE_IMAGE_BORDER_RADIUS, MAIN_GRAY_COLOR, MAIN_NAVY_COLOR } from '../../../constants/layout'
 
+type FriendListItem = {
+	list: NewFriendListPropsType;
+	addFriendList: (rowKey: any, type: any) => void;
+	deleteFriendList: (rowKey: any, type: any) => void;
+	selectedFriendList: NewFriendListPropsType[];
+	groupMemberUserId: string[];
+}
 
 export function FriendListItem({
 	list,
@@ -13,7 +20,7 @@ export function FriendListItem({
 	deleteFriendList,
 	selectedFriendList,
 	groupMemberUserId,
-}) {
+}:FriendListItem) {
 	let clicked = false
 	// 該当友達が選択されているかどうかの判定
 	if (selectedFriendList !== null) {
