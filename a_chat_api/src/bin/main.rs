@@ -2204,7 +2204,6 @@ async fn handler_update_chat_room_hidden_or_delete(
 
 // SQL実行部分
 async fn update_chat_room_hidden_or_delete(pool: &MySqlPool, user_id: &str, direct_chat_room_id:Option<&u64>, group_chat_room_id:Option<&u64>, update_type:&String) -> anyhow::Result<()> {
-    
     // message_hidden_flagの更新
     if update_type == "Hidden" {
         // direct_chat_room_idが存在する場合

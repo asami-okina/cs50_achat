@@ -114,8 +114,8 @@ export default function ChatBasic({
 		try {
 			// APIリクエスト
 			const bodyData = {
-				"direct_chat_room_id": directChatRoomId,
-				"group_chat_room_id": groupChatRoomId,
+				"direct_chat_room_id": directChatRoomId ? Number(directChatRoomId): null,
+				"group_chat_room_id": groupChatRoomId ? Number(groupChatRoomId): null,
 				"update_type": clickedType
 			}
 			const response = await fetch(API_SERVER_URL + `/api/users/${userId}/chat-room`, {
