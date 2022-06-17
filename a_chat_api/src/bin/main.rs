@@ -28,7 +28,7 @@ async fn main(){
         .route("/api/signup", post(component::sign_up::handler_sign_up))
         .route("/api/signup/is_available_mail_validation", get(component::is_available_mail_validation::handler_is_available_mail_validation))
         .route("/api/signup/is_available_user_id_validation/:user_id", get(component::is_available_user_id_validation::handler_is_available_user_id_validation))
-        .route("/api/login", post(handler_log_in))
+        .route("/api/login", post(component::log_in::handler_log_in))
         .route("/api/users/:user_id/home", get(handler_search_name))
         .route("/api/users/:user_id/groups", get(handler_fetch_group_list))
         .route("/api/users/:user_id/groups/leave", post(handler_leave_group))
@@ -55,67 +55,6 @@ async fn main(){
         .await
         .unwrap();
  
-}
-
-/*
-  ログイン
-*/
-#[derive(Debug, Deserialize, Serialize)]
-struct LoginResult {
-    user_id: Option<String>,
-    certification_result: bool
-}
-
-// handler
-async fn handler_log_in(body_json: Json<Value>) -> Json<Value> {
-    // mailの取得
-    let mail = body_json.0.get("mail")
-    .unwrap()
-    .as_str()
-    .unwrap();
-
-    // passwordの取得
-    let password = body_json.0.get("password")
-    .unwrap()
-    .as_str()
-    .unwrap();
-
-    let pool = MySqlPool::connect(&env::var("DATABASE_URL").unwrap()).await.unwrap();
-    let result = log_in(&pool, &mail, &password).await.unwrap();
-    Json(json!({ "user_id": result.user_id, "certification_result": result.certification_result }))
-}
-
-// SQL実行部分
-async fn log_in(pool: &MySqlPool, mail: &str, password: &str ) -> anyhow::Result<LoginResult> {
-    let user = sqlx::query!(
-        r#"
-            SELECT *
-            FROM user
-            WHERE mail = ? AND password = ?
-        "#,
-        mail,
-        password
-    )
-    .fetch_all(pool)
-    .await
-    .unwrap();
-
-    let result;
-
-    if user.len() == 0 {
-        // まだ会員登録されていない
-        result = LoginResult {
-            user_id : None ,
-            certification_result: false
-        }
-    } else {
-        // 既に会員登録されている
-        result = LoginResult {
-            user_id : Some(user[0].id.to_string()) ,
-            certification_result: true
-        }
-    }
-    Ok(result)
 }
 
 /*
