@@ -33,7 +33,7 @@ async fn main(){
         .route("/api/users/:user_id/groups", get(component::fetch_group_list::handler_fetch_group_list))
         .route("/api/users/:user_id/groups/leave", post(component::leave_group::handler_leave_group))
         .route("/api/users/:user_id/groups/add", post(component::add_group::handler_add_group))
-        .route("/api/users/:user_id/group-count", get(handler_fetch_group_count))
+        .route("/api/users/:user_id/group-count", get(component::fetch_group_count::handler_fetch_group_count))
         .route("/api/users/:user_id/friend-count", get(handler_fetch_friend_count))
         .route("/api/users/:user_id/friends", get(handler_fetch_friend_list))
         .route("/api/users/:user_id/friends", post(handler_add_friend))
@@ -55,47 +55,6 @@ async fn main(){
         .await
         .unwrap();
  
-}
-
-/*
-  ユーザーの所属するグループ数取得
-*/
-// handler
-#[derive(Debug, Deserialize, Serialize)]
-struct FetchGroupCountPath {
-    user_id: String,
-}
-async fn handler_fetch_group_count(Path(path): Path<FetchGroupCountPath>) -> Json<Value> {
-    let user_id = path.user_id;
-
-    let pool = MySqlPool::connect(&env::var("DATABASE_URL").unwrap()).await.unwrap();
-    let group_count = fetch_group_count(&pool, &user_id).await.unwrap();
-    Json(json!({ "group_count": group_count }))
-}
-
-// SQL実行部分
-async fn fetch_group_count(pool: &MySqlPool, user_id:&str) -> anyhow::Result<i64>{
-    let group_count = sqlx::query!(
-        r#"
-            SELECT
-                COUNT(*) as group_count
-            FROM
-                group_member as gm
-                INNER JOIN
-                    group_chat_room as g
-                ON  gm.group_chat_room_id = g.id
-            WHERE
-                gm.user_id = ?
-            AND gm.leave_flag = FALSE
-            AND g.delete_flag = FALSE
-            "#,
-        user_id
-    )
-    .fetch_all(pool)
-    .await
-    .unwrap();
-
-    Ok(group_count[0].group_count)
 }
 
 /*
