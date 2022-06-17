@@ -11,3 +11,4 @@ pub mod add_group;
 pub mod fetch_group_count;
 pub mod fetch_friend_count;
 pub mod fetch_friend_list;
+pub mod add_friend;
