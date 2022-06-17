@@ -44,7 +44,7 @@ async fn main(){
         .route("/api/users/:user_id/chat-room", post(component::chat_room_hidden_or_delete::handler_update_chat_room_hidden_or_delete))
         .route("/api/users/:user_id/message", get(component::fetch_message_by_chat_room_id::handler_fetch_message_by_chat_room_id))
         .route("/api/users/:user_id/message", post(component::post_message::handler_post_message))
-        .route("/api/users/:user_id/last-read-time", post(handler_update_last_read_time))
+        .route("/api/users/:user_id/last-read-time", post(component::update_last_read_time::handler_update_last_read_time))
         .route("/api/users/:user_id/group-member", post(handler_add_group_member))
         .route("/api/users/:user_id/friend", get(handler_fetch_is_already_friend))
         .route("/api/users/:user_id/chat", get(handler_fetch_user_ids_by_direct_or_group_chat_room_id));
@@ -55,91 +55,6 @@ async fn main(){
         .await
         .unwrap();
  
-}
-
-/*
-  最終既読日時の更新
-*/
-// handler
-#[derive(Debug, Deserialize, Serialize)]
-struct UpdateLastReadTimePath {
-    user_id: String
-}
-#[derive(Debug, Deserialize, Serialize)]
-struct UpdateLastReadTimeJson {
-    chat_room_type: UpdateLastReadTimeEnum,
-    chat_room_id: u64,
-}
-
-#[derive(Debug, Deserialize, Serialize,PartialEq)]
-enum UpdateLastReadTimeEnum {
-    DirectChatRoomId,
-    GroupChatRoomId,
-    None
-}
-
-async fn handler_update_last_read_time(
-    Path(path): Path<UpdateLastReadTimePath>,
-    body_json: Json<UpdateLastReadTimeJson>
-) -> Json<Value> {
-    // user_idの取得
-    let user_id = path.user_id;
-
-    // chat_room_typeの取得
-    let chat_room_type = &body_json.chat_room_type;
-
-    // chat_room_idの取得
-    let chat_room_id = &body_json.chat_room_id;
-
-    let pool = MySqlPool::connect(&env::var("DATABASE_URL").unwrap()).await.unwrap();
-    update_last_read_time(&pool, &user_id, chat_room_type, &chat_room_id).await.unwrap();
-    Json(json!({ "status_code": 200 }))
-}
-
-// SQL実行部分
-async fn update_last_read_time(pool: &MySqlPool, user_id: &String,chat_room_type: &UpdateLastReadTimeEnum, chat_room_id: &u64) -> anyhow::Result<()> {
-    let now = SystemTime::now().duration_since(SystemTime::UNIX_EPOCH).unwrap().as_secs();
-    if chat_room_type == &UpdateLastReadTimeEnum::DirectChatRoomId {
-        sqlx::query!(
-            r#"
-                UPDATE
-                    direct_member
-                SET
-                    last_read_time = ?
-                WHERE
-                    direct_chat_room_id = ?
-                AND user_id = ?
-            "#,
-            now,
-            chat_room_id,
-            user_id
-        )
-        .execute(pool)
-        .await?
-        .rows_affected();
-    }
-
-    if chat_room_type == &UpdateLastReadTimeEnum::GroupChatRoomId {
-        sqlx::query!(
-            r#"
-                UPDATE
-                    group_member
-                SET
-                    last_read_time = ?
-                WHERE
-                    group_chat_room_id = ?
-                AND user_id = ?
-            "#,
-            now,
-            chat_room_id,
-            user_id
-        )
-        .execute(pool)
-        .await?
-        .rows_affected();
-    }
-
-    Ok(())
 }
 
 /*
