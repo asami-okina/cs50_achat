@@ -3,7 +3,6 @@ use axum::{
     routing::post,
     Router,
 };
-mod component;
 mod fetch_component;
 mod post_component;
 use dotenv::dotenv;
