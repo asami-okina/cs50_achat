@@ -27,7 +27,7 @@ async fn main(){
         .route("/api/fetch-all-users", get(component::fetch_all_users::handler_fetch_all_users))
         .route("/api/signup", post(component::sign_up::handler_sign_up))
         .route("/api/signup/is_available_mail_validation", get(component::is_available_mail_validation::handler_is_available_mail_validation))
-        .route("/api/signup/is_available_user_id_validation/:user_id", get(handler_is_available_user_id_validation))
+        .route("/api/signup/is_available_user_id_validation/:user_id", get(component::is_available_user_id_validation::handler_is_available_user_id_validation))
         .route("/api/login", post(handler_log_in))
         .route("/api/users/:user_id/home", get(handler_search_name))
         .route("/api/users/:user_id/groups", get(handler_fetch_group_list))
@@ -55,48 +55,6 @@ async fn main(){
         .await
         .unwrap();
  
-}
-
-/*
-  登録するユーザーIDが使用可能かどうかチェック
-*/
-// handler
-#[derive(Debug, Deserialize, Serialize)]
-struct IsAvailableUserIdValidationPath {
-    user_id: String,
-}
-async fn handler_is_available_user_id_validation(Path(path): Path<IsAvailableUserIdValidationPath>) -> Json<Value> {
-    let user_id = path.user_id;
-
-    let pool = MySqlPool::connect(&env::var("DATABASE_URL").unwrap()).await.unwrap();
-    let is_available_user_id_validation = is_available_user_id_validation(&pool, &user_id).await.unwrap();
-    Json(json!({ "is_available_user_id_validation": is_available_user_id_validation }))
-}
-
-// SQL実行部分
-async fn is_available_user_id_validation(pool: &MySqlPool, user_id:&str) -> anyhow::Result<bool>{
-    let user = sqlx::query!(
-        r#"
-            SELECT *
-            FROM user
-            WHERE id = ?
-        "#,
-        user_id
-    )
-    .fetch_all(pool)
-    .await
-    .unwrap();
-
-    let result;
-
-    if user.len() == 0 {
-        // まだ該当user_idは使用されていない
-        result = true
-    } else {
-        // 既に該当user_idは使用されている
-        result = false
-    }
-    Ok(result)
 }
 
 /*
