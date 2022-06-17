@@ -43,7 +43,7 @@ async fn main(){
         .route("/api/users/:user_id/chat-room", get(component::fetch_chat_room_list::handler_fetch_chat_room_list))
         .route("/api/users/:user_id/chat-room", post(component::chat_room_hidden_or_delete::handler_update_chat_room_hidden_or_delete))
         .route("/api/users/:user_id/message", get(component::fetch_message_by_chat_room_id::handler_fetch_message_by_chat_room_id))
-        .route("/api/users/:user_id/message", post(handler_post_message))
+        .route("/api/users/:user_id/message", post(component::post_message::handler_post_message))
         .route("/api/users/:user_id/last-read-time", post(handler_update_last_read_time))
         .route("/api/users/:user_id/group-member", post(handler_add_group_member))
         .route("/api/users/:user_id/friend", get(handler_fetch_is_already_friend))
@@ -55,108 +55,6 @@ async fn main(){
         .await
         .unwrap();
  
-}
-
-/*
-  チャット送信
-*/
-// handler
-#[derive(Debug, Deserialize, Serialize)]
-struct PostMessagePath {
-    user_id: String
-}
-#[derive(Debug, Deserialize, Serialize)]
-struct PostMessageJson {
-    chat_room_type: PostMessageChatRoomIdTypeEnum,
-    chat_room_id: u64,
-    content: String,
-    content_type: PostMessageContentTypeEnum,
-    sender_user_id: String,
-}
-
-#[derive(Debug, Deserialize, Serialize,PartialEq)]
-enum PostMessageChatRoomIdTypeEnum {
-    DirectChatRoomId,
-    GroupChatRoomId,
-    None
-}
-
-#[derive(Debug, Deserialize, Serialize,PartialEq)]
-enum PostMessageContentTypeEnum {
-    Text,
-    Image
-}
-
-async fn handler_post_message(
-    Path(path): Path<PostMessagePath>,
-    body_json: Json<PostMessageJson>
-) -> Json<Value> {
-    // user_idの取得
-    let _user_id = path.user_id;
-
-    // chat_room_typeの取得
-    let chat_room_type = &body_json.chat_room_type;
-
-    // chat_room_idの取得
-    let chat_room_id = &body_json.chat_room_id;
-
-    // contentの取得
-    let content = &body_json.content;
-    
-
-    // content_typeの取得
-    let content_type = &body_json.content_type;
-    
-
-    // sender_user_idの取得
-    let sender_user_id = &body_json.sender_user_id;
-
-    let pool = MySqlPool::connect(&env::var("DATABASE_URL").unwrap()).await.unwrap();
-    post_message(&pool, chat_room_type, &chat_room_id, &content, content_type, &sender_user_id).await.unwrap();
-    Json(json!({ "status_code": 200 }))
-}
-
-// SQL実行部分
-async fn post_message(pool: &MySqlPool, chat_room_type: &PostMessageChatRoomIdTypeEnum, chat_room_id: &u64, content: &String, content_type: &PostMessageContentTypeEnum, sender_user_id: &String ) -> anyhow::Result<()> {
-    let now = SystemTime::now().duration_since(SystemTime::UNIX_EPOCH).unwrap().as_secs();
-    // content_typeが「Text」の場合は「1」、「Image」の場合は「２」
-    let content_type_id = if content_type == &PostMessageContentTypeEnum::Text {1} else {2};
-
-    if chat_room_type == &PostMessageChatRoomIdTypeEnum::DirectChatRoomId {
-        sqlx::query!(
-            r#"
-                INSERT INTO message ( content_type_id, sender_id, direct_chat_room_id, content, created_at )
-                VALUES ( ?, ? , ? , ? , ?)
-            "#,
-            content_type_id,
-            sender_user_id,
-            chat_room_id,
-            content,
-            now
-        )
-        .execute(pool)
-        .await
-        .unwrap();
-    }
-
-    if chat_room_type == &PostMessageChatRoomIdTypeEnum::GroupChatRoomId {
-        sqlx::query!(
-            r#"
-                INSERT INTO message ( content_type_id, sender_id, group_chat_room_id, content, created_at )
-                VALUES ( ?, ? , ? , ? , ?)
-            "#,
-            content_type_id,
-            sender_user_id,
-            chat_room_id,
-            content,
-            now
-        )
-        .execute(pool)
-        .await
-        .unwrap();
-    }
-
-    Ok(())
 }
 
 /*
