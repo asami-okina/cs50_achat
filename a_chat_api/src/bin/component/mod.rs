@@ -6,3 +6,4 @@ pub mod is_available_user_id_validation;
 pub mod log_in;
 pub mod search_name;
 pub mod fetch_group_list;
+pub mod leave_group;
