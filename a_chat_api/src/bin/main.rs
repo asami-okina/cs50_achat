@@ -30,7 +30,7 @@ async fn main(){
         .route("/api/signup/is_available_user_id_validation/:user_id", get(component::is_available_user_id_validation::handler_is_available_user_id_validation))
         .route("/api/login", post(component::log_in::handler_log_in))
         .route("/api/users/:user_id/home", get(component::search_name::handler_search_name))
-        .route("/api/users/:user_id/groups", get(handler_fetch_group_list))
+        .route("/api/users/:user_id/groups", get(component::fetch_group_list::handler_fetch_group_list))
         .route("/api/users/:user_id/groups/leave", post(handler_leave_group))
         .route("/api/users/:user_id/groups/add", post(handler_add_group))
         .route("/api/users/:user_id/group-count", get(handler_fetch_group_count))
@@ -55,93 +55,6 @@ async fn main(){
         .await
         .unwrap();
  
-}
-
-
-/*
-  ユーザが所属するグループ一覧
-*/
-// handler
-#[derive(Debug, Deserialize, Serialize)]
-struct FetchGroupListPath {
-    user_id: String,
-}
-async fn handler_fetch_group_list(Path(path): Path<FetchGroupListPath>) -> Json<Value> {
-    let user_id = path.user_id;
-
-    let pool = MySqlPool::connect(&env::var("DATABASE_URL").unwrap()).await.unwrap();
-    let group_list = fetch_group_list(&pool, &user_id).await.unwrap();
-    Json(json!({ "groups": group_list }))
-}
-
-#[derive(Debug, Deserialize, Serialize)]
-struct FetchGroupListResult {
-    group_chat_room_id: String,
-    group_name: String,
-    group_image: Option<String>,
-    group_member_user_ids: Vec<String>
-}
-
-// SQL実行部分(Groups)
-async fn fetch_group_list(pool: &MySqlPool, user_id:&str) -> anyhow::Result<Vec<FetchGroupListResult>>{
-    let group_list = sqlx::query!(
-        r#"
-            SELECT
-                g.id as group_chat_room_id,
-                g.group_name as group_name,
-                g.group_image as group_image
-            FROM
-                group_chat_room as g
-                INNER JOIN
-                    group_member as gm
-                ON  g.id = gm.group_chat_room_id
-            WHERE
-                gm.user_id = ?
-            AND gm.leave_flag = FALSE
-            AND g.delete_flag = FALSE
-        "#,
-        user_id
-    )
-    .fetch_all(pool)
-    .await
-    .unwrap();
-
-    let mut group_member_user_ids:Vec<String> = vec![];
-
-    let mut result:Vec<FetchGroupListResult> = vec![];
-
-    for row in &group_list {
-        let user_ids = sqlx::query!(
-            r#"
-                SELECT user_id
-                    FROM group_member
-                    WHERE group_chat_room_id = ?
-            "#,
-            &row.group_chat_room_id
-        )
-        .fetch_all(pool)
-        .await
-        .unwrap();
-        
-        for list in &user_ids {
-            group_member_user_ids.push(list.user_id.clone());
-        }
-
-        let group = FetchGroupListResult {
-            group_chat_room_id: row.group_chat_room_id.to_string(),
-            group_name: row.group_name.to_string(),
-            group_image:  match &row.group_image {
-                Some(group_image) => Some(group_image.to_string()),
-                None => None
-            },
-            group_member_user_ids: group_member_user_ids.clone()
-          };
-          result.push(group);
-
-          // group_member_user_idsの初期化
-          group_member_user_ids = vec![]
-    }
-    Ok(result)
 }
 
 /*
