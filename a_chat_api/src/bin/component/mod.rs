@@ -17,3 +17,4 @@ pub mod update_profile;
 pub mod fetch_friend_info_by_friend_user_id;
 pub mod fetch_chat_room_list;
 pub mod chat_room_hidden_or_delete;
+pub mod fetch_message_by_chat_room_id;
