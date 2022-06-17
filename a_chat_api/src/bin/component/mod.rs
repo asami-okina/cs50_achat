@@ -9,3 +9,4 @@ pub mod fetch_group_list;
 pub mod leave_group;
 pub mod add_group;
 pub mod fetch_group_count;
+pub mod fetch_friend_count;
