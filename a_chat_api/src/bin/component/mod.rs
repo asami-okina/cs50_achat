@@ -14,3 +14,4 @@ pub mod fetch_friend_list;
 pub mod add_friend;
 pub mod fetch_profile_by_user_id;
 pub mod update_profile;
+pub mod fetch_friend_info_by_friend_user_id;
