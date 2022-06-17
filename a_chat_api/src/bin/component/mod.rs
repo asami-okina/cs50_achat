@@ -22,3 +22,4 @@ pub mod post_message;
 pub mod update_last_read_time;
 pub mod add_group_member;
 pub mod fetch_is_already_friend;
+pub mod fetch_user_ids_by_direct_or_group_chat_room_id;
