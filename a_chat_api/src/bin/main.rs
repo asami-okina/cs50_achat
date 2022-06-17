@@ -37,7 +37,7 @@ async fn main(){
         .route("/api/users/:user_id/friend-count", get(component::fetch_friend_count::handler_fetch_friend_count))
         .route("/api/users/:user_id/friends", get(component::fetch_friend_list::handler_fetch_friend_list))
         .route("/api/users/:user_id/friends", post(component::add_friend::handler_add_friend))
-        .route("/api/users/:user_id/profile", get(handler_fetch_profile_by_user_id))
+        .route("/api/users/:user_id/profile", get(component::fetch_profile_by_user_id::handler_fetch_profile_by_user_id))
         .route("/api/users/:user_id/profile", post(handler_update_profile))
         .route("/api/users/:user_id/user", get(handler_fetch_friend_info_by_friend_user_id))
         .route("/api/users/:user_id/chat-room", get(handler_fetch_chat_room_list))
@@ -55,66 +55,6 @@ async fn main(){
         .await
         .unwrap();
  
-}
-
-/*
-  ユーザーIDに紐づくニックネーム、プロフィール画像の取得
-*/
-// handler
-#[derive(Debug, Deserialize, Serialize)]
-struct FetchProfileByUserIdPath {
-    user_id: String,
-}
-
-#[derive(Debug, Deserialize, Serialize)]
-struct FetchProfileByUserIdResult {
-    user_id: String,
-    nickname: Option<String>,
-    profile_image: Option<String>,
-    search_flag: bool
-}
-
-async fn handler_fetch_profile_by_user_id(Path(path): Path<FetchProfileByUserIdPath>) -> Json<Value> {
-    let user_id = path.user_id;
-
-    let pool = MySqlPool::connect(&env::var("DATABASE_URL").unwrap()).await.unwrap();
-    let profile = fetch_profile_by_user_id(&pool, &user_id).await.unwrap();
-    Json(json!({ "profile": profile }))
-}
-
-// SQL実行部分
-async fn fetch_profile_by_user_id(pool: &MySqlPool, user_id:&str) -> anyhow::Result<FetchProfileByUserIdResult>{
-    let result = sqlx::query!(
-        r#"
-        SELECT
-            nickname,
-            profile_image,
-            search_flag
-        FROM
-            user
-        WHERE
-            id = ?
-            "#,
-        user_id
-    )
-    .fetch_all(pool)
-    .await
-    .unwrap();
-
-    let profile_info = FetchProfileByUserIdResult {
-        user_id: user_id.to_string(),
-        nickname: match &result[0].nickname {
-            Some(nickname) => Some(nickname.to_string()),
-            None => None
-        },
-        profile_image: match &result[0].profile_image {
-            Some(profile_image) => Some(profile_image.to_string()),
-            None => None
-        },
-        search_flag: if result[0].search_flag == 1 { true } else { false }
-    };
-
-    Ok(profile_info)
 }
 
 /*
