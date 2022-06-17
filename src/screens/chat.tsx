@@ -273,7 +273,7 @@ export function Chat({ navigation, route }: MainProps) {
 
 		// websocketでメッセージをサーバーに送る
 		// ★websocketは一旦やめておき、実装予定
-		// sock.send(JSON.stringify(messages))
+		sock.send(JSON.stringify(messages))
 		_postMessage(messages)
 		setImage('')
 		// メッセージ更新API実行

@@ -1,1 +1,1 @@
-/Users/asami/Desktop/A-Chat/develop/A-chat/a_chat_api/target/debug/liba_chat_api.rlib: /Users/asami/Desktop/A-Chat/develop/A-chat/a_chat_api/src/lib.rs
+/Users/asami/Desktop/A-Chat/develop/A-chat/a_chat_api/target/debug/liba_chat_api.rlib: /Users/asami/Desktop/A-Chat/develop/A-chat/a_chat_api/src/lib.rs /Users/asami/Desktop/A-Chat/develop/A-chat/a_chat_api/src/models.rs /Users/asami/Desktop/A-Chat/develop/A-chat/a_chat_api/src/schema.rs /Users/asami/Desktop/A-Chat/develop/A-chat/a_chat_api/src/utils.rs

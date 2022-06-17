@@ -1,12 +1,9 @@
 version: "2"
 authtoken: 28juY51ygwIu3QpgxMcXqLt6gjL_2EVuNL7Su2pHVaubo3r5p
 tunnels:
-  # client:
-  #   addr: 8000
-  #   proto: http
-  # wss:
-  #   addr: 3000
-  #   proto: http
-  http:
+  client:
     addr: 3000
+    proto: http
+  wss:
+    addr: 3012
     proto: http
