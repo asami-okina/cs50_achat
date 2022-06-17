@@ -1,2 +1,3 @@
 // component/mod.rs
 pub mod header;
+pub mod fetchAllUsers;
