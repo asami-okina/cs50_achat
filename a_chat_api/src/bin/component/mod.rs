@@ -20,3 +20,4 @@ pub mod chat_room_hidden_or_delete;
 pub mod fetch_message_by_chat_room_id;
 pub mod post_message;
 pub mod update_last_read_time;
+pub mod add_group_member;

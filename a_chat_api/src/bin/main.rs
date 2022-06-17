@@ -45,7 +45,7 @@ async fn main(){
         .route("/api/users/:user_id/message", get(component::fetch_message_by_chat_room_id::handler_fetch_message_by_chat_room_id))
         .route("/api/users/:user_id/message", post(component::post_message::handler_post_message))
         .route("/api/users/:user_id/last-read-time", post(component::update_last_read_time::handler_update_last_read_time))
-        .route("/api/users/:user_id/group-member", post(handler_add_group_member))
+        .route("/api/users/:user_id/group-member", post(component::add_group_member::handler_add_group_member))
         .route("/api/users/:user_id/friend", get(handler_fetch_is_already_friend))
         .route("/api/users/:user_id/chat", get(handler_fetch_user_ids_by_direct_or_group_chat_room_id));
 
@@ -55,60 +55,6 @@ async fn main(){
         .await
         .unwrap();
  
-}
-
-/*
-  グループメンバーの追加
-*/
-#[derive(Debug, Deserialize, Serialize)]
-struct AddGroupMemberPath {
-    user_id: String
-}
-#[derive(Debug, Deserialize, Serialize)]
-struct AddGroupMemberJson {
-    group_chat_room_id: u64,
-    add_user_ids: Vec<String>
-}
-
-async fn handler_add_group_member(
-    Path(path): Path<AddGroupMemberPath>,
-    body_json: Json<AddGroupMemberJson>
-) -> Json<Value> {
-    // user_idの取得
-    let _user_id = path.user_id;
-
-    // group_chat_room_idの取得
-    let group_chat_room_id = &body_json.group_chat_room_id;
-
-    // add_user_idsの取得
-    let add_user_ids = &body_json.add_user_ids;
-
-    let pool = MySqlPool::connect(&env::var("DATABASE_URL").unwrap()).await.unwrap();
-    add_group_member(&pool, &group_chat_room_id, add_user_ids).await.unwrap();
-    Json(json!({ "status_code": 200 }))
-}
-
-// SQL実行部分
-async fn add_group_member(pool: &MySqlPool, group_chat_room_id: &u64, add_user_ids: &Vec<String>) -> anyhow::Result<()> {
-    let now = SystemTime::now().duration_since(SystemTime::UNIX_EPOCH).unwrap().as_secs();
-
-    for user_id in add_user_ids {
-        sqlx::query!(
-            r#"
-                INSERT INTO group_member ( group_chat_room_id, user_id, entry_date, last_read_time )
-                VALUES ( ?, ? , ? , ? )
-            "#,
-            group_chat_room_id,
-            user_id,
-            now,
-            now
-        )
-        .execute(pool)
-        .await
-        .unwrap();
-    }
-
-    Ok(())
 }
 
 /*
