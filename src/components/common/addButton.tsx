@@ -1,17 +1,19 @@
 // libs
 import React from 'react';
 import { StyleSheet, TouchableOpacity, View, Image } from 'react-native';
+import { useNavigationAChat } from "../../hooks/useNavigationAChat"
 
 // layouts
 import { MAIN_NAVY_COLOR, MAIN_WHITE_COLOR, ADD_BUTTON_SIZE, CONTENT_WIDTH, BUTTON_BORDER_RADIUS, MAIN_BLACK_COLOR } from '../../constants/layout'
 
 type AddButtonPropsType = {
-	navigation: any; // ★navigationの型がわからない。一番親のコンポーネントはできたけど、子コンポーネントとしてnavigationをもらう方法がわからなかった
 	openFriendList: boolean;
 	openGroupList: boolean;
 }
 
-export function AddButton({ navigation, openFriendList, openGroupList }: AddButtonPropsType) {
+export function AddButton({ openFriendList, openGroupList }: AddButtonPropsType) {
+	// navigation
+	const navigation = useNavigationAChat()
 	return (
 		<View style={styles.boxStyle}>
 			<View style={styles.wrapperStyle}>
@@ -23,7 +25,7 @@ export function AddButton({ navigation, openFriendList, openGroupList }: AddButt
 								navigation.navigate('AddFriend')
 							}
 							if (openGroupList) {
-								navigation.navigate('AddGroup', {"groupName": null, "groupImage": null})
+								navigation.navigate('AddGroup', { "groupName": null, "groupImage": null })
 							}
 						}}
 					>

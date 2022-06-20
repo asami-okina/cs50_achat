@@ -24,7 +24,6 @@ import { Chat } from "./src/screens/chat"
 import { AddGroupMember } from './src/components/chat/addGroupMember';
 import { AlreadyFriendModal } from './src/components/chat/_clickedFriendIcon/alreadyFriendModal'
 import { NotFriendModal } from './src/components/chat/_clickedFriendIcon/notFriendModal'
-import { ListItem } from 'src/components/chats/_chatsList/_chatBasic/listItem';
 
 // fonts
 import { useFonts, AlfaSlabOne_400Regular } from '@expo-google-fonts/alfa-slab-one';
@@ -86,7 +85,6 @@ function App() {
 					<Stack.Screen name="AddGroupMember" component={AddGroupMember} options={{ headerShown: false }} />
 					<Stack.Screen name="AlreadyFriendModal" component={AlreadyFriendModal} options={{ headerShown: false }} />
 					<Stack.Screen name="NotFriendModal" component={NotFriendModal} options={{ headerShown: false }} />
-					{/* <Stack.Screen name="ListItem" component={ListItem} options={{ headerShown: false }} /> */}
 				</Stack.Navigator>
 			</NavigationContainer>
 		);

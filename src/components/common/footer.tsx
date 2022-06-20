@@ -1,15 +1,14 @@
 // libs
 import React from 'react';
 import { Text, View, Pressable, Image, StyleSheet } from 'react-native';
+import { useNavigationAChat } from "../../hooks/useNavigationAChat"
 
 // layouts
 import { FOOTER_HEIGHT, MAIN_NAVY_COLOR, MAIN_WHITE_COLOR, STANDARD_FONT } from '../../constants/layout'
 
-type FooterPropsType = {
-	navigation: any; // ★navigationの型がわからない。一番親のコンポーネントはできたけど(screenディレクトリ内)、子コンポーネントとしてnavigationをもらう方法がわからなかった(https://suzukalight.com/snippet/posts/2021-04-22-react-navigation)
-}
-
-export function Footer({ navigation }: FooterPropsType) {
+export function Footer() {
+	// navigation
+	const navigation = useNavigationAChat()
 	return (
 		<View style={styles.footerStyle}>
 			<Pressable style={styles.footerItemStyle} onPress={() => navigation.navigate('Home')}>

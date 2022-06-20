@@ -4,14 +4,14 @@ import { StyleSheet, Text, TouchableOpacity, TouchableHighlight, View, Image } f
 import { SwipeListView } from 'react-native-swipe-list-view';
 import { API_SERVER_URL } from '../../../../constants/api'
 import { storage } from '../../../../../storage';
+import { useNavigationAChat } from '../../../../hooks/useNavigationAChat';
 
 // layouts
 import { CONTENT_WIDTH, PROFILE_IMAGE_SIZE, STANDARD_FONT, MAIN_WHITE_COLOR, MAIN_PINK_COLOR, PROFILE_IMAGE_BORDER_RADIUS, MAIN_NAVY_COLOR } from '../../../../constants/layout'
 
 type BasicPropsType = {
-	navigation: any; // ★navigationの型がわからない。一番親のコンポーネントはできたけど、子コンポーネントとしてnavigationをもらう方法がわからなかった
-	groupList: GroupListPropsType[]| null;
-	friendList: FriendListPropsType[]| null;
+	groupList: GroupListPropsType[] | null;
+	friendList: FriendListPropsType[] | null;
 	type: string;
 	setModalVisible: React.Dispatch<React.SetStateAction<boolean>>;
 	clickedCancelMordal: boolean;
@@ -35,7 +35,6 @@ type NewListType = {
 }
 
 export default function Basic({
-	navigation,
 	groupList,
 	friendList,
 	type,
@@ -46,6 +45,8 @@ export default function Basic({
 	setClickedOkMordal,
 	setGroupCount,
 }: BasicPropsType) {
+	// navigation
+	const navigation = useNavigationAChat()
 	// ユーザーID(今後は認証から取得するようにする)
 	const [userId, setUserId] = useState<string>(null)
 
@@ -123,9 +124,9 @@ export default function Basic({
 							{data.item.group_image ? (
 								<Image source={{ uri: data.item.group_image }} style={styles.profileImageStyle} />
 							) :
-							(
-								<View style={styles.profileImageNoneStyle}></View>
-							)}
+								(
+									<View style={styles.profileImageNoneStyle}></View>
+								)}
 							<Text style={styles.listItemNameStyle}>{data.item.group_name}</Text>
 						</View>
 					</View>
@@ -144,9 +145,9 @@ export default function Basic({
 							{data.item.friend_profile_image ? (
 								<Image source={{ uri: data.item.friend_profile_image }} style={styles.profileImageStyle} />
 							) :
-							(
-								<View style={styles.profileImageNoneStyle}></View>
-							)}
+								(
+									<View style={styles.profileImageNoneStyle}></View>
+								)}
 							<Text style={styles.listItemNameStyle}>{data.item.friend_nickname}</Text>
 						</View>
 					</View>

@@ -9,7 +9,6 @@ import { CONTENT_WIDTH, MAIN_WHITE_COLOR } from '../../constants/layout'
 import { ListItem } from './_friendAndGroupList/listItem'
 
 type FriendAndGroupListlPropsType = {
-	navigation: any; // ★navigationの型がわからない。一番親のコンポーネントはできたけど、子コンポーネントとしてnavigationをもらう方法がわからなかった
 	type: string;
 	setModalVisible: React.Dispatch<React.SetStateAction<boolean>>;
 	clickedCancelMordal: boolean;
@@ -24,7 +23,6 @@ type FriendAndGroupListlPropsType = {
 }
 
 export function FriendAndGroupList({
-	navigation,
 	type,
 	setModalVisible,
 	clickedCancelMordal,
@@ -44,11 +42,11 @@ export function FriendAndGroupList({
 				</View>
 				{/* グループ一覧をmapで回して表示 */}
 				{type === "Group" && openGroupList && (
-					<ListItem navigation={navigation} groupList={groupList} friendList={null} type={"Group"} setModalVisible={setModalVisible} clickedCancelMordal={clickedCancelMordal} setClickedCancelMordal={setClickedCancelMordal} clickedOkMordal={clickedOkMordal} setClickedOkMordal={setClickedOkMordal} setGroupCount={setGroupCount} />
+					<ListItem groupList={groupList} friendList={null} type={"Group"} setModalVisible={setModalVisible} clickedCancelMordal={clickedCancelMordal} setClickedCancelMordal={setClickedCancelMordal} clickedOkMordal={clickedOkMordal} setClickedOkMordal={setClickedOkMordal} setGroupCount={setGroupCount} />
 				)}
 				{/* 友達一覧をmapで回して表示 */}
 				{type === "Friend" && openFriendList && (
-					<ListItem navigation={navigation} groupList={null} friendList={friendList} type={"Friend"} setModalVisible={setModalVisible} clickedCancelMordal={clickedCancelMordal} setClickedCancelMordal={setClickedCancelMordal} clickedOkMordal={clickedOkMordal} setClickedOkMordal={setClickedOkMordal} setGroupCount={setGroupCount} />
+					<ListItem groupList={null} friendList={friendList} type={"Friend"} setModalVisible={setModalVisible} clickedCancelMordal={clickedCancelMordal} setClickedCancelMordal={setClickedCancelMordal} clickedOkMordal={clickedOkMordal} setClickedOkMordal={setClickedOkMordal} setGroupCount={setGroupCount} />
 				)}
 			</View>
 		</View>

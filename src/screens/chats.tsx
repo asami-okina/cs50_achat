@@ -19,9 +19,7 @@ import { sameStyles } from '../constants/styles/sameStyles'
 // layouts
 import { IPHONE_X_BOTTOM_SPACE } from '../constants/layout'
 
-type MainProps = StackScreenProps<RootStackParamListType, 'Chats'>;
-
-export function Chats({ navigation }:MainProps) {
+export function Chats() {
 	// ユーザーID(今後は認証から取得するようにする)
 	const [userId, setUserId] = useState<string>(null)
 
@@ -150,7 +148,7 @@ export function Chats({ navigation }:MainProps) {
 					)}
 				</View>
 				{/*フッター */}
-				<Footer navigation={navigation}/>
+				<Footer />
 			</SafeAreaView>
 		</KeyboardAvoidingView>
 	);

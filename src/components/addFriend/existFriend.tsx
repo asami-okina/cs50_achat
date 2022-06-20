@@ -12,12 +12,10 @@ import { selectedFriendStyles } from '../../constants/styles/selectedFriendStyle
 import { CONTENT_WIDTH, BIG_PROFILE_IMAGE_SIZE, STANDARD_FONT, MAIN_PINK_COLOR, PROFILE_IMAGE_BORDER_RADIUS, MAIN_NAVY_COLOR } from '../../constants/layout'
 
 type ExistFriendType = {
-	navigation: any; // ★修正予定
 	friendInfo: FriendInfoType;
 	alreadyFriend: boolean;
 }
 export function ExistFriend({
-	navigation,
 	friendInfo,
 	alreadyFriend
 }: ExistFriendType) {
@@ -32,7 +30,7 @@ export function ExistFriend({
 				}
 				<Text style={selectedFriendStyles.bigProfilelistItemNameStyle}>{friendInfo.friend_nickname}</Text>
 			</View>
-			<SmallButton text={"Add"} navigation={navigation} friendList={friendInfo} groupSetting={null} type={"addFriend"} friendListNames={null} alreadyFriend={alreadyFriend} addGroupMemberGroupChatRoomId={null} addGroupMemberGroupImage={null} addGroupMemberGroupName={null} backGroupName={null} backGroupImage={null} />
+			<SmallButton text={"Add"} friendList={friendInfo} groupSetting={null} type={"addFriend"} friendListNames={null} alreadyFriend={alreadyFriend} addGroupMemberGroupChatRoomId={null} addGroupMemberGroupImage={null} addGroupMemberGroupName={null} backGroupName={null} backGroupImage={null} />
 			{alreadyFriend && (
 				<Text style={styles.errorTextStyle}>Already requested.</Text>
 			)}

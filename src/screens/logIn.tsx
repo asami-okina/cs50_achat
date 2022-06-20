@@ -110,9 +110,9 @@ export function LogIn({ navigation }: MainProps) {
 					{/* <ForgotPassword /> */}
 					{/* 画面下 */}
 					<View style={sameStyles.bottomStyleByWelcomeAndSignUpAndLogin}>
-						<Button navigation={navigation} link={'Home'} buttonText={'Log In'} scene={'LogIn'} propsList={{ 'emailText': emailText, 'passwordText': passwordText, 'executedLoginAuthentication': executedLoginAuthentication, 'onFocusInputMailOrPasseword': onFocusInputMailOrPasseword, 'onPressFunction': _loginAuthentication }} enable={false} />
+						<Button link={'Home'} buttonText={'Log In'} scene={'LogIn'} propsList={{ 'emailText': emailText, 'passwordText': passwordText, 'executedLoginAuthentication': executedLoginAuthentication, 'onFocusInputMailOrPasseword': onFocusInputMailOrPasseword, 'onPressFunction': _loginAuthentication }} enable={false} />
 						{/* サインアップまたはログインへのリンク */}
-						<ToSignUpOrLoginTextArea navigation={navigation} description={`Don't you have an account?`} link={'SignUp'} />
+						<ToSignUpOrLoginTextArea description={`Don't you have an account?`} link={'SignUp'} />
 					</View>
 				</ScrollView>
 			</SafeAreaView>

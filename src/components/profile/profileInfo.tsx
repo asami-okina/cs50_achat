@@ -3,24 +3,25 @@ import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, Image, Switch, Pressable } from 'react-native';
 import { API_SERVER_URL } from "../../constants/api"
 import { storage } from "../../../storage"
+import { useNavigationAChat } from "../../hooks/useNavigationAChat"
 
 // layouts
 import { TAB_TITLE_TEXT_SIZE, TAB_FONT, MAIN_NAVY_COLOR, CONTENT_WIDTH, STANDARD_FONT, MAIN_WHITE_COLOR, MAIN_GRAY_COLOR, MAIN_YELLOW_GREEN } from '../../constants/layout'
 
 type ProfileInfoType = {
-	navigation: any; // ★修正予定
 	nickName: string;
 	setNickName: React.Dispatch<React.SetStateAction<string>>;
 	isEnabled: boolean;
 	setIsEnabled: React.Dispatch<React.SetStateAction<boolean>>;
 }
 export function ProfileInfo({
-	navigation,
 	nickName,
 	setNickName,
 	isEnabled,
 	setIsEnabled
 }: ProfileInfoType) {
+	// navigation
+	const navigation = useNavigationAChat()
 	// ユーザーID(今後は認証から取得するようにする)
 	const [userId, setUserId] = useState<string>(null)
 

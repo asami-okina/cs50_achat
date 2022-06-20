@@ -9,14 +9,13 @@ type RootStackParamListType = {
   AuthErrorText: undefined;
   ForgotPassword: undefined;
   Chats: undefined;
-  AddGroup: { groupName: string, groupImage: string, backFriendList: NewFriendListPropsType[] };
+  AddGroup: { groupName: string, groupImage: string, backFriendList?: NewFriendListPropsType[] };
   AddGroupSetting: { backGroupName: string, backGroupImage: string, friendList: NewFriendListPropsType[] };
   AddFriend: undefined;
   Profile: undefined;
   EditNickName: undefined;
-  Chat: { groupChatRoomId: string, directChatRoomId: string, profileImage: string, name: string, groupMemberUserId?: string[], addGroupMemberName?: string };
-  AddGroupMember: undefined;
+  Chat: { groupChatRoomId: string, directChatRoomId: string, profileImage: string, name: string, groupMemberUserId?: string[], addGroupMemberName?: string[] };
+  AddGroupMember: {groupChatRoomId: string, groupMemberUserId: string[], image: string, name: string};
   AlreadyFriendModal: { user: string, groupChatRoomId: string, groupImage: string, groupName: string, directChatRoomId: string };
   NotFriendModal: { user: string, groupChatRoomId: string, groupImage: string, groupName: string, directChatRoomId: string | null };
-  // ListItem: undefined
 };

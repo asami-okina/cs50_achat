@@ -16,11 +16,9 @@ import { Button } from '../components/common/button'
 // sameStyles
 import { sameStyles } from '../constants/styles/sameStyles'
 
-type MainProps = StackScreenProps<RootStackParamListType, 'SignUp'>;
-
-export function SignUp({ navigation }: MainProps) {
+export function SignUp() {
 	// キーボードに完了ボタンを表示
-	const inputAccessoryViewID:string = 'uniqueID';
+	const inputAccessoryViewID: string = 'uniqueID';
 
 	// バリデーション
 	// メールアドレスのバリデーション
@@ -96,12 +94,12 @@ export function SignUp({ navigation }: MainProps) {
 					<View style={sameStyles.bottomStyleByWelcomeAndSignUpAndLogin}>
 						{isCorrectMail && isCorrectPassewordSymbol && isCorrectPassewordStringCount && isCorrectUserIdSymbol && isCorrectUserIdStringCount && isAvailableUserId ?
 							(
-								<Button navigation={navigation} link={'Home'} buttonText={'Sign Up'} enable={true} scene={'SignUp'} propsList={{ "email": emailText, "password": passwordText, "userId": userIdText }} />
+								<Button link={'Home'} buttonText={'Sign Up'} enable={true} scene={'SignUp'} propsList={{ "email": emailText, "password": passwordText, "userId": userIdText }} />
 							) : (
-								<Button navigation={navigation} link={'Home'} buttonText={'Sign Up'} enable={false} scene={'SignUp'} propsList={null} />
+								<Button link={'Home'} buttonText={'Sign Up'} enable={false} scene={'SignUp'} propsList={null} />
 							)}
 						{/* サインアップまたはログインへのリンク */}
-						<ToSignUpOrLoginTextArea navigation={navigation} description={'Do you have an account?'} link={'LogIn'} />
+						<ToSignUpOrLoginTextArea description={'Do you have an account?'} link={'LogIn'} />
 					</View>
 				</ScrollView>
 			</SafeAreaView>

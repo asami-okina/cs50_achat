@@ -39,7 +39,7 @@ export function NotFriendModal({ route, navigation }) {
 						<View style={styles.friendNickNameContainerStyle}>
 							<Text style={styles.friendNickNameStyle}>{friendNickName}</Text>
 						</View>
-						<Button navigation={navigation} link={null} buttonText={'Add Friend'} enable={true} scene={'notFriendModal'} propsList={{ "directChatRoomId": null, "friendImage": friendImage, "friendNickName": friendNickName, "friendUserId": friendUserId }} />
+						<Button link={null} buttonText={'Add Friend'} enable={true} scene={'notFriendModal'} propsList={{ "directChatRoomId": null, "friendImage": friendImage, "friendNickName": friendNickName, "friendUserId": friendUserId }} />
 					</View>
 				</View>
 			</SafeAreaView>

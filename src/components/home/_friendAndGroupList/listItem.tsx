@@ -9,7 +9,6 @@ import Basic from './examples/basic';
 import { MAIN_WHITE_COLOR } from '../../../constants/layout'
 
 type ListItemPropsType = {
-	navigation: any; // ★navigationの型がわからない。一番親のコンポーネントはできたけど、子コンポーネントとしてnavigationをもらう方法がわからなかった
 	type: string;
 	setModalVisible: React.Dispatch<React.SetStateAction<boolean>>;
 	clickedCancelMordal: boolean;
@@ -22,7 +21,6 @@ type ListItemPropsType = {
 }
 
 export function ListItem({
-	navigation,
 	type,
 	setModalVisible,
 	clickedCancelMordal,
@@ -37,11 +35,11 @@ export function ListItem({
 		<View style={styles.containerStyle}>
 			{/* groupの場合 */}
 			{groupList && groupList.length !== 0 && groupList !== undefined && (
-				<Basic navigation={navigation} groupList={groupList} friendList={null} type={type} setModalVisible={setModalVisible} clickedCancelMordal={clickedCancelMordal} setClickedCancelMordal={setClickedCancelMordal} clickedOkMordal={clickedOkMordal} setClickedOkMordal={setClickedOkMordal} setGroupCount={setGroupCount} />
+				<Basic groupList={groupList} friendList={null} type={type} setModalVisible={setModalVisible} clickedCancelMordal={clickedCancelMordal} setClickedCancelMordal={setClickedCancelMordal} clickedOkMordal={clickedOkMordal} setClickedOkMordal={setClickedOkMordal} setGroupCount={setGroupCount} />
 			)}
 			{/* friendの場合 */}
 			{friendList && friendList.length !== 0 && friendList !== undefined && (
-				<Basic navigation={navigation} groupList={null} friendList={friendList} type={type} setModalVisible={setModalVisible} clickedCancelMordal={clickedCancelMordal} setClickedCancelMordal={setClickedCancelMordal} clickedOkMordal={clickedOkMordal} setClickedOkMordal={setClickedOkMordal} setGroupCount={setGroupCount} />
+				<Basic groupList={null} friendList={friendList} type={type} setModalVisible={setModalVisible} clickedCancelMordal={clickedCancelMordal} setClickedCancelMordal={setClickedCancelMordal} clickedOkMordal={clickedOkMordal} setClickedOkMordal={setClickedOkMordal} setGroupCount={setGroupCount} />
 			)}
 		</View>
 	);

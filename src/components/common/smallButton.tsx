@@ -3,13 +3,13 @@ import React, { useEffect, useState } from 'react';
 import { StyleSheet, TouchableOpacity, View, Text } from 'react-native';
 import { API_SERVER_URL } from "../../constants/api"
 import { storage } from '../../../storage'
+import { useNavigationAChat } from "../../hooks/useNavigationAChat"
 
 // layouts
 import { MAIN_NAVY_COLOR, MAIN_WHITE_COLOR, ADD_BUTTON_SIZE, CONTENT_WIDTH, BUTTON_BORDER_RADIUS, MAIN_BLACK_COLOR, SMALL_BUTTON_WIDTH, MAIN_GRAY_COLOR } from '../../constants/layout'
 
 type SmallButtonType = {
 	text: string;
-	navigation: any; // ★修正予定
 	friendList: any;
 	groupSetting: {
 		groupName?: string;
@@ -26,7 +26,6 @@ type SmallButtonType = {
 }
 export function SmallButton({
 	text,
-	navigation,
 	friendList,
 	groupSetting,
 	type,
@@ -50,6 +49,9 @@ export function SmallButton({
 
 	// 友達追加したユーザーの情報
 	const [friendInfo, setFriendInfo] = useState<FriendListPropsType[] | []>([])
+
+	// navigation
+	const navigation = useNavigationAChat()
 
 	// グループ追加
 	async function _addGroup() {
@@ -150,7 +152,7 @@ export function SmallButton({
 			setUserId(data.userId)
 		})
 	}, [])
-	
+
 	// friendListからuserIdだけ取り出し、自分のuserIdも追加
 	useEffect(() => {
 		if (friendList && type === "addGroupSetting" && userId) {

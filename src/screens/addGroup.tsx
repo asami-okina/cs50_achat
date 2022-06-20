@@ -23,7 +23,7 @@ import { IPHONE_X_BOTTOM_SPACE } from '../constants/layout'
 
 type MainProps = StackScreenProps<RootStackParamListType, 'AddGroup'>;
 
-export function AddGroup({ route, navigation }: MainProps) {
+export function AddGroup({ route }: MainProps) {
 	const { groupName, groupImage, backFriendList } = route.params
 	// ユーザーID(今後は認証から取得するようにする)
 	const [userId, setUserId] = useState<string>(null)
@@ -216,9 +216,9 @@ export function AddGroup({ route, navigation }: MainProps) {
 					)}
 				</View>
 				{/* 右下のボタン(Next) */}
-				<SmallButton text={"Next"} navigation={navigation} friendList={mergedSelectedFriendList} groupSetting={null} type={"addGroup"} friendListNames={null} alreadyFriend={null} addGroupMemberGroupChatRoomId={null} addGroupMemberGroupImage={null} addGroupMemberGroupName={null} backGroupName={groupName} backGroupImage={groupImage} />
+				<SmallButton text={"Next"} friendList={mergedSelectedFriendList} groupSetting={null} type={"addGroup"} friendListNames={null} alreadyFriend={null} addGroupMemberGroupChatRoomId={null} addGroupMemberGroupImage={null} addGroupMemberGroupName={null} backGroupName={groupName} backGroupImage={groupImage} />
 				{/*フッター */}
-				<Footer navigation={navigation} />
+				<Footer />
 			</SafeAreaView>
 		</KeyboardAvoidingView>
 	);

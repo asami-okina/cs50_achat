@@ -1,12 +1,12 @@
 // libs
 import React from 'react';
 import { View, Text, StyleSheet, Image, Pressable } from 'react-native';
+import { useNavigationAChat } from "../../../hooks/useNavigationAChat"
 
 // layouts
 import { TAB_FONT, MAIN_NAVY_COLOR, CONTENT_WIDTH, PROFILE_IMAGE_BORDER_RADIUS, BACK_ICOM_SIZE } from '../../../constants/layout'
 
 type MainTitlPropsType = {
-	navigation: any; // ★修正予定
 	title: string;
 	link: string;
 	props: {
@@ -18,16 +18,27 @@ type MainTitlPropsType = {
 }
 
 export function MainTitle({
-	navigation,
 	title,
 	link,
 	props,
 	groupChatRoomId,
 	groupMemberUserId
 }: MainTitlPropsType) {
+	// navigation
+	const navigation = useNavigationAChat()
 	return (
 		<View style={styles.titleWrapperStyle}>
-			<Pressable onPress={() => { navigation.navigate(link) }} >
+			<Pressable onPress={() => { 
+				if (link === "Profile"){
+					navigation.navigate("Profile")
+				}
+				if (link === "Home"){
+					navigation.navigate("Home")
+				}
+				if (link === "Chats"){
+					navigation.navigate("Chats")
+				}
+			 }} >
 				<Image source={require("../../../../assets/images/back-icon.png")} style={styles.backIconStyle} />
 			</Pressable>
 			{title && (

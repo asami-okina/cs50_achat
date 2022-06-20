@@ -4,12 +4,12 @@ import React, { useState, useEffect } from 'react';
 import { Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { API_SERVER_URL } from "../../constants/api"
 import { storage } from '../../../storage';
+import { useNavigationAChat } from "../../hooks/useNavigationAChat"
 
 // layouts
 import { MAIN_NAVY_COLOR, MAIN_WHITE_COLOR, BUTTON_HEIGHT, CONTENT_WIDTH, STANDARD_FONT, BUTTON_TEXT_SIZE, MAIN_GRAY_COLOR, BUTTON_BORDER_RADIUS } from '../../constants/layout'
 
 type ButtonPropsType = {
-	navigation: any; // ★修正予定
 	link: string;
 	buttonText: string;
 	enable: boolean;
@@ -41,14 +41,17 @@ type AddedFriendInfoType = {
 }
 
 export function Button({
-	navigation,
 	link,
 	buttonText,
 	enable,
 	scene,
 	propsList
 }: ButtonPropsType) {
+	// navigation
+	const navigation = useNavigationAChat()
+
 	const [userId, setUserId] = useState<string>(null)
+
 	// 友達追加したユーザーの情報
 	const [friendInfo, setFriendInfo] = useState<AddedFriendInfoType>(null)
 
@@ -80,7 +83,7 @@ export function Button({
 	async function _signUp() {
 		try {
 			// paramsを生成
-			const bodyData =  { "mail": propsList?.email, "password": propsList?.password, "user_id": propsList?.userId }
+			const bodyData = { "mail": propsList?.email, "password": propsList?.password, "user_id": propsList?.userId }
 
 			// APIリクエスト
 			const response = await fetch(API_SERVER_URL + `/api/signup`, {
@@ -137,7 +140,7 @@ export function Button({
 							// プロフィール設定画面にてニックネームの更新
 							if (enable && scene === "ProfileSettingNickName" && propsList.nickName.length !== 0 && link) {
 								propsList._updateNickName()
-								navigation.navigate(link)
+								navigation.navigate("Profile")
 							}
 							// グループチャット画面で既に友達であるユーザーアイコンをクリックした場合、チャット画面２千位
 							if (enable && scene === "alreadyFriendModal") {

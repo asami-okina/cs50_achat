@@ -623,7 +623,7 @@ export function Chat({ navigation, route }: MainProps) {
 				<View style={sameStyles.topMarginViewStyle}></View>
 				{/* 丸みを帯びている白いトップ部分 */}
 				<TopAreaWrapper type={"Chats"}>
-					<MainTitle navigation={navigation} title={null} link={"Chats"} props={{ "profileImage": profileImage, "name": name }} groupChatRoomId={groupChatRoomId} groupMemberUserId={groupMemberUserId} />
+					<MainTitle title={null} link={"Chats"} props={{ "profileImage": profileImage, "name": name }} groupChatRoomId={groupChatRoomId} groupMemberUserId={groupMemberUserId} />
 				</TopAreaWrapper>
 				{/* トップ部分を除くメイン部分: iphoneXの場合は、底のマージンを考慮 */}
 				<View style={IPHONE_X_BOTTOM_SPACE === 0 ? sameStyles.mainContainerStyle : sameStyles.mainContainerIphoneXStyle}>

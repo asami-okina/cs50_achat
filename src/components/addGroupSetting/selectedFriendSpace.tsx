@@ -1,6 +1,7 @@
 // libs
 import React, { useRef } from 'react';
 import { View, StyleSheet, Image, Text, ScrollView, Pressable } from 'react-native';
+import { useNavigationAChat } from "../../hooks/useNavigationAChat"
 
 // components
 import { AddFriendList } from '../../components/addGroup/addFriendList'
@@ -12,7 +13,6 @@ import { PROFILE_IMAGE_SIZE, ADD_FRIEND_WIDTH } from '../../constants/layout'
 import { selectedFriendStyles } from '../../constants/styles/selectedFriendStyles'
 
 type SelectedFriendSpaceType = {
-	navigation: any; // ★修正予定
 	friendList: NewFriendListPropsType[];
 	setFriendList: React.Dispatch<React.SetStateAction<NewFriendListPropsType[]>>;
 	ownNickName: string;
@@ -22,7 +22,6 @@ type SelectedFriendSpaceType = {
 }
 
 export function SelectedFriendSpace({
-	navigation,
 	friendList,
 	setFriendList,
 	ownNickName,
@@ -30,6 +29,9 @@ export function SelectedFriendSpace({
 	groupName,
 	groupImage
 }: SelectedFriendSpaceType) {
+	// navigation
+	const navigation = useNavigationAChat()
+
 	// 選択された友達リストの削除
 	const _deleteFriendList = (rowKey: string) => {
 		// 選択されたリストから該当リストを削除

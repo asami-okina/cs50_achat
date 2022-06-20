@@ -38,7 +38,7 @@ export function EditNickName({
 				<View style={sameStyles.topMarginViewStyle}></View>
 				{/* 丸みを帯びている白いトップ部分 */}
 				<TopAreaWrapper type={"addFriend"}>
-					<MainTitle navigation={navigation} title={"NickName"} link={"Profile"} props={null} groupChatRoomId={null} groupMemberUserId={null} />
+					<MainTitle title={"NickName"} link={"Profile"} props={null} groupChatRoomId={null} groupMemberUserId={null} />
 				</TopAreaWrapper>
 				{/* トップ部分を除くメイン部分*/}
 				<View style={sameStyles.mainContainerStyle}>
@@ -46,7 +46,7 @@ export function EditNickName({
 					<TextInputForm defaultInput={defaultInput} setDefaultInput={setDefaultInput} isValidInput={isValidInput} setIsValidInput={setIsValidInput} wordCount={wordCount} setWordCount={setWordCount} nickName={nickName} setNickName={setNickName} />
 					{/* 遷移ボタン */}
 					{/* ニックネームが1文字以上20文字以内で有効である場合 */}
-					<ButtonContainer navigation={navigation} nickName={nickName} setNickName={setNickName} wordCount={wordCount} isValidInput={isValidInput} defaultInput={defaultInput} />
+					<ButtonContainer nickName={nickName} setNickName={setNickName} wordCount={wordCount} isValidInput={isValidInput} defaultInput={defaultInput} />
 				</View>
 			</SafeAreaView>
 		</KeyboardAvoidingView>

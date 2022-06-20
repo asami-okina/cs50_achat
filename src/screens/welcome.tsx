@@ -13,9 +13,7 @@ import { TopAreaWrapper } from "../components/common/topAreaWrapper"
 // sameStyles
 import { sameStyles } from '../constants/styles/sameStyles'
 
-type MainProps = StackScreenProps<RootStackParamListType, 'Welcome'>;
-
-export function Welcome({ navigation }: MainProps) {
+export function Welcome() {
 	return (
 		<SafeAreaView style={sameStyles.screenContainerStyle}>
 			{/* 画面一番上にある青色の余白部分 */}
@@ -30,9 +28,9 @@ export function Welcome({ navigation }: MainProps) {
 				<AChatLogo />
 				<View style={sameStyles.bottomStyleByWelcomeAndSignUpAndLogin}>
 					{/* 遷移ボタン */}
-					<Button navigation={navigation} link={'SignUp'} buttonText={'Sign Up'} enable={true} scene={'Welcome'} propsList={null} />
+					<Button link={'SignUp'} buttonText={'Sign Up'} enable={true} scene={'Welcome'} propsList={null} />
 					{/* サインアップまたはログインへのリンク */}
-					<ToSignUpOrLoginTextArea navigation={navigation} description={'Do you have an account?'} link={'LogIn'} />
+					<ToSignUpOrLoginTextArea description={'Do you have an account?'} link={'LogIn'} />
 				</View>
 			</View>
 		</SafeAreaView>

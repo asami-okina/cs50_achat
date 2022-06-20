@@ -3,7 +3,6 @@ import React, { useEffect, useState } from 'react';
 import { View, SafeAreaView, KeyboardAvoidingView, StyleSheet } from 'react-native';
 import { useIsFocused } from '@react-navigation/native'
 import { storage } from '../../storage'
-import { StackScreenProps } from '@react-navigation/stack';
 
 // components
 import { TopAreaWrapper } from "../components/common/topAreaWrapper"
@@ -15,11 +14,7 @@ import { API_SERVER_URL } from "../constants/api"
 // sameStyles
 import { sameStyles } from '../constants/styles/sameStyles'
 
-type MainProps = StackScreenProps<RootStackParamListType, 'Profile'>;
-
-export function Profile({
-	navigation
-}: MainProps) {
+export function Profile() {
 	// ユーザーID(今後は認証から取得するようにする)
 	const [userId, setUserId] = useState<string>(null)
 
@@ -82,7 +77,7 @@ export function Profile({
 				<View style={sameStyles.topMarginViewStyle}></View>
 				{/* 丸みを帯びている白いトップ部分 */}
 				<TopAreaWrapper type={"addFriend"}>
-					<MainTitle navigation={navigation} title={"Profile Setting"} link={"Home"} props={null} groupChatRoomId={null} groupMemberUserId={null} />
+					<MainTitle title={"Profile Setting"} link={"Home"} props={null} groupChatRoomId={null} groupMemberUserId={null} />
 				</TopAreaWrapper>
 				{/* トップ部分を除くメイン部分*/}
 				<View style={sameStyles.mainContainerStyle}>
@@ -90,7 +85,7 @@ export function Profile({
 						{/* プロフィール画像 */}
 						<ProfileImage image={profileImage} setImage={setProfileImage} />
 						{/* プロフィール */}
-						<ProfileInfo navigation={navigation} setNickName={setNickName} nickName={nickName} isEnabled={isEnabled} setIsEnabled={setIsEnabled} />
+						<ProfileInfo setNickName={setNickName} nickName={nickName} isEnabled={isEnabled} setIsEnabled={setIsEnabled} />
 					</View>
 				</View>
 			</SafeAreaView>

@@ -19,9 +19,7 @@ import { sameStyles } from '../constants/styles/sameStyles'
 // layouts
 import { IPHONE_X_BOTTOM_SPACE } from '../constants/layout'
 
-type MainProps = StackScreenProps<RootStackParamListType, 'AddFriend'>;
-
-export function AddFriend({ navigation }: MainProps) {
+export function AddFriend() {
 	// ユーザーID(今後は認証から取得するようにする)
 	const [userId, setUserId] = useState<string>(null)
 
@@ -94,7 +92,7 @@ export function AddFriend({ navigation }: MainProps) {
 				<View style={sameStyles.topMarginViewStyle}></View>
 				{/* 丸みを帯びている白いトップ部分 */}
 				<TopAreaWrapper type={"addFriend"}>
-					<MainTitle navigation={navigation} title={"Friend Search"} link={"Home"} props={null} groupChatRoomId={null} groupMemberUserId={null} />
+					<MainTitle title={"Friend Search"} link={"Home"} props={null} groupChatRoomId={null} groupMemberUserId={null} />
 				</TopAreaWrapper>
 				{/* トップ部分を除くメイン部分: iphoneXの場合は、底のマージンを考慮 */}
 				<View style={IPHONE_X_BOTTOM_SPACE === 0 ? sameStyles.withFooterMainContainerNoneBottomButtonStyle : sameStyles.withFooterMainContainerIphoneXNoneBottomButtonStyle}>
@@ -104,7 +102,7 @@ export function AddFriend({ navigation }: MainProps) {
 					</View>
 					{/* 検索結果が存在する場合 */}
 					{friendInfo && existUserId && (
-						<ExistFriend navigation={navigation} friendInfo={friendInfo} alreadyFriend={alreadyFriend} />
+						<ExistFriend friendInfo={friendInfo} alreadyFriend={alreadyFriend} />
 					)}
 					{/* 検索結果が存在しない場合 */}
 					{!existUserId && (
@@ -112,7 +110,7 @@ export function AddFriend({ navigation }: MainProps) {
 					)}
 				</View>
 				{/*フッター */}
-				<Footer navigation={navigation} />
+				<Footer />
 			</SafeAreaView>
 		</KeyboardAvoidingView>
 	);

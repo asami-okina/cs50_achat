@@ -20,7 +20,7 @@ import { IPHONE_X_BOTTOM_SPACE } from '../constants/layout'
 
 type MainProps = StackScreenProps<RootStackParamListType, 'AddGroupSetting'>;
 
-export function AddGroupSetting({ route, navigation }: MainProps) {
+export function AddGroupSetting({ route }: MainProps) {
 	const [friendList, setFriendList] = useState<NewFriendListPropsType[]>(route.params.friendList)
 	const [userId, setUserId] = useState<string>(null)
 	// グループ設定画面から、メンバー追加で戻ったときにグループ名とグループ画像を保持
@@ -122,11 +122,11 @@ export function AddGroupSetting({ route, navigation }: MainProps) {
 					{/* タイトル */}
 					<AddGroupTitle text={"Member"} groupMemberCount={groupMemberCount} />
 					{/* 選択された友達のスペース */}
-					<SelectedFriendSpace navigation={navigation} friendList={friendList} setFriendList={setFriendList} ownNickName={ownNickName} ownProfileImage={ownProfileImage} groupName={groupName} groupImage={image} />
+					<SelectedFriendSpace friendList={friendList} setFriendList={setFriendList} ownNickName={ownNickName} ownProfileImage={ownProfileImage} groupName={groupName} groupImage={image} />
 				</View>
 				{/* 右下のボタン(Create) */}
 				{friendListNames.length !== 0 && (
-					<SmallButton text={"Create"} navigation={navigation} friendList={friendList} groupSetting={{ "groupName": groupName, "image": image }} type={"addGroupSetting"} friendListNames={friendListNames} alreadyFriend={null} addGroupMemberGroupChatRoomId={null} addGroupMemberGroupImage={null} addGroupMemberGroupName={null} backGroupName={null} backGroupImage={null} />
+					<SmallButton text={"Create"} friendList={friendList} groupSetting={{ "groupName": groupName, "image": image }} type={"addGroupSetting"} friendListNames={friendListNames} alreadyFriend={null} addGroupMemberGroupChatRoomId={null} addGroupMemberGroupImage={null} addGroupMemberGroupName={null} backGroupName={null} backGroupImage={null} />
 				)}
 			</SafeAreaView>
 		</KeyboardAvoidingView>

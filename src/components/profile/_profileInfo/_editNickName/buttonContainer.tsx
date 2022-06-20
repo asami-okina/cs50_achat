@@ -3,6 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { View, StyleSheet, Text } from 'react-native';
 import { API_SERVER_URL } from "../../../../constants/api"
 import { storage } from '../../../../../storage';
+import { useNavigationAChat } from "../../../../hooks/useNavigationAChat"
 
 // components
 import { Button } from "../../../common/button"
@@ -11,7 +12,6 @@ import { Button } from "../../../common/button"
 import { STANDARD_FONT, MAIN_PINK_COLOR } from '../../../../constants/layout'
 
 type ButtonContainerType = {
-	navigation: any; // ★修正予定
 	nickName: string;
 	setNickName: React.Dispatch<React.SetStateAction<string>>;
 	wordCount: number;
@@ -20,13 +20,14 @@ type ButtonContainerType = {
 }
 
 export function ButtonContainer({
-	navigation,
 	nickName,
 	setNickName,
 	wordCount,
 	isValidInput,
 	defaultInput
 }: ButtonContainerType) {
+	// navigation
+	const navigation = useNavigationAChat()
 
 	// ユーザーID(今後は認証から取得するようにする)
 	const [userId, setUserId] = useState<string>(null)
@@ -62,14 +63,14 @@ export function ButtonContainer({
 	return (
 		<View style={styles.buttonContainerStyle}>
 			{isValidInput && !defaultInput && wordCount >= 1 && (
-				<Button navigation={navigation} link={"Profile"} buttonText={'Save'} enable={true} scene={'ProfileSettingNickName'} propsList={{ "_updateNickName": _updateNickName, "nickName": nickName, "setNickName": setNickName }} />
+				<Button link={"Profile"} buttonText={'Save'} enable={true} scene={'ProfileSettingNickName'} propsList={{ "_updateNickName": _updateNickName, "nickName": nickName, "setNickName": setNickName }} />
 			)}
 			{(!isValidInput && !defaultInput) && (
 				<View style={styles.inValidErrorContainerStyle}>
 					{!defaultInput && (
 						<Text style={styles.errorText}>Nicknames can be entered from a single character.</Text>
 					)}
-					<Button navigation={navigation} link={null} buttonText={'Save'} enable={false} scene={'ProfileSettingNickName'} propsList={null} />
+					<Button link={null} buttonText={'Save'} enable={false} scene={'ProfileSettingNickName'} propsList={null} />
 				</View>
 			)}
 		</View>
