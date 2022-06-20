@@ -13,13 +13,8 @@ import { ButtonContainer } from "../_profileInfo/_editNickName/buttonContainer";
 // sameStyles
 import { sameStyles } from '../../../constants/styles/sameStyles'
 
-type EditNickNameType = {
-	navigation: any; // ★修正予定
-}
 
-export function EditNickName({
-	navigation
-}: EditNickNameType) {
+export function EditNickName() {
 	const [nickName, setNickName] = useState<string>('')
 
 	// 入力文字数

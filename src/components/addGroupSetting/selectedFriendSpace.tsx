@@ -44,7 +44,7 @@ export function SelectedFriendSpace({
 	}
 
 	// refの生成
-	const scrollViewRef = useRef<any>(); // ★型後ほど修正
+	const scrollViewRef = useRef(); // ★型後ほど修正
 
 	return (
 		<View style={selectedFriendStyles.wrapperStyle}>
