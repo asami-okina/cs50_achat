@@ -13,7 +13,6 @@ import { HiddenListItem } from "./_chatBasic/hiddenListItem"
 import { MAIN_WHITE_COLOR } from '../../../constants/layout'
 
 type ChatBasicType = {
-	navigation: any; // ★修正予定
 	chatRoomList: ChatRoomListType[];
 	setDeleteModalVisible: React.Dispatch<React.SetStateAction<boolean>>;
 	clickedDeleteCancelMordal: boolean;
@@ -32,7 +31,6 @@ type ChatBasicType = {
 }
 
 export default function ChatBasic({
-	navigation,
 	chatRoomList,
 	setDeleteModalVisible,
 	clickedDeleteCancelMordal,
@@ -95,11 +93,11 @@ export default function ChatBasic({
 		<>
 			{/* 友達の場合 */}
 			{data.item.friend_user_id && (
-				<ListItem navigation={navigation} profileImage={data.item.friend_profile_image} name={data.item.friend_nickname} lastMessageCreationDate={data.item.last_message_created_at} lastMessageContent={data.item.last_message_content} unreadCount={data.item.unread_count} groupChatRoomId={null} directChatRoomId={data.item.direct_chat_room_id} groupMemberUserId={null} />
+				<ListItem profileImage={data.item.friend_profile_image} name={data.item.friend_nickname} lastMessageCreationDate={data.item.last_message_created_at} lastMessageContent={data.item.last_message_content} unreadCount={data.item.unread_count} groupChatRoomId={null} directChatRoomId={data.item.direct_chat_room_id} groupMemberUserId={null} />
 			)}
 			{/* グループの場合 */}
 			{data.item.group_chat_room_id && (
-				<ListItem navigation={navigation} profileImage={data.item.group_image} name={data.item.group_name} lastMessageCreationDate={data.item.last_message_created_at} lastMessageContent={data.item.last_message_content} unreadCount={data.item.unread_count} groupChatRoomId={data.item.group_chat_room_id} directChatRoomId={null} groupMemberUserId={data.item.group_member_user_id} />
+				<ListItem profileImage={data.item.group_image} name={data.item.group_name} lastMessageCreationDate={data.item.last_message_created_at} lastMessageContent={data.item.last_message_content} unreadCount={data.item.unread_count} groupChatRoomId={data.item.group_chat_room_id} directChatRoomId={null} groupMemberUserId={data.item.group_member_user_id} />
 			)}
 		</>
 	);

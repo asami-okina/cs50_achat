@@ -6,7 +6,6 @@ import { View, StyleSheet } from 'react-native';
 import ChatBasic from "./_chatsList/chatBasic"
 
 type ChatsListType = {
-	navigation: any; // ★後日修正予定
 	chatRoomList: ChatRoomListType[];
 	setDeleteModalVisible: React.Dispatch<React.SetStateAction<boolean>>;
 	clickedDeleteCancelMordal: boolean;
@@ -25,7 +24,6 @@ type ChatsListType = {
 }
 
 export function ChatsList({
-	navigation,
 	chatRoomList,
 	setDeleteModalVisible,
 	clickedDeleteCancelMordal,
@@ -45,7 +43,7 @@ export function ChatsList({
 	return (
 		<>
 			<View style={styles.listBoxStyle}>
-				<ChatBasic navigation={navigation} chatRoomList={chatRoomList} setDeleteModalVisible={setDeleteModalVisible} clickedDeleteCancelMordal={clickedDeleteCancelMordal} setClickedDeleteCancelMordal={setClickedDeleteCancelMordal} clickedDeleteOkMordal={clickedDeleteOkMordal} setClickedDeleteOkMordal={setClickedDeleteOkMordal} setHiddenModalVisible={setHiddenModalVisible} clickedHiddenCancelMordal={clickedHiddenCancelMordal} setClickedHiddenCancelMordal={setClickedHiddenCancelMordal} clickedHiddenOkMordal={clickedHiddenOkMordal} setClickedHiddenOkMordal={setClickedHiddenOkMordal} setGroupChatRoomId={setGroupChatRoomId} setDirectChatRoomId={setDirectChatRoomId} groupChatRoomId={groupChatRoomId} directChatRoomId={directChatRoomId} />
+				<ChatBasic chatRoomList={chatRoomList} setDeleteModalVisible={setDeleteModalVisible} clickedDeleteCancelMordal={clickedDeleteCancelMordal} setClickedDeleteCancelMordal={setClickedDeleteCancelMordal} clickedDeleteOkMordal={clickedDeleteOkMordal} setClickedDeleteOkMordal={setClickedDeleteOkMordal} setHiddenModalVisible={setHiddenModalVisible} clickedHiddenCancelMordal={clickedHiddenCancelMordal} setClickedHiddenCancelMordal={setClickedHiddenCancelMordal} clickedHiddenOkMordal={clickedHiddenOkMordal} setClickedHiddenOkMordal={setClickedHiddenOkMordal} setGroupChatRoomId={setGroupChatRoomId} setDirectChatRoomId={setDirectChatRoomId} groupChatRoomId={groupChatRoomId} directChatRoomId={directChatRoomId} />
 			</View>
 		</>
 	);

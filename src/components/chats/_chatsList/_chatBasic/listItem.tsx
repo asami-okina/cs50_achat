@@ -1,11 +1,14 @@
 // libs
+import { useNavigation } from '@react-navigation/native';
 import React from 'react';
 import { View, StyleSheet, Pressable, Image, Text } from 'react-native';
+import { StackNavigationProp, StackScreenProps } from '@react-navigation/stack';
+import { useNavigationAChat } from '../../../../hooks/useNavigationAChat';
+
 // layouts
 import { CONTENT_WIDTH, PROFILE_IMAGE_SIZE, STANDARD_FONT, MAIN_WHITE_COLOR, PROFILE_IMAGE_BORDER_RADIUS, MAIN_NAVY_COLOR, MAIN_GRAY_COLOR } from '../../../../constants/layout'
 
 type ListItemType = {
-	navigation: any;
 	profileImage: string;
 	name: string;
 	lastMessageCreationDate: number;
@@ -16,7 +19,6 @@ type ListItemType = {
 	groupMemberUserId: string[];
 }
 export function ListItem({
-	navigation,
 	profileImage,
 	name,
 	lastMessageCreationDate,
@@ -28,6 +30,8 @@ export function ListItem({
 }: ListItemType) {
 	let dateTime = new Date(lastMessageCreationDate * 1000);
 	let parseDateTime = dateTime.toLocaleString();
+	const navigation = useNavigationAChat()
+
 	return (
 		<Pressable style={styles.listWrapperStyle} onPress={() => { navigation.navigate('Chat', { "groupChatRoomId": groupChatRoomId, "directChatRoomId": directChatRoomId, "profileImage": profileImage, "name": name }) }}>
 			<View style={styles.imageContainerStyle}>

@@ -367,7 +367,7 @@ app.post('/api/users/:user_id/groups/add', (req, res, ctx) => {
 	const groupName = req.param("groupName")
 	const groupMemberUserIds = req.param("groupMemberUserIds")
 
-	// ★groupChatRoomIdはバックエンドで生成する！
+	// groupChatRoomIdはバックエンドで生成する！
 	const groupChatRoomId = _id()
 
 	groups.push(
