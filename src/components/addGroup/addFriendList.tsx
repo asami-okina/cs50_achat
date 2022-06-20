@@ -19,7 +19,7 @@ export function AddFriendList({
 	deleteFriendList
 }: AddFriendListType) {
 	// refの生成
-	const scrollViewRef = useRef<any>();
+	const scrollViewRef = useRef<ScrollView|null>(null);
 	return (
 		<View style={selectedFriendStyles.wrapperStyle}>
 			<View style={selectedFriendStyles.containerStyle}>
