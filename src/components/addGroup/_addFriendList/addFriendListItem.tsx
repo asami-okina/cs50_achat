@@ -11,7 +11,7 @@ import { selectedFriendStyles } from '../../../constants/styles/selectedFriendSt
 
 type AddFriendListItemType = {
 	list: NewFriendListPropsType;
-	deleteFriendList: (rowKey: any, type: any) => void;
+	deleteFriendList: (rowKey: string, type: string) => void;
 }
 
 export function AddFriendListItem({

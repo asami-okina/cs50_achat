@@ -10,8 +10,8 @@ import { FriendListItem } from '../addGroup/_friendList/friendListItem'
 
 type FriendListType = {
 	listData: NewFriendListPropsType[];
-	addFriendList: (rowKey: any, type: any) => void;
-	deleteFriendList: (rowKey: any, type: any) => void;
+	addFriendList: (rowKey: string, type: string) => void;
+	deleteFriendList: (rowKey: string, type: string) => void;
 	selectedFriendList: NewFriendListPropsType[];
 	groupMemberUserId: string[];
 }

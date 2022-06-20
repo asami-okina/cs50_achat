@@ -8,8 +8,8 @@ import { CONTENT_WIDTH, MAIN_WHITE_COLOR, PROFILE_IMAGE_SIZE, STANDARD_FONT, ICO
 
 type FriendListItem = {
 	list: NewFriendListPropsType;
-	addFriendList: (rowKey: any, type: any) => void;
-	deleteFriendList: (rowKey: any, type: any) => void;
+	addFriendList: (rowKey: string, type: string) => void;
+	deleteFriendList: (rowKey: string, type: string) => void;
 	selectedFriendList: NewFriendListPropsType[];
 	groupMemberUserId: string[];
 }

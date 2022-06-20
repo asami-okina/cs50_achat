@@ -21,7 +21,7 @@ export function GroupImageAndGroupName({
 
 	const pickImage = async () => {
 		// No permissions request is necessary for launching the image library
-		let result: any = await ImagePicker.launchImageLibraryAsync({
+		let result: ImageInfo = await ImagePicker.launchImageLibraryAsync({
 			mediaTypes: ImagePicker.MediaTypeOptions.All,
 			allowsEditing: true,
 			aspect: [1, 1],
