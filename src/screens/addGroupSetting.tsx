@@ -126,7 +126,7 @@ export function AddGroupSetting({ route }: MainProps) {
 				</View>
 				{/* 右下のボタン(Create) */}
 				{friendListNames.length !== 0 && (
-					<SmallButton text={"Create"} friendList={friendList} groupSetting={{ "groupName": groupName, "image": image }} type={"addGroupSetting"} friendListNames={friendListNames} alreadyFriend={null} addGroupMemberGroupChatRoomId={null} addGroupMemberGroupImage={null} addGroupMemberGroupName={null} backGroupName={null} backGroupImage={null} />
+					<SmallButton text={"Create"} addGroupFriendList={friendList} addFriendList={null} groupSetting={{ "groupName": groupName, "image": image }} type={"addGroupSetting"} friendListNames={friendListNames} alreadyFriend={null} addGroupMemberGroupChatRoomId={null} addGroupMemberGroupImage={null} addGroupMemberGroupName={null} backGroupName={null} backGroupImage={null} />
 				)}
 			</SafeAreaView>
 		</KeyboardAvoidingView>

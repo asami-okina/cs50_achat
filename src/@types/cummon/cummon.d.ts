@@ -82,3 +82,12 @@ type ChatRoomListType = {
 	type: string;
 	unread_count: number;
 }
+
+type addFriendList = {
+	already_follow_requested?: boolean,
+	exist_user_id: boolean,
+	friend_nickname: string,
+	friend_profile_image: string,
+	friend_search_flag: boolean,
+	friend_use_id: string,
+}

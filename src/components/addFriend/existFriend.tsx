@@ -30,7 +30,7 @@ export function ExistFriend({
 				}
 				<Text style={selectedFriendStyles.bigProfilelistItemNameStyle}>{friendInfo.friend_nickname}</Text>
 			</View>
-			<SmallButton text={"Add"} friendList={friendInfo} groupSetting={null} type={"addFriend"} friendListNames={null} alreadyFriend={alreadyFriend} addGroupMemberGroupChatRoomId={null} addGroupMemberGroupImage={null} addGroupMemberGroupName={null} backGroupName={null} backGroupImage={null} />
+			<SmallButton text={"Add"} addFriendList={friendInfo} addGroupFriendList={null} groupSetting={null} type={"addFriend"} friendListNames={null} alreadyFriend={alreadyFriend} addGroupMemberGroupChatRoomId={null} addGroupMemberGroupImage={null} addGroupMemberGroupName={null} backGroupName={null} backGroupImage={null} />
 			{alreadyFriend && (
 				<Text style={styles.errorTextStyle}>Already requested.</Text>
 			)}

@@ -216,7 +216,7 @@ export function AddGroup({ route }: MainProps) {
 					)}
 				</View>
 				{/* 右下のボタン(Next) */}
-				<SmallButton text={"Next"} friendList={mergedSelectedFriendList} groupSetting={null} type={"addGroup"} friendListNames={null} alreadyFriend={null} addGroupMemberGroupChatRoomId={null} addGroupMemberGroupImage={null} addGroupMemberGroupName={null} backGroupName={groupName} backGroupImage={groupImage} />
+				<SmallButton text={"Next"} addGroupFriendList={mergedSelectedFriendList} addFriendList={null} groupSetting={null} type={"addGroup"} friendListNames={null} alreadyFriend={null} addGroupMemberGroupChatRoomId={null} addGroupMemberGroupImage={null} addGroupMemberGroupName={null} backGroupName={groupName} backGroupImage={groupImage} />
 				{/*フッター */}
 				<Footer />
 			</SafeAreaView>

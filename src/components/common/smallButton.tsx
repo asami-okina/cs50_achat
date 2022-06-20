@@ -10,7 +10,8 @@ import { MAIN_NAVY_COLOR, MAIN_WHITE_COLOR, ADD_BUTTON_SIZE, CONTENT_WIDTH, BUTT
 
 type SmallButtonType = {
 	text: string;
-	friendList: any;
+	addGroupFriendList?: NewFriendListPropsType[];
+	addFriendList: addFriendList;
 	groupSetting: {
 		groupName?: string;
 		image?: string;
@@ -26,7 +27,8 @@ type SmallButtonType = {
 }
 export function SmallButton({
 	text,
-	friendList,
+	addGroupFriendList,
+	addFriendList,
 	groupSetting,
 	type,
 	friendListNames,
@@ -85,7 +87,7 @@ export function SmallButton({
 		try {
 			// APIリクエスト
 			const bodyData = {
-				"friend_user_id": friendList.friend_use_id,
+				"friend_user_id": addFriendList.friend_use_id,
 			}
 			const response = await fetch(API_SERVER_URL + `/api/users/${userId}/friends`, {
 				method: "POST",
@@ -110,9 +112,9 @@ export function SmallButton({
 			// ユーザーID一覧
 			let newDataUserIds = []
 			let newDataUserNames = []
-			for (let i = 0; i < friendList.length; i++) {
-				newDataUserIds.push(friendList[i].friend_use_id)
-				newDataUserNames.push(friendList[i].friend_nickname)
+			for (let i = 0; i < addGroupFriendList.length; i++) {
+				newDataUserIds.push(addGroupFriendList[i].friend_use_id)
+				newDataUserNames.push(addGroupFriendList[i].friend_nickname)
 			}
 			// グループに追加したメンバーの名前の配列を更新
 			setAddGroupMemberName(newDataUserNames)
@@ -155,15 +157,15 @@ export function SmallButton({
 
 	// friendListからuserIdだけ取り出し、自分のuserIdも追加
 	useEffect(() => {
-		if (friendList && type === "addGroupSetting" && userId) {
+		if (addGroupFriendList && type === "addGroupSetting" && userId) {
 			let groupMemberUserIds = []
-			for (let i = 0; i < friendList.length; i++) {
-				groupMemberUserIds.push(friendList[i].friend_use_id)
+			for (let i = 0; i < addGroupFriendList.length; i++) {
+				groupMemberUserIds.push(addGroupFriendList[i].friend_use_id)
 			}
 			groupMemberUserIds.push(userId)
 			setGroupMemberUserIds(groupMemberUserIds)
 		}
-	}, [friendList, userId])
+	}, [addGroupFriendList, userId])
 
 	return (
 		<View style={styles.boxStyle}>
@@ -174,7 +176,7 @@ export function SmallButton({
 						onPress={() => {
 							// グループ追加画面からグループ設定画面への遷移
 							if (type === "addGroup") {
-								navigation.navigate('AddGroupSetting', { friendList: friendList, backGroupName: backGroupName, backGroupImage: backGroupImage })
+								navigation.navigate('AddGroupSetting', { friendList: addGroupFriendList, backGroupName: backGroupName, backGroupImage: backGroupImage })
 							}
 							if (type === "addGroupSetting") {
 								// グループ追加API実行
