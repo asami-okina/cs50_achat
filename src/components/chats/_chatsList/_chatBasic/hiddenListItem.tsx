@@ -13,7 +13,7 @@ type HiddenListItemType = {
 	setClickedType: React.Dispatch<React.SetStateAction<string>>;
 	rowMap: string;
 	// data: ListRenderItemInfo<ChatRoomListType>;
-	data: any;
+	data: any; // ★修正予定
 	setGroupChatRoomId: React.Dispatch<React.SetStateAction<string>>;
 	setDirectChatRoomId: React.Dispatch<React.SetStateAction<string>>;
 }
