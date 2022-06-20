@@ -1,10 +1,11 @@
 // libs
 import React, { useEffect, useState } from 'react';
-import { StyleSheet, Text, TouchableOpacity, TouchableHighlight, View, Image, ListRenderItemInfo } from 'react-native';
+import { StyleSheet, Text, TouchableOpacity, TouchableHighlight, View, Image, ListRenderItemInfo,StyleProp,ViewStyle } from 'react-native';
 import { SwipeListView } from 'react-native-swipe-list-view';
 import { API_SERVER_URL } from '../../../../constants/api'
 import { storage } from '../../../../../storage';
 import { useNavigationAChat } from '../../../../hooks/useNavigationAChat';
+import { Component } from 'react';
 
 // layouts
 import { CONTENT_WIDTH, PROFILE_IMAGE_SIZE, STANDARD_FONT, MAIN_WHITE_COLOR, MAIN_PINK_COLOR, PROFILE_IMAGE_BORDER_RADIUS, MAIN_NAVY_COLOR } from '../../../../constants/layout'
@@ -34,6 +35,16 @@ type NewListType = {
 	friend_nickname: string;
 }
 
+// RowMapの型生成(ライブラリより引用:/Users/asami/Desktop/A-Chat/develop/A-chat/node_modules/react-native-swipe-list-view/types/index.d.ts)
+type RowMap<T> = { [open_cell_key: string]: SwipeRow<T>; };
+
+export class SwipeRow<T> extends Component<Partial<IPropsSwipeRow<T>>> {
+	closeRow: () => void;
+	closeRowWithoutAnimation: () => void;
+	// render(): JSX.Element;
+	manuallySwipeRow: (toValue: number, onAnimationEnd?: () => void) => void;
+}
+
 export default function Basic({
 	groupList,
 	friendList,
@@ -51,8 +62,8 @@ export default function Basic({
 	const [userId, setUserId] = useState<string>(null)
 
 	// 削除時の確認モーダルでCancleの時は該当リストをデフォルト状態に戻す、Okの場合は該当リストを削除する甩に使用
-	const [rowMap, setRowMap] = useState<string>('')
-	const [key, setkey] = useState<string>('')
+	const [rowMap, setRowMap] = useState<RowMap<NewListType>>(null)
+	const [key, setkey] = useState<string>(null)
 	const [groupChatRoomId, setGroupChatRoomId] = useState<string>('')
 
 	// 一覧のリストを作成
@@ -86,8 +97,7 @@ export default function Basic({
 
 
 	// スワップされた該当行をデフォルト状態に戻す
-	// ★rowMapの型がわからない(おそらくrowKeyの型はnumber)
-	const closeRow = (rowMap, rowKey) => {
+	const closeRow = (rowMap: RowMap<NewListType>, rowKey: string) => {
 		if (rowMap[rowKey]) {
 			rowMap[rowKey].closeRow();
 		}
@@ -95,8 +105,7 @@ export default function Basic({
 
 	// 全体リストから該当のリストを削除
 	// rowMap: オブジェクト , rowKey: 削除するindex
-	// ★rowMapの型がわからない(おそらくrowKeyの型はnumber)
-	const deleteRow = (rowMap, rowKey) => {
+	const deleteRow = (rowMap: RowMap<NewListType>, rowKey: string) => {
 		closeRow(rowMap, rowKey);
 		// Reactの差異を比較するのは、オブジェクト同士。そのため、新しくオブジェクトを作成する必要がある
 		const newData = [...listData];
@@ -160,8 +169,8 @@ export default function Basic({
 	);
 
 	// スワップできるようにする
-	// ★rowMapの型がわからない(おそらくrowKeyの型はnumber)
-	const renderHiddenItem = (data, rowMap) => (
+	const renderHiddenItem = (data: ListRenderItemInfo<FriendOrGroupHomeListType>, rowMap: RowMap<NewListType>) => {
+		return (
 		<View style={styles.rowBackStyle}>
 			{/* deleteボタン */}
 			<TouchableOpacity
@@ -172,13 +181,15 @@ export default function Basic({
 					// 削除時のモーダルでCancleの時は該当リストをデフォルト状態に戻す、Okの場合は該当リストを削除する甩に使用
 					setRowMap(rowMap)
 					setkey(data.item.key)
-					setGroupChatRoomId(data.item.group_chat_room_id)
+					if ("group_chat_room_id" in data.item) {
+						setGroupChatRoomId(data.item.group_chat_room_id)
+					}
 				}}
 			>
 				<Text style={styles.backTextWhiteStyle}>Leave</Text>
 			</TouchableOpacity>
 		</View>
-	);
+	)};
 
 	// 削除時の確認モーダルでCancleの時は該当リストをデフォルト状態に戻す、Okの場合は該当リストを削除する甩に使用
 	useEffect(() => {
@@ -187,8 +198,8 @@ export default function Basic({
 			// スワイプされた行をデフォルト状態に戻す
 			rowMap[key].closeRow();
 			// 初期化
-			setRowMap('')
-			setkey('')
+			setRowMap(null)
+			setkey(null)
 			setClickedCancelMordal(false)
 			setGroupChatRoomId('')
 		}
@@ -198,8 +209,8 @@ export default function Basic({
 			// グループ脱退関数実行
 			_leaveGroup(userId, groupChatRoomId)
 			// 初期化
-			setRowMap('')
-			setkey('')
+			setRowMap(null)
+			setkey(null)
 			setClickedOkMordal(false)
 			setGroupChatRoomId('')
 		}

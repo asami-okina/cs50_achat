@@ -110,11 +110,11 @@ type FriendOrGroupHomeListType = {
     group_image: string,
     group_member_user_ids: string[],
     group_name: string,
-    key: number,
+    key: string,
 } | {
 	direct_chat_room_id: string,
 	friend_nickname: string,
 	friend_profile_image: string,
 	friend_use_id: string,
-	key: number,
+	key: string,
 }
