@@ -475,8 +475,7 @@ export function Chat({ navigation, route }: MainProps) {
 
 	// イメージピッカー
 	const pickImage = async () => {
-		// ★anyは修正する(未対応)
-		let result: any = await ImagePicker.launchImageLibraryAsync({
+		let result: ImageInfo = await ImagePicker.launchImageLibraryAsync({
 			mediaTypes: ImagePicker.MediaTypeOptions.All,
 			allowsEditing: true,
 			aspect: [1, 1],

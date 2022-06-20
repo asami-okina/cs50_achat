@@ -1,6 +1,6 @@
 // libs
 import React from 'react';
-import { View, StyleSheet, Text, TouchableOpacity } from 'react-native';
+import { View, StyleSheet, Text, TouchableOpacity,ListRenderItemInfo } from 'react-native';
 
 // layouts
 import { MAIN_WHITE_COLOR, MAIN_PINK_COLOR } from '../../../../constants/layout'
@@ -12,7 +12,8 @@ type HiddenListItemType = {
 	setkey: React.Dispatch<React.SetStateAction<string>>;
 	setClickedType: React.Dispatch<React.SetStateAction<string>>;
 	rowMap: string;
-	data: any; // ★修正予定
+	// data: ListRenderItemInfo<ChatRoomListType>;
+	data: any;
 	setGroupChatRoomId: React.Dispatch<React.SetStateAction<string>>;
 	setDirectChatRoomId: React.Dispatch<React.SetStateAction<string>>;
 }
