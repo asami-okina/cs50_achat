@@ -1,6 +1,6 @@
 // libs
 import React, { useEffect, useState } from 'react';
-import { StyleSheet, Text, TouchableOpacity, TouchableHighlight, View, Image } from 'react-native';
+import { StyleSheet, Text, TouchableOpacity, TouchableHighlight, View, Image, ListRenderItemInfo } from 'react-native';
 import { SwipeListView } from 'react-native-swipe-list-view';
 import { API_SERVER_URL } from '../../../../constants/api'
 import { storage } from '../../../../../storage';
@@ -108,13 +108,14 @@ export default function Basic({
 		setGroupCount(newData.length)
 	};
 
-	// ★dataの型がわからない
-	const renderItem = data => (
+	const renderItem = (data: ListRenderItemInfo<FriendOrGroupHomeListType>) => (
 		<>
-			{type === "Group" && (
+			{"group_chat_room_id" in data.item && type === "Group" && (
 				<TouchableHighlight
 					onPress={() => {
-						navigation.navigate('Chat', { "groupChatRoomId": data.item.group_chat_room_id, "directChatRoomId": null, "profileImage": data.item.group_image, "name": data.item.group_name, "groupMemberUserId": data.item.group_member_user_ids })
+						if ("group_chat_room_id" in data.item) {
+							navigation.navigate('Chat', { "groupChatRoomId": data.item.group_chat_room_id, "directChatRoomId": null, "profileImage": data.item.group_image, "name": data.item.group_name, "groupMemberUserId": data.item.group_member_user_ids })
+						}
 					}}
 					style={styles.rowFrontStyle}
 					underlayColor={'#feffff'}
@@ -132,10 +133,12 @@ export default function Basic({
 					</View>
 				</TouchableHighlight>
 			)}
-			{type === "Friend" && (
+			{"direct_chat_room_id" in data.item && type === "Friend" && (
 				<TouchableHighlight
 					onPress={() => {
-						navigation.navigate('Chat', { "groupChatRoomId": null, "directChatRoomId": data.item.direct_chat_room_id, "profileImage": data.item.friend_profile_image, "name": data.item.friend_nickname })
+						if ("direct_chat_room_id" in data.item) {
+							navigation.navigate('Chat', { "groupChatRoomId": null, "directChatRoomId": data.item.direct_chat_room_id, "profileImage": data.item.friend_profile_image, "name": data.item.friend_nickname })
+						}
 					}}
 					style={styles.rowFrontStyle}
 					underlayColor={'#feffff'}
