@@ -12,8 +12,7 @@ type HiddenListItemType = {
 	setkey: React.Dispatch<React.SetStateAction<string>>;
 	setClickedType: React.Dispatch<React.SetStateAction<string>>;
 	rowMap: string;
-	// data: ListRenderItemInfo<ChatRoomListType>;
-	data: any; // ★修正予定
+	data: ListRenderItemInfo<ChatRoomListType>;
 	setGroupChatRoomId: React.Dispatch<React.SetStateAction<string>>;
 	setDirectChatRoomId: React.Dispatch<React.SetStateAction<string>>;
 }
@@ -40,10 +39,10 @@ export function HiddenListItem({
 					// 削除時のモーダルでCancleの時は該当リストをデフォルト状態に戻す、Okの場合は該当リストを削除する甩に使用
 					setRowMap(rowMap)
 					setkey(data.item.key)
-					if (data.item.group_chat_room_id) {
+					if ("group_chat_room_id" in data.item) {
 						setGroupChatRoomId(data.item.group_chat_room_id)
 					}
-					if (data.item.direct_chat_room_id) {
+					if ("direct_chat_room_id"in data.item) {
 						setDirectChatRoomId(data.item.direct_chat_room_id)
 					}
 					setClickedType('Delete')
@@ -60,10 +59,10 @@ export function HiddenListItem({
 					// 削除時のモーダルでCancleの時は該当リストをデフォルト状態に戻す、Okの場合は該当リストを削除する甩に使用
 					setRowMap(rowMap)
 					setkey(data.item.key)
-					if (data.item.group_chat_room_id) {
+					if ("group_chat_room_id" in data.item) {
 						setGroupChatRoomId(data.item.group_chat_room_id)
 					}
-					if (data.item.direct_chat_room_id) {
+					if ("direct_chat_room_id"in data.item) {
 						setDirectChatRoomId(data.item.direct_chat_room_id)
 					}
 					setClickedType('Hidden')
