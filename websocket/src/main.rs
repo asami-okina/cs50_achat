@@ -88,11 +88,7 @@ async fn websocket(stream: WebSocket, state: Arc<AppState>) {
     // By splitting we can send and receive at the same time.
     let (mut sender, mut receiver) = stream.split();
 
-    let mut username = String::new();
-
-    let mut message_text = String::new();
-
-    let mut messages:Vec<MessageStruct> = vec![];
+    let username = String::new();
 
     // 項目
     let mut _id = String::from("");
@@ -106,7 +102,7 @@ async fn websocket(stream: WebSocket, state: Arc<AppState>) {
         _id : String::from("")
     };
     let mut user_id = String::from("");
-    let mut result: MessageStruct;
+    let result: MessageStruct;
     let mut copy_id = String::from("");
 
     // Loop until a text message is found.
@@ -195,7 +191,7 @@ async fn websocket(stream: WebSocket, state: Arc<AppState>) {
             // メッセージが入力されたらwhile文を抜ける
             if !copy_id.is_empty() {
                 // メッセージを送信
-                let mut rx = state.tx.subscribe();
+                // let mut rx = state.tx.subscribe();
                 let msg = serde_json::to_string(&result).unwrap();
                 let _ = sender
                 .send(Message::Text(msg))
