@@ -14,3 +14,4 @@ web-build/
 .DS_Store
 
 a_chat_api/target/
+websocket/target/

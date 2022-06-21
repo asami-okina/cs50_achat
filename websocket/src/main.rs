@@ -18,7 +18,7 @@ use tokio::sync::broadcast;
 use serde_json::Value;
 
 // シリアライズ: RustのオブジェクトをJSON形式に変換
-// デシリアライズ : JSON形式をRustのオブジェクトに変換
+// デシリアライズ : JSON形式をRpustのオブジェクトに変換
 use serde::{Serialize, Deserialize};
 
 // Our shared state
