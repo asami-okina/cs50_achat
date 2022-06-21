@@ -52,26 +52,35 @@ export function Chat({ navigation, route }: MainProps) {
 	const [sendUserIds, setSendUserIds] = useState<string[]>(null)
 
 	// メッセージを送信した場合に実行
-	useEffect(() => {
-		const handler = e => {
-			console.log("サーバーからメッセージを受信したときに呼び出されるイベント");
-			const newMessage = JSON.parse(e.data)
-			if (isMounted.current) {
-				// ユーザーが開いているチャットルームに一致する場合のみメッセージを表示する
-				const messageDirectChatRoomId = newMessage[0].directChatRoomId
-				const messageGroupChatRoomId = newMessage[0].groupChatRoomId
-				if ((directChatRoomId !== null && directChatRoomId === messageDirectChatRoomId) || (groupChatRoomId !== null && groupChatRoomId === messageGroupChatRoomId)) {
-					setMessages(previousMessages => GiftedChat.append(previousMessages, newMessage))
-				}
-			}
-		}
-		// 第2引数に関数を指定することで、任意のイベントが発生した時に関数内に書かれた処理を実行する
-		sock.addEventListener("message", handler)
+	// useEffect(() => {
+	// 	const handler = e => {
+	// 		console.log("サーバーからメッセージを受信したときに呼び出されるイベント");
+	// 		const newMessage = JSON.parse(e.data)
+	// 		if (isMounted.current) {
+	// 			// ユーザーが開いているチャットルームに一致する場合のみメッセージを表示する
+	// 			const messageDirectChatRoomId = newMessage[0].directChatRoomId
+	// 			const messageGroupChatRoomId = newMessage[0].groupChatRoomId
+	// 			if ((directChatRoomId !== null && directChatRoomId === messageDirectChatRoomId) || (groupChatRoomId !== null && groupChatRoomId === messageGroupChatRoomId)) {
+	// 				setMessages(previousMessages => GiftedChat.append(previousMessages, newMessage))
+	// 			}
+	// 		}
+	// 	}
+	// 	// 第2引数に関数を指定することで、任意のイベントが発生した時に関数内に書かれた処理を実行する
+	// 	sock.addEventListener("message", handler)
 
-		return () => {
-			sock.removeEventListener("message", handler)
+	// 	return () => {
+	// 		sock.removeEventListener("message", handler)
+	// 	}
+	// }, [directChatRoomId, groupChatRoomId])
+
+	useEffect(() => {
+		sock.onmessage = function(e) {
+			// バックエンドから取得したメッセージ
+			console.log('3')
+			console.log('e.data',e.data) // バックエンドから送られたデータ
+			console.log("received message: "+e.data);
 		}
-	}, [directChatRoomId, groupChatRoomId])
+	})
 
 
 	// チャットルームIDに紐づくチャット履歴の取得
@@ -257,8 +266,8 @@ export function Chat({ navigation, route }: MainProps) {
 			messages[0]["image"] = image
 		}
 		// messagesに要素追加
-		messages[0]["type"] = "sendMessage"
-		messages[0]["sendUserIds"] = sendUserIds // 送るべきユーザーID
+		messages[0]["message_type"] = "SendMessage"
+		messages[0]["send_user_ids"] = sendUserIds // 送るべきユーザーID
 		messages[0]["user_id"] = userId // 送った人のユーザーID
 
 		if (directChatRoomId) {
@@ -273,7 +282,9 @@ export function Chat({ navigation, route }: MainProps) {
 
 		// websocketでメッセージをサーバーに送る
 		// ★websocketは一旦やめておき、実装予定
+		console.log('messages',messages)
 		sock.send(JSON.stringify(messages))
+		console.log('おわった')
 		_postMessage(messages)
 		setImage('')
 		// メッセージ更新API実行
@@ -610,7 +621,7 @@ export function Chat({ navigation, route }: MainProps) {
 			key: "key"
 		}).then((data) => {
 			setUserId(data.userId)
-			sock.send(JSON.stringify([{ "userId": data.userId, type: "setUserId" }]))
+			// sock.send(JSON.stringify([{ "userId": data.userId, type: "setUserId" }]))
 		})
 	}, [])
 
