@@ -579,7 +579,7 @@ export function Chat({ navigation, route }: MainProps) {
 
 	useEffect(() => {
 		// チャットルームIDに紐づくチャット履歴の取得
-		if(userId){
+		if(isMounted){
 			_fetchMessageByChatRoomId()
 			// 最終既読日時の更新
 			_updateLastReadTime()
