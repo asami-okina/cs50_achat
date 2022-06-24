@@ -15,3 +15,5 @@ web-build/
 
 a_chat_api/target/
 websocket/target/
+websocket/target/.rustc_info.json
+a_chat_api/target/.rustc_info.json

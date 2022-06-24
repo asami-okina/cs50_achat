@@ -14,6 +14,7 @@ use std::{
     net::SocketAddr,
     sync::{Arc, Mutex},
 };
+use tracing_subscriber::{layer::SubscriberExt, util::SubscriberInitExt};
 use tokio::sync::broadcast;
 use serde_json::Value;
 
@@ -30,6 +31,13 @@ struct AppState {
 
 #[tokio::main]
 async fn main() {
+    tracing_subscriber::registry()
+    .with(tracing_subscriber::EnvFilter::new(
+        std::env::var("RUST_LOG").unwrap_or_else(|_| "example_chat=trace".into()),
+    ))
+    .with(tracing_subscriber::fmt::layer())
+    .init();
+
     let user_set = Mutex::new(HashSet::new());
     let (tx, _rx) = broadcast::channel(100);
 
@@ -51,7 +59,6 @@ async fn websocket_handler(
     ws: WebSocketUpgrade,
     Extension(state): Extension<Arc<AppState>>,
 ) -> impl IntoResponse {
-    println!("websocketきた");
     ws.on_upgrade(|socket| websocket(socket, state))
 }
 
@@ -85,28 +92,24 @@ pub struct User {
 }
 
 async fn websocket(stream: WebSocket, state: Arc<AppState>) {
-    // By splitting we can send and receive at the same time.
     let (mut sender, mut receiver) = stream.split();
-
-    let username = String::new();
-
-    // 項目
-    let mut _id = String::from("");
-    let mut chat_room_id:u64 = 0;
-    let mut chat_room_type =  String::from("");
-    let mut created_at = String::from("");
-    let mut message_type = String::from("");
-    let mut send_user_ids:Vec<String> = vec![];
-    let mut text = String::from("");
-    let mut user = User {
-        _id : String::from("")
-    };
-    let mut user_id = String::from("");
-    let result: MessageStruct;
-    let mut copy_id = String::from("");
-
-    // Loop until a text message is found.
+    
     while let Some(Ok(message)) = receiver.next().await {
+        // 項目
+        let mut _id = String::from("");
+        let mut chat_room_id:u64 = 0;
+        let mut chat_room_type =  String::from("");
+        let mut created_at = String::from("");
+        let mut message_type = String::from("");
+        let mut send_user_ids:Vec<String> = vec![];
+        let mut text = String::from("");
+        let mut user = User {
+            _id : String::from("")
+        };
+        let mut user_id = String::from("");
+        let result: MessageStruct;
+        let mut copy_id = String::from("");
+    
         if let Message::Text(name) = message {
             let messages: Value = serde_json::from_str(&name).unwrap();
             let message = messages[0].clone();
@@ -191,12 +194,10 @@ async fn websocket(stream: WebSocket, state: Arc<AppState>) {
             // メッセージが入力されたらwhile文を抜ける
             if !copy_id.is_empty() {
                 // メッセージを送信
-                // let mut rx = state.tx.subscribe();
                 let msg = serde_json::to_string(&result).unwrap();
                 let _ = sender
                 .send(Message::Text(msg))
                 .await;
-                break;
             } else {
                 let _ = sender
                 .send(Message::Text(String::from("Error")))
@@ -208,45 +209,4 @@ async fn websocket(stream: WebSocket, state: Arc<AppState>) {
     }
     // Subscribe before sending joined message.
     let mut rx = state.tx.subscribe();
-
-    // Send joined message to all subscribers.
-    // let msg = messages;
-    // println!("★msg:{:?}", msg);
-    // フロントへメッセージの送信
-    // let _ = state.tx.send(msg);
-
-    // This task will receive broadcast messages and send text message to our client.
-    let mut send_task = tokio::spawn(async move {
-        while let Ok(msg) = rx.recv().await {
-            // In any websocket error, break loop.
-            if sender.send(Message::Text(msg)).await.is_err() {
-                break;
-            }
-        }
-    });
-
-    // Clone things we want to pass to the receiving task.
-    let tx = state.tx.clone();
-    let name = username.clone();
-
-    // This task will receive messages from client and send them to broadcast subscribers.
-    let mut recv_task = tokio::spawn(async move {
-        while let Some(Ok(Message::Text(text))) = receiver.next().await {
-            // Add username before message.
-            let _ = tx.send(format!("{}: {}", name, text));
-        }
-    });
-
-    // If any one of the tasks exit, abort the other.
-    tokio::select! {
-        _ = (&mut send_task) => recv_task.abort(),
-        _ = (&mut recv_task) => send_task.abort(),
-    };
-
-    // Send user left message.
-    let msg = format!("{} left.", username);
-    let _ = state.tx.send(msg);
-
-    // Remove username from map so new clients can take it.
-    state.user_set.lock().unwrap().remove(&username);
 }

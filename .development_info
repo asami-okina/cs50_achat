@@ -88,8 +88,11 @@ ngrok http 3000
 // 開発用(毎回URLが変わるため、手動で変更)(3000ポートの方)
 export const API_SERVER_URL = 'https://7676-217-178-24-119.jp.ngrok.io'
 
-③rustを起動
+③rustを起動(a_chat_apiディレクトリ)
 cargo run --bin main
 
-④expoを起動
+④websocketを起動(/A-chat/websockeディレクトリ)
+cargo run
+
+⑤expoを起動
 expo start
