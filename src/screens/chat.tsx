@@ -15,6 +15,7 @@ import { API_SERVER_URL } from "../constants/api"
 import { storage } from '../../storage'
 import { sock } from "../../websocket"
 import { StackScreenProps } from '@react-navigation/stack';
+import { useIsFocused } from '@react-navigation/native'
 
 // components
 import { TopAreaWrapper } from "../components/common/topAreaWrapper"
@@ -51,48 +52,8 @@ export function Chat({ navigation, route }: MainProps) {
 	const isMounted = useIsMounted()
 	const [sendUserIds, setSendUserIds] = useState<string[]>(null)
 
-	// メッセージを送信した場合に実行
-	// useEffect(() => {
-	// 	const handler = e => {
-	// 		console.log("サーバーからメッセージを受信したときに呼び出されるイベント");
-	// 		const newMessage = JSON.parse(e.data)
-	// 		if (isMounted.current) {
-	// 			// ユーザーが開いているチャットルームに一致する場合のみメッセージを表示する
-	// 			const messageDirectChatRoomId = newMessage[0].directChatRoomId
-	// 			const messageGroupChatRoomId = newMessage[0].groupChatRoomId
-				// if ((directChatRoomId !== null && directChatRoomId === messageDirectChatRoomId) || (groupChatRoomId !== null && groupChatRoomId === messageGroupChatRoomId)) {
-				// 	setMessages(previousMessages => GiftedChat.append(previousMessages, newMessage))
-				// }
-	// 		}
-	// 	}
-	// 	// 第2引数に関数を指定することで、任意のイベントが発生した時に関数内に書かれた処理を実行する
-	// 	sock.addEventListener("message", handler)
-
-		// return () => {
-		// 	sock.removeEventListener("message", handler)
-		// }
-	// }, [directChatRoomId, groupChatRoomId])
-
-	// useEffect(() => {
-	// 	sock.onmessage = function(e) {
-	// 		// バックエンドから取得したメッセージ
-	// 		// console.log('e.data',e.data)
-	// 		const newMessage = JSON.parse(e.data)
-	// 		if (isMounted.current) {
-	// 			// ユーザーが開いているチャットルームに一致する場合のみメッセージを表示する
-	// 			const messageDirectChatRoomId = newMessage.chat_room_type === "DirectChatRoomId" ? newMessage.chat_room_id : null;
-	// 			const messageGroupChatRoomId = newMessage.chat_room_type === "GroupChatRoomId" ? newMessage.chat_room_id : null;
-	// 			if ((directChatRoomId !== null && directChatRoomId === messageDirectChatRoomId) || (groupChatRoomId !== null && groupChatRoomId === messageGroupChatRoomId)) {
-	// 				setMessages(previousMessages => GiftedChat.append(previousMessages, newMessage))
-	// 			}
-	// 		}
-	// 	}
-	// 	return () => {
-	// 		sock.removeEventListener("message", sock.onmessage)
-	// 	}
-	// },[directChatRoomId, groupChatRoomId])
-	// console.log('user_id', userId)
-	// console.log('directChatRoomId',directChatRoomId)
+	// 現在画面がフォーカスされているかをbooleanで保持
+	const isFocused = useIsFocused()
 
 	useEffect(() => {
 		const handler = e => {
@@ -616,28 +577,17 @@ export function Chat({ navigation, route }: MainProps) {
 		}
 	}
 
-	// useEffect(() => {
-	// 	// チャットルームIDに紐づくチャット履歴の取得
-	// 	if ((directChatRoomId || groupChatRoomId) && userId) {
-	// 		_fetchMessageByChatRoomId()
-	// 		// 最終既読日時の更新
-	// 		_updateLastReadTime()
-	// 		// directChatRoomId/groupChatRoomIdに紐づくメンバーのユーザーIDを取得
-	// 		_fetchUserIdsByDirectOrGroupChatRoomId()
-	// 	}
-	// }, [userId, directChatRoomId, groupChatRoomId])
-
 	useEffect(() => {
-		console.log('きた')
 		// チャットルームIDに紐づくチャット履歴の取得
-		if ((directChatRoomId || groupChatRoomId) && userId) {
+		if(userId){
 			_fetchMessageByChatRoomId()
 			// 最終既読日時の更新
 			_updateLastReadTime()
 			// directChatRoomId/groupChatRoomIdに紐づくメンバーのユーザーIDを取得
 			_fetchUserIdsByDirectOrGroupChatRoomId()
 		}
-	}, [userId, directChatRoomId, groupChatRoomId])
+	}, [isFocused])
+
 
 
 
