@@ -163,6 +163,7 @@ async fn websocket(stream: WebSocket, state: Arc<AppState>) {
         while let Ok(msg) = rx.recv().await {
             // In any websocket error, break loop.
             // sendメソッドはResult<T,E>型を返すので、エラーの場合にはpanicするようにunwrapを呼び出す
+            // ブロードキャストのメッセージを受信したら、自分に送る
             if sender.send(Message::Text(msg)).await.is_err() {
                 break;
             }
@@ -175,6 +176,7 @@ async fn websocket(stream: WebSocket, state: Arc<AppState>) {
 
     // このタスクは、クライアントからメッセージを受信し、ブロードキャスト購読者に送信する
     // tokio::spawn: asyncファンクションを別スレッドで実行してくれる
+    // recv_taskがsend_taskを呼んでいる
     let mut recv_task = tokio::spawn(async move {
         println!("recv_task文が実行されたよ, Join Chat③");
         while let Some(Ok(Message::Text(text))) = receiver.next().await {
@@ -183,6 +185,7 @@ async fn websocket(stream: WebSocket, state: Arc<AppState>) {
                 Some(res) => {
                     // txはブロードキャスト用
                     // tx(送信機)の対であるrxに向けて送信される(send_taskに対して送信)
+                    // 自分へのメッセージを受信したら、ブロードキャストに送る
                     if res.message_type == "SendMessage" {
                         let msg = serde_json::to_string(&res).unwrap();
                         let _ = tx.send(msg);
