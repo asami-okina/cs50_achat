@@ -57,13 +57,23 @@ export function Chat({ navigation, route }: MainProps) {
 
 	useEffect(() => {
 		const handler = e => {
+			console.log('e', e)
 			const newMessage = JSON.parse(e.data)
+			console.log('newMessage', newMessage)
 			if (isMounted.current) {
-				// ユーザーが開いているチャットルームに一致する場合のみメッセージを表示する
-				const messageDirectChatRoomId = newMessage.chat_room_type === "DirectChatRoomId" ? newMessage.chat_room_id : null;
-				const messageGroupChatRoomId = newMessage.chat_room_type === "GroupChatRoomId" ? newMessage.chat_room_id : null;
-				if ((directChatRoomId !== null && directChatRoomId === messageDirectChatRoomId) || (groupChatRoomId !== null && groupChatRoomId === messageGroupChatRoomId)) {
-					setMessages(previousMessages => GiftedChat.append(previousMessages, newMessage))
+				// チャット画面に遷移してきた際にのみ実行
+				if (newMessage["message_type"] === "SetUserId") {
+					return
+				} else {
+					// メッセージを送った際に実行
+					console.log('message')
+					// ユーザーが開いているチャットルームに一致する場合のみメッセージを表示する
+					const messageDirectChatRoomId = newMessage.chat_room_type === "DirectChatRoomId" ? newMessage.chat_room_id : null;
+					const messageGroupChatRoomId = newMessage.chat_room_type === "GroupChatRoomId" ? newMessage.chat_room_id : null;
+					if ((directChatRoomId !== null && directChatRoomId === messageDirectChatRoomId) || (groupChatRoomId !== null && groupChatRoomId === messageGroupChatRoomId)) {
+						setMessages(previousMessages => GiftedChat.append(previousMessages, newMessage))
+					}
+
 				}
 			}
 		}
@@ -71,7 +81,7 @@ export function Chat({ navigation, route }: MainProps) {
 		return () => {
 			sock.removeEventListener("message", handler)
 		}
-	},[])
+	}, [])
 
 	// チャットルームIDに紐づくチャット履歴の取得
 	async function _fetchMessageByChatRoomId() {
@@ -579,7 +589,7 @@ export function Chat({ navigation, route }: MainProps) {
 
 	useEffect(() => {
 		// チャットルームIDに紐づくチャット履歴の取得
-		if(isMounted){
+		if (isMounted) {
 			_fetchMessageByChatRoomId()
 			// 最終既読日時の更新
 			_updateLastReadTime()
@@ -612,7 +622,8 @@ export function Chat({ navigation, route }: MainProps) {
 			key: "key"
 		}).then((data) => {
 			setUserId(data.userId)
-			// sock.send(JSON.stringify([{ "userId": data.userId, type: "setUserId" }]))
+			// websocketにuser_idを送信
+			sock.send(JSON.stringify([{ "user_id": data.userId, "message_type": "SetUserId" }]))
 		})
 	}, [])
 

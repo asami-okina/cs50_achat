@@ -1,22 +1,46 @@
+// websocketには2つの要素が必要
+// ①コネクションを管理する人
+// ②メッセージを受信した際に何かをする人
+
+// ★channelから生成した、送信機と転送機に対してメッセージのやりとりを行う(対になっている)
+
 use axum::{
     extract::{
+        // WebSocketUpgrade: 受信したHTTPリクエストをWebsocketにアップグレードするために使用する
         ws::{Message, WebSocket, WebSocketUpgrade},
+        // リクエストからデータを抽出する
         Extension,
     },
     response::{IntoResponse},
     routing::get,
     Router,
 };
-use tower_http::add_extension::AddExtensionLayer;
+// sink: 他の値を非同期で送信できる値
 use futures::{sink::SinkExt, stream::StreamExt};
 use std::{
+    // HashSetとはHashMapと同じようにアイテムをまとめて格納できるもの。
+    // HashMapとの違いは「キー/値」で格納するのではなく1つの値を入れるだけ。同じアイテムは追加できない。
     collections::HashSet,
+    // IPv4 または IPv6 のいずれかのインターネットソケットアドレス
     net::SocketAddr,
+    // Mutexとは同時に1つのプログラムの流れのみが資源を占有し、他の使用を排除する方式。また、Cell系のように内部可変性を提供する
+    // Rc<T>は参照カウントの値を作ることで、1つの値に複数の所有者を与える。しかし、スレッド間で共有するには安全ではない。
+    // Arc<T>は複数スレッドで1つの値に複数の所有権を与える。
+    // RefCecc<T>は実行時に精査される可変借用を許可するので、RefCell<T>が不変でも、RefCell<T>内の値を可変化できる
     sync::{Arc, Mutex},
 };
-use tracing_subscriber::{layer::SubscriberExt, util::SubscriberInitExt};
+// tokio::sync::broadcastは、feature="sync"のみに対応。
+// Senderは、接続されているすべてのReceiverに値をブロードキャストするために使用される。
+// Senderハンドルはクローン可能であり、同時に送信と受信を行うことができる
+// SenderとReceiverはTがそれぞれSend(スレッド間の所有権の転送を許可)またはSync(複数のスレッドからのアクセスを許可)である限り、SendとSyncの両方となる。
+// 値が送信されると、すべてのReceiverハンドルに通知され、その値を受信します。
+// 値はチャネル内に一旦保存され、各レシーバに対してオンデマンドでクローン化されます。すべてのレシーバが値のクローンを受信すると、値はチャネルから解放されます
 use tokio::sync::broadcast;
+// ロギング
+use tracing_subscriber::{layer::SubscriberExt, util::SubscriberInitExt};
+
 use serde_json::Value;
+use tower_http::add_extension::AddExtensionLayer;
 
 // シリアライズ: RustのオブジェクトをJSON形式に変換
 // デシリアライズ : JSON形式をRpustのオブジェクトに変換
@@ -25,12 +49,13 @@ use serde::{Serialize, Deserialize};
 // Our shared state
 #[derive(Debug)]
 struct AppState {
-    user_set: Mutex<HashSet<String>>,
+    user_id_set: Mutex<HashSet<String>>,
     tx: broadcast::Sender<String>,
 }
 
 #[tokio::main]
 async fn main() {
+    // ロギングの設定
     tracing_subscriber::registry()
     .with(tracing_subscriber::EnvFilter::new(
         std::env::var("RUST_LOG").unwrap_or_else(|_| "example_chat=trace".into()),
@@ -38,10 +63,10 @@ async fn main() {
     .with(tracing_subscriber::fmt::layer())
     .init();
 
-    let user_set = Mutex::new(HashSet::new());
+    let user_id_set = Mutex::new(HashSet::new());
     let (tx, _rx) = broadcast::channel(100);
 
-    let app_state = Arc::new(AppState { user_set, tx });
+    let app_state = Arc::new(AppState { user_id_set, tx });
 
     let app = Router::new()
         .route("/websocket", get(websocket_handler))
@@ -91,81 +116,81 @@ pub struct User {
     _id: String
 }
 
+// メッセージの初回に送信
+#[derive(Debug, Deserialize, Serialize)]
+pub struct MessageType {
+    message_type: String
+}
+
 async fn websocket(stream: WebSocket, state: Arc<AppState>) {
     let (mut sender, mut receiver) = stream.split();
 
-    // 削除予定
-    let mut username = String::new();
+    let mut user_id: String = String::new();
     let mut result:Option<MessageStruct> = None;
+    let mut message_type = String::new();
 
     while let Some(Ok(message)) = receiver.next().await {
         if let Message::Text(message_text) = message {
-            result = parse_result(message_text).await.unwrap();
-            match result {
-                Some(res) => {
-                    let msg = serde_json::to_string(&res).unwrap();
-                    let _ = sender
-                    .send(Message::Text(msg))
-                    .await;
-                }, 
-                None => {
-                    let _ = sender
-                    .send(Message::Text(String::from("Error")))
-                    .await;
-                }
+            parse_message_type_and_user_id(&state, &mut user_id, &mut message_type, message_text);
+            if message_type == "SetUserId" {
+                break;
+            } else {
+                return;
             }
-            // // メッセージが入力されたらwhile文を抜ける
-            // if result._id.is_empty() {
-            //     break;
-            //     // // メッセージを送信
-            //     // let msg = serde_json::to_string(&result).unwrap();
-            //     // let _ = sender
-            //     // .send(Message::Text(msg))
-            //     // .await;
-            // } else {
-            //     let _ = sender
-            //     .send(Message::Text(String::from("Error")))
-            //     .await;
-            // return;
-            // }
         }
     }
-    // ジョインされたメッセージの送信前にサブスクライブする
+    // 新しいReceiverハンドルは、Sender::subscribeを呼び出すことで生成される
+    // 生成されたReceiverは、subscribeの呼び出し後に送られた値を受け取る
+    // tx(送信側)はブロードキャスト
     let mut rx = state.tx.subscribe();
+    let message_type = MessageType {
+        message_type: message_type.clone()
+    };
+    let msg = serde_json::to_string(&message_type).unwrap();
+    let _ = state.tx.send(msg);
 
+    // ★send_taskとrecv_taskが対になり、send_taskでsenderが送ったらrecv_taskでreceiverが受け取り、
+    // ★recv_taskでtxが送ったらsend_taskでrxが受け取る。
 
-    // match result {
-    //     Some(res) => {
-    //         let msg = serde_json::to_string(&res).unwrap();
-    //         let _ = sender
-    //         .send(Message::Text(msg))
-    //         .await;
-    //     },
-    //     None => {
-    //         return
-    //     }
-    // }
-    // let _ = state.tx.send(Message::Text(msg));
-
-    // This task will receive broadcast messages and send text message to our client.
+     // このタスクは、ブロードキャストメッセージを受信し、クライアントにテキストメッセージを送信する
+    // tokio::spawn: asyncファンクションを別スレッドで実行してくれる
+    // move: あるスレッドのデータを別のスレッドで使用できるようになる(所有権を移す)
+    // 立ち上げたスレッドは、メッセージをチャネルを通して送信できるように、チャネルの送信側を所有する必要がある
     let mut send_task = tokio::spawn(async move {
+        println!("send_task文が実行されたよ, Join Chat④");
+        // rx: receiver(受信側)
+        // rx: receiver(受信側)は.next()で消費される
         while let Ok(msg) = rx.recv().await {
             // In any websocket error, break loop.
+            // sendメソッドはResult<T,E>型を返すので、エラーの場合にはpanicするようにunwrapを呼び出す
             if sender.send(Message::Text(msg)).await.is_err() {
                 break;
             }
         }
     });
 
-    // Clone things we want to pass to the receiving task.
+    // 受信側のタスクに渡したいもの(Senderとuser_id)をクローンする
+    // tx: Senderをクローンする
     let tx = state.tx.clone();
-    let name = username.clone();
 
-    // This task will receive messages from client and send them to broadcast subscribers.
+    // このタスクは、クライアントからメッセージを受信し、ブロードキャスト購読者に送信する
+    // tokio::spawn: asyncファンクションを別スレッドで実行してくれる
     let mut recv_task = tokio::spawn(async move {
+        println!("recv_task文が実行されたよ, Join Chat③");
         while let Some(Ok(Message::Text(text))) = receiver.next().await {
-            // Add username before message.
-            let _ = tx.send(format!("{}: {}", name, text));
+            result = parse_result(text).await.unwrap();
+            match result {
+                Some(res) => {
+                    // txはブロードキャスト用
+                    // tx(送信機)の対であるrxに向けて送信される(send_taskに対して送信)
+                    if res.message_type == "SendMessage" {
+                        let msg = serde_json::to_string(&res).unwrap();
+                        let _ = tx.send(msg);
+                    }
+                }, 
+                None => {
+                }
+            }
         }
     });
 
@@ -174,13 +199,6 @@ async fn websocket(stream: WebSocket, state: Arc<AppState>) {
         _ = (&mut send_task) => recv_task.abort(),
         _ = (&mut recv_task) => send_task.abort(),
     };
-
-    // Send user left message.
-    let msg = format!("{} left.", username);
-    tracing::debug!("{}", msg);
-    let _ = state.tx.send(msg);
-    // Remove username from map so new clients can take it.
-    state.user_set.lock().unwrap().remove(&username);
 }
 
 async fn parse_result(message_text: String) -> anyhow::Result<Option<MessageStruct>> {
@@ -278,4 +296,29 @@ async fn parse_result(message_text: String) -> anyhow::Result<Option<MessageStru
         user_id: user_id.clone(),
     };
     return Ok(Some(result))
+}
+
+fn parse_message_type_and_user_id(state: &AppState, user_id_text: &mut String, message_type_text: &mut String, message_text: String) {
+    let mut user_id = String::new();
+
+    let messages: Value = serde_json::from_str(&message_text).unwrap();
+    let message = messages[0].clone();
+    // user_idの取り出し
+    if let Value::String(user_id_string) = &message["user_id"] {
+        user_id.push_str(user_id_string.as_str());
+    }
+
+    let mut user_id_set = state.user_id_set.lock().unwrap();
+
+    if !user_id_set.contains(&user_id) {
+        user_id_set.insert(user_id.to_owned());
+
+        user_id_text.push_str(&user_id);
+    }
+
+    // message_typeの取り出し
+    if let Value::String(message_type_string) = &message["message_type"] {
+        message_type_text.push_str(&message_type_string);
+    }
+
 }

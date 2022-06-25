@@ -1,2 +1,2 @@
 // 開発用(毎回URLが変わるため、手動で変更)(3000ポートの方)
-export const API_SERVER_URL = 'https://9a80-217-178-132-209.jp.ngrok.io'
+export const API_SERVER_URL = 'https://821b-217-178-132-209.jp.ngrok.io'
