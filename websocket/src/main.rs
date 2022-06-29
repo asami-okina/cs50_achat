@@ -49,7 +49,7 @@ use serde::{Serialize, Deserialize};
 // Our shared state
 #[derive(Debug)]
 struct AppState {
-    user_id_set: Mutex<HashSet<String>>,
+    user_id_set: Arc<Mutex<HashSet<String>>>,
     tx: broadcast::Sender<String>,
 }
 
@@ -63,7 +63,7 @@ async fn main() {
     .with(tracing_subscriber::fmt::layer())
     .init();
 
-    let user_id_set = Mutex::new(HashSet::new());
+    let user_id_set = Arc::new(Mutex::new(HashSet::new()));
     let (tx, _rx) = broadcast::channel(100);
 
     let app_state = Arc::new(AppState { user_id_set, tx });
@@ -162,7 +162,11 @@ async fn websocket(stream: WebSocket, state: Arc<AppState>) {
     // tokio::spawn: asyncファンクションを別スレッドで実行してくれる
     // move: あるスレッドのデータを別のスレッドで使用できるようになる(所有権を移す)
     // 立ち上げたスレッドは、メッセージをチャネルを通して送信できるように、チャネルの送信側を所有する必要がある
-    let mut send_task = tokio::spawn(async move {
+    let mut send_task = {
+        let state = state.clone();
+        // HashSetはreadonlyだから、cloneしても問題ない
+        let mut user_id_set = state.user_id_set.lock().unwrap().clone();
+        tokio::spawn(async move {
         println!("send_task文が実行されたよ, Join Chat④");
         // rx: receiver(受信側)
         // rx: receiver(受信側)は.next()で消費される
@@ -174,7 +178,7 @@ async fn websocket(stream: WebSocket, state: Arc<AppState>) {
                 Some(ids) => {
                     // let mut user_id_set = state.user_id_set.lock().unwrap();
                     for send_user_id in ids {
-                        let mut user_id_set = state.user_id_set.lock().unwrap();
+                        // let mut user_id_set = state.user_id_set.lock().unwrap();
                         if user_id_set.contains(&send_user_id) {
                             let clone_msg = msg.clone();
                             if sender.send(Message::Text(clone_msg)).await.is_err() {
@@ -191,11 +195,11 @@ async fn websocket(stream: WebSocket, state: Arc<AppState>) {
             };
 
         }
-    });
+    })};
 
     // 受信側のタスクに渡したいもの(Senderとuser_id)をクローンする
     // tx: Senderをクローンする
-    let tx = state.tx.clone();
+    let tx = state.clone().tx.clone();
 
     // このタスクは、クライアントからメッセージを受信し、ブロードキャスト購読者に送信する
     // tokio::spawn: asyncファンクションを別スレッドで実行してくれる
