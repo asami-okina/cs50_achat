@@ -163,11 +163,10 @@ async fn websocket(stream: WebSocket, state: Arc<AppState>) {
     // move: あるスレッドのデータを別のスレッドで使用できるようになる(所有権を移す)
     // 立ち上げたスレッドは、メッセージをチャネルを通して送信できるように、チャネルの送信側を所有する必要がある
     let mut send_task = {
-        let state = state.clone();
+        // let state = state.clone();
         // HashSetはreadonlyだから、cloneしても問題ない
-        let mut user_id_set = state.user_id_set.lock().unwrap().clone();
+        let user_id_set = state.user_id_set.lock().unwrap().clone();
         tokio::spawn(async move {
-        println!("send_task文が実行されたよ, Join Chat④");
         // rx: receiver(受信側)
         // rx: receiver(受信側)は.next()で消費される
         while let Ok(msg) = rx.recv().await {
@@ -176,14 +175,14 @@ async fn websocket(stream: WebSocket, state: Arc<AppState>) {
             let send_user_ids: SendUserIds = serde_json::from_str(&msg).unwrap();
             match send_user_ids.send_user_ids {
                 Some(ids) => {
-                    // let mut user_id_set = state.user_id_set.lock().unwrap();
                     for send_user_id in ids {
-                        // let mut user_id_set = state.user_id_set.lock().unwrap();
                         if user_id_set.contains(&send_user_id) {
                             let clone_msg = msg.clone();
                             if sender.send(Message::Text(clone_msg)).await.is_err() {
                                 break;
                             }
+                            // 1度送れば、フロントでchat_room_idが一致する人にsetMessageする
+                            break;
                         }
                     }
                 },
@@ -204,7 +203,6 @@ async fn websocket(stream: WebSocket, state: Arc<AppState>) {
     // このタスクは、クライアントからメッセージを受信し、ブロードキャスト購読者に送信する
     // tokio::spawn: asyncファンクションを別スレッドで実行してくれる
     let mut recv_task = tokio::spawn(async move {
-        println!("recv_task文が実行されたよ, Join Chat③");
         while let Some(Ok(Message::Text(text))) = receiver.next().await {
             result = parse_result(text).await.unwrap();
             match result {
