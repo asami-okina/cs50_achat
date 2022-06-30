@@ -57,17 +57,14 @@ export function Chat({ navigation, route }: MainProps) {
 
 	useEffect(() => {
 		const handler = e => {
-			// console.log('e', e)
 			const newMessage = JSON.parse(e.data)
-			// console.log('newMessage', newMessage)
 			if (isMounted.current) {
 				// チャット画面に遷移してきた際にのみ実行
 				if (newMessage["message_type"] === "SetUserId") {
 					return
 				} else {
-					console.log('なんかい')
+					// newMessage["message_type"] === "SendMessage"
 					// メッセージを送った際に実行
-					// console.log('message')
 					// ユーザーが開いているチャットルームに一致する場合のみメッセージを表示する
 					const messageDirectChatRoomId = newMessage.chat_room_type === "DirectChatRoomId" ? newMessage.chat_room_id : null;
 					const messageGroupChatRoomId = newMessage.chat_room_type === "GroupChatRoomId" ? newMessage.chat_room_id : null;

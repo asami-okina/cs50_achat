@@ -1,9 +1,4 @@
-// websocketには2つの要素が必要
-// ①コネクションを管理する人
-// ②メッセージを受信した際に何かをする人
-
 // ★channelから生成した、送信機と転送機に対してメッセージのやりとりを行う(対になっている)
-
 use axum::{
     extract::{
         // WebSocketUpgrade: 受信したHTTPリクエストをWebsocketにアップグレードするために使用する
@@ -26,7 +21,7 @@ use std::{
     // Mutexとは同時に1つのプログラムの流れのみが資源を占有し、他の使用を排除する方式。また、Cell系のように内部可変性を提供する
     // Rc<T>は参照カウントの値を作ることで、1つの値に複数の所有者を与える。しかし、スレッド間で共有するには安全ではない。
     // Arc<T>は複数スレッドで1つの値に複数の所有権を与える。
-    // RefCecc<T>は実行時に精査される可変借用を許可するので、RefCell<T>が不変でも、RefCell<T>内の値を可変化できる
+    // RefCec<T>は実行時に精査される可変借用を許可するので、RefCell<T>が不変でも、RefCell<T>内の値を可変化できる
     sync::{Arc, Mutex},
 };
 // tokio::sync::broadcastは、feature="sync"のみに対応。
@@ -34,7 +29,7 @@ use std::{
 // Senderハンドルはクローン可能であり、同時に送信と受信を行うことができる
 // SenderとReceiverはTがそれぞれSend(スレッド間の所有権の転送を許可)またはSync(複数のスレッドからのアクセスを許可)である限り、SendとSyncの両方となる。
 // 値が送信されると、すべてのReceiverハンドルに通知され、その値を受信します。
-// 値はチャネル内に一旦保存され、各レシーバに対してオンデマンドでクローン化されます。すべてのレシーバが値のクローンを受信すると、値はチャネルから解放されます
+// 値はチャネル内に一旦保存され、各レシーバに対してオンデマンドでクローン化される。すべてのレシーバが値のクローンを受信すると、値はチャネルから解放されます
 use tokio::sync::broadcast;
 use serde_json::Value;
 use tower_http::add_extension::AddExtensionLayer;
@@ -129,7 +124,6 @@ async fn websocket(stream: WebSocket, state: Arc<AppState>) {
     let (mut sender, mut receiver) = stream.split();
 
     let mut user_id: String = String::new();
-    // let mut result:Option<MessageStruct> = None;
     let mut message_type: String = String::new();
     let message_type_enum: MessageTypeEnum;
 
@@ -170,7 +164,6 @@ async fn websocket(stream: WebSocket, state: Arc<AppState>) {
     // move: あるスレッドのデータを別のスレッドで使用できるようになる(所有権を移す)
     // 立ち上げたスレッドは、メッセージをチャネルを通して送信できるように、チャネルの送信側を所有する必要がある
     let mut send_task = {
-        // HashSetはreadonlyだから、cloneしても問題ない
         let user_id_set = state.user_id_set.lock().unwrap().clone();
         tokio::spawn(async move {
         // rx: receiver(受信側)
@@ -178,6 +171,9 @@ async fn websocket(stream: WebSocket, state: Arc<AppState>) {
         while let Ok(msg) = rx.recv().await {
             // In any websocket error, break loop.
             // sendメソッドはResult<T,E>型を返すので、エラーの場合にはpanicするようにunwrapを呼び出す
+            // ★①メッセージを送るべきuser_idをsend_user_ids変数に格納
+            // ★②websocketに接続しているuser_id一覧の中のuser_idとメッセージを送るべきuser_idが一致していれば、メッセージを送信
+            // ★③send_user_idのうち、1件のuser_idにメッセージを送信したら、フロントでchat_room_idが一致する全員にwebsocketを配信する
             let send_user_ids: SendUserIds = serde_json::from_str(&msg).unwrap();
             match send_user_ids.send_user_ids {
                 Some(ids) => {
@@ -226,7 +222,6 @@ async fn websocket(stream: WebSocket, state: Arc<AppState>) {
         }
     });
 
-    // If any one of the tasks exit, abort the other.
     tokio::select! {
         _ = (&mut send_task) => recv_task.abort(),
         _ = (&mut recv_task) => send_task.abort(),
