@@ -36,9 +36,6 @@ use std::{
 // 値が送信されると、すべてのReceiverハンドルに通知され、その値を受信します。
 // 値はチャネル内に一旦保存され、各レシーバに対してオンデマンドでクローン化されます。すべてのレシーバが値のクローンを受信すると、値はチャネルから解放されます
 use tokio::sync::broadcast;
-// ロギング
-use tracing_subscriber::{layer::SubscriberExt, util::SubscriberInitExt};
-
 use serde_json::Value;
 use tower_http::add_extension::AddExtensionLayer;
 
@@ -56,12 +53,10 @@ struct AppState {
 #[tokio::main]
 async fn main() {
     // ロギングの設定
-    tracing_subscriber::registry()
-    .with(tracing_subscriber::EnvFilter::new(
-        std::env::var("RUST_LOG").unwrap_or_else(|_| "example_chat=trace".into()),
-    ))
-    .with(tracing_subscriber::fmt::layer())
-    .init();
+    tracing_subscriber::fmt()
+        .with_max_level(tracing::Level::DEBUG)
+        .init();
+    tracing::debug!("this is a tracing line");
 
     let user_id_set = Arc::new(Mutex::new(HashSet::new()));
     let (tx, _rx) = broadcast::channel(100);
@@ -134,9 +129,9 @@ async fn websocket(stream: WebSocket, state: Arc<AppState>) {
     let (mut sender, mut receiver) = stream.split();
 
     let mut user_id: String = String::new();
-    let mut result:Option<MessageStruct> = None;
+    // let mut result:Option<MessageStruct> = None;
     let mut message_type: String = String::new();
-    let mut message_type_enum: MessageTypeEnum = MessageTypeEnum::None;
+    let message_type_enum: MessageTypeEnum;
 
     while let Some(Ok(message)) = receiver.next().await {
         if let Message::Text(message_text) = message {
@@ -175,7 +170,6 @@ async fn websocket(stream: WebSocket, state: Arc<AppState>) {
     // move: あるスレッドのデータを別のスレッドで使用できるようになる(所有権を移す)
     // 立ち上げたスレッドは、メッセージをチャネルを通して送信できるように、チャネルの送信側を所有する必要がある
     let mut send_task = {
-        // let state = state.clone();
         // HashSetはreadonlyだから、cloneしても問題ない
         let user_id_set = state.user_id_set.lock().unwrap().clone();
         tokio::spawn(async move {
@@ -216,7 +210,7 @@ async fn websocket(stream: WebSocket, state: Arc<AppState>) {
     // tokio::spawn: asyncファンクションを別スレッドで実行してくれる
     let mut recv_task = tokio::spawn(async move {
         while let Some(Ok(Message::Text(text))) = receiver.next().await {
-            result = parse_result(text).await.unwrap();
+            let result = parse_result(text).await.unwrap();
             match result {
                 Some(res) => {
                     // txはブロードキャスト用
