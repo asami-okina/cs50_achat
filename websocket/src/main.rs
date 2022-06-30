@@ -94,9 +94,11 @@ enum ChatRoomTypeEnum {
     GroupChatRoomId
 }
 
-#[derive(Debug, Deserialize, Serialize)]
+#[derive(Debug, Deserialize, Serialize,PartialEq)]
 enum MessageTypeEnum {
-    SendMessage(String)
+    SetUserId,
+    SendMessage,
+    None
 }
 #[derive(Debug, Deserialize, Serialize)]
 pub struct MessageStruct {
@@ -106,7 +108,7 @@ pub struct MessageStruct {
     created_at: String,
     send_user_ids: Vec<String>,
     text: String,
-    message_type: String,
+    message_type: MessageTypeEnum,
     user: User,
     user_id: String,
 }
@@ -133,12 +135,20 @@ async fn websocket(stream: WebSocket, state: Arc<AppState>) {
 
     let mut user_id: String = String::new();
     let mut result:Option<MessageStruct> = None;
-    let mut message_type = String::new();
+    let mut message_type: String = String::new();
+    let mut message_type_enum: MessageTypeEnum = MessageTypeEnum::None;
 
     while let Some(Ok(message)) = receiver.next().await {
         if let Message::Text(message_text) = message {
             parse_message_type_and_user_id(&state, &mut user_id, &mut message_type, message_text);
-            if message_type == "SetUserId" {
+            message_type_enum = {
+                if message_type == "SetUserId" {
+                    MessageTypeEnum::SetUserId
+                } else {
+                    MessageTypeEnum::None
+                }
+            };
+            if message_type_enum == MessageTypeEnum::SetUserId {
                 break;
             } else {
                 return;
@@ -149,9 +159,11 @@ async fn websocket(stream: WebSocket, state: Arc<AppState>) {
     // 生成されたReceiverは、subscribeの呼び出し後に送られた値を受け取る
     // tx(送信側)はブロードキャスト
     let mut rx = state.tx.subscribe();
+    
     let message_type = MessageType {
         message_type: message_type.clone()
     };
+
     let msg = serde_json::to_string(&message_type).unwrap();
     let _ = state.tx.send(msg);
 
@@ -209,7 +221,7 @@ async fn websocket(stream: WebSocket, state: Arc<AppState>) {
                 Some(res) => {
                     // txはブロードキャスト用
                     // tx(送信機)の対であるrxに向けて送信される(send_taskに対して送信)
-                    if res.message_type == "SendMessage" {
+                    if res.message_type == MessageTypeEnum::SendMessage {
                         let msg = serde_json::to_string(&res).unwrap();
                         let _ = tx.send(msg);
                     }
@@ -233,7 +245,7 @@ async fn parse_result(message_text: String) -> anyhow::Result<Option<MessageStru
     let mut chat_room_id:u64 = 0;
     let mut chat_room_type =  String::from("");
     let mut created_at = String::from("");
-    let mut message_type = String::from("");
+    let mut message_type:MessageTypeEnum = MessageTypeEnum::None;
     let mut send_user_ids:Vec<String> = vec![];
     let mut text = String::from("");
     let mut user = User {
@@ -275,7 +287,13 @@ async fn parse_result(message_text: String) -> anyhow::Result<Option<MessageStru
 
     // message_typeの取り出し
     if let Value::String(message_type_string) = &message["message_type"] {
-        message_type.push_str(message_type_string);
+        message_type = {
+            if message_type_string == "SendMessage" {
+                MessageTypeEnum::SendMessage
+            } else {
+                MessageTypeEnum::None
+            }
+        };
     }
 
     // send_user_idsの取り出し
