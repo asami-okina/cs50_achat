@@ -16,6 +16,7 @@ import { storage } from '../../storage'
 import { sock } from "../../websocket"
 import { StackScreenProps } from '@react-navigation/stack';
 import { useIsFocused } from '@react-navigation/native'
+import uuid from 'react-native-uuid';
 
 // components
 import { TopAreaWrapper } from "../components/common/topAreaWrapper"
@@ -249,8 +250,8 @@ export function Chat({ navigation, route }: MainProps) {
 		if (image && messages.length === 0) {
 			messages = [
 				{
-					"_id": null, // バックエンドで発行したい(messageテーブルのid)
-					"createdAt": null, // バックエンドで発行したい(messageテーブルのcreated_at)
+					"_id": uuid.v4(),
+					"createdAt": new Date().toLocaleString(),
 					"text": "",
 					"user": {
 						"_id": userId,
@@ -278,12 +279,13 @@ export function Chat({ navigation, route }: MainProps) {
 			messages[0]["chat_room_id"] = groupChatRoomId
 		}
 
-		// websocketでメッセージをサーバーに送る
-		// ★websocketは一旦やめておき、実装予定
-		sock.send(JSON.stringify(messages))
-		_postMessage(messages)
+		// setしたImageをなくす
 		setImage('')
+
+		// websocketでメッセージをサーバーに送る
+		sock.send(JSON.stringify(messages))
 		// メッセージ更新API実行
+		_postMessage(messages)
 	}, [userId, sendUserIds])
 
 	// カスタム送信ボタンのスタイル変更
