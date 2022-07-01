@@ -97,10 +97,11 @@ pub struct MessageStruct {
     chat_room_type: String,
     created_at: String,
     send_user_ids: Vec<String>,
-    text: String,
+    text: Option<String>,
     message_type: MessageTypeEnum,
     user: User,
     user_id: String,
+    image: Option<String>
 }
 
 
@@ -236,12 +237,13 @@ async fn parse_result(message_text: String) -> anyhow::Result<Option<MessageStru
     let mut created_at = String::from("");
     let mut message_type:MessageTypeEnum = MessageTypeEnum::None;
     let mut send_user_ids:Vec<String> = vec![];
-    let mut text = String::from("");
+    let mut text:Option<String> = None;
     let mut user = User {
         _id : String::from("")
     };
     let mut copy_id = String::from("");
     let mut user_id = String::new();
+    let mut image:Option<String> = None;
 
     let messages: Value = serde_json::from_str(&message_text).unwrap();
     let message = messages[0].clone();
@@ -296,7 +298,12 @@ async fn parse_result(message_text: String) -> anyhow::Result<Option<MessageStru
 
     // textの取り出し
     if let Value::String(text_string) = &message["text"] {
-        text.push_str(text_string.as_str());
+        text = Some(text_string.to_string());
+    }
+
+    // imageの取り出し
+    if let Value::String(image_string) = &message["image"] {
+        image = Some(image_string.to_string());
     }
 
     // userの取り出し
@@ -327,6 +334,7 @@ async fn parse_result(message_text: String) -> anyhow::Result<Option<MessageStru
         message_type: message_type,
         user: user,
         user_id: user_id.clone(),
+        image: image
     };
     return Ok(Some(result))
 }
