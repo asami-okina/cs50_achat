@@ -1,7 +1,6 @@
 use axum::{
     response::Json,
 };
-use diesel::sql_types::Bool;
 // シリアライズ: RustのオブジェクトをJSON形式に変換
 // デシリアライズ : JSON形式をRustのオブジェクトに変換
 use serde::{Serialize, Deserialize};
@@ -9,7 +8,6 @@ use serde_json::{Value, json};
 
 use sqlx::mysql::MySqlPool;
 use std::{env, fmt::Debug};
-use uuid::Uuid;
 use pwhash::bcrypt;
 /*
   ログイン
