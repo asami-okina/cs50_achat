@@ -32,6 +32,7 @@ pub async fn handler_sign_up(body_json: Json<Value>) -> Json<Value> {
     .unwrap();
 
     let new_password = hashing_password(&password.to_string());
+    println!("new_password:{:?}",new_password);
 
     let pool = MySqlPool::connect(&env::var("DATABASE_URL").unwrap()).await.unwrap();
     sign_up(&pool, user_id, mail, &new_password).await.unwrap();
