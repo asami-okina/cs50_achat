@@ -6,6 +6,8 @@ use serde_json::{Value, json};
 use sqlx::mysql::MySqlPool;
 use std::{env};
 use std::time::SystemTime;
+
+use pwhash::bcrypt;
 /*
   会員登録
 */
@@ -29,8 +31,11 @@ pub async fn handler_sign_up(body_json: Json<Value>) -> Json<Value> {
     .as_str()
     .unwrap();
 
+    let new_password = hashing_password(&password.to_string());
+    println!("new_password:{:?}", new_password);
+
     let pool = MySqlPool::connect(&env::var("DATABASE_URL").unwrap()).await.unwrap();
-    sign_up(&pool, user_id, mail, password).await.unwrap();
+    sign_up(&pool, user_id, mail, &new_password).await.unwrap();
 
     Json(json!({ "user_id": user_id }))
 }
@@ -54,4 +59,9 @@ async fn sign_up(pool: &MySqlPool, user_id:&str, mail: &str, password: &str) -> 
     .unwrap();
     
     Ok(())
+}
+
+// パスワードハッシング
+fn hashing_password(password: &String) -> String  {
+    bcrypt::hash(password).unwrap()
 }

@@ -1,6 +1,7 @@
 use axum::{
     response::Json,
 };
+use diesel::sql_types::Bool;
 // シリアライズ: RustのオブジェクトをJSON形式に変換
 // デシリアライズ : JSON形式をRustのオブジェクトに変換
 use serde::{Serialize, Deserialize};
@@ -8,6 +9,8 @@ use serde_json::{Value, json};
 
 use sqlx::mysql::MySqlPool;
 use std::{env, fmt::Debug};
+use uuid::Uuid;
+use pwhash::bcrypt;
 /*
   ログイン
 */
@@ -42,17 +45,15 @@ pub async fn log_in(pool: &MySqlPool, mail: &str, password: &str ) -> anyhow::Re
         r#"
             SELECT *
             FROM user
-            WHERE mail = ? AND password = ?
+            WHERE mail = ?
         "#,
-        mail,
-        password
+        mail
     )
     .fetch_all(pool)
     .await
     .unwrap();
 
     let result;
-
     if user.len() == 0 {
         // まだ会員登録されていない
         result = LoginResult {
@@ -61,10 +62,18 @@ pub async fn log_in(pool: &MySqlPool, mail: &str, password: &str ) -> anyhow::Re
         }
     } else {
         // 既に会員登録されている
+        // パスワードのチェック
+        let db_password = user[0].password.clone();
+        let verify:bool = verify_password(&password.to_string(), &db_password);
         result = LoginResult {
             user_id : Some(user[0].id.to_string()) ,
-            certification_result: true
+            certification_result: verify
         }
     }
     Ok(result)
 }
+
+// 生成したハッシュとの突き合わせ
+fn verify_password(password: &str, hashed_password: &String) -> bool {
+    bcrypt::verify(password, &hashed_password)
+  }

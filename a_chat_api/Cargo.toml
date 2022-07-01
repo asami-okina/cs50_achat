@@ -18,3 +18,5 @@ anyhow = "1.0"
 paw = "1.0"
 sqlx = { version = "0.5.13", features = [ "mysql", "runtime-async-std-native-tls" ] }
 structopt = { version = "0.3", features = [ "paw" ] }
+pwhash = "0.3.1"
+uuid = { version = "0.8.1", features = ["serde", "v4"] }
