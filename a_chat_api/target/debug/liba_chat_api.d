@@ -1,1 +1,0 @@
-/Users/backup/Desktop/rust/cs50_achat/a_chat_api/target/debug/liba_chat_api.rlib: /Users/backup/Desktop/rust/cs50_achat/a_chat_api/src/lib.rs /Users/backup/Desktop/rust/cs50_achat/a_chat_api/src/models.rs /Users/backup/Desktop/rust/cs50_achat/a_chat_api/src/schema.rs /Users/backup/Desktop/rust/cs50_achat/a_chat_api/src/utils.rs
