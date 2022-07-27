@@ -1,0 +1,85 @@
+version: "3.9"
+services:
+  tools:
+    build: .
+    tty: true
+    volumes:
+      - type: bind
+        source: ./a_chat_api
+        target: /app
+    environment:
+      - DATABASE_URL=mysql://root:root@mysql:3306/achat
+    depends_on:
+      - mysql
+    networks:
+      - shared
+    working_dir: /app
+    command: sh -c "sleep infinity"
+  api:
+    build: .
+    tty: true
+    volumes:
+      - type: bind
+        source: ./a_chat_api
+        target: /app
+      - type: volume
+        source: api_target
+        target: /app/target
+    environment:
+      - DATABASE_URL=mysql://root:root@mysql:3306/achat
+    depends_on:
+      - mysql
+    expose:
+      - "3000"
+    ports:
+      - "3000:3000"
+    networks:
+      - shared
+    working_dir: /app
+    command: sh -c "cargo watch -x 'run --bin main'"
+  ws:
+    build: .
+    tty: true
+    volumes:
+      - type: bind
+        source: ./websocket
+        target: /app
+      - type: volume
+        source: ws_target
+        target: /app/target
+    depends_on:
+      - mysql
+    expose:
+      - "3012"
+    ports:
+      - "3012:3012"
+    networks:
+      - shared
+    working_dir: /app
+    command: sh -c "cargo watch -x 'run'"
+
+  mysql:
+    image: mysql:8.0.29
+    tty: true
+    volumes:
+      - type: volume
+        source: mysql_data
+        target: /var/lib/mysql
+    environment:
+      MYSQL_DATABASE: "achat"
+      MYSQL_ROOT_PASSWORD: "root"
+      TZ: "Asia/Tokyo"
+    expose:
+      - "3306"
+    ports:
+      - 3306:3306
+    networks:
+      - shared
+
+networks:
+  shared:
+
+volumes:
+  mysql_data:
+  api_target:
+  ws_target:
