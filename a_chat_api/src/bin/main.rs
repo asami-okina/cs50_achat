@@ -41,9 +41,9 @@ async fn main(){
         .route("/api/users/:user_id/chat", get(fetch_component::fetch_user_ids_by_direct_or_group_chat_room_id::handler_fetch_user_ids_by_direct_or_group_chat_room_id));
 
     // localhost:3000 で hyper と共に実行する
-    axum::Server::bind(&"127.0.0.1:3000".parse().unwrap())
+    axum::Server::bind(&"0.0.0.0:3000".parse().unwrap())
         .serve(app.into_make_service())
         .await
         .unwrap();
- 
+
 }
