@@ -105,6 +105,7 @@ export function Chat({ navigation, route }: MainProps) {
 			})
 			// レスポンスをJSONにする
 			const parse_response = await response.json()
+			console.log("parse_response",parse_response)
 			if (parse_response.messages.length !== 0) {
 				setMessages(parse_response.messages)
 			} else {
@@ -312,7 +313,8 @@ export function Chat({ navigation, route }: MainProps) {
 				>
 					{ownUserId && (
 						<View style={[styles.readRightContainerStyle, styles.readRightContainerStyle]}>
-							<Text style={styles.readStyle}>{props.currentMessage.received ? "Read" : "Unread"}</Text>
+							{/* 既読未読処理はアップデート対応 */}
+							{/* <Text style={styles.readStyle}>{props.currentMessage.received ? "Read" : "Unread"}</Text> */}
 							<Text style={styles.readStyle}>{moment(props.currentMessage.created_at * 1000).format("HH:mm")}</Text>
 						</View>
 					)}
