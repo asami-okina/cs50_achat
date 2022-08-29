@@ -4,7 +4,8 @@
 		"paths": {
 				"assets": ["./assets/*"],
 				"src": ["./src/*"]
-		}
+		},
+		"esModuleInterop": true
 	},
-  "extends": "expo/tsconfig.base"
+	"extends": "expo/tsconfig.base"
 }
