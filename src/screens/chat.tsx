@@ -58,7 +58,9 @@ export function Chat({ navigation, route }: MainProps) {
 
 	useEffect(() => {
 		const handler = e => {
-			const newMessage = JSON.parse(e.data)
+			let newMessage = JSON.parse(e.data)
+			// newMessageにメッセージ作成時間を追加
+			newMessage.created_at = moment().unix()
 			if (isMounted.current) {
 				// チャット画面に遷移してきた際にのみ実行
 				if (newMessage["message_type"] === "SetUserId") {
@@ -302,6 +304,7 @@ export function Chat({ navigation, route }: MainProps) {
 	// 送信メッセージのスタイル変更
 	const _renderBubble = (props) => {
 		const ownUserId: boolean = props.currentMessage.user._id === userId
+		// console.log("props.currentMessage",props.currentMessage)
 		return (
 			<View>
 				<View
@@ -310,7 +313,7 @@ export function Chat({ navigation, route }: MainProps) {
 					{ownUserId && (
 						<View style={[styles.readRightContainerStyle, styles.readRightContainerStyle]}>
 							<Text style={styles.readStyle}>{props.currentMessage.received ? "Read" : "Unread"}</Text>
-							<Text style={styles.readStyle}>{moment(props.currentMessage.createdAt).format("HH:mm")}</Text>
+							<Text style={styles.readStyle}>{moment(props.currentMessage.created_at * 1000).format("HH:mm")}</Text>
 						</View>
 					)}
 					{ownUserId && (
@@ -352,7 +355,7 @@ export function Chat({ navigation, route }: MainProps) {
 									<FontAwesome name='download' color={MAIN_NAVY_COLOR} size={24} margin={0} />
 								</Pressable>
 							)}
-							<Text style={styles.readStyle}>{moment(props.currentMessage.createdAt).format("HH:mm")}</Text>
+							<Text style={styles.readStyle}>{moment(props.currentMessage.created_at * 1000).format("HH:mm")}</Text>
 						</View>
 					)}
 				</View>
