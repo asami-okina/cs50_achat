@@ -445,17 +445,19 @@ export function Chat({ navigation, route }: MainProps) {
 		// APIが完成したら、initialApiCountのif文とsetInitialApiCountは削除する
 		// 追加のメッセージがある場合のみ、API実行中のローディングを表示
 		if (addMessages.length !== 0 && initialApiCount) {
-			setLoadEarlier(true)
+			// 追加のメッセージがある場合の読み込みは今後アップデート
+			// setLoadEarlier(true)
 		} if (initialApiCount) {
-			setTimeout(() => {
-				// マウントされているか判定
-				if (isMounted.current) {
-					const newData = [...messages, ...addMessages];
-					setMessages(newData)
-					setLoadEarlier(false)
-					setInitialApiCount(false)
-				}
-			}, 1000)
+			// 追加のメッセージがある場合の読み込みは今後アップデート
+			// setTimeout(() => {
+			// 	// マウントされているか判定
+			// 	if (isMounted.current) {
+			// 		const newData = [...messages, ...addMessages];
+			// 		setMessages(newData)
+			// 		setLoadEarlier(false)
+			// 		setInitialApiCount(false)
+			// 	}
+			// }, 1000)
 		}
 	}
 
