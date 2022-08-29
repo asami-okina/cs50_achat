@@ -162,10 +162,6 @@ export function Home() {
 		}
 	}
 
-	useEffect(() => {
-
-	}, [])
-
 	// ユーザーIDの取得
 	useEffect(() => {
 		storage.load({
