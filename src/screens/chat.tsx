@@ -603,7 +603,9 @@ export function Chat({ navigation, route }: MainProps) {
 	useEffect(() => {
 		// チャットルームIDに紐づくチャット履歴の取得
 		if (isMounted) {
-			_fetchMessageByChatRoomId()
+			if (directChatRoomId || groupChatRoomId){
+				_fetchMessageByChatRoomId()
+			}
 			// 最終既読日時の更新
 			_updateLastReadTime()
 			// directChatRoomId/groupChatRoomIdに紐づくメンバーのユーザーIDを取得
