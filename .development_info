@@ -82,7 +82,7 @@ expo start
   全体起動方法(rust)
 */
 ①ngrokを起動(a_chat_apiディレクトリ内にて実行)
-ngrok http 3000
+ngrok start client wss --config ./ngrok.yml
 
 ②以下1ファイルのURLを変更
 1.src/constants/api.ts
