@@ -57,7 +57,9 @@ pub async fn fetch_friend_list(pool: &MySqlPool, user_id:&str) -> anyhow::Result
                     WHERE
                         f.from_user_id = ?
                 )
-            "#,
+            AND f.from_user_id = ?
+        "#,
+        user_id,
         user_id
     )
     .fetch_all(pool)

@@ -143,7 +143,7 @@ pub async fn parse_friend_fetch_message_by_chat_room_id_result(pool: &MySqlPool,
             WHERE
                 m.direct_chat_room_id = ?
             ORDER BY
-                m.created_at
+                m.created_at  DESC
             "#,
             chat_room_id
     )
@@ -214,7 +214,7 @@ pub async fn parse_group_fetch_message_by_chat_room_id_result(pool: &MySqlPool, 
             WHERE
                 m.group_chat_room_id = ?
             ORDER BY
-                m.created_at
+                m.created_at DESC
             "#,
             chat_room_id
     )
