@@ -69,6 +69,13 @@ export function Chat({ navigation, route }: MainProps) {
 					// newMessage["message_type"] === "SendMessage"
 					// メッセージを送った際に実行
 					// ユーザーが開いているチャットルームに一致する場合のみメッセージを表示する
+					if (directChatRoomId) {
+						newMessage["chat_room_id"] = directChatRoomId
+					}
+			
+					if (groupChatRoomId) {
+						newMessage["chat_room_id"] = groupChatRoomId
+					}
 					const messageDirectChatRoomId = newMessage.chat_room_type === "DirectChatRoomId" ? newMessage.chat_room_id : null;
 					const messageGroupChatRoomId = newMessage.chat_room_type === "GroupChatRoomId" ? newMessage.chat_room_id : null;
 					if ((directChatRoomId !== null && directChatRoomId === messageDirectChatRoomId) || (groupChatRoomId !== null && groupChatRoomId === messageGroupChatRoomId)) {
@@ -105,7 +112,6 @@ export function Chat({ navigation, route }: MainProps) {
 			})
 			// レスポンスをJSONにする
 			const parse_response = await response.json()
-			console.log("parse_response",parse_response)
 			if (parse_response.messages.length !== 0) {
 				setMessages(parse_response.messages)
 			} else {
