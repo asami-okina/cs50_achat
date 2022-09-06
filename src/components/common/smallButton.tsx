@@ -139,13 +139,7 @@ export function SmallButton({
       };
       const response = await fetch(
         API_SERVER_URL + `/api/users/${userId}/group-member`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(bodyData),
-        }
+        post_fetch_api_header(bodyData)
       );
       // レスポンスをJSONにする
       const parse_response = await response.json();
