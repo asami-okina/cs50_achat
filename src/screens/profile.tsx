@@ -8,6 +8,7 @@ import {
 } from "react-native";
 import { useIsFocused } from "@react-navigation/native";
 import { storage } from "../../storage";
+import { get_fetch_api_header } from "../constants/common";
 
 // components
 import { TopAreaWrapper } from "../components/common/topAreaWrapper";
@@ -40,12 +41,7 @@ export function Profile() {
       // APIリクエスト
       const response = await fetch(
         API_SERVER_URL + `/api/users/${userId}/profile`,
-        {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
+        get_fetch_api_header
       );
       // レスポンスをJSONにする
       const parse_response = await response.json();

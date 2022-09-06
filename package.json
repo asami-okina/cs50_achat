@@ -8,7 +8,10 @@
     "ios": "expo start --ios",
     "web": "expo start --web",
     "eject": "expo eject",
-    "lint:fix": "prettier --write src/**/*.tsx"
+    "lint:fix": "prettier --write **/*.{js,json,md,html,tsx}"
+  },
+  "prettier": {
+    "semi": true
   },
   "dependencies": {
     "@expo-google-fonts/abeezee": "^0.2.2",

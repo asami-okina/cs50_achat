@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from "react";
 import { View, SafeAreaView, KeyboardAvoidingView } from "react-native";
 import { useIsFocused } from "@react-navigation/native";
-import { StackScreenProps } from "@react-navigation/stack";
+import { get_fetch_api_header } from "../constants/common";
 
 // components
 import { Footer } from "../components/common/footer";
@@ -76,12 +76,7 @@ export function Home() {
       // APIリクエスト
       const response = await fetch(
         API_SERVER_URL + `/api/users/${userId}/home?${query_params}`,
-        {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
+        get_fetch_api_header
       );
       // レスポンスをJSONにする
       const parse_response = await response.json();
@@ -104,12 +99,7 @@ export function Home() {
       // APIリクエスト
       const response = await fetch(
         API_SERVER_URL + `/api/users/${userId}/groups`,
-        {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
+        get_fetch_api_header
       );
       // レスポンスをJSONにする
       const parse_response = await response.json();
@@ -127,12 +117,7 @@ export function Home() {
       // APIリクエスト
       const response = await fetch(
         API_SERVER_URL + `/api/users/${userId}/group-count`,
-        {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
+        get_fetch_api_header
       );
       // レスポンスをJSONにする
       const parse_response = await response.json();
@@ -148,12 +133,7 @@ export function Home() {
       // APIリクエスト
       const response = await fetch(
         API_SERVER_URL + `/api/users/${userId}/friends`,
-        {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
+        get_fetch_api_header
       );
       // レスポンスをJSONにする
       const parse_response = await response.json();
@@ -171,12 +151,7 @@ export function Home() {
       // APIリクエスト
       const response = await fetch(
         API_SERVER_URL + `/api/users/${userId}/friend-count`,
-        {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
+        get_fetch_api_header
       );
       // レスポンスをJSONにする
       const parse_response = await response.json();

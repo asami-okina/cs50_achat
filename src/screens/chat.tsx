@@ -35,6 +35,8 @@ import { sock } from "../../websocket";
 import { StackScreenProps } from "@react-navigation/stack";
 import { useIsFocused } from "@react-navigation/native";
 import uuid from "react-native-uuid";
+import { get_fetch_api_header } from "../constants/common";
+import { post_fetch_api_header } from "../constants/common";
 
 // components
 import { TopAreaWrapper } from "../components/common/topAreaWrapper";
@@ -54,7 +56,6 @@ import {
   STANDARD_FONT,
   MAIN_YELLOW_COLOR,
   IPHONE_X_BOTTOM_SPACE,
-  OPERATION_SCREEN_HEIGHT_IPHONE_X,
 } from "../constants/layout";
 
 // type
@@ -160,12 +161,7 @@ export function Chat({ navigation, route }: MainProps) {
       // APIリクエスト
       const response = await fetch(
         API_SERVER_URL + `/api/users/${userId}/message?${query_params}`,
-        {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
+        get_fetch_api_header
       );
       // レスポンスをJSONにする
       const parse_response = await response.json();
@@ -200,12 +196,7 @@ export function Chat({ navigation, route }: MainProps) {
       // APIリクエスト
       const response = await fetch(
         API_SERVER_URL + `/api/users/${userId}/chat?${query_params}`,
-        {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
+        get_fetch_api_header
       );
       // レスポンスをJSONにする
       const parse_response = await response.json();
@@ -244,13 +235,7 @@ export function Chat({ navigation, route }: MainProps) {
         };
         let response = await fetch(
           API_SERVER_URL + `/api/users/${userId}/message`,
-          {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify(bodyData),
-          }
+          post_fetch_api_header(bodyData)
         );
         // 2回目の送信(画像のみ)
         bodyData = {
@@ -263,13 +248,7 @@ export function Chat({ navigation, route }: MainProps) {
         };
         response = await fetch(
           API_SERVER_URL + `/api/users/${userId}/message`,
-          {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify(bodyData),
-          }
+          post_fetch_api_header(bodyData)
         );
       } else {
         // テキスト、画像どちらか1つのみの場合
@@ -285,13 +264,7 @@ export function Chat({ navigation, route }: MainProps) {
         };
         const response = await fetch(
           API_SERVER_URL + `/api/users/${userId}/message`,
-          {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify(bodyData),
-          }
+          post_fetch_api_header(bodyData)
         );
       }
     } catch (e) {
@@ -320,13 +293,7 @@ export function Chat({ navigation, route }: MainProps) {
 
       const response = await fetch(
         API_SERVER_URL + `/api/users/${userId}/last-read-time`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(bodyData),
-        }
+        post_fetch_api_header(bodyData)
       );
     } catch (e) {
       console.error(e);
@@ -690,12 +657,7 @@ export function Chat({ navigation, route }: MainProps) {
       // APIリクエスト
       const response = await fetch(
         API_SERVER_URL + `/api/users/${userId}/friend?${query_params}`,
-        {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
+        get_fetch_api_header
       );
       // レスポンスをJSONにする
       const parse_response = await response.json();

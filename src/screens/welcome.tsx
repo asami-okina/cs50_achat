@@ -1,7 +1,6 @@
 // libs
 import React from "react";
 import { View, SafeAreaView } from "react-native";
-import { StackScreenProps } from "@react-navigation/stack";
 
 // components
 import { Button } from "../components/common/button";

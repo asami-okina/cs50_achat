@@ -7,7 +7,6 @@ import {
   KeyboardAvoidingView,
   Text,
 } from "react-native";
-import { StackScreenProps } from "@react-navigation/stack";
 
 // components
 import { MailForm } from "../components/signUp/mailForm";

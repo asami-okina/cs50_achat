@@ -4,6 +4,7 @@ import { View, SafeAreaView, KeyboardAvoidingView } from "react-native";
 import { API_SERVER_URL } from "../constants/api";
 import { storage } from "../../storage";
 import { StackScreenProps } from "@react-navigation/stack";
+import { get_fetch_api_header } from "../constants/common";
 
 // components
 import { Footer } from "../components/common/footer";
@@ -67,12 +68,7 @@ export function AddGroup({ route }: MainProps) {
       // APIリクエスト
       const response = await fetch(
         API_SERVER_URL + `/api/users/${userId}/home?${query_params}`,
-        {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
+        get_fetch_api_header
       );
       // レスポンスをJSONにする
       const parse_response = await response.json();
@@ -95,12 +91,7 @@ export function AddGroup({ route }: MainProps) {
       // APIリクエスト
       const response = await fetch(
         API_SERVER_URL + `/api/users/${userId}/friends`,
-        {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
+        get_fetch_api_header
       );
       // レスポンスをJSONにする
       const parse_response = await response.json();

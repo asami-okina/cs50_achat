@@ -9,6 +9,7 @@ import {
 } from "react-native";
 import { storage } from "../../storage";
 import { StackScreenProps } from "@react-navigation/stack";
+import { post_fetch_api_header } from "../constants/common";
 
 // components
 import { ToSignUpOrLoginTextArea } from "../components/common/toSignUpOrLoginTextArea";
@@ -51,13 +52,10 @@ export function LogIn({ navigation }: MainProps) {
         mail: emailText,
         password: passwordText,
       };
-      const response = await fetch(API_SERVER_URL + `/api/login`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(bodyData),
-      });
+      const response = await fetch(
+        API_SERVER_URL + `/api/login`,
+        post_fetch_api_header(bodyData)
+      );
 
       // レスポンスをJSONにする
       const parse_response = await response.json();
