@@ -8,7 +8,7 @@ use crate::common::mysqlpool_connect;
 use serde::{Deserialize, Serialize};
 use serde_json::{json, Value};
 use sqlx::mysql::MySqlPool;
-use std::{env, fmt::Debug};
+
 /*
   ニックネームまたはグループ名の検索でヒットするユーザーまたはグループ情報の取得
 */
