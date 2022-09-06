@@ -24,27 +24,41 @@ export function MailFormDescription({
       {displayMailDescription ? (
         !isCorrectMail || !isAvailableMail ? (
           <View style={formDescriptionStyles.descriptionBoxStyle}>
-            <View style={formDescriptionStyles.descriptionWrapperStyle}>
-              <View style={formDescriptionStyles.descriptionContainerStyle}>
+            <View
+              style={formDescriptionStyles.descriptionWrapperStyle}
+            >
+              <View
+                style={
+                  formDescriptionStyles.descriptionContainerStyle
+                }
+              >
                 {!defaultDisplayMailIcons ? (
                   isCorrectMail ? (
                     <Image
                       source={require("../../../../assets/images/correct.png")}
-                      style={formDescriptionStyles.descriptionIconStyle}
+                      style={
+                        formDescriptionStyles.descriptionIconStyle
+                      }
                     />
                   ) : (
                     <Image
                       source={require("../../../../assets/images/incorrect.png")}
-                      style={formDescriptionStyles.descriptionIconStyle}
+                      style={
+                        formDescriptionStyles.descriptionIconStyle
+                      }
                     />
                   )
                 ) : null}
-                <Text style={formDescriptionStyles.descriptionTextStyle}>
+                <Text
+                  style={formDescriptionStyles.descriptionTextStyle}
+                >
                   Email address format is incorrect.
                 </Text>
               </View>
             </View>
-            <View style={formDescriptionStyles.descriptionContainerStyle}>
+            <View
+              style={formDescriptionStyles.descriptionContainerStyle}
+            >
               {!defaultDisplayMailIcons ? (
                 isAvailableMail ? (
                   <Image
@@ -58,7 +72,9 @@ export function MailFormDescription({
                   />
                 )
               ) : null}
-              <Text style={formDescriptionStyles.descriptionTextStyle}>
+              <Text
+                style={formDescriptionStyles.descriptionTextStyle}
+              >
                 Available.
               </Text>
             </View>

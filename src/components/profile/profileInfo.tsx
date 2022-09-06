@@ -1,6 +1,13 @@
 // libs
 import React, { useState, useEffect } from "react";
-import { View, Text, StyleSheet, Image, Switch, Pressable } from "react-native";
+import {
+  View,
+  Text,
+  StyleSheet,
+  Image,
+  Switch,
+  Pressable,
+} from "react-native";
 import { API_SERVER_URL } from "../../constants/api";
 import { storage } from "../../../storage";
 import { useNavigationAChat } from "../../hooks/useNavigationAChat";
@@ -97,10 +104,15 @@ export function ProfileInfo({
       </Pressable>
       {/* 検索許可トグル */}
       <View style={styles.listContainerStyle}>
-        <Text style={styles.searchTitleStyle}>Search for friends by ID</Text>
+        <Text style={styles.searchTitleStyle}>
+          Search for friends by ID
+        </Text>
         <View style={styles.searchContainerStyle}>
           <Switch
-            trackColor={{ false: MAIN_GRAY_COLOR, true: MAIN_YELLOW_GREEN }}
+            trackColor={{
+              false: MAIN_GRAY_COLOR,
+              true: MAIN_YELLOW_GREEN,
+            }}
             thumbColor={MAIN_WHITE_COLOR}
             ios_backgroundColor={MAIN_GRAY_COLOR}
             onValueChange={toggleSwitch}

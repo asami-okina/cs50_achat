@@ -98,7 +98,10 @@ export function Profile() {
         <View style={sameStyles.mainContainerStyle}>
           <View style={styles.profileImageWrapperStyle}>
             {/* プロフィール画像 */}
-            <ProfileImage image={profileImage} setImage={setProfileImage} />
+            <ProfileImage
+              image={profileImage}
+              setImage={setProfileImage}
+            />
             {/* プロフィール */}
             <ProfileInfo
               setNickName={setNickName}

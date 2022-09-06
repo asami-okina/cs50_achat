@@ -75,7 +75,8 @@ export function Chat({ navigation, route }: MainProps) {
     addGroupMemberName,
   } = route.params;
   const [loadEarlier, setLoadEarlier] = useState<boolean>(false);
-  const [initialApiCount, setInitialApiCount] = useState<boolean>(true);
+  const [initialApiCount, setInitialApiCount] =
+    useState<boolean>(true);
 
   // ユーザーID(今後は認証から取得するようにする)
   const [userId, setUserId] = useState<string>(null);
@@ -160,7 +161,8 @@ export function Chat({ navigation, route }: MainProps) {
       const query_params = new URLSearchParams(params);
       // APIリクエスト
       const response = await fetch(
-        API_SERVER_URL + `/api/users/${userId}/message?${query_params}`,
+        API_SERVER_URL +
+          `/api/users/${userId}/message?${query_params}`,
         get_fetch_api_header
       );
       // レスポンスをJSONにする
@@ -361,7 +363,8 @@ export function Chat({ navigation, route }: MainProps) {
   };
   // 送信メッセージのスタイル変更
   const _renderBubble = (props) => {
-    const ownUserId: boolean = props.currentMessage.user._id === userId;
+    const ownUserId: boolean =
+      props.currentMessage.user._id === userId;
     // console.log("props.currentMessage",props.currentMessage)
     return (
       <View>
@@ -376,7 +379,9 @@ export function Chat({ navigation, route }: MainProps) {
               {/* 既読未読処理はアップデート対応 */}
               {/* <Text style={styles.readStyle}>{props.currentMessage.received ? "Read" : "Unread"}</Text> */}
               <Text style={styles.readStyle}>
-                {moment(props.currentMessage.created_at * 1000).format("HH:mm")}
+                {moment(
+                  props.currentMessage.created_at * 1000
+                ).format("HH:mm")}
               </Text>
             </View>
           )}
@@ -427,7 +432,9 @@ export function Chat({ navigation, route }: MainProps) {
                 </Pressable>
               )}
               <Text style={styles.readStyle}>
-                {moment(props.currentMessage.created_at * 1000).format("HH:mm")}
+                {moment(
+                  props.currentMessage.created_at * 1000
+                ).format("HH:mm")}
               </Text>
             </View>
           )}
@@ -579,12 +586,14 @@ export function Chat({ navigation, route }: MainProps) {
 
   // イメージピッカー
   const pickImage = async () => {
-    let result: ImageInfo = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ImagePicker.MediaTypeOptions.All,
-      allowsEditing: true,
-      aspect: [1, 1],
-      quality: 1,
-    });
+    let result: ImageInfo = await ImagePicker.launchImageLibraryAsync(
+      {
+        mediaTypes: ImagePicker.MediaTypeOptions.All,
+        allowsEditing: true,
+        aspect: [1, 1],
+        quality: 1,
+      }
+    );
     if (!result.cancelled) {
       setImage(result.uri);
       // イメージを送信
@@ -609,7 +618,8 @@ export function Chat({ navigation, route }: MainProps) {
             padding: 6,
             borderTopLeftRadius: 15,
             borderTopRightRadius: 15,
-            borderRadius: props.currentMessage.user._id === userId ? 0 : 15,
+            borderRadius:
+              props.currentMessage.user._id === userId ? 0 : 15,
             // 自分が送った画像の場合は、右下のborderRadiusを15に設定
             borderBottomLeftRadius:
               props.currentMessage.user._id === userId ? 15 : 0,
@@ -638,8 +648,10 @@ export function Chat({ navigation, route }: MainProps) {
   };
 
   // グループトーク画面で、クリックした人とのdirectChatRoomId(ない場合は、まだ友達ではない)
-  const [selectedFriendDirectChatRoomId, setSelectedFriendDirectChatRoomId] =
-    useState(null);
+  const [
+    selectedFriendDirectChatRoomId,
+    setSelectedFriendDirectChatRoomId,
+  ] = useState(null);
   // グループトーク画面でクリックした人と既に友達かどうか
   const [selectedUserAlreadyFriend, setSelectedUserAlreadyFriend] =
     useState(false);
@@ -656,13 +668,16 @@ export function Chat({ navigation, route }: MainProps) {
       const query_params = new URLSearchParams(params);
       // APIリクエスト
       const response = await fetch(
-        API_SERVER_URL + `/api/users/${userId}/friend?${query_params}`,
+        API_SERVER_URL +
+          `/api/users/${userId}/friend?${query_params}`,
         get_fetch_api_header
       );
       // レスポンスをJSONにする
       const parse_response = await response.json();
       // グループトーク画面でクリックした人と既に友達かどうか
-      setSelectedUserAlreadyFriend(parse_response.result.already_friend);
+      setSelectedUserAlreadyFriend(
+        parse_response.result.already_friend
+      );
       // グループトーク画面で、クリックした人とのdirectChatRoomId(ない場合は、まだ友達ではない)
       setSelectedFriendDirectChatRoomId(
         parse_response.result.direct_chat_room_id
@@ -704,7 +719,10 @@ export function Chat({ navigation, route }: MainProps) {
     // グループトーク画面でユーザーアイコンをクリックした場合
     if (clickedUserIcon) {
       // 既に友達の場合、Talkが選べるモーダルを表示
-      if (selectedFriendDirectChatRoomId && selectedUserAlreadyFriend) {
+      if (
+        selectedFriendDirectChatRoomId &&
+        selectedUserAlreadyFriend
+      ) {
         navigation.navigate("AlreadyFriendModal", {
           user: selectedUserInfo,
           groupChatRoomId: groupChatRoomId,
@@ -735,7 +753,9 @@ export function Chat({ navigation, route }: MainProps) {
         setUserId(data.userId);
         // websocketにuser_idを送信
         sock.send(
-          JSON.stringify([{ user_id: data.userId, message_type: "SetUserId" }])
+          JSON.stringify([
+            { user_id: data.userId, message_type: "SetUserId" },
+          ])
         );
       });
   }, []);
@@ -775,7 +795,9 @@ export function Chat({ navigation, route }: MainProps) {
               _id: userId,
             }}
             // 画面下のフッター部分
-            renderInputToolbar={(props) => _messengerBarContainer(props)}
+            renderInputToolbar={(props) =>
+              _messengerBarContainer(props)
+            }
             // Sendボタンを常に表示するか
             alwaysShowSend={true}
             // カスタム送信ボタンのスタイル変更

@@ -49,11 +49,17 @@ export function FriendListItem({
     <TouchableHighlight
       onPress={() => {
         // clickedがtrueの場合(この時点ではtrueに変わっていないので、falseで判定)
-        if (!clicked && !groupMemberUserId.includes(list.friend_use_id)) {
+        if (
+          !clicked &&
+          !groupMemberUserId.includes(list.friend_use_id)
+        ) {
           addFriendList(list.key, list.type);
         }
         // clickedがfalseの場合(この時点ではfalseに変わっていないので、trueで判定)
-        if (clicked && !groupMemberUserId.includes(list.friend_use_id)) {
+        if (
+          clicked &&
+          !groupMemberUserId.includes(list.friend_use_id)
+        ) {
           deleteFriendList(list.key, list.type);
         }
       }}
@@ -92,7 +98,9 @@ export function FriendListItem({
               source={require("../../../../assets/images/checked-circle.png")}
               style={styles.circleStyle}
             />
-          ) : groupMemberUserId.includes(list.friend_use_id) ? null : (
+          ) : groupMemberUserId.includes(
+              list.friend_use_id
+            ) ? null : (
             <Image
               source={require("../../../../assets/images/gray_circle.png")}
               style={styles.circleStyle}

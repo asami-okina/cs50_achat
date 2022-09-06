@@ -12,7 +12,9 @@ type ListItemPropsType = {
   type: string;
   setModalVisible: React.Dispatch<React.SetStateAction<boolean>>;
   clickedCancelMordal: boolean;
-  setClickedCancelMordal: React.Dispatch<React.SetStateAction<boolean>>;
+  setClickedCancelMordal: React.Dispatch<
+    React.SetStateAction<boolean>
+  >;
   clickedOkMordal: boolean;
   setClickedOkMordal: React.Dispatch<React.SetStateAction<boolean>>;
   groupList: GroupListPropsType[];
@@ -34,33 +36,37 @@ export function ListItem({
   return (
     <View style={styles.containerStyle}>
       {/* groupの場合 */}
-      {groupList && groupList.length !== 0 && groupList !== undefined && (
-        <Basic
-          groupList={groupList}
-          friendList={null}
-          type={type}
-          setModalVisible={setModalVisible}
-          clickedCancelMordal={clickedCancelMordal}
-          setClickedCancelMordal={setClickedCancelMordal}
-          clickedOkMordal={clickedOkMordal}
-          setClickedOkMordal={setClickedOkMordal}
-          setGroupCount={setGroupCount}
-        />
-      )}
+      {groupList &&
+        groupList.length !== 0 &&
+        groupList !== undefined && (
+          <Basic
+            groupList={groupList}
+            friendList={null}
+            type={type}
+            setModalVisible={setModalVisible}
+            clickedCancelMordal={clickedCancelMordal}
+            setClickedCancelMordal={setClickedCancelMordal}
+            clickedOkMordal={clickedOkMordal}
+            setClickedOkMordal={setClickedOkMordal}
+            setGroupCount={setGroupCount}
+          />
+        )}
       {/* friendの場合 */}
-      {friendList && friendList.length !== 0 && friendList !== undefined && (
-        <Basic
-          groupList={null}
-          friendList={friendList}
-          type={type}
-          setModalVisible={setModalVisible}
-          clickedCancelMordal={clickedCancelMordal}
-          setClickedCancelMordal={setClickedCancelMordal}
-          clickedOkMordal={clickedOkMordal}
-          setClickedOkMordal={setClickedOkMordal}
-          setGroupCount={setGroupCount}
-        />
-      )}
+      {friendList &&
+        friendList.length !== 0 &&
+        friendList !== undefined && (
+          <Basic
+            groupList={null}
+            friendList={friendList}
+            type={type}
+            setModalVisible={setModalVisible}
+            clickedCancelMordal={clickedCancelMordal}
+            setClickedCancelMordal={setClickedCancelMordal}
+            clickedOkMordal={clickedOkMordal}
+            setClickedOkMordal={setClickedOkMordal}
+            setGroupCount={setGroupCount}
+          />
+        )}
     </View>
   );
 }

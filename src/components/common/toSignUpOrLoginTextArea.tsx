@@ -1,6 +1,14 @@
 import React from "react";
-import { Text, View, StyleSheet, TouchableOpacity } from "react-native";
-import { MAIN_PINK_COLOR, STANDARD_FONT } from "../../constants/layout";
+import {
+  Text,
+  View,
+  StyleSheet,
+  TouchableOpacity,
+} from "react-native";
+import {
+  MAIN_PINK_COLOR,
+  STANDARD_FONT,
+} from "../../constants/layout";
 import { useNavigationAChat } from "../../hooks/useNavigationAChat";
 
 type ToSignUpOrLoginTextAreaType = {
@@ -27,7 +35,12 @@ export function ToSignUpOrLoginTextArea({
           }
         }}
       >
-        <Text style={[styles.toLoginTextStyle, styles.toLoginTextLinkStyle]}>
+        <Text
+          style={[
+            styles.toLoginTextStyle,
+            styles.toLoginTextLinkStyle,
+          ]}
+        >
           {link} here
         </Text>
       </TouchableOpacity>

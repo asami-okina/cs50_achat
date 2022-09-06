@@ -42,7 +42,9 @@ export function FriendOrGroupSelectTab({
           }}
         >
           <Text style={styles.textStyle}>Friend</Text>
-          <Text style={styles.countStyle}>{friendCount ? friendCount : 0}</Text>
+          <Text style={styles.countStyle}>
+            {friendCount ? friendCount : 0}
+          </Text>
         </Pressable>
         <Pressable
           style={
@@ -56,7 +58,9 @@ export function FriendOrGroupSelectTab({
           }}
         >
           <Text style={styles.textStyle}>Group</Text>
-          <Text style={styles.countStyle}>{groupCount ? groupCount : 0}</Text>
+          <Text style={styles.countStyle}>
+            {groupCount ? groupCount : 0}
+          </Text>
         </Pressable>
         <View style={styles.remainBorderStyle}></View>
       </View>

@@ -37,12 +37,16 @@ export function LogIn({ navigation }: MainProps) {
   const [passwordText, setPasswordText] = useState<string>("");
 
   // メールアドレスもしくはパスワード入力中
-  const [onFocusInputMailOrPasseword, setOnFocusInputMailOrPasseword] =
-    useState<boolean>(false);
+  const [
+    onFocusInputMailOrPasseword,
+    setOnFocusInputMailOrPasseword,
+  ] = useState<boolean>(false);
 
   // ログインボタンをしたかどうか
-  const [executedLoginAuthentication, setExecutedLoginAuthentication] =
-    useState<boolean>(false);
+  const [
+    executedLoginAuthentication,
+    setExecutedLoginAuthentication,
+  ] = useState<boolean>(false);
 
   // ログイン認証
   async function _loginAuthentication() {
@@ -105,7 +109,9 @@ export function LogIn({ navigation }: MainProps) {
             setEmailText={setEmailText}
             executedLoginAuthentication={executedLoginAuthentication}
             onFocusInputMailOrPasseword={onFocusInputMailOrPasseword}
-            setOnFocusInputMailOrPasseword={setOnFocusInputMailOrPasseword}
+            setOnFocusInputMailOrPasseword={
+              setOnFocusInputMailOrPasseword
+            }
           />
           {/* Password */}
           <PasswordForm
@@ -114,12 +120,16 @@ export function LogIn({ navigation }: MainProps) {
             setPasswordText={setPasswordText}
             executedLoginAuthentication={executedLoginAuthentication}
             onFocusInputMailOrPasseword={onFocusInputMailOrPasseword}
-            setOnFocusInputMailOrPasseword={setOnFocusInputMailOrPasseword}
+            setOnFocusInputMailOrPasseword={
+              setOnFocusInputMailOrPasseword
+            }
           />
           {/* パスワードを忘れた場合 */}
           {/* <ForgotPassword /> */}
           {/* 画面下 */}
-          <View style={sameStyles.bottomStyleByWelcomeAndSignUpAndLogin}>
+          <View
+            style={sameStyles.bottomStyleByWelcomeAndSignUpAndLogin}
+          >
             <Button
               link={"Home"}
               buttonText={"Log In"}
@@ -127,8 +137,10 @@ export function LogIn({ navigation }: MainProps) {
               propsList={{
                 emailText: emailText,
                 passwordText: passwordText,
-                executedLoginAuthentication: executedLoginAuthentication,
-                onFocusInputMailOrPasseword: onFocusInputMailOrPasseword,
+                executedLoginAuthentication:
+                  executedLoginAuthentication,
+                onFocusInputMailOrPasseword:
+                  onFocusInputMailOrPasseword,
                 onPressFunction: _loginAuthentication,
               }}
               enable={false}

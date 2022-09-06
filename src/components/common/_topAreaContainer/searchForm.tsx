@@ -1,6 +1,12 @@
 // libs
 import React, { useEffect, useState } from "react";
-import { View, Pressable, Image, TextInput, StyleSheet } from "react-native";
+import {
+  View,
+  Pressable,
+  Image,
+  TextInput,
+  StyleSheet,
+} from "react-native";
 import { storage } from "../../../../storage";
 
 // constantsSearchStyles
@@ -30,7 +36,8 @@ export function SearchForm({
   placeholder,
 }: SearchFormPropsType) {
   // 検索フォームの削除アイコン表示/非表示
-  const [deleteIconDisplay, setDeleteIconDisplay] = useState<boolean>(false);
+  const [deleteIconDisplay, setDeleteIconDisplay] =
+    useState<boolean>(false);
   const [userId, setUserId] = useState<string>(null);
   // 検索フォームのラベル化
   let textInputSearch;
@@ -90,7 +97,10 @@ export function SearchForm({
           >
             <Image
               source={require("../../../../assets/images/close_gray.png")}
-              style={[searchStyles.searchIconStyle, styles.searchIconStyle]}
+              style={[
+                searchStyles.searchIconStyle,
+                styles.searchIconStyle,
+              ]}
             />
           </Pressable>
         )}

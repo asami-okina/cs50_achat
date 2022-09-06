@@ -1,6 +1,10 @@
 // libs
 import React, { useState, useEffect, useMemo } from "react";
-import { View, SafeAreaView, KeyboardAvoidingView } from "react-native";
+import {
+  View,
+  SafeAreaView,
+  KeyboardAvoidingView,
+} from "react-native";
 import { API_SERVER_URL } from "../constants/api";
 import { storage } from "../../storage";
 import { StackScreenProps } from "@react-navigation/stack";
@@ -19,12 +23,15 @@ import { sameStyles } from "../constants/styles/sameStyles";
 // layouts
 import { IPHONE_X_BOTTOM_SPACE } from "../constants/layout";
 
-type MainProps = StackScreenProps<RootStackParamListType, "AddGroupSetting">;
+type MainProps = StackScreenProps<
+  RootStackParamListType,
+  "AddGroupSetting"
+>;
 
 export function AddGroupSetting({ route }: MainProps) {
-  const [friendList, setFriendList] = useState<NewFriendListPropsType[]>(
-    route.params.friendList
-  );
+  const [friendList, setFriendList] = useState<
+    NewFriendListPropsType[]
+  >(route.params.friendList);
   const [userId, setUserId] = useState<string>(null);
   // グループ設定画面から、メンバー追加で戻ったときにグループ名とグループ画像を保持
   const { backGroupName, backGroupImage } = route.params;
@@ -137,7 +144,10 @@ export function AddGroupSetting({ route }: MainProps) {
           }
         >
           {/* タイトル */}
-          <AddGroupTitle text={"Member"} groupMemberCount={groupMemberCount} />
+          <AddGroupTitle
+            text={"Member"}
+            groupMemberCount={groupMemberCount}
+          />
           {/* 選択された友達のスペース */}
           <SelectedFriendSpace
             friendList={friendList}

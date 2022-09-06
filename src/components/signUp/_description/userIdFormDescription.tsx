@@ -28,58 +28,90 @@ export function UserIdFormDescription({
         !isCorrectUserIdStringCount ||
         !isAvailableUserId ? (
           <View style={formDescriptionStyles.descriptionBoxStyle}>
-            <View style={formDescriptionStyles.descriptionWrapperStyle}>
-              <View style={formDescriptionStyles.descriptionContainerStyle}>
+            <View
+              style={formDescriptionStyles.descriptionWrapperStyle}
+            >
+              <View
+                style={
+                  formDescriptionStyles.descriptionContainerStyle
+                }
+              >
                 {!defaultDisplayUserIcons ? (
                   isCorrectUserIdSymbol ? (
                     <Image
                       source={require("../../../../assets/images/correct.png")}
-                      style={formDescriptionStyles.descriptionIconStyle}
+                      style={
+                        formDescriptionStyles.descriptionIconStyle
+                      }
                     />
                   ) : (
                     <Image
                       source={require("../../../../assets/images/incorrect.png")}
-                      style={formDescriptionStyles.descriptionIconStyle}
+                      style={
+                        formDescriptionStyles.descriptionIconStyle
+                      }
                     />
                   )
                 ) : null}
-                <Text style={formDescriptionStyles.descriptionTextStyle}>
+                <Text
+                  style={formDescriptionStyles.descriptionTextStyle}
+                >
                   Half-width alphanumeric characters only.
                 </Text>
               </View>
-              <View style={formDescriptionStyles.descriptionContainerStyle}>
+              <View
+                style={
+                  formDescriptionStyles.descriptionContainerStyle
+                }
+              >
                 {!defaultDisplayUserIcons ? (
                   isCorrectUserIdStringCount ? (
                     <Image
                       source={require("../../../../assets/images/correct.png")}
-                      style={formDescriptionStyles.descriptionIconStyle}
+                      style={
+                        formDescriptionStyles.descriptionIconStyle
+                      }
                     />
                   ) : (
                     <Image
                       source={require("../../../../assets/images/incorrect.png")}
-                      style={formDescriptionStyles.descriptionIconStyle}
+                      style={
+                        formDescriptionStyles.descriptionIconStyle
+                      }
                     />
                   )
                 ) : null}
-                <Text style={formDescriptionStyles.descriptionTextStyle}>
+                <Text
+                  style={formDescriptionStyles.descriptionTextStyle}
+                >
                   More than 4 words and less than 100 words.
                 </Text>
               </View>
-              <View style={formDescriptionStyles.descriptionContainerStyle}>
+              <View
+                style={
+                  formDescriptionStyles.descriptionContainerStyle
+                }
+              >
                 {!defaultDisplayUserIcons ? (
                   isAvailableUserId ? (
                     <Image
                       source={require("../../../../assets/images/correct.png")}
-                      style={formDescriptionStyles.descriptionIconStyle}
+                      style={
+                        formDescriptionStyles.descriptionIconStyle
+                      }
                     />
                   ) : (
                     <Image
                       source={require("../../../../assets/images/incorrect.png")}
-                      style={formDescriptionStyles.descriptionIconStyle}
+                      style={
+                        formDescriptionStyles.descriptionIconStyle
+                      }
                     />
                   )
                 ) : null}
-                <Text style={formDescriptionStyles.descriptionTextStyle}>
+                <Text
+                  style={formDescriptionStyles.descriptionTextStyle}
+                >
                   Available.
                 </Text>
               </View>

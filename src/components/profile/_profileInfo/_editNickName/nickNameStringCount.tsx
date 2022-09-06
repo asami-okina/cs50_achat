@@ -13,7 +13,9 @@ type NickNameStringCountType = {
   wordCount: number;
 };
 
-export function NickNameStringCount({ wordCount }: NickNameStringCountType) {
+export function NickNameStringCount({
+  wordCount,
+}: NickNameStringCountType) {
   return (
     <View style={styles.nickNameWrapperStyle}>
       <View
@@ -22,7 +24,9 @@ export function NickNameStringCount({ wordCount }: NickNameStringCountType) {
           styles.stringCountContainerStyle,
         ]}
       >
-        <Text style={styles.stringCountTextStyle}>{wordCount} / 20</Text>
+        <Text style={styles.stringCountTextStyle}>
+          {wordCount} / 20
+        </Text>
       </View>
     </View>
   );

@@ -1,6 +1,10 @@
 // libs
 import React, { useEffect, useState } from "react";
-import { View, SafeAreaView, KeyboardAvoidingView } from "react-native";
+import {
+  View,
+  SafeAreaView,
+  KeyboardAvoidingView,
+} from "react-native";
 import { API_SERVER_URL } from "../../constants/api";
 import { storage } from "../../../storage";
 
@@ -22,7 +26,8 @@ import { IPHONE_X_BOTTOM_SPACE } from "../../constants/layout";
 
 export function AddGroupMember({ navigation, route }) {
   // 引数を取得
-  const { groupChatRoomId, groupMemberUserId, image, name } = route.params;
+  const { groupChatRoomId, groupMemberUserId, image, name } =
+    route.params;
   // ユーザーID(今後は認証から取得するようにする)
   const [userId, setUserId] = useState<string>(null);
 
@@ -30,9 +35,8 @@ export function AddGroupMember({ navigation, route }) {
   const [searchText, setSearchText] = useState<string>("");
 
   // [検索前]APIから取得した友達一覧リスト
-  const [beforeFriendListSearch, setBeforeFriendListSearch] = useState<
-    NewFriendListPropsType[]
-  >([]);
+  const [beforeFriendListSearch, setBeforeFriendListSearch] =
+    useState<NewFriendListPropsType[]>([]);
 
   // [検索後]APIから取得した友達一覧リスト
   const [afterFriendListSearch, setAfterFriendListSearch] = useState<
@@ -40,22 +44,20 @@ export function AddGroupMember({ navigation, route }) {
   >([]);
 
   // [検索前後]選択した友達一覧リスト
-  const [mergedSelectedFriendList, setMergerdSelectedFriendList] = useState<
-    NewFriendListPropsType[]
-  >([]);
+  const [mergedSelectedFriendList, setMergerdSelectedFriendList] =
+    useState<NewFriendListPropsType[]>([]);
 
   // [検索前]選択した友達一覧リスト
-  const [beforeSelectedFriendList, setBeforeSelectedFriendList] = useState<
-    NewFriendListPropsType[]
-  >([]);
+  const [beforeSelectedFriendList, setBeforeSelectedFriendList] =
+    useState<NewFriendListPropsType[]>([]);
 
   // [検索後]選択した友達一覧リスト
-  const [afterSelectedFriendList, setAfterSelectedFriendList] = useState<
-    NewFriendListPropsType[]
-  >([]);
+  const [afterSelectedFriendList, setAfterSelectedFriendList] =
+    useState<NewFriendListPropsType[]>([]);
 
   // 検索中かどうか
-  const [isDuringSearch, setIsDuringSearch] = useState<boolean>(false);
+  const [isDuringSearch, setIsDuringSearch] =
+    useState<boolean>(false);
 
   // ニックネームでヒットするユーザーの取得
   async function _searchName(searchText: string) {

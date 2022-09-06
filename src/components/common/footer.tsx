@@ -1,6 +1,12 @@
 // libs
 import React from "react";
-import { Text, View, Pressable, Image, StyleSheet } from "react-native";
+import {
+  Text,
+  View,
+  Pressable,
+  Image,
+  StyleSheet,
+} from "react-native";
 import { useNavigationAChat } from "../../hooks/useNavigationAChat";
 
 // layouts
@@ -27,14 +33,18 @@ export function Footer() {
         style={styles.footerItemStyle}
         onPress={() => navigation.navigate("Chats")}
       >
-        <Image source={require("../../../assets/images/message.png")} />
+        <Image
+          source={require("../../../assets/images/message.png")}
+        />
         <Text style={styles.footerTextStyle}>Chats</Text>
       </Pressable>
       <Pressable
         style={styles.footerItemStyle}
         onPress={() => navigation.navigate("Profile")}
       >
-        <Image source={require("../../../assets/images/white_profile.png")} />
+        <Image
+          source={require("../../../assets/images/white_profile.png")}
+        />
         <Text style={styles.footerTextStyle}>Profile</Text>
       </Pressable>
     </View>

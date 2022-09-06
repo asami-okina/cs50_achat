@@ -15,16 +15,28 @@ import { MAIN_WHITE_COLOR } from "../../../constants/layout";
 
 type ChatBasicType = {
   chatRoomList: ChatRoomListType[];
-  setDeleteModalVisible: React.Dispatch<React.SetStateAction<boolean>>;
+  setDeleteModalVisible: React.Dispatch<
+    React.SetStateAction<boolean>
+  >;
   clickedDeleteCancelMordal: boolean;
-  setClickedDeleteCancelMordal: React.Dispatch<React.SetStateAction<boolean>>;
+  setClickedDeleteCancelMordal: React.Dispatch<
+    React.SetStateAction<boolean>
+  >;
   clickedDeleteOkMordal: boolean;
-  setClickedDeleteOkMordal: React.Dispatch<React.SetStateAction<boolean>>;
-  setHiddenModalVisible: React.Dispatch<React.SetStateAction<boolean>>;
+  setClickedDeleteOkMordal: React.Dispatch<
+    React.SetStateAction<boolean>
+  >;
+  setHiddenModalVisible: React.Dispatch<
+    React.SetStateAction<boolean>
+  >;
   clickedHiddenCancelMordal: boolean;
-  setClickedHiddenCancelMordal: React.Dispatch<React.SetStateAction<boolean>>;
+  setClickedHiddenCancelMordal: React.Dispatch<
+    React.SetStateAction<boolean>
+  >;
   clickedHiddenOkMordal: boolean;
-  setClickedHiddenOkMordal: React.Dispatch<React.SetStateAction<boolean>>;
+  setClickedHiddenOkMordal: React.Dispatch<
+    React.SetStateAction<boolean>
+  >;
   setGroupChatRoomId: React.Dispatch<React.SetStateAction<string>>;
   setDirectChatRoomId: React.Dispatch<React.SetStateAction<string>>;
   groupChatRoomId: string;
@@ -66,7 +78,9 @@ export default function ChatBasic({
   // chatRoomListの更新
   useEffect(() => {
     if (chatRoomList) {
-      setListData(chatRoomList.map((_, i) => ({ ..._, key: `${i}` })));
+      setListData(
+        chatRoomList.map((_, i) => ({ ..._, key: `${i}` }))
+      );
     }
   }, [chatRoomList]);
 
@@ -84,7 +98,9 @@ export default function ChatBasic({
     // Reactの差異を比較するのは、オブジェクト同士。そのため、新しくオブジェクトを作成する必要がある
     const newData = [...listData];
     // findIndex: 配列内の指定されたテスト関数に合格する要素がない場合を含め、それ以外は-1を返す
-    const prevIndex = listData.findIndex((item) => item.key === rowKey);
+    const prevIndex = listData.findIndex(
+      (item) => item.key === rowKey
+    );
     newData.splice(prevIndex, 1);
     setListData(newData);
   };
@@ -140,8 +156,12 @@ export default function ChatBasic({
     try {
       // APIリクエスト
       const bodyData = {
-        direct_chat_room_id: directChatRoomId ? Number(directChatRoomId) : null,
-        group_chat_room_id: groupChatRoomId ? Number(groupChatRoomId) : null,
+        direct_chat_room_id: directChatRoomId
+          ? Number(directChatRoomId)
+          : null,
+        group_chat_room_id: groupChatRoomId
+          ? Number(groupChatRoomId)
+          : null,
         update_type: clickedType,
       };
       const response = await fetch(

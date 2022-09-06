@@ -1,6 +1,11 @@
 // libs
 import React, { useEffect, useState } from "react";
-import { StyleSheet, TouchableOpacity, View, Text } from "react-native";
+import {
+  StyleSheet,
+  TouchableOpacity,
+  View,
+  Text,
+} from "react-native";
 import { API_SERVER_URL } from "../../constants/api";
 import { storage } from "../../../storage";
 import { useNavigationAChat } from "../../hooks/useNavigationAChat";
@@ -52,15 +57,21 @@ export function SmallButton({
   // ユーザーID(今後は認証から取得するようにする)
   const [userId, setUserId] = useState<string>(null);
   // 自分を含めたグループメンバーのuserId
-  const [groupMemberUserIds, setGroupMemberUserIds] = useState<string[]>([]);
+  const [groupMemberUserIds, setGroupMemberUserIds] = useState<
+    string[]
+  >([]);
 
   const [groupChatRoomId, setGroupChatRoomId] = useState<string>("");
 
   // グループに追加したメンバーの名前の配列
-  const [addGroupMemberName, setAddGroupMemberName] = useState<string[]>([]);
+  const [addGroupMemberName, setAddGroupMemberName] = useState<
+    string[]
+  >([]);
 
   // 友達追加したユーザーの情報
-  const [friendInfo, setFriendInfo] = useState<FriendListPropsType[] | []>([]);
+  const [friendInfo, setFriendInfo] = useState<
+    FriendListPropsType[] | []
+  >([]);
 
   // navigation
   const navigation = useNavigationAChat();
@@ -81,7 +92,8 @@ export function SmallButton({
       // レスポンスをJSONにする
       const parse_response = await response.json();
       // グループチャットルームIDを取得
-      const groupChatRoomId = parse_response.group_info.group_chat_room_id;
+      const groupChatRoomId =
+        parse_response.group_info.group_chat_room_id;
       setGroupChatRoomId(groupChatRoomId);
       navigation.navigate("Chat", {
         groupChatRoomId: parse_response.group_info.group_chat_room_id,
@@ -111,7 +123,8 @@ export function SmallButton({
       // 友達チャットに遷移
       navigation.navigate("Chat", {
         groupChatRoomId: null,
-        directChatRoomId: parse_response.friend_info.direct_chat_room_id,
+        directChatRoomId:
+          parse_response.friend_info.direct_chat_room_id,
         profileImage: parse_response.friend_info.friend_profile_image,
         name: parse_response.friend_info.friend_nickname,
       });

@@ -38,12 +38,14 @@ export function ProfileImage({ image, setImage }: ProfileImageType) {
 
   const pickImage = async () => {
     // No permissions request is necessary for launching the image library
-    let result: ImageInfo = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ImagePicker.MediaTypeOptions.All,
-      allowsEditing: true,
-      aspect: [1, 1],
-      quality: 1,
-    });
+    let result: ImageInfo = await ImagePicker.launchImageLibraryAsync(
+      {
+        mediaTypes: ImagePicker.MediaTypeOptions.All,
+        allowsEditing: true,
+        aspect: [1, 1],
+        quality: 1,
+      }
+    );
     if (!result.cancelled) {
       // リレンダーのタイミングまでstateが変わらないので、変更値を変数に保持して、useStateや関数に渡す
       const newImageUri = result.uri;

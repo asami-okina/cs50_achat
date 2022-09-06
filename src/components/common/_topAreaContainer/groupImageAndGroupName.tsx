@@ -1,6 +1,12 @@
 // libs
 import React from "react";
-import { View, Pressable, Image, TextInput, StyleSheet } from "react-native";
+import {
+  View,
+  Pressable,
+  Image,
+  TextInput,
+  StyleSheet,
+} from "react-native";
 import * as ImagePicker from "expo-image-picker";
 
 // layouts
@@ -24,12 +30,14 @@ export function GroupImageAndGroupName({
 
   const pickImage = async () => {
     // No permissions request is necessary for launching the image library
-    let result: ImageInfo = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ImagePicker.MediaTypeOptions.All,
-      allowsEditing: true,
-      aspect: [1, 1],
-      quality: 1,
-    });
+    let result: ImageInfo = await ImagePicker.launchImageLibraryAsync(
+      {
+        mediaTypes: ImagePicker.MediaTypeOptions.All,
+        allowsEditing: true,
+        aspect: [1, 1],
+        quality: 1,
+      }
+    );
     if (!result.cancelled) {
       setImage(result.uri);
     }

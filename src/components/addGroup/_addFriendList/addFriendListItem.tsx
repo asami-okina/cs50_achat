@@ -1,6 +1,12 @@
 // libs
 import React from "react";
-import { View, StyleSheet, Image, Text, Pressable } from "react-native";
+import {
+  View,
+  StyleSheet,
+  Image,
+  Text,
+  Pressable,
+} from "react-native";
 
 // layouts
 import { ADD_FRIEND_WIDTH } from "../../../constants/layout";

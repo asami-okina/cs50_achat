@@ -24,7 +24,9 @@ export function Welcome() {
         <HeadTitle title={"Welcome"} />
         {/* A-Chatロゴ */}
         <AChatLogo />
-        <View style={sameStyles.bottomStyleByWelcomeAndSignUpAndLogin}>
+        <View
+          style={sameStyles.bottomStyleByWelcomeAndSignUpAndLogin}
+        >
           {/* 遷移ボタン */}
           <Button
             link={"SignUp"}

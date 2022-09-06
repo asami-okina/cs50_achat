@@ -1,6 +1,12 @@
 // libs
 import React from "react";
-import { View, Text, StyleSheet, Image, Pressable } from "react-native";
+import {
+  View,
+  Text,
+  StyleSheet,
+  Image,
+  Pressable,
+} from "react-native";
 import { useNavigationAChat } from "../../../hooks/useNavigationAChat";
 
 // layouts

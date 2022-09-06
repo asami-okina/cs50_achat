@@ -1,6 +1,12 @@
 // libs
 import React from "react";
-import { Text, View, Image, TextInput, Pressable } from "react-native";
+import {
+  Text,
+  View,
+  Image,
+  TextInput,
+  Pressable,
+} from "react-native";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 
 // hooks
@@ -18,7 +24,9 @@ type PasswordFormPropsType = {
   setPasswordText: React.Dispatch<React.SetStateAction<string>>;
   executedLoginAuthentication: boolean;
   onFocusInputMailOrPasseword: boolean;
-  setOnFocusInputMailOrPasseword: React.Dispatch<React.SetStateAction<boolean>>;
+  setOnFocusInputMailOrPasseword: React.Dispatch<
+    React.SetStateAction<boolean>
+  >;
 };
 
 export function PasswordForm({
@@ -44,7 +52,9 @@ export function PasswordForm({
             style={searchStyles.searchContainerStyle}
             onPress={() => textInputPassword.focus()}
           >
-            <Text style={searchStyles.searchTitleStyle}>Password</Text>
+            <Text style={searchStyles.searchTitleStyle}>
+              Password
+            </Text>
             <View
               style={
                 executedLoginAuthentication

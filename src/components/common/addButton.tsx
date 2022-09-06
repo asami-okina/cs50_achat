@@ -1,6 +1,11 @@
 // libs
 import React from "react";
-import { StyleSheet, TouchableOpacity, View, Image } from "react-native";
+import {
+  StyleSheet,
+  TouchableOpacity,
+  View,
+  Image,
+} from "react-native";
 import { useNavigationAChat } from "../../hooks/useNavigationAChat";
 
 // layouts
@@ -42,7 +47,9 @@ export function AddButton({
               }
             }}
           >
-            <Image source={require("../../../assets/images/white_plus.png")} />
+            <Image
+              source={require("../../../assets/images/white_plus.png")}
+            />
           </TouchableOpacity>
         </View>
       </View>

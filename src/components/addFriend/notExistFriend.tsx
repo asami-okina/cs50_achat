@@ -3,7 +3,10 @@ import React from "react";
 import { View, Text, StyleSheet } from "react-native";
 
 // layouts
-import { STANDARD_FONT, MAIN_PINK_COLOR } from "../../constants/layout";
+import {
+  STANDARD_FONT,
+  MAIN_PINK_COLOR,
+} from "../../constants/layout";
 
 export function NotExistFriend() {
   return (
@@ -11,7 +14,9 @@ export function NotExistFriend() {
       <Text style={styles.errorTextStyle}>
         The user with the entered ID does not exist
       </Text>
-      <Text style={styles.errorTextStyle}>or is not allowed to search.</Text>
+      <Text style={styles.errorTextStyle}>
+        or is not allowed to search.
+      </Text>
     </View>
   );
 }

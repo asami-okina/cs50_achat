@@ -62,7 +62,8 @@ export function Button({
   const [userId, setUserId] = useState<string>(null);
 
   // 友達追加したユーザーの情報
-  const [friendInfo, setFriendInfo] = useState<AddedFriendInfoType>(null);
+  const [friendInfo, setFriendInfo] =
+    useState<AddedFriendInfoType>(null);
 
   // 友達追加(ループチャット画面で友達ではないユーザーアイコンをクリックした場合、友だち追加する)
   async function _addFriend() {
@@ -81,7 +82,8 @@ export function Button({
       // // 友達チャットに遷移
       navigation.navigate("Chat", {
         groupChatRoomId: null,
-        directChatRoomId: parse_response.friend_info.direct_chat_room_id,
+        directChatRoomId:
+          parse_response.friend_info.direct_chat_room_id,
         profileImage: parse_response.friend_info.friend_profile_image,
         name: parse_response.friend_info.friend_nickname,
       });
@@ -202,7 +204,11 @@ export function Button({
                 // 友達追加
                 _addFriend();
               }
-              if (enable && link && scene !== "ProfileSettingNickName") {
+              if (
+                enable &&
+                link &&
+                scene !== "ProfileSettingNickName"
+              ) {
                 // welcomeページからsignupページに遷移
                 if (scene == "Welcome" && link == "SignUp") {
                   navigation.navigate(link);

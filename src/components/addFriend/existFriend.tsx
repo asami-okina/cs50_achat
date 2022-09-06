@@ -22,7 +22,10 @@ type ExistFriendType = {
   friendInfo: FriendInfoType;
   alreadyFriend: boolean;
 };
-export function ExistFriend({ friendInfo, alreadyFriend }: ExistFriendType) {
+export function ExistFriend({
+  friendInfo,
+  alreadyFriend,
+}: ExistFriendType) {
   return (
     <View style={styles.searchInfoWrapperStyle}>
       <View style={styles.searchInfoContainerStyle}>
@@ -34,7 +37,9 @@ export function ExistFriend({ friendInfo, alreadyFriend }: ExistFriendType) {
         ) : (
           <View style={styles.circleStyle}></View>
         )}
-        <Text style={selectedFriendStyles.bigProfilelistItemNameStyle}>
+        <Text
+          style={selectedFriendStyles.bigProfilelistItemNameStyle}
+        >
           {friendInfo.friend_nickname}
         </Text>
       </View>

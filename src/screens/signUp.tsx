@@ -33,8 +33,10 @@ export function SignUp() {
   const [isCorrectPassewordSymbol, setIsCorrectPassewordSymbol] =
     useState<boolean>(false);
   // パスワードのバリデーション(文字数)
-  const [isCorrectPassewordStringCount, setIsCorrectPassewordStringCount] =
-    useState<boolean>(false);
+  const [
+    isCorrectPassewordStringCount,
+    setIsCorrectPassewordStringCount,
+  ] = useState<boolean>(false);
 
   // ユーザーIDのバリデーション(半角英数字)
   const [isCorrectUserIdSymbol, setIsCorrectUserIdSymbol] =
@@ -43,10 +45,12 @@ export function SignUp() {
   const [isCorrectUserIdStringCount, setIsCorrectUserIdStringCount] =
     useState<boolean>(false);
   // ユーザーIDのバリデーション(使用可能かどうか)
-  const [isAvailableUserId, setIsAvailableUserId] = useState<boolean>(false);
+  const [isAvailableUserId, setIsAvailableUserId] =
+    useState<boolean>(false);
 
   // メールアドレスのバリデーション(使用可能かどうか)
-  const [isAvailableMail, setIsAvailableMail] = useState<boolean>(false);
+  const [isAvailableMail, setIsAvailableMail] =
+    useState<boolean>(false);
 
   // メールアドレス入力フォーム
   const [emailText, onChangeEmailText] = useState<string>("");
@@ -84,8 +88,12 @@ export function SignUp() {
             inputAccessoryViewID={inputAccessoryViewID}
             isCorrectPassewordSymbol={isCorrectPassewordSymbol}
             setIsCorrectPassewordSymbol={setIsCorrectPassewordSymbol}
-            isCorrectPassewordStringCount={isCorrectPassewordStringCount}
-            setIsCorrectPassewordStringCount={setIsCorrectPassewordStringCount}
+            isCorrectPassewordStringCount={
+              isCorrectPassewordStringCount
+            }
+            setIsCorrectPassewordStringCount={
+              setIsCorrectPassewordStringCount
+            }
             passwordText={passwordText}
             onChangePasswordText={onChangePasswordText}
           />
@@ -95,7 +103,9 @@ export function SignUp() {
             isCorrectUserIdSymbol={isCorrectUserIdSymbol}
             setIsCorrectUserIdSymbol={setIsCorrectUserIdSymbol}
             isCorrectUserIdStringCount={isCorrectUserIdStringCount}
-            setIsCorrectUserIdStringCount={setIsCorrectUserIdStringCount}
+            setIsCorrectUserIdStringCount={
+              setIsCorrectUserIdStringCount
+            }
             isAvailableUserId={isAvailableUserId}
             setIsAvailableUserId={setIsAvailableUserId}
             pageType={"SignUp"}
@@ -103,7 +113,9 @@ export function SignUp() {
             onChangeUserIdText={onChangeUserIdText}
           />
           {/* 画面下 */}
-          <View style={sameStyles.bottomStyleByWelcomeAndSignUpAndLogin}>
+          <View
+            style={sameStyles.bottomStyleByWelcomeAndSignUpAndLogin}
+          >
             {isCorrectMail &&
             isCorrectPassewordSymbol &&
             isCorrectPassewordStringCount &&

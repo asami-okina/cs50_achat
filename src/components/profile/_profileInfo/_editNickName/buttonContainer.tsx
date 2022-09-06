@@ -10,7 +10,10 @@ import { post_fetch_api_header } from "../../../../constants/common";
 import { Button } from "../../../common/button";
 
 // layouts
-import { STANDARD_FONT, MAIN_PINK_COLOR } from "../../../../constants/layout";
+import {
+  STANDARD_FONT,
+  MAIN_PINK_COLOR,
+} from "../../../../constants/layout";
 
 type ButtonContainerType = {
   nickName: string;

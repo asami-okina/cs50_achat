@@ -1,6 +1,12 @@
 // libs
 import React, { useState } from "react";
-import { View, StyleSheet, TextInput, Pressable, Image } from "react-native";
+import {
+  View,
+  StyleSheet,
+  TextInput,
+  Pressable,
+  Image,
+} from "react-native";
 
 // constantsSearchStyles
 import { searchStyles } from "../../../../constants/styles/searchStyles";
@@ -36,7 +42,8 @@ export function TextInputForm({
   setNickName,
 }: TextInputFormType) {
   // 検索フォームの削除アイコン表示/非表示
-  const [deleteIconDisplay, setDeleteIconDisplay] = useState<boolean>(false);
+  const [deleteIconDisplay, setDeleteIconDisplay] =
+    useState<boolean>(false);
 
   const onChangeText = (text: string) => {
     setNickName(text);
@@ -99,7 +106,10 @@ export function TextInputForm({
           >
             <Image
               source={require("../../../../../assets/images/close_gray.png")}
-              style={[searchStyles.searchIconStyle, styles.searchIconStyle]}
+              style={[
+                searchStyles.searchIconStyle,
+                styles.searchIconStyle,
+              ]}
             />
           </Pressable>
         )}

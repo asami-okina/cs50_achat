@@ -1,6 +1,10 @@
 // libs
 import React, { useEffect, useState } from "react";
-import { View, SafeAreaView, KeyboardAvoidingView } from "react-native";
+import {
+  View,
+  SafeAreaView,
+  KeyboardAvoidingView,
+} from "react-native";
 import { useIsFocused } from "@react-navigation/native";
 import { get_fetch_api_header } from "../constants/common";
 
@@ -27,7 +31,8 @@ export function Home() {
   // 検索フォーム
   const [searchText, setSearchText] = useState<string>("");
   // 検索中かどうか
-  const [isDuringSearch, setIsDuringSearch] = useState<boolean>(false);
+  const [isDuringSearch, setIsDuringSearch] =
+    useState<boolean>(false);
 
   // グループ削除確認モーダル
   const [modalVisible, setModalVisible] = useState<boolean>(false);
@@ -35,12 +40,12 @@ export function Home() {
   const [clickedCancelMordal, setClickedCancelMordal] =
     useState<boolean>(false);
   // 削除時の確認モーダルでOkを押したかどうか
-  const [clickedOkMordal, setClickedOkMordal] = useState<boolean>(false);
+  const [clickedOkMordal, setClickedOkMordal] =
+    useState<boolean>(false);
 
   // [検索前]APIから取得した友達一覧リスト
-  const [beforeFriendListSearch, setBeforeFriendListSearch] = useState<
-    FriendListPropsType[]
-  >([]);
+  const [beforeFriendListSearch, setBeforeFriendListSearch] =
+    useState<FriendListPropsType[]>([]);
   // [検索後]APIから取得した友達一覧リスト
   const [afterFriendListSearch, setAfterFriendListSearch] = useState<
     FriendListPropsType[]

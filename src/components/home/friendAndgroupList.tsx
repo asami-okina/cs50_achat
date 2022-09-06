@@ -3,7 +3,10 @@ import React from "react";
 import { View, StyleSheet } from "react-native";
 
 // layouts
-import { CONTENT_WIDTH, MAIN_WHITE_COLOR } from "../../constants/layout";
+import {
+  CONTENT_WIDTH,
+  MAIN_WHITE_COLOR,
+} from "../../constants/layout";
 
 // components
 import { ListItem } from "./_friendAndGroupList/listItem";
@@ -12,7 +15,9 @@ type FriendAndGroupListlPropsType = {
   type: string;
   setModalVisible: React.Dispatch<React.SetStateAction<boolean>>;
   clickedCancelMordal: boolean;
-  setClickedCancelMordal: React.Dispatch<React.SetStateAction<boolean>>;
+  setClickedCancelMordal: React.Dispatch<
+    React.SetStateAction<boolean>
+  >;
   clickedOkMordal: boolean;
   setClickedOkMordal: React.Dispatch<React.SetStateAction<boolean>>;
   openFriendList: boolean;

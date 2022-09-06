@@ -35,7 +35,9 @@ type BasicPropsType = {
   type: string;
   setModalVisible: React.Dispatch<React.SetStateAction<boolean>>;
   clickedCancelMordal: boolean;
-  setClickedCancelMordal: React.Dispatch<React.SetStateAction<boolean>>;
+  setClickedCancelMordal: React.Dispatch<
+    React.SetStateAction<boolean>
+  >;
   clickedOkMordal: boolean;
   setClickedOkMordal: React.Dispatch<React.SetStateAction<boolean>>;
   setGroupCount: React.Dispatch<React.SetStateAction<number>>;
@@ -59,11 +61,16 @@ type NewListType =
 // RowMapの型生成(ライブラリより引用:/Users/asami/Desktop/A-Chat/develop/A-chat/node_modules/react-native-swipe-list-view/types/index.d.ts)
 type RowMap<T> = { [open_cell_key: string]: SwipeRow<T> };
 
-export class SwipeRow<T> extends Component<Partial<IPropsSwipeRow<T>>> {
+export class SwipeRow<T> extends Component<
+  Partial<IPropsSwipeRow<T>>
+> {
   closeRow: () => void;
   closeRowWithoutAnimation: () => void;
   // render(): JSX.Element;
-  manuallySwipeRow: (toValue: number, onAnimationEnd?: () => void) => void;
+  manuallySwipeRow: (
+    toValue: number,
+    onAnimationEnd?: () => void
+  ) => void;
 }
 
 export default function Basic({
@@ -135,14 +142,18 @@ export default function Basic({
     // Reactの差異を比較するのは、オブジェクト同士。そのため、新しくオブジェクトを作成する必要がある
     const newData = [...listData];
     // findIndex: 配列内の指定されたテスト関数に合格する要素がない場合を含め、それ以外は-1を返す
-    const prevIndex = listData.findIndex((item) => item.key === rowKey);
+    const prevIndex = listData.findIndex(
+      (item) => item.key === rowKey
+    );
     newData.splice(prevIndex, 1);
     setListData(newData);
     // グループ数の変更
     setGroupCount(newData.length);
   };
 
-  const renderItem = (data: ListRenderItemInfo<FriendOrGroupHomeListType>) => (
+  const renderItem = (
+    data: ListRenderItemInfo<FriendOrGroupHomeListType>
+  ) => (
     <>
       {"group_chat_room_id" in data.item && type === "Group" && (
         <TouchableHighlight
@@ -221,7 +232,10 @@ export default function Basic({
       <View style={styles.rowBackStyle}>
         {/* deleteボタン */}
         <TouchableOpacity
-          style={[styles.backRightBtnStyle, styles.backRightBtnRightStyle]}
+          style={[
+            styles.backRightBtnStyle,
+            styles.backRightBtnRightStyle,
+          ]}
           onPress={() => {
             // 確認モーダルを表示
             setModalVisible(true);
@@ -265,7 +279,10 @@ export default function Basic({
   }, [clickedCancelMordal, clickedOkMordal]);
 
   // グループから脱退
-  async function _leaveGroup(userId: string, groupChatRoomId: string) {
+  async function _leaveGroup(
+    userId: string,
+    groupChatRoomId: string
+  ) {
     try {
       // APIリクエスト
       const bodyData = {

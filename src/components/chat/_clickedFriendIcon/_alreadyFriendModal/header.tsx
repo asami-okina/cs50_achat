@@ -5,7 +5,12 @@ import { View, StyleSheet, Image, Pressable } from "react-native";
 // layouts
 import { CONTENT_WIDTH } from "../../../../constants/layout";
 
-export function Header({ navigation, groupChatRoomId, groupImage, groupName }) {
+export function Header({
+  navigation,
+  groupChatRoomId,
+  groupImage,
+  groupName,
+}) {
   return (
     <View style={styles.titleWrapperStyle}>
       <Pressable

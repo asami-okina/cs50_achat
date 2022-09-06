@@ -25,8 +25,13 @@ import {
 } from "../../../constants/layout";
 
 export function AlreadyFriendModal({ route, navigation }) {
-  const { user, groupChatRoomId, groupImage, groupName, directChatRoomId } =
-    route.params;
+  const {
+    user,
+    groupChatRoomId,
+    groupImage,
+    groupName,
+    directChatRoomId,
+  } = route.params;
   const friendImage: string = user.avatar;
   const friendNickName: string = user.name;
 
@@ -63,7 +68,9 @@ export function AlreadyFriendModal({ route, navigation }) {
               <View style={styles.circleStyle}></View>
             )}
             <View style={styles.friendNickNameContainerStyle}>
-              <Text style={styles.friendNickNameStyle}>{friendNickName}</Text>
+              <Text style={styles.friendNickNameStyle}>
+                {friendNickName}
+              </Text>
             </View>
             <Button
               link={null}

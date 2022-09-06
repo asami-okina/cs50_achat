@@ -1,6 +1,12 @@
 // libs
 import React from "react";
-import { Text, View, Image, TextInput, Pressable } from "react-native";
+import {
+  Text,
+  View,
+  Image,
+  TextInput,
+  Pressable,
+} from "react-native";
 
 // constantsSearchStyles
 import { searchStyles } from "../../constants/styles/searchStyles";
@@ -11,7 +17,9 @@ type MailFormPropsType = {
   setEmailText: React.Dispatch<React.SetStateAction<string>>;
   executedLoginAuthentication: boolean;
   onFocusInputMailOrPasseword: boolean;
-  setOnFocusInputMailOrPasseword: React.Dispatch<React.SetStateAction<boolean>>;
+  setOnFocusInputMailOrPasseword: React.Dispatch<
+    React.SetStateAction<boolean>
+  >;
 };
 
 export function MailForm({

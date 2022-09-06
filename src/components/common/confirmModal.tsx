@@ -1,6 +1,12 @@
 // libs
 import React from "react";
-import { View, Text, Modal, Pressable, StyleSheet } from "react-native";
+import {
+  View,
+  Text,
+  Modal,
+  Pressable,
+  StyleSheet,
+} from "react-native";
 
 // layouts
 import {
@@ -16,7 +22,9 @@ import {
 type ConfirmModalPropsType = {
   modalVisible: boolean;
   setModalVisible: React.Dispatch<React.SetStateAction<boolean>>;
-  setClickedCancelMordal: React.Dispatch<React.SetStateAction<boolean>>;
+  setClickedCancelMordal: React.Dispatch<
+    React.SetStateAction<boolean>
+  >;
   setClickedOkMordal: React.Dispatch<React.SetStateAction<boolean>>;
   modalText: string;
 };

@@ -1,6 +1,10 @@
 // libs
 import React, { useState } from "react";
-import { View, SafeAreaView, KeyboardAvoidingView } from "react-native";
+import {
+  View,
+  SafeAreaView,
+  KeyboardAvoidingView,
+} from "react-native";
 
 // components
 import { TopAreaWrapper } from "../../../components/common/topAreaWrapper";

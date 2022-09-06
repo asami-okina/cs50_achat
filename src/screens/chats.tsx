@@ -1,6 +1,10 @@
 // libs
 import React, { useEffect, useState } from "react";
-import { View, SafeAreaView, KeyboardAvoidingView } from "react-native";
+import {
+  View,
+  SafeAreaView,
+  KeyboardAvoidingView,
+} from "react-native";
 import { useIsFocused } from "@react-navigation/native";
 import { storage } from "../../storage";
 import { get_fetch_api_header } from "../constants/common";
@@ -26,10 +30,12 @@ export function Chats() {
   // 検索フォーム
   const [searchText, setSearchText] = useState<string>("");
   // 検索中かどうか
-  const [isDuringSearch, setIsDuringSearch] = useState<boolean>(false);
+  const [isDuringSearch, setIsDuringSearch] =
+    useState<boolean>(false);
 
   // グループ削除確認モーダル
-  const [deleteModalVisible, setDeleteModalVisible] = useState<boolean>(false);
+  const [deleteModalVisible, setDeleteModalVisible] =
+    useState<boolean>(false);
   // 削除時の確認モーダルでCancelを押したかどうか
   const [clickedDeleteCancelMordal, setClickedDeleteCancelMordal] =
     useState<boolean>(false);
@@ -38,7 +44,8 @@ export function Chats() {
     useState<boolean>(false);
 
   // グループ非表示確認モーダル
-  const [hiddenModalVisible, setHiddenModalVisible] = useState<boolean>(false);
+  const [hiddenModalVisible, setHiddenModalVisible] =
+    useState<boolean>(false);
   // 非表示時の確認モーダルでCancelを押したかどうか
   const [clickedHiddenCancelMordal, setClickedHiddenCancelMordal] =
     useState<boolean>(false);
@@ -47,23 +54,24 @@ export function Chats() {
     useState<boolean>(false);
 
   // [検索前]APIから取得したグループ一覧リスト
-  const [beforeChatRoomListSearch, setBeforeChatRoomListSearch] = useState<
-    ChatRoomListType[]
-  >([]);
+  const [beforeChatRoomListSearch, setBeforeChatRoomListSearch] =
+    useState<ChatRoomListType[]>([]);
   // [検索後]APIから取得したグループ一覧リスト
-  const [afterChatRoomListSearch, setAfterChatRoomListSearch] = useState<
-    ChatRoomListType[]
-  >([]);
+  const [afterChatRoomListSearch, setAfterChatRoomListSearch] =
+    useState<ChatRoomListType[]>([]);
 
   // チャットルームIDに紐づくチャット履歴のparams甩
   const [groupChatRoomId, setGroupChatRoomId] = useState<string>("");
-  const [directChatRoomId, setDirectChatRoomId] = useState<string>("");
+  const [directChatRoomId, setDirectChatRoomId] =
+    useState<string>("");
 
   // 現在画面がフォーカスされているかをbooleanで保持
   const isFocused = useIsFocused();
 
   // ニックネームまたはグループ名の検索でヒットするチャット情報取得
-  async function _searchChatByNickNameOrGroupName(searchText: string) {
+  async function _searchChatByNickNameOrGroupName(
+    searchText: string
+  ) {
     try {
       // paramsを生成
       const params_search = { searchText: searchText };
@@ -71,7 +79,8 @@ export function Chats() {
 
       // APIリクエスト
       const response = await fetch(
-        API_SERVER_URL + `/api/users/${userId}/chatRoom?${query_params}`,
+        API_SERVER_URL +
+          `/api/users/${userId}/chatRoom?${query_params}`,
         get_fetch_api_header
       );
       // レスポンスをJSONにする
@@ -100,7 +109,9 @@ export function Chats() {
   }
 
   // 文字追加or削除ごとにヒット(名前またはグループ名)したチャット一覧を表示
-  const _autoSuggestSearchChatByNickNameOrGroupName = (text: string) => {
+  const _autoSuggestSearchChatByNickNameOrGroupName = (
+    text: string
+  ) => {
     setSearchText(text);
     _searchChatByNickNameOrGroupName(searchText);
     if (setIsDuringSearch) {
@@ -154,7 +165,9 @@ export function Chats() {
         {/* 丸みを帯びている白いトップ部分 */}
         <TopAreaWrapper type={"searchForm"}>
           <SearchForm
-            setSearchText={_autoSuggestSearchChatByNickNameOrGroupName}
+            setSearchText={
+              _autoSuggestSearchChatByNickNameOrGroupName
+            }
             searchText={searchText}
             searchName={_searchChatByNickNameOrGroupName}
             fetchGroupCount={null}
@@ -173,37 +186,46 @@ export function Chats() {
         >
           {/* チャット一覧 */}
           {/* 検索中ではない場合 */}
-          {!isDuringSearch && beforeChatRoomListSearch.length !== 0 && (
-            <ChatsList
-              chatRoomList={beforeChatRoomListSearch}
-              setDeleteModalVisible={setDeleteModalVisible}
-              clickedDeleteCancelMordal={clickedDeleteCancelMordal}
-              setClickedDeleteCancelMordal={setClickedDeleteCancelMordal}
-              clickedDeleteOkMordal={clickedDeleteOkMordal}
-              setClickedDeleteOkMordal={setClickedDeleteOkMordal}
-              setHiddenModalVisible={setHiddenModalVisible}
-              clickedHiddenCancelMordal={clickedHiddenCancelMordal}
-              setClickedHiddenCancelMordal={setClickedHiddenCancelMordal}
-              clickedHiddenOkMordal={clickedHiddenOkMordal}
-              setClickedHiddenOkMordal={setClickedHiddenOkMordal}
-              setGroupChatRoomId={setGroupChatRoomId}
-              setDirectChatRoomId={setDirectChatRoomId}
-              groupChatRoomId={groupChatRoomId}
-              directChatRoomId={directChatRoomId}
-            />
-          )}
+          {!isDuringSearch &&
+            beforeChatRoomListSearch.length !== 0 && (
+              <ChatsList
+                chatRoomList={beforeChatRoomListSearch}
+                setDeleteModalVisible={setDeleteModalVisible}
+                clickedDeleteCancelMordal={clickedDeleteCancelMordal}
+                setClickedDeleteCancelMordal={
+                  setClickedDeleteCancelMordal
+                }
+                clickedDeleteOkMordal={clickedDeleteOkMordal}
+                setClickedDeleteOkMordal={setClickedDeleteOkMordal}
+                setHiddenModalVisible={setHiddenModalVisible}
+                clickedHiddenCancelMordal={clickedHiddenCancelMordal}
+                setClickedHiddenCancelMordal={
+                  setClickedHiddenCancelMordal
+                }
+                clickedHiddenOkMordal={clickedHiddenOkMordal}
+                setClickedHiddenOkMordal={setClickedHiddenOkMordal}
+                setGroupChatRoomId={setGroupChatRoomId}
+                setDirectChatRoomId={setDirectChatRoomId}
+                groupChatRoomId={groupChatRoomId}
+                directChatRoomId={directChatRoomId}
+              />
+            )}
           {/* 検索中の場合 */}
           {isDuringSearch && afterChatRoomListSearch.length !== 0 && (
             <ChatsList
               chatRoomList={afterChatRoomListSearch}
               setDeleteModalVisible={setDeleteModalVisible}
               clickedDeleteCancelMordal={clickedDeleteCancelMordal}
-              setClickedDeleteCancelMordal={setClickedDeleteCancelMordal}
+              setClickedDeleteCancelMordal={
+                setClickedDeleteCancelMordal
+              }
               clickedDeleteOkMordal={clickedDeleteOkMordal}
               setClickedDeleteOkMordal={setClickedDeleteOkMordal}
               setHiddenModalVisible={setHiddenModalVisible}
               clickedHiddenCancelMordal={clickedHiddenCancelMordal}
-              setClickedHiddenCancelMordal={setClickedHiddenCancelMordal}
+              setClickedHiddenCancelMordal={
+                setClickedHiddenCancelMordal
+              }
               clickedHiddenOkMordal={clickedHiddenOkMordal}
               setClickedHiddenOkMordal={setClickedHiddenOkMordal}
               setGroupChatRoomId={setGroupChatRoomId}

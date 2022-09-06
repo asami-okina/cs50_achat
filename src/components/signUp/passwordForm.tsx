@@ -1,6 +1,12 @@
 // libs
 import React, { useState } from "react";
-import { Text, View, Image, TextInput, Pressable } from "react-native";
+import {
+  Text,
+  View,
+  Image,
+  TextInput,
+  Pressable,
+} from "react-native";
 import { useTogglePasswordVisibility } from "../../hooks/useTogglePasswordVisibility";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { PasswordFormDescription } from "./_description/passwordFormDescription";
@@ -12,7 +18,9 @@ import { searchStyles } from "../../constants/styles/searchStyles";
 type PasswordFormPropsType = {
   inputAccessoryViewID: string;
   isCorrectPassewordSymbol: boolean;
-  setIsCorrectPassewordSymbol: React.Dispatch<React.SetStateAction<boolean>>;
+  setIsCorrectPassewordSymbol: React.Dispatch<
+    React.SetStateAction<boolean>
+  >;
   isCorrectPassewordStringCount: boolean;
   setIsCorrectPassewordStringCount: React.Dispatch<
     React.SetStateAction<boolean>
@@ -37,8 +45,10 @@ export function PasswordForm({
   const { passwordVisibility, rightIcon, handlePasswordVisibility } =
     useTogglePasswordVisibility();
   // パスワードアイコンのデフォルト表示
-  const [defaultDisplayPasswordIcons, setDefaultDisplayPasswordIcons] =
-    useState<boolean>(false);
+  const [
+    defaultDisplayPasswordIcons,
+    setDefaultDisplayPasswordIcons,
+  ] = useState<boolean>(false);
   // パスワードの入力フォームの枠線のデフォルト表示
   const [defaultPasswordBorderColor, setDefaultPasswordBorderColor] =
     useState<boolean>(false);
@@ -73,11 +83,14 @@ export function PasswordForm({
             style={searchStyles.searchContainerStyle}
             onPress={() => textInputPassword.focus()}
           >
-            <Text style={searchStyles.searchTitleStyle}>Password</Text>
+            <Text style={searchStyles.searchTitleStyle}>
+              Password
+            </Text>
             <View
               style={
                 defaultPasswordBorderColor
-                  ? isCorrectPassewordSymbol && isCorrectPassewordStringCount
+                  ? isCorrectPassewordSymbol &&
+                    isCorrectPassewordStringCount
                     ? searchStyles.searchViewStyle
                     : [
                         searchStyles.searchViewStyle,

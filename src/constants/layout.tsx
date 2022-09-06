@@ -118,7 +118,10 @@ export const WITH_FOOTER_OPERATION_SCREEN_HEIGHT_IPHONE_X =
 // 友達検索画面
 export const WITH_FOOTER_OPERATION_SCREEN_HEIGHT_NONE_BOTTOM_BUTTON =
   SCREEN_HEIGHT -
-  (HEAD_CONTAINER_HEIGHT + FOOTER_HEIGHT + STATUS_BAR_HEIGHT + TOP_AREA_HEIGHT);
+  (HEAD_CONTAINER_HEIGHT +
+    FOOTER_HEIGHT +
+    STATUS_BAR_HEIGHT +
+    TOP_AREA_HEIGHT);
 
 // フッター有画面の操作画面の高さ:iphoneX(下部のボタンなし) 　(画面の高さ - (全画面共通の青色のヘッド部分の高さ + フッターの高さ + ステータスバーの高さ + トップ領域の高さ + iphoeXの底の高さ))
 // 友達検索画面
@@ -132,7 +135,8 @@ export const WITH_FOOTER_OPERATION_SCREEN_HEIGHT_IPHONE_X_NONE_BOTTOM_BUTTON =
 
 // フッター無画面の操作画面の高さ: iphoneX以外　(画面の高さ - (全画面共通の青色のヘッド部分の高さ + ステータスバーの高さ + トップ領域の高さ))
 export const OPERATION_SCREEN_HEIGHT =
-  SCREEN_HEIGHT - (HEAD_CONTAINER_HEIGHT + STATUS_BAR_HEIGHT + TOP_AREA_HEIGHT);
+  SCREEN_HEIGHT -
+  (HEAD_CONTAINER_HEIGHT + STATUS_BAR_HEIGHT + TOP_AREA_HEIGHT);
 
 // フッター無画面の操作画面の高さ:iphoneX　(画面の高さ - (全画面共通の青色のヘッド部分の高さ + ステータスバーの高さ + トップ領域の高さ + iphoeXの底の高さ))
 export const OPERATION_SCREEN_HEIGHT_IPHONE_X =

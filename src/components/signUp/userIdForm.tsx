@@ -1,6 +1,12 @@
 // libs
 import React, { useState } from "react";
-import { Text, View, Image, TextInput, Pressable } from "react-native";
+import {
+  Text,
+  View,
+  Image,
+  TextInput,
+  Pressable,
+} from "react-native";
 import { API_SERVER_URL } from "../../constants/api";
 import { get_fetch_api_header } from "../../constants/common";
 
@@ -13,9 +19,13 @@ import { searchStyles } from "../../constants/styles/searchStyles";
 type UserIdFormPropsType = {
   inputAccessoryViewID: string;
   isCorrectUserIdSymbol: boolean;
-  setIsCorrectUserIdSymbol: React.Dispatch<React.SetStateAction<boolean>>;
+  setIsCorrectUserIdSymbol: React.Dispatch<
+    React.SetStateAction<boolean>
+  >;
   isCorrectUserIdStringCount: boolean;
-  setIsCorrectUserIdStringCount: React.Dispatch<React.SetStateAction<boolean>>;
+  setIsCorrectUserIdStringCount: React.Dispatch<
+    React.SetStateAction<boolean>
+  >;
   isAvailableUserId: boolean;
   setIsAvailableUserId: React.Dispatch<React.SetStateAction<boolean>>;
   pageType: string;
@@ -101,7 +111,8 @@ export function UserIdForm({
             <View
               style={
                 defaultUserIdBorderColor
-                  ? isCorrectUserIdSymbol && isCorrectUserIdStringCount
+                  ? isCorrectUserIdSymbol &&
+                    isCorrectUserIdStringCount
                     ? searchStyles.searchViewStyle
                     : [
                         searchStyles.searchViewStyle,

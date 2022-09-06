@@ -7,16 +7,28 @@ import ChatBasic from "./_chatsList/chatBasic";
 
 type ChatsListType = {
   chatRoomList: ChatRoomListType[];
-  setDeleteModalVisible: React.Dispatch<React.SetStateAction<boolean>>;
+  setDeleteModalVisible: React.Dispatch<
+    React.SetStateAction<boolean>
+  >;
   clickedDeleteCancelMordal: boolean;
-  setClickedDeleteCancelMordal: React.Dispatch<React.SetStateAction<boolean>>;
+  setClickedDeleteCancelMordal: React.Dispatch<
+    React.SetStateAction<boolean>
+  >;
   clickedDeleteOkMordal: boolean;
-  setClickedDeleteOkMordal: React.Dispatch<React.SetStateAction<boolean>>;
-  setHiddenModalVisible: React.Dispatch<React.SetStateAction<boolean>>;
+  setClickedDeleteOkMordal: React.Dispatch<
+    React.SetStateAction<boolean>
+  >;
+  setHiddenModalVisible: React.Dispatch<
+    React.SetStateAction<boolean>
+  >;
   clickedHiddenCancelMordal: boolean;
-  setClickedHiddenCancelMordal: React.Dispatch<React.SetStateAction<boolean>>;
+  setClickedHiddenCancelMordal: React.Dispatch<
+    React.SetStateAction<boolean>
+  >;
   clickedHiddenOkMordal: boolean;
-  setClickedHiddenOkMordal: React.Dispatch<React.SetStateAction<boolean>>;
+  setClickedHiddenOkMordal: React.Dispatch<
+    React.SetStateAction<boolean>
+  >;
   setGroupChatRoomId: React.Dispatch<React.SetStateAction<string>>;
   setDirectChatRoomId: React.Dispatch<React.SetStateAction<string>>;
   groupChatRoomId: string;

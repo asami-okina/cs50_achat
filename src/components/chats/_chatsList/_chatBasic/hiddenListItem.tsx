@@ -15,8 +15,12 @@ import {
 } from "../../../../constants/layout";
 
 type HiddenListItemType = {
-  setDeleteModalVisible: React.Dispatch<React.SetStateAction<boolean>>;
-  setHiddenModalVisible: React.Dispatch<React.SetStateAction<boolean>>;
+  setDeleteModalVisible: React.Dispatch<
+    React.SetStateAction<boolean>
+  >;
+  setHiddenModalVisible: React.Dispatch<
+    React.SetStateAction<boolean>
+  >;
   setRowMap: React.Dispatch<React.SetStateAction<string>>;
   setkey: React.Dispatch<React.SetStateAction<string>>;
   setClickedType: React.Dispatch<React.SetStateAction<string>>;
@@ -41,7 +45,10 @@ export function HiddenListItem({
     <View style={styles.rowBackStyle}>
       {/* deleteボタン */}
       <TouchableOpacity
-        style={[styles.backRightBtnStyle, styles.backRightBtnRightStyle]}
+        style={[
+          styles.backRightBtnStyle,
+          styles.backRightBtnRightStyle,
+        ]}
         onPress={() => {
           // 確認モーダルを表示
           setDeleteModalVisible(true);
