@@ -97,3 +97,12 @@ cargo run
 
 ⑤expoを起動
 expo start
+
+
+/*
+  linter
+*/
+▽フロントエンド
+yarn lint:fix
+▽バックエンド
+cargo fmt
