@@ -7,7 +7,8 @@
     "android": "expo start --android",
     "ios": "expo start --ios",
     "web": "expo start --web",
-    "eject": "expo eject"
+    "eject": "expo eject",
+    "lint:fix": "prettier --write src/**/*.tsx"
   },
   "dependencies": {
     "@expo-google-fonts/abeezee": "^0.2.2",
@@ -69,7 +70,9 @@
     "@types/react": "^18.0.0",
     "@types/react-native": "^0.67.3",
     "babel-plugin-module-resolver": "^4.1.0",
+    "eslint-config-prettier": "^8.5.0",
     "msw": "^0.39.2",
+    "prettier": "^2.7.1",
     "react-native-url-polyfill": "^1.3.0",
     "typescript": "^4.6.3"
   },
