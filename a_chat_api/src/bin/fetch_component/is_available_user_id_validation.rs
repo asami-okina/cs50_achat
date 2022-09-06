@@ -1,12 +1,9 @@
-use axum::{
-    response::Json,
-    extract::{Path},
-};
+use axum::{extract::Path, response::Json};
 // シリアライズ: RustのオブジェクトをJSON形式に変換
 // デシリアライズ : JSON形式をRustのオブジェクトに変換
-use serde::{Serialize, Deserialize};
-use serde_json::{Value, json};
-
+use crate::common::mysqlpool_connect;
+use serde::{Deserialize, Serialize};
+use serde_json::{json, Value};
 use sqlx::mysql::MySqlPool;
 use std::{env, fmt::Debug};
 /*
@@ -18,21 +15,33 @@ pub struct IsAvailableUserIdValidationPath {
     user_id: String,
 }
 
-pub async fn handler_is_available_user_id_validation(Path(path): Path<IsAvailableUserIdValidationPath>) -> Json<Value> {
+pub async fn handler_is_available_user_id_validation(
+    Path(path): Path<IsAvailableUserIdValidationPath>,
+) -> Json<Value> {
     let user_id = path.user_id;
 
-    let pool = MySqlPool::connect(&env::var("DATABASE_URL").unwrap()).await.unwrap();
-    let is_available_user_id_validation = is_available_user_id_validation(&pool, &user_id).await.unwrap();
-    Json(json!({ "is_available_user_id_validation": is_available_user_id_validation }))
+    let pool = mysqlpool_connect::mysqlpool_connect().await;
+    let is_available_user_id_validation = is_available_user_id_validation(&pool, &user_id)
+        .await
+        .unwrap();
+    Json(json!({
+        "is_available_user_id_validation": is_available_user_id_validation
+    }))
 }
 
 // SQL実行部分
-pub async fn is_available_user_id_validation(pool: &MySqlPool, user_id:&str) -> anyhow::Result<bool>{
+pub async fn is_available_user_id_validation(
+    pool: &MySqlPool,
+    user_id: &str,
+) -> anyhow::Result<bool> {
     let user = sqlx::query!(
         r#"
-            SELECT *
-            FROM user
-            WHERE id = ?
+            SELECT
+                *
+            FROM
+                user
+            WHERE
+                id = ?
         "#,
         user_id
     )

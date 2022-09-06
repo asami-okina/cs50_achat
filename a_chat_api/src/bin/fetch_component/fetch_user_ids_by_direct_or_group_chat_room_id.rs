@@ -1,12 +1,12 @@
 use axum::{
+    extract::{Path, Query},
     response::Json,
-    extract::{Path,Query},
 };
 // シリアライズ: RustのオブジェクトをJSON形式に変換
 // デシリアライズ : JSON形式をRustのオブジェクトに変換
-use serde::{Serialize, Deserialize};
-use serde_json::{Value, json};
-
+use crate::common::mysqlpool_connect;
+use serde::{Deserialize, Serialize};
+use serde_json::{json, Value};
 use sqlx::mysql::MySqlPool;
 use std::{env, fmt::Debug};
 /*
@@ -20,21 +20,24 @@ pub struct FetchUserIdsByDirectOrGroupChatRoomIdPath {
 #[derive(Debug, Deserialize, Serialize)]
 pub struct FetchUserIdsByDirectOrGroupChatRoomIdQuery {
     chat_room_type: FetchUserIdsByDirectOrGroupChatRoomIdQueryType,
-    chat_room_id: Option<u64>
+    chat_room_id: Option<u64>,
 }
 
-#[derive(Debug, Deserialize, Serialize,PartialEq)]
+#[derive(Debug, Deserialize, Serialize, PartialEq)]
 pub enum FetchUserIdsByDirectOrGroupChatRoomIdQueryType {
     DirectChatRoomId,
     GroupChatRoomId,
-    None
+    None,
 }
 
 // デフォルト値の取得
 impl Default for FetchUserIdsByDirectOrGroupChatRoomIdQuery {
     fn default() -> Self {
         // direct_chat_room_id,group_chat_room_id、どちらかをnullで渡すとunwrapがpanicしてしまうため、typeで渡す
-        Self { chat_room_type: FetchUserIdsByDirectOrGroupChatRoomIdQueryType::None, chat_room_id: None}
+        Self {
+            chat_room_type: FetchUserIdsByDirectOrGroupChatRoomIdQueryType::None,
+            chat_room_id: None,
+        }
     }
 }
 
@@ -54,16 +57,23 @@ pub async fn handler_fetch_user_ids_by_direct_or_group_chat_room_id(
     let chat_room_type = query.chat_room_type;
     let chat_room_id = query.chat_room_id;
 
-    let pool = MySqlPool::connect(&env::var("DATABASE_URL").unwrap()).await.unwrap();
-    let result = fetch_user_ids_by_direct_or_group_chat_room_id(&pool, &chat_room_type, chat_room_id).await.unwrap();
-    
+    let pool = mysqlpool_connect::mysqlpool_connect().await;
+    let result =
+        fetch_user_ids_by_direct_or_group_chat_room_id(&pool, &chat_room_type, chat_room_id)
+            .await
+            .unwrap();
+
     Json(json!({ "user_ids": result, "char_room_type": &chat_room_type }))
 }
 
 // SQL実行部分
-pub async fn fetch_user_ids_by_direct_or_group_chat_room_id(pool: &MySqlPool, chat_room_type: &FetchUserIdsByDirectOrGroupChatRoomIdQueryType, chat_room_id: Option<u64>) -> anyhow::Result<Vec<String>> {
-    let mut result_list:Vec<String> = vec![];
-    
+pub async fn fetch_user_ids_by_direct_or_group_chat_room_id(
+    pool: &MySqlPool,
+    chat_room_type: &FetchUserIdsByDirectOrGroupChatRoomIdQueryType,
+    chat_room_id: Option<u64>,
+) -> anyhow::Result<Vec<String>> {
+    let mut result_list: Vec<String> = vec![];
+
     if chat_room_type == &FetchUserIdsByDirectOrGroupChatRoomIdQueryType::DirectChatRoomId {
         let result = sqlx::query!(
             r#"
@@ -93,8 +103,7 @@ pub async fn fetch_user_ids_by_direct_or_group_chat_room_id(pool: &MySqlPool, ch
                     group_member
                 WHERE
                     group_chat_room_id = ?
-                AND
-                    leave_flag = 0
+                AND leave_flag = 0
             "#,
             chat_room_id
         )
@@ -106,6 +115,6 @@ pub async fn fetch_user_ids_by_direct_or_group_chat_room_id(pool: &MySqlPool, ch
             result_list.push(list.user_id.clone());
         }
     }
-    
+
     Ok(result_list)
 }

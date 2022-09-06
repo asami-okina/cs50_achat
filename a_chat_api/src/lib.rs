@@ -1,8 +1,8 @@
 // モジュールツリーを作成し、それぞれの公開範囲を管理する
-use std::thread;
 use std::sync::mpsc;
 use std::sync::Arc;
 use std::sync::Mutex;
+use std::thread;
 
 #[macro_use]
 extern crate diesel;
@@ -15,8 +15,8 @@ trait FnBox {
     fn call_box(self: Box<Self>);
 }
 
-impl<F:FnOnce()> FnBox for F {
-    fn call_box(self: Box<F>){
+impl<F: FnOnce()> FnBox for F {
+    fn call_box(self: Box<F>) {
         (*self)()
     }
 }
@@ -51,25 +51,23 @@ impl ThreadPool {
         }
         ThreadPool {
             // workers,
-            sender
+            sender,
         }
     }
 
-    pub fn execute<F>(&self, f:F)
+    pub fn execute<F>(&self, f: F)
     // where句を使った明確なトレイト境界では、ジェネリック型に対して「このトレイトを実装していなければならない」という成約を課すもの
     // トレイト境界により、ジェネリック型は指定されたトレイトのメソッド等を使用できるようになる
     where
-        F: FnOnce() + Send + 'static
+        F: FnOnce() + Send + 'static,
     {
         // 各クロージャを保持するBoxに対してJob型エイリアスを生成し、そこからチャネルに仕事を送信する
         let job = Box::new(f);
         self.sender.send(job).unwrap();
-
     }
 }
 
 type Job = Box<dyn FnBox + Send + 'static>;
-
 
 // ThreadPoolからスレッドにコードを送信する責任を負うWorker構造体
 // Workerはチャネルの受信側
@@ -82,7 +80,7 @@ struct Worker {
 impl Worker {
     fn new(_id: usize, receiver: Arc<Mutex<mpsc::Receiver<Job>>>) -> Worker {
         // thread::spawn: クロージャを渡して、スレッドを立ち上げる
-        let _thread = thread::spawn(move||{
+        let _thread = thread::spawn(move || {
             loop {
                 // recv():チャネルからJobを受け取る
                 let job = receiver.lock().unwrap().recv().unwrap();
@@ -93,9 +91,6 @@ impl Worker {
             }
         });
 
-        Worker {
-            _id,
-            _thread,
-        }
+        Worker { _id, _thread }
     }
 }

@@ -1,10 +1,10 @@
 pub mod add_friend;
-pub mod add_group_member;
 pub mod add_group;
+pub mod add_group_member;
 pub mod chat_room_hidden_or_delete;
 pub mod leave_group;
-pub mod update_profile;
+pub mod log_in;
 pub mod post_message;
 pub mod sign_up;
 pub mod update_last_read_time;
-pub mod log_in;
+pub mod update_profile;

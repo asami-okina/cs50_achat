@@ -1,5 +1,5 @@
 // DBの操作に用いる構造体をまとめる
-use serde::{Serialize};
+use serde::Serialize;
 /*
   userテーブル
 */
@@ -24,21 +24,21 @@ pub struct NewUser {
     pub delete_flag: bool,
     pub search_flag: bool,
     pub created_at: i32,
-    pub updated_at: Option<i32>
+    pub updated_at: Option<i32>,
 }
 
 // SELECT用
-#[derive(Debug, Queryable,Serialize)]
+#[derive(Debug, Queryable, Serialize)]
 pub struct User {
-  pub id: String,
-  pub nickname: Option<String>,
-  pub mail: String,
-  pub password: String,
-  pub profile_image: Option<String>,
-  pub delete_flag: bool,
-  pub search_flag: bool,
-  pub created_at: i32,
-  pub updated_at: Option<i32>
+    pub id: String,
+    pub nickname: Option<String>,
+    pub mail: String,
+    pub password: String,
+    pub profile_image: Option<String>,
+    pub delete_flag: bool,
+    pub search_flag: bool,
+    pub created_at: i32,
+    pub updated_at: Option<i32>,
 }
 
 /*
@@ -46,28 +46,27 @@ pub struct User {
 */
 use crate::schema::direct_chat_room;
 #[derive(Insertable)]
-#[table_name = "direct_chat_room"] 
+#[table_name = "direct_chat_room"]
 
 // INSERT用
 pub struct NewDirectChatRoom {
     pub id: u64,
-    pub created_at: i32
+    pub created_at: i32,
 }
 
 // SELECT用
 #[derive(Debug, Queryable)]
 pub struct DirectChatRoom {
     pub id: u64,
-    pub created_at: i32
+    pub created_at: i32,
 }
-
 
 /*
   direct_memberテーブル
 */
 use crate::schema::direct_member;
 #[derive(Insertable)]
-#[table_name = "direct_member"] 
+#[table_name = "direct_member"]
 
 // INSERT用
 pub struct NewDirectMember {
@@ -77,19 +76,19 @@ pub struct NewDirectMember {
     pub message_delete_flag: bool,
     pub message_hidden_flag: bool,
     pub entry_date: i32,
-    pub last_read_time: i32
+    pub last_read_time: i32,
 }
 
 // SELECT用
 #[derive(Debug, Queryable)]
 pub struct DirectMember {
-  pub id: u64,
-  pub direct_chat_room_id: u64,
-  pub user_id: String,
-  pub message_delete_flag: bool,
-  pub message_hidden_flag: bool,
-  pub entry_date: i32,
-  pub last_read_time: i32
+    pub id: u64,
+    pub direct_chat_room_id: u64,
+    pub user_id: String,
+    pub message_delete_flag: bool,
+    pub message_hidden_flag: bool,
+    pub entry_date: i32,
+    pub last_read_time: i32,
 }
 
 /*
@@ -97,7 +96,7 @@ pub struct DirectMember {
 */
 use crate::schema::follow;
 #[derive(Insertable)]
-#[table_name = "follow"] 
+#[table_name = "follow"]
 
 // INSERT用
 pub struct NewFollow {
@@ -105,17 +104,17 @@ pub struct NewFollow {
     pub to_user_id: String,
     pub from_user_id: String,
     pub direct_chat_room_id: u64,
-    pub created_at: i32
+    pub created_at: i32,
 }
 
 // SELECT用
 #[derive(Debug, Queryable)]
 pub struct Follow {
-  pub id: u64,
-  pub to_user_id: String,
-  pub from_user_id: String,
-  pub direct_chat_room_id: u64,
-  pub created_at: i32
+    pub id: u64,
+    pub to_user_id: String,
+    pub from_user_id: String,
+    pub direct_chat_room_id: u64,
+    pub created_at: i32,
 }
 
 /*
@@ -123,7 +122,7 @@ pub struct Follow {
 */
 use crate::schema::group_chat_room;
 #[derive(Insertable)]
-#[table_name = "group_chat_room"] 
+#[table_name = "group_chat_room"]
 
 // INSERT用
 pub struct NewGroupChatRoom {
@@ -131,17 +130,17 @@ pub struct NewGroupChatRoom {
     pub group_name: String,
     pub group_image: Option<String>,
     pub created_at: i32,
-    pub delete_flag: bool
+    pub delete_flag: bool,
 }
 
 // SELECT用
 #[derive(Debug, Queryable)]
 pub struct GroupChatRoom {
-  pub id: u64,
-  pub group_name: String,
-  pub group_image: Option<String>,
-  pub created_at: i32,
-  pub delete_flag: bool
+    pub id: u64,
+    pub group_name: String,
+    pub group_image: Option<String>,
+    pub created_at: i32,
+    pub delete_flag: bool,
 }
 
 /*
@@ -149,7 +148,7 @@ pub struct GroupChatRoom {
 */
 use crate::schema::group_member;
 #[derive(Insertable)]
-#[table_name = "group_member"] 
+#[table_name = "group_member"]
 
 // INSERT用
 pub struct NewGroupMember {
@@ -161,20 +160,19 @@ pub struct NewGroupMember {
     pub leave_flag: bool,
     pub entry_date: i32,
     pub last_read_time: i32,
-
 }
 
 // SELECT用
 #[derive(Debug, Queryable)]
 pub struct GroupMember {
-  pub id: u64,
-  pub group_chat_room_id: u64,
-  pub user_id: String,
-  pub message_delete_flag: bool,
-  pub message_hidden_flag: bool,
-  pub leave_flag: bool,
-  pub entry_date: i32,
-  pub last_read_time: i32,
+    pub id: u64,
+    pub group_chat_room_id: u64,
+    pub user_id: String,
+    pub message_delete_flag: bool,
+    pub message_hidden_flag: bool,
+    pub leave_flag: bool,
+    pub entry_date: i32,
+    pub last_read_time: i32,
 }
 
 /*
@@ -182,19 +180,19 @@ pub struct GroupMember {
 */
 use crate::schema::message_content_type;
 #[derive(Insertable)]
-#[table_name = "message_content_type"] 
+#[table_name = "message_content_type"]
 
 // INSERT用
 pub struct NewMessageContentType {
-  pub id: u64,
-  pub content_type: String
+    pub id: u64,
+    pub content_type: String,
 }
 
 // SELECT用
 #[derive(Debug, Queryable)]
 pub struct MessageContentType {
-  pub id: u64,
-  pub content_type: String
+    pub id: u64,
+    pub content_type: String,
 }
 
 /*
@@ -202,7 +200,7 @@ pub struct MessageContentType {
 */
 use crate::schema::message;
 #[derive(Insertable)]
-#[table_name = "message"] 
+#[table_name = "message"]
 
 // INSERT用
 pub struct NewMessage {
@@ -218,11 +216,11 @@ pub struct NewMessage {
 // SELECT用
 #[derive(Debug, Queryable)]
 pub struct Message {
-  pub id: u64,
-  pub content_type_id: u64,
-  pub sender_id: String,
-  pub direct_chat_room_id: Option<u64>,
-  pub group_chat_room_id: Option<u64>,
-  pub content: String,
-  pub created_at: i32,
+    pub id: u64,
+    pub content_type_id: u64,
+    pub sender_id: String,
+    pub direct_chat_room_id: Option<u64>,
+    pub group_chat_room_id: Option<u64>,
+    pub content: String,
+    pub created_at: i32,
 }

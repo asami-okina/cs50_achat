@@ -1,12 +1,9 @@
-use axum::{
-    response::Json,
-    extract::{Query},
-};
+use axum::{extract::Query, response::Json};
 // シリアライズ: RustのオブジェクトをJSON形式に変換
 // デシリアライズ : JSON形式をRustのオブジェクトに変換
-use serde::{Serialize, Deserialize};
-use serde_json::{Value, json};
-
+use crate::common::mysqlpool_connect;
+use serde::{Deserialize, Serialize};
+use serde_json::{json, Value};
 use sqlx::mysql::MySqlPool;
 use std::{env, fmt::Debug};
 /*
@@ -21,7 +18,9 @@ pub struct IsAvailableMailValidationQyery {
 // デフォルト値の取得
 impl Default for IsAvailableMailValidationQyery {
     fn default() -> Self {
-        Self { mail: String::from("") }
+        Self {
+            mail: String::from(""),
+        }
     }
 }
 
@@ -33,19 +32,22 @@ pub async fn handler_is_available_mail_validation(
     let Query(query) = query.unwrap_or_default();
     let mail = query.mail;
 
-    let pool = MySqlPool::connect(&env::var("DATABASE_URL").unwrap()).await.unwrap();
+    let pool = mysqlpool_connect::mysqlpool_connect().await;
     let is_available_mail = is_available_mail_validation(&pool, &mail).await.unwrap();
-    
+
     Json(json!({ "is_available_mail": is_available_mail, }))
 }
 
 // SQL実行部分
-pub async fn is_available_mail_validation(pool: &MySqlPool, mail:&str) -> anyhow::Result<bool>{
+pub async fn is_available_mail_validation(pool: &MySqlPool, mail: &str) -> anyhow::Result<bool> {
     let user = sqlx::query!(
         r#"
-            SELECT *
-            FROM user
-            WHERE mail = ?
+            SELECT
+                *
+            FROM
+                user
+            WHERE
+                mail = ?
         "#,
         mail
     )

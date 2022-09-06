@@ -1,12 +1,12 @@
 use axum::{
+    extract::{Path, Query},
     response::Json,
-    extract::{Path,Query},
 };
 // シリアライズ: RustのオブジェクトをJSON形式に変換
 // デシリアライズ : JSON形式をRustのオブジェクトに変換
-use serde::{Serialize, Deserialize};
-use serde_json::{Value, json};
-
+use crate::common::mysqlpool_connect;
+use serde::{Deserialize, Serialize};
+use serde_json::{json, Value};
 use sqlx::mysql::MySqlPool;
 use std::{env, fmt::Debug};
 /*
@@ -25,14 +25,16 @@ pub struct FetchIsAlreadyFriendQuery {
 // デフォルト値の取得
 impl Default for FetchIsAlreadyFriendQuery {
     fn default() -> Self {
-        Self { friend_user_id: String::from("") }
+        Self {
+            friend_user_id: String::from(""),
+        }
     }
 }
 
 #[derive(Debug, Deserialize, Serialize)]
 pub struct FetchIsAlreadyFriendResult {
     direct_chat_room_id: Option<u64>,
-    already_friend: bool
+    already_friend: bool,
 }
 
 // handler
@@ -45,14 +47,20 @@ pub async fn handler_fetch_is_already_friend(
     let Query(query) = query.unwrap_or_default();
     let friend_user_id = query.friend_user_id;
 
-    let pool = MySqlPool::connect(&env::var("DATABASE_URL").unwrap()).await.unwrap();
-    let result = fetch_is_already_friend(&pool, &user_id, &friend_user_id).await.unwrap();
-    
+    let pool = mysqlpool_connect::mysqlpool_connect().await;
+    let result = fetch_is_already_friend(&pool, &user_id, &friend_user_id)
+        .await
+        .unwrap();
+
     Json(json!({ "result": result }))
 }
 
 // SQL実行部分
-pub async fn fetch_is_already_friend(pool: &MySqlPool, user_id: &str, friend_user_id: &str) -> anyhow::Result<FetchIsAlreadyFriendResult> {
+pub async fn fetch_is_already_friend(
+    pool: &MySqlPool,
+    user_id: &str,
+    friend_user_id: &str,
+) -> anyhow::Result<FetchIsAlreadyFriendResult> {
     let is_alread_friend = sqlx::query!(
         r#"
             SELECT
@@ -70,19 +78,19 @@ pub async fn fetch_is_already_friend(pool: &MySqlPool, user_id: &str, friend_use
     .await
     .unwrap();
 
-    let result:FetchIsAlreadyFriendResult;
+    let result: FetchIsAlreadyFriendResult;
 
     if is_alread_friend.len() == 0 {
         // まだ友達ではない
         result = FetchIsAlreadyFriendResult {
             direct_chat_room_id: None,
-            already_friend: false
+            already_friend: false,
         }
     } else {
         // 既に友達である
         result = FetchIsAlreadyFriendResult {
             direct_chat_room_id: Some(is_alread_friend[0].direct_chat_room_id),
-            already_friend: true
+            already_friend: true,
         }
     }
 

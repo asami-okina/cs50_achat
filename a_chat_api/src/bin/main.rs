@@ -1,14 +1,11 @@
-use axum::{
-    routing::get,
-    routing::post,
-    Router,
-};
+use axum::{routing::get, routing::post, Router};
+mod common;
 mod fetch_component;
 mod post_component;
 use dotenv::dotenv;
 
 #[tokio::main]
-async fn main(){
+async fn main() {
     // .endファイルの中身の変数を取得し、環境変数として使用できるようにする
     dotenv().ok();
     //単一ルートでアプリケーションを構築する
@@ -45,5 +42,4 @@ async fn main(){
         .serve(app.into_make_service())
         .await
         .unwrap();
-
 }

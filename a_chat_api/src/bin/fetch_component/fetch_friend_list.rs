@@ -1,12 +1,9 @@
-use axum::{
-    response::Json,
-    extract::{Path},
-};
+use axum::{extract::Path, response::Json};
 // シリアライズ: RustのオブジェクトをJSON形式に変換
 // デシリアライズ : JSON形式をRustのオブジェクトに変換
-use serde::{Serialize, Deserialize};
-use serde_json::{Value, json};
-
+use crate::common::mysqlpool_connect;
+use serde::{Deserialize, Serialize};
+use serde_json::{json, Value};
 use sqlx::mysql::MySqlPool;
 use std::{env, fmt::Debug};
 /*
@@ -23,26 +20,29 @@ pub struct FetchFriendListResult {
     direct_chat_room_id: u64,
     friend_use_id: String,
     friend_profile_image: Option<String>,
-    friend_nickname: Option<String>
+    friend_nickname: Option<String>,
 }
 
 pub async fn handler_fetch_friend_list(Path(path): Path<FetchFriendListPath>) -> Json<Value> {
     let user_id = path.user_id;
 
-    let pool = MySqlPool::connect(&env::var("DATABASE_URL").unwrap()).await.unwrap();
+    let pool = mysqlpool_connect::mysqlpool_connect().await;
     let friend_list = fetch_friend_list(&pool, &user_id).await.unwrap();
     Json(json!({ "friend_list": friend_list }))
 }
 
 // SQL実行部分
-pub async fn fetch_friend_list(pool: &MySqlPool, user_id:&str) -> anyhow::Result<Vec<FetchFriendListResult>>{
+pub async fn fetch_friend_list(
+    pool: &MySqlPool,
+    user_id: &str,
+) -> anyhow::Result<Vec<FetchFriendListResult>> {
     let friend_list = sqlx::query!(
         r#"
             SELECT
-                f.direct_chat_room_id as direct_chat_room_id,
-                u.id as friend_use_id,
-                u.profile_image as friend_profile_image,
-                u.nickname as friend_nickname
+            f.direct_chat_room_id as direct_chat_room_id,
+            u.id as friend_use_id,
+            u.profile_image as friend_profile_image,
+            u.nickname as friend_nickname
             FROM
                 user as u
                 INNER JOIN
@@ -66,22 +66,22 @@ pub async fn fetch_friend_list(pool: &MySqlPool, user_id:&str) -> anyhow::Result
     .await
     .unwrap();
 
-    let mut result:Vec<FetchFriendListResult> = vec![];
+    let mut result: Vec<FetchFriendListResult> = vec![];
 
     for row in &friend_list {
         let friend = FetchFriendListResult {
             direct_chat_room_id: row.direct_chat_room_id,
             friend_use_id: row.friend_use_id.to_string(),
-            friend_profile_image:  match &row.friend_profile_image {
+            friend_profile_image: match &row.friend_profile_image {
                 Some(friend_profile_image) => Some(friend_profile_image.to_string()),
-                None => None
+                None => None,
             },
-            friend_nickname:  match &row.friend_nickname {
+            friend_nickname: match &row.friend_nickname {
                 Some(friend_nickname) => Some(friend_nickname.to_string()),
-                None => None
+                None => None,
             },
-          };
-          result.push(friend);
+        };
+        result.push(friend);
     }
     Ok(result)
 }

@@ -1,7 +1,7 @@
-use diesel::prelude::*;
 use a_chat_api::models::NewUser;
 use a_chat_api::schema::user as user_schema;
 use a_chat_api::utils::establish_connection;
+use diesel::prelude::*;
 
 fn main() {
     // utils.rsのestablish_connection関数からDBとの接続インスタンスを取得
@@ -96,7 +96,6 @@ fn main() {
         .execute(&connection)
         .expect("Error saving new user");
 
-
     /*
       direct_chat_roomテーブルの追加
     */
@@ -105,12 +104,12 @@ fn main() {
     let new_direct_chat_room = vec![
         NewDirectChatRoom {
             id: 1,
-            created_at: 1654063149
+            created_at: 1654063149,
         },
         NewDirectChatRoom {
             id: 2,
-            created_at: 1654063149
-        }
+            created_at: 1654063149,
+        },
     ];
 
     // INSERT処理を実行
@@ -119,7 +118,6 @@ fn main() {
         .execute(&connection)
         .expect("Error saving new direct chat room");
 
-    
     /*
       direct_memberテーブルの追加
     */
@@ -133,7 +131,7 @@ fn main() {
             message_delete_flag: false,
             message_hidden_flag: false,
             entry_date: 1654063149,
-            last_read_time: 1654063149
+            last_read_time: 1654063149,
         },
         NewDirectMember {
             id: 2,
@@ -142,7 +140,7 @@ fn main() {
             message_delete_flag: false,
             message_hidden_flag: false,
             entry_date: 1654063149,
-            last_read_time: 1654063149
+            last_read_time: 1654063149,
         },
         NewDirectMember {
             id: 3,
@@ -151,7 +149,7 @@ fn main() {
             message_delete_flag: false,
             message_hidden_flag: false,
             entry_date: 1654063149,
-            last_read_time: 1654063149
+            last_read_time: 1654063149,
         },
         NewDirectMember {
             id: 4,
@@ -160,7 +158,7 @@ fn main() {
             message_delete_flag: false,
             message_hidden_flag: false,
             entry_date: 1654063149,
-            last_read_time: 1654063149
+            last_read_time: 1654063149,
         },
     ];
 
@@ -169,7 +167,6 @@ fn main() {
         .values(&new_direct_members)
         .execute(&connection)
         .expect("Error saving new user");
-
 
     /*
       followテーブルの追加
@@ -280,7 +277,6 @@ fn main() {
             entry_date: 1654063149,
             last_read_time: 1654063149,
         },
-        
     ];
 
     // INSERT処理を実行
@@ -303,7 +299,6 @@ fn main() {
             id: 2,
             content_type: String::from("image"),
         },
-        
     ];
 
     // INSERT処理を実行
@@ -311,7 +306,6 @@ fn main() {
         .values(&new_message_content_typws)
         .execute(&connection)
         .expect("Error saving new group member");
-
 
     /*
       messageテーブルの追加
@@ -334,7 +328,9 @@ fn main() {
             sender_id: String::from("spAsami"),
             direct_chat_room_id: None,
             group_chat_room_id: Some(1),
-            content: String::from("https://pbs.twimg.com/media/E16OXztUYAIpisv?format=jpg&name=large"),
+            content: String::from(
+                "https://pbs.twimg.com/media/E16OXztUYAIpisv?format=jpg&name=large",
+            ),
             created_at: 1654063149,
         },
         NewMessage {
@@ -353,6 +349,4 @@ fn main() {
         .values(&new_messages)
         .execute(&connection)
         .expect("Error saving new message");
-
-
 }
