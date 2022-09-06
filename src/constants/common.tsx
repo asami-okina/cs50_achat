@@ -1,12 +1,12 @@
 // Fetch API
-export const get_fetch_api_header = {
+export const getFetchApiHeader = {
   method: "GET",
   headers: {
     "Content-Type": "application/json",
   },
 };
 
-export function post_fetch_api_header(bodyData) {
+export function postFetchApiHeader(bodyData) {
   let header = {
     method: "POST",
     headers: {

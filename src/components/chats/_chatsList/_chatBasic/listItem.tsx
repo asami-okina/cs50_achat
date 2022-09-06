@@ -1,17 +1,8 @@
 // libs
 import { useNavigation } from "@react-navigation/native";
 import React from "react";
-import {
-  View,
-  StyleSheet,
-  Pressable,
-  Image,
-  Text,
-} from "react-native";
-import {
-  StackNavigationProp,
-  StackScreenProps,
-} from "@react-navigation/stack";
+import { View, StyleSheet, Pressable, Image, Text } from "react-native";
+import { StackNavigationProp, StackScreenProps } from "@react-navigation/stack";
 import { useNavigationAChat } from "../../../../hooks/useNavigationAChat";
 
 // layouts
@@ -43,7 +34,6 @@ export function ListItem({
   unreadCount,
   groupChatRoomId,
   directChatRoomId,
-  groupMemberUserId,
 }: ListItemType) {
   let dateTime = new Date(lastMessageCreationDate * 1000);
   let parseDateTime = dateTime.toLocaleString();
@@ -82,15 +72,8 @@ export function ListItem({
             styles.listSeparateTopContainerStyle,
           ]}
         >
-          <Text style={[styles.textStyle, styles.nameStyle]}>
-            {name}
-          </Text>
-          <Text
-            style={[
-              styles.textStyle,
-              styles.lastMessageCreationDateStyle,
-            ]}
-          >
+          <Text style={[styles.textStyle, styles.nameStyle]}>{name}</Text>
+          <Text style={[styles.textStyle, styles.lastMessageCreationDateStyle]}>
             {parseDateTime}
           </Text>
         </View>
@@ -103,12 +86,7 @@ export function ListItem({
                 : null
             }
           >
-            <Text
-              style={[
-                styles.textStyle,
-                styles.circleWithUnReadCountStyle,
-              ]}
-            >
+            <Text style={[styles.textStyle, styles.circleWithUnReadCountStyle]}>
               {unreadCount}
             </Text>
           </View>

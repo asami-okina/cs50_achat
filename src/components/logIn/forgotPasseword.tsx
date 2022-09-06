@@ -1,11 +1,6 @@
 // libs
 import React from "react";
-import {
-  Text,
-  View,
-  TouchableOpacity,
-  StyleSheet,
-} from "react-native";
+import { Text, View, TouchableOpacity, StyleSheet } from "react-native";
 
 // layouts
 import {
@@ -21,9 +16,7 @@ export function ForgotPassword() {
         style={styles.forgotPasswordContainerStyle}
         onPress={() => console.log("検討予定")}
       >
-        <Text style={styles.forgotPasswordTextStyle}>
-          Forgot Password
-        </Text>
+        <Text style={styles.forgotPasswordTextStyle}>Forgot Password</Text>
       </TouchableOpacity>
     </View>
   );

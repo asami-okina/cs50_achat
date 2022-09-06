@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
   ListRenderItemInfo,
 } from "react-native";
+import { chatsclickedTypeEnum } from "../../../../constants/enum";
 
 // layouts
 import {
@@ -15,15 +16,11 @@ import {
 } from "../../../../constants/layout";
 
 type HiddenListItemType = {
-  setDeleteModalVisible: React.Dispatch<
-    React.SetStateAction<boolean>
-  >;
-  setHiddenModalVisible: React.Dispatch<
-    React.SetStateAction<boolean>
-  >;
+  setDeleteGroupModalVisible: React.Dispatch<React.SetStateAction<boolean>>;
+  setHiddenGroupModalVisible: React.Dispatch<React.SetStateAction<boolean>>;
   setRowMap: React.Dispatch<React.SetStateAction<string>>;
   setkey: React.Dispatch<React.SetStateAction<string>>;
-  setClickedType: React.Dispatch<React.SetStateAction<string>>;
+  setClickedType: React.Dispatch<React.SetStateAction<chatsclickedTypeEnum>>;
   rowMap: string;
   data: ListRenderItemInfo<ChatRoomListType>;
   setGroupChatRoomId: React.Dispatch<React.SetStateAction<string>>;
@@ -31,8 +28,8 @@ type HiddenListItemType = {
 };
 
 export function HiddenListItem({
-  setDeleteModalVisible,
-  setHiddenModalVisible,
+  setDeleteGroupModalVisible,
+  setHiddenGroupModalVisible,
   setRowMap,
   setkey,
   setClickedType,
@@ -45,14 +42,10 @@ export function HiddenListItem({
     <View style={styles.rowBackStyle}>
       {/* deleteボタン */}
       <TouchableOpacity
-        style={[
-          styles.backRightBtnStyle,
-          styles.backRightBtnRightStyle,
-        ]}
+        style={[styles.backRightBtnStyle, styles.backRightBtnRightStyle]}
         onPress={() => {
-          // 確認モーダルを表示
-          setDeleteModalVisible(true);
-          // 削除時のモーダルでCancleの時は該当リストをデフォルト状態に戻す、Okの場合は該当リストを削除する甩に使用
+          setDeleteGroupModalVisible(true);
+          // 削除時のモーダルでCancleの時は該当リストをデフォルト状態に戻す、Okの場合は該当リストを削除する用に使用
           setRowMap(rowMap);
           setkey(data.item.key);
           if ("group_chat_room_id" in data.item) {
@@ -61,7 +54,7 @@ export function HiddenListItem({
           if ("direct_chat_room_id" in data.item) {
             setDirectChatRoomId(data.item.direct_chat_room_id);
           }
-          setClickedType("Delete");
+          setClickedType(chatsclickedTypeEnum.Delete);
         }}
       >
         <Text style={styles.backTextWhiteStyle}>Delete</Text>
@@ -70,9 +63,8 @@ export function HiddenListItem({
       <TouchableOpacity
         style={[styles.backRightBtn, styles.backRightBtnLeft]}
         onPress={() => {
-          // 確認モーダルを表示
-          setHiddenModalVisible(true);
-          // 削除時のモーダルでCancleの時は該当リストをデフォルト状態に戻す、Okの場合は該当リストを削除する甩に使用
+          setHiddenGroupModalVisible(true);
+          // 削除時のモーダルでCancleの時は該当リストをデフォルト状態に戻す、Okの場合は該当リストを削除する用に使用
           setRowMap(rowMap);
           setkey(data.item.key);
           if ("group_chat_room_id" in data.item) {
@@ -81,7 +73,7 @@ export function HiddenListItem({
           if ("direct_chat_room_id" in data.item) {
             setDirectChatRoomId(data.item.direct_chat_room_id);
           }
-          setClickedType("Hidden");
+          setClickedType(chatsclickedTypeEnum.Hidden);
         }}
       >
         <Text style={styles.backTextWhiteStyle}>Hidden</Text>

@@ -1,15 +1,10 @@
 // libs
 import React, { useEffect, useState } from "react";
-import {
-  StyleSheet,
-  TouchableOpacity,
-  View,
-  Text,
-} from "react-native";
+import { StyleSheet, TouchableOpacity, View, Text } from "react-native";
 import { API_SERVER_URL } from "../../constants/api";
 import { storage } from "../../../storage";
 import { useNavigationAChat } from "../../hooks/useNavigationAChat";
-import { post_fetch_api_header } from "../../constants/common";
+import { postFetchApiHeader } from "../../constants/common";
 
 // layouts
 import {
@@ -29,11 +24,11 @@ type SmallButtonType = {
   addFriendList: addFriendList;
   groupSetting: {
     groupName?: string;
-    image?: string;
+    groupImage?: string;
   };
   type: string;
   friendListNames: string;
-  alreadyFriend: boolean;
+  isAlreadyFriend: boolean;
   addGroupMemberGroupChatRoomId: string;
   addGroupMemberGroupImage: string;
   addGroupMemberGroupName: string;
@@ -47,59 +42,45 @@ export function SmallButton({
   groupSetting,
   type,
   friendListNames,
-  alreadyFriend,
+  isAlreadyFriend,
   addGroupMemberGroupChatRoomId,
   addGroupMemberGroupImage,
   addGroupMemberGroupName,
   backGroupName,
   backGroupImage,
 }: SmallButtonType) {
-  // ユーザーID(今後は認証から取得するようにする)
+  const navigation = useNavigationAChat();
   const [userId, setUserId] = useState<string>(null);
-  // 自分を含めたグループメンバーのuserId
-  const [groupMemberUserIds, setGroupMemberUserIds] = useState<
-    string[]
-  >([]);
-
   const [groupChatRoomId, setGroupChatRoomId] = useState<string>("");
-
-  // グループに追加したメンバーの名前の配列
-  const [addGroupMemberName, setAddGroupMemberName] = useState<
+  const [groupMemberUseridsIncludedMe, setGroupMemberUseridsIncludedMe] =
+    useState<string[]>([]);
+  const [addedGroupMemberUserNames, setAddedGroupMemberUserNames] = useState<
     string[]
   >([]);
-
-  // 友達追加したユーザーの情報
-  const [friendInfo, setFriendInfo] = useState<
+  const [addedFriendUsersInfo, setAddedFriendUsersInfo] = useState<
     FriendListPropsType[] | []
   >([]);
-
-  // navigation
-  const navigation = useNavigationAChat();
 
   // グループ追加
   async function _addGroup() {
     try {
-      // APIリクエスト
       const bodyData = {
-        group_image: groupSetting.image,
+        group_image: groupSetting.groupImage,
         group_name: groupSetting.groupName || friendListNames,
-        group_member_user_ids: groupMemberUserIds,
+        group_member_user_ids: groupMemberUseridsIncludedMe,
       };
       const response = await fetch(
         API_SERVER_URL + `/api/users/${userId}/groups/add`,
-        post_fetch_api_header(bodyData)
+        postFetchApiHeader(bodyData)
       );
-      // レスポンスをJSONにする
-      const parse_response = await response.json();
-      // グループチャットルームIDを取得
-      const groupChatRoomId =
-        parse_response.group_info.group_chat_room_id;
+      const parseResponse = await response.json();
+      const groupChatRoomId = parseResponse.group_info.group_chat_room_id;
       setGroupChatRoomId(groupChatRoomId);
       navigation.navigate("Chat", {
-        groupChatRoomId: parse_response.group_info.group_chat_room_id,
+        groupChatRoomId: parseResponse.group_info.group_chat_room_id,
         directChatRoomId: null,
-        profileImage: parse_response.group_info.group_image,
-        name: parse_response.group_info.group_name,
+        profileImage: parseResponse.group_info.group_image,
+        name: parseResponse.group_info.group_name,
       });
     } catch (e) {
       console.error(e);
@@ -109,24 +90,21 @@ export function SmallButton({
   // 友達追加
   async function _addFriend() {
     try {
-      // APIリクエスト
       const bodyData = {
         friend_user_id: addFriendList.friend_use_id,
       };
       const response = await fetch(
         API_SERVER_URL + `/api/users/${userId}/friends`,
-        post_fetch_api_header(bodyData)
+        postFetchApiHeader(bodyData)
       );
-      // レスポンスをJSONにする
-      const parse_response = await response.json();
-      setFriendInfo(parse_response.friend_info);
+      const parseResponse = await response.json();
+      setAddedFriendUsersInfo(parseResponse.friend_info);
       // 友達チャットに遷移
       navigation.navigate("Chat", {
         groupChatRoomId: null,
-        directChatRoomId:
-          parse_response.friend_info.direct_chat_room_id,
-        profileImage: parse_response.friend_info.friend_profile_image,
-        name: parse_response.friend_info.friend_nickname,
+        directChatRoomId: parseResponse.friend_info.direct_chat_room_id,
+        profileImage: parseResponse.friend_info.friend_profile_image,
+        name: parseResponse.friend_info.friend_nickname,
       });
     } catch (e) {
       console.error(e);
@@ -143,21 +121,17 @@ export function SmallButton({
         newDataUserIds.push(addGroupFriendList[i].friend_use_id);
         newDataUserNames.push(addGroupFriendList[i].friend_nickname);
       }
-      // グループに追加したメンバーの名前の配列を更新
-      setAddGroupMemberName(newDataUserNames);
-      // APIリクエスト
+      setAddedGroupMemberUserNames(newDataUserNames);
       const bodyData = {
         group_chat_room_id: Number(addGroupMemberGroupChatRoomId),
         add_user_ids: newDataUserIds,
       };
       const response = await fetch(
         API_SERVER_URL + `/api/users/${userId}/group-member`,
-        post_fetch_api_header(bodyData)
+        postFetchApiHeader(bodyData)
       );
-      // レスポンスをJSONにする
-      const parse_response = await response.json();
-      // 新規に追加したユーザーIDのリスト
-      const adduserIds = parse_response.adduserIds;
+      const parseResponse = await response.json();
+      const addedUserIdsList = parseResponse.adduserIds;
     } catch (e) {
       console.error(e);
     }
@@ -165,18 +139,17 @@ export function SmallButton({
 
   // グループメンバーに追加されたら、チャット画面に遷移
   useEffect(() => {
-    if (addGroupMemberName.length !== 0) {
+    if (addedGroupMemberUserNames.length !== 0) {
       navigation.navigate("Chat", {
         groupChatRoomId: addGroupMemberGroupChatRoomId,
         directChatRoomId: null,
         profileImage: addGroupMemberGroupImage,
         name: addGroupMemberGroupName,
-        addGroupMemberName: addGroupMemberName,
+        addedGroupMemberUserNames: addedGroupMemberUserNames,
       });
     }
-  }, [addGroupMemberName]);
+  }, [addedGroupMemberUserNames]);
 
-  // ユーザーIDの取得
   useEffect(() => {
     storage
       .load({
@@ -190,12 +163,12 @@ export function SmallButton({
   // friendListからuserIdだけ取り出し、自分のuserIdも追加
   useEffect(() => {
     if (addGroupFriendList && type === "addGroupSetting" && userId) {
-      let groupMemberUserIds = [];
+      let groupMemberUseridsIncludedMe = [];
       for (let i = 0; i < addGroupFriendList.length; i++) {
-        groupMemberUserIds.push(addGroupFriendList[i].friend_use_id);
+        groupMemberUseridsIncludedMe.push(addGroupFriendList[i].friend_use_id);
       }
-      groupMemberUserIds.push(userId);
-      setGroupMemberUserIds(groupMemberUserIds);
+      groupMemberUseridsIncludedMe.push(userId);
+      setGroupMemberUseridsIncludedMe(groupMemberUseridsIncludedMe);
     }
   }, [addGroupFriendList, userId]);
 
@@ -211,7 +184,7 @@ export function SmallButton({
         >
           <TouchableOpacity
             style={
-              alreadyFriend
+              isAlreadyFriend
                 ? [styles.buttonStyle, styles.buttonGrayStyle]
                 : styles.buttonStyle
             }
@@ -232,12 +205,12 @@ export function SmallButton({
                   navigation.navigate("Chat", {
                     groupChatRoomId: groupChatRoomId,
                     directChatRoomId: null,
-                    profileImage: groupSetting.image,
+                    profileImage: groupSetting.groupImage,
                     name: groupSetting.groupName || friendListNames,
                   });
                 });
               }
-              if (type === "addFriend" && !alreadyFriend) {
+              if (type === "addFriend" && !isAlreadyFriend) {
                 // 友達追加API実行
                 // 友だち追加画面から友達とのチャットに遷移
                 _addFriend();

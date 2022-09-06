@@ -4,7 +4,7 @@ import { Text, StyleSheet, TouchableOpacity } from "react-native";
 import { API_SERVER_URL } from "../../constants/api";
 import { storage } from "../../../storage";
 import { useNavigationAChat } from "../../hooks/useNavigationAChat";
-import { post_fetch_api_header } from "../../constants/common";
+import { postFetchApiHeader } from "../../constants/common";
 
 // layouts
 import {
@@ -31,8 +31,8 @@ type ButtonPropsType = {
     _updateNickName?: () => Promise<void>;
     nickName?: string;
     setNickName?: React.Dispatch<React.SetStateAction<string>>;
-    emailText?: string;
-    passwordText?: string;
+    emailFormText?: string;
+    passwordFormText?: string;
     executedLoginAuthentication?: boolean;
     onFocusInputMailOrPasseword?: boolean;
     onPressFunction?: () => Promise<void>;
@@ -56,36 +56,29 @@ export function Button({
   scene,
   propsList,
 }: ButtonPropsType) {
-  // navigation
   const navigation = useNavigationAChat();
+  const [userId, setUserId] = useState<string>();
+  const [addedFriendUserInfo, setAddedFriendUserInfo] =
+    useState<AddedFriendInfoType>();
 
-  const [userId, setUserId] = useState<string>(null);
-
-  // 友達追加したユーザーの情報
-  const [friendInfo, setFriendInfo] =
-    useState<AddedFriendInfoType>(null);
-
-  // 友達追加(ループチャット画面で友達ではないユーザーアイコンをクリックした場合、友だち追加する)
+  // 友達追加(ループチャット画面で友達ではないユーザーアイコンをクリックした場合、友達追加する)
   async function _addFriend() {
     try {
-      // APIリクエスト
       const bodyData = {
         friend_user_id: propsList.friendUserId,
       };
       const response = await fetch(
         API_SERVER_URL + `/api/users/${userId}/friends`,
-        post_fetch_api_header(bodyData)
+        postFetchApiHeader(bodyData)
       );
-      // レスポンスをJSONにする
-      const parse_response = await response.json();
-      setFriendInfo(parse_response.friend_info);
-      // // 友達チャットに遷移
+      const parseResponse = await response.json();
+      setAddedFriendUserInfo(parseResponse.friend_info);
+      // 友達チャットに遷移
       navigation.navigate("Chat", {
         groupChatRoomId: null,
-        directChatRoomId:
-          parse_response.friend_info.direct_chat_room_id,
-        profileImage: parse_response.friend_info.friend_profile_image,
-        name: parse_response.friend_info.friend_nickname,
+        directChatRoomId: parseResponse.friend_info.direct_chat_room_id,
+        profileImage: parseResponse.friend_info.friend_profile_image,
+        name: parseResponse.friend_info.friend_nickname,
       });
     } catch (e) {
       console.error(e);
@@ -95,23 +88,17 @@ export function Button({
   // 会員登録
   async function _signUp() {
     try {
-      // paramsを生成
       const bodyData = {
         mail: propsList?.email,
         password: propsList?.password,
         user_id: propsList?.userId,
       };
-
-      // APIリクエスト
       const response = await fetch(
         API_SERVER_URL + `/api/signup`,
-        post_fetch_api_header(bodyData)
+        postFetchApiHeader(bodyData)
       );
-
-      // レスポンスをJSONにする
-      const parse_response = await response.json();
-      const response_user_id = parse_response.user_id;
-      // ローカルストレージにユーザーIDを保存
+      const parseResponse = await response.json();
+      const response_user_id = parseResponse.user_id;
       await storage.save({
         key: "key",
         data: {
@@ -123,7 +110,6 @@ export function Button({
     }
   }
 
-  // ユーザーIDの取得
   useEffect(() => {
     storage
       .load({
@@ -141,8 +127,8 @@ export function Button({
         scene === "LogIn" ? (
           <TouchableOpacity
             style={
-              propsList.emailText.length !== 0 &&
-              propsList.passwordText.length !== 0
+              propsList.emailFormText.length !== 0 &&
+              propsList.passwordFormText.length !== 0
                 ? propsList.executedLoginAuthentication
                   ? propsList.onFocusInputMailOrPasseword
                     ? styles.buttonContainerStyle
@@ -158,8 +144,8 @@ export function Button({
             }
             onPress={() => {
               if (
-                propsList.emailText.length !== 0 &&
-                propsList.passwordText.length !== 0
+                propsList.emailFormText.length !== 0 &&
+                propsList.passwordFormText.length !== 0
               ) {
                 propsList.onPressFunction();
               }
@@ -204,11 +190,7 @@ export function Button({
                 // 友達追加
                 _addFriend();
               }
-              if (
-                enable &&
-                link &&
-                scene !== "ProfileSettingNickName"
-              ) {
+              if (enable && link && scene !== "ProfileSettingNickName") {
                 // welcomeページからsignupページに遷移
                 if (scene == "Welcome" && link == "SignUp") {
                   navigation.navigate(link);

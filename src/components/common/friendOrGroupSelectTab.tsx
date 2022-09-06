@@ -11,19 +11,19 @@ import {
 } from "../../constants/layout";
 
 type FriendOrGroupSelectTabPropsType = {
-  setOpenFriendList: React.Dispatch<React.SetStateAction<boolean>>;
-  setOpenGroupList: React.Dispatch<React.SetStateAction<boolean>>;
-  openFriendList: boolean;
-  openGroupList: boolean;
+  setIsOpenFriendList: React.Dispatch<React.SetStateAction<boolean>>;
+  setIsOpenGroupList: React.Dispatch<React.SetStateAction<boolean>>;
+  isOpenFriendList: boolean;
+  isOpenGroupList: boolean;
   friendCount: number;
   groupCount: number;
 };
 
 export function FriendOrGroupSelectTab({
-  setOpenFriendList,
-  setOpenGroupList,
-  openFriendList,
-  openGroupList,
+  setIsOpenFriendList,
+  setIsOpenGroupList,
+  isOpenFriendList,
+  isOpenGroupList,
   friendCount,
   groupCount,
 }: FriendOrGroupSelectTabPropsType) {
@@ -32,35 +32,31 @@ export function FriendOrGroupSelectTab({
       <View style={styles.containerStyle}>
         <Pressable
           style={
-            openFriendList
+            isOpenFriendList
               ? [styles.tabStyle, styles.tabOpenStyle]
               : styles.tabStyle
           }
           onPress={() => {
-            setOpenFriendList(true);
-            setOpenGroupList(false);
+            setIsOpenFriendList(true);
+            setIsOpenGroupList(false);
           }}
         >
           <Text style={styles.textStyle}>Friend</Text>
-          <Text style={styles.countStyle}>
-            {friendCount ? friendCount : 0}
-          </Text>
+          <Text style={styles.countStyle}>{friendCount ? friendCount : 0}</Text>
         </Pressable>
         <Pressable
           style={
-            openGroupList
+            isOpenGroupList
               ? [styles.tabStyle, styles.tabOpenStyle]
               : styles.tabStyle
           }
           onPress={() => {
-            setOpenFriendList(false);
-            setOpenGroupList(true);
+            setIsOpenFriendList(false);
+            setIsOpenGroupList(true);
           }}
         >
           <Text style={styles.textStyle}>Group</Text>
-          <Text style={styles.countStyle}>
-            {groupCount ? groupCount : 0}
-          </Text>
+          <Text style={styles.countStyle}>{groupCount ? groupCount : 0}</Text>
         </Pressable>
         <View style={styles.remainBorderStyle}></View>
       </View>

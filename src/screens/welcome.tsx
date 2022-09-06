@@ -9,7 +9,7 @@ import { AChatLogo } from "../components/common/aChatLogo";
 import { ToSignUpOrLoginTextArea } from "../components/common/toSignUpOrLoginTextArea";
 import { TopAreaWrapper } from "../components/common/topAreaWrapper";
 
-// sameStyles
+// style
 import { sameStyles } from "../constants/styles/sameStyles";
 
 export function Welcome() {
@@ -24,9 +24,7 @@ export function Welcome() {
         <HeadTitle title={"Welcome"} />
         {/* A-Chatロゴ */}
         <AChatLogo />
-        <View
-          style={sameStyles.bottomStyleByWelcomeAndSignUpAndLogin}
-        >
+        <View style={sameStyles.bottomStyleByWelcomeAndSignUpAndLogin}>
           {/* 遷移ボタン */}
           <Button
             link={"SignUp"}

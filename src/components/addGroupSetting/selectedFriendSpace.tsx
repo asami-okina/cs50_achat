@@ -14,19 +14,14 @@ import { useNavigationAChat } from "../../hooks/useNavigationAChat";
 import { AddFriendList } from "../../components/addGroup/addFriendList";
 
 // layouts
-import {
-  PROFILE_IMAGE_SIZE,
-  ADD_FRIEND_WIDTH,
-} from "../../constants/layout";
+import { PROFILE_IMAGE_SIZE, ADD_FRIEND_WIDTH } from "../../constants/layout";
 
-// constantsSelectedFriendStyles
+// style
 import { selectedFriendStyles } from "../../constants/styles/selectedFriendStyles";
 
 type SelectedFriendSpaceType = {
   friendList: NewFriendListPropsType[];
-  setFriendList: React.Dispatch<
-    React.SetStateAction<NewFriendListPropsType[]>
-  >;
+  setFriendList: React.Dispatch<React.SetStateAction<NewFriendListPropsType[]>>;
   ownNickName: string;
   ownProfileImage: string;
   groupName: string;
@@ -41,23 +36,17 @@ export function SelectedFriendSpace({
   groupName,
   groupImage,
 }: SelectedFriendSpaceType) {
-  // navigation
   const navigation = useNavigationAChat();
-
-  // 選択された友達リストの削除
   const _deleteFriendList = (rowKey: string) => {
     // 選択されたリストから該当リストを削除
     // Reactの差異を比較するのは、オブジェクト同士。そのため、新しくオブジェクトを作成する必要がある
     const newData = [...friendList];
     // findIndex: 配列内の指定されたテスト関数に合格する要素がない場合を含め、それ以外は-1を返す
-    const prev2Index = friendList.findIndex(
-      (item) => item.key === rowKey
-    );
+    const prev2Index = friendList.findIndex((item) => item.key === rowKey);
     newData.splice(prev2Index, 1);
     setFriendList(newData);
   };
 
-  // refの生成
   const scrollViewRef = useRef();
 
   return (

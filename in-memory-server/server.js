@@ -249,18 +249,15 @@ app.post("/api/signup", (req, res, ctx) => {
   );
 });
 // userIdがあれば、登録するユーザーIDが使用可能かどうかチェック
-app.get(
-  "/api/signup/isAvailableUserIdValidation",
-  (req, res, ctx) => {
-    const userId = req.param("userId");
-    // 登録するユーザーIDが使用可能かどうかチェック
-    return res.status(200).send(
-      JSON.stringify({
-        isAvailableUserId: true,
-      })
-    );
-  }
-);
+app.get("/api/signup/isAvailableUserIdValidation", (req, res, ctx) => {
+  const userId = req.param("userId");
+  // 登録するユーザーIDが使用可能かどうかチェック
+  return res.status(200).send(
+    JSON.stringify({
+      isAvailableUserId: true,
+    })
+  );
+});
 // mailがあれば、登録するmailが使用可能かどうかチェック
 app.get("/api/signup/isAvailableMailValidation", (req, res, ctx) => {
   const mail = req.param("mail");
@@ -314,8 +311,7 @@ app.get(`/api/users/:user_id/home`, (req, res, ctx) => {
   for (let i = 0; i < friends.length; i++) {
     if (
       friends[i].friend_nickname &&
-      friends[i].friend_nickname.trim().indexOf(searchText.trim()) >
-        -1
+      friends[i].friend_nickname.trim().indexOf(searchText.trim()) > -1
     ) {
       result[0].friend.push(friends[i]);
     }
@@ -561,10 +557,7 @@ app.get("/api/users/:user_id/chatRoom", (req, res, ctx) => {
       ) {
         result.push(chats[i]);
       }
-      if (
-        chats[i].group_name &&
-        chats[i].group_name.indexOf(searchText) > -1
-      ) {
+      if (chats[i].group_name && chats[i].group_name.indexOf(searchText) > -1) {
         result.push(chats[i]);
       }
     }
@@ -601,27 +594,19 @@ app.get("/api/users/:user_id/message", (req, res, ctx) => {
   // 友達とのチャットの場合
   if (chat_room_type === "DirectChatRoomId") {
     if (chat_room_id === "friend 1") {
-      return res
-        .status(200)
-        .send(JSON.stringify(temporaryMessages_friend1));
+      return res.status(200).send(JSON.stringify(temporaryMessages_friend1));
     }
     if (chat_room_id === "friend 11") {
-      return res
-        .status(200)
-        .send(JSON.stringify(temporaryMessages_friend11));
+      return res.status(200).send(JSON.stringify(temporaryMessages_friend11));
     }
   }
   // グループチャットの場合
   if (chat_room_type === "GroupChatRoomId") {
     if (chat_room_id === "group 1") {
-      return res
-        .status(200)
-        .send(JSON.stringify(temporaryMessages_group1));
+      return res.status(200).send(JSON.stringify(temporaryMessages_group1));
     }
     if (chat_room_id === "group 6") {
-      return res
-        .status(200)
-        .send(JSON.stringify(temporaryMessages_group6));
+      return res.status(200).send(JSON.stringify(temporaryMessages_group6));
     }
 
     return res.status(404).send("not found");

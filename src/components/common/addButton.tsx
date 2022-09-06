@@ -1,11 +1,6 @@
 // libs
 import React from "react";
-import {
-  StyleSheet,
-  TouchableOpacity,
-  View,
-  Image,
-} from "react-native";
+import { StyleSheet, TouchableOpacity, View, Image } from "react-native";
 import { useNavigationAChat } from "../../hooks/useNavigationAChat";
 
 // layouts
@@ -19,15 +14,14 @@ import {
 } from "../../constants/layout";
 
 type AddButtonPropsType = {
-  openFriendList: boolean;
-  openGroupList: boolean;
+  isOpenFriendList: boolean;
+  isOpenGroupList: boolean;
 };
 
 export function AddButton({
-  openFriendList,
-  openGroupList,
+  isOpenFriendList,
+  isOpenGroupList,
 }: AddButtonPropsType) {
-  // navigation
   const navigation = useNavigationAChat();
   return (
     <View style={styles.boxStyle}>
@@ -36,10 +30,10 @@ export function AddButton({
           <TouchableOpacity
             style={styles.buttonStyle}
             onPress={() => {
-              if (openFriendList) {
+              if (isOpenFriendList) {
                 navigation.navigate("AddFriend");
               }
-              if (openGroupList) {
+              if (isOpenGroupList) {
                 navigation.navigate("AddGroup", {
                   groupName: null,
                   groupImage: null,
@@ -47,9 +41,7 @@ export function AddButton({
               }
             }}
           >
-            <Image
-              source={require("../../../assets/images/white_plus.png")}
-            />
+            <Image source={require("../../../assets/images/white_plus.png")} />
           </TouchableOpacity>
         </View>
       </View>

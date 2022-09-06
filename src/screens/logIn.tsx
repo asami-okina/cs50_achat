@@ -9,7 +9,7 @@ import {
 } from "react-native";
 import { storage } from "../../storage";
 import { StackScreenProps } from "@react-navigation/stack";
-import { post_fetch_api_header } from "../constants/common";
+import { postFetchApiHeader } from "../constants/common";
 
 // components
 import { ToSignUpOrLoginTextArea } from "../components/common/toSignUpOrLoginTextArea";
@@ -21,7 +21,7 @@ import { PasswordForm } from "../components/logIn/passwordForm";
 import { TopAreaWrapper } from "../components/common/topAreaWrapper";
 import { API_SERVER_URL } from "../constants/api";
 
-// sameStyles
+// style
 import { sameStyles } from "../constants/styles/sameStyles";
 
 type MainProps = StackScreenProps<RootStackParamListType, "LogIn">;
@@ -29,49 +29,33 @@ type MainProps = StackScreenProps<RootStackParamListType, "LogIn">;
 export function LogIn({ navigation }: MainProps) {
   // キーボードに完了ボタンを表示
   const inputAccessoryViewID: string = "uniqueID";
-
-  // メールアドレスの入力フォーム
-  const [emailText, setEmailText] = useState<string>("");
-
-  // パスワードの入力フォーム
-  const [passwordText, setPasswordText] = useState<string>("");
-
-  // メールアドレスもしくはパスワード入力中
-  const [
-    onFocusInputMailOrPasseword,
-    setOnFocusInputMailOrPasseword,
-  ] = useState<boolean>(false);
-
-  // ログインボタンをしたかどうか
-  const [
-    executedLoginAuthentication,
-    setExecutedLoginAuthentication,
-  ] = useState<boolean>(false);
+  const [emailFormText, setEmailFormText] = useState<string>("");
+  const [passwordFormText, setPasswordText] = useState<string>("");
+  const [onFocusInputMailOrPasseword, setOnFocusInputMailOrPasseword] =
+    useState<boolean>(false);
+  const [executedLoginAuthentication, setExecutedLoginAuthentication] =
+    useState<boolean>(false);
 
   // ログイン認証
   async function _loginAuthentication() {
     try {
-      // APIリクエスト
       const bodyData = {
-        mail: emailText,
-        password: passwordText,
+        mail: emailFormText,
+        password: passwordFormText,
       };
       const response = await fetch(
         API_SERVER_URL + `/api/login`,
-        post_fetch_api_header(bodyData)
+        postFetchApiHeader(bodyData)
       );
-
-      // レスポンスをJSONにする
-      const parse_response = await response.json();
-      if (parse_response.certification_result) {
+      const parseResponse = await response.json();
+      if (parseResponse.certification_result) {
         // ローカルストレージにユーザーIDを保存
         await storage.save({
           key: "key",
           data: {
-            userId: parse_response.user_id,
+            userId: parseResponse.user_id,
           },
         });
-        // Home画面へ遷移
         navigation.navigate("Home");
       } else {
         // ログインボタンを押した場合
@@ -105,42 +89,34 @@ export function LogIn({ navigation }: MainProps) {
           {/* Email */}
           <MailForm
             inputAccessoryViewID={inputAccessoryViewID}
-            emailText={emailText}
-            setEmailText={setEmailText}
+            emailFormText={emailFormText}
+            setEmailFormText={setEmailFormText}
             executedLoginAuthentication={executedLoginAuthentication}
             onFocusInputMailOrPasseword={onFocusInputMailOrPasseword}
-            setOnFocusInputMailOrPasseword={
-              setOnFocusInputMailOrPasseword
-            }
+            setOnFocusInputMailOrPasseword={setOnFocusInputMailOrPasseword}
           />
           {/* Password */}
           <PasswordForm
             inputAccessoryViewID={inputAccessoryViewID}
-            passwordText={passwordText}
+            passwordFormText={passwordFormText}
             setPasswordText={setPasswordText}
             executedLoginAuthentication={executedLoginAuthentication}
             onFocusInputMailOrPasseword={onFocusInputMailOrPasseword}
-            setOnFocusInputMailOrPasseword={
-              setOnFocusInputMailOrPasseword
-            }
+            setOnFocusInputMailOrPasseword={setOnFocusInputMailOrPasseword}
           />
           {/* パスワードを忘れた場合 */}
           {/* <ForgotPassword /> */}
           {/* 画面下 */}
-          <View
-            style={sameStyles.bottomStyleByWelcomeAndSignUpAndLogin}
-          >
+          <View style={sameStyles.bottomStyleByWelcomeAndSignUpAndLogin}>
             <Button
               link={"Home"}
               buttonText={"Log In"}
               scene={"LogIn"}
               propsList={{
-                emailText: emailText,
-                passwordText: passwordText,
-                executedLoginAuthentication:
-                  executedLoginAuthentication,
-                onFocusInputMailOrPasseword:
-                  onFocusInputMailOrPasseword,
+                emailFormText: emailFormText,
+                passwordFormText: passwordFormText,
+                executedLoginAuthentication: executedLoginAuthentication,
+                onFocusInputMailOrPasseword: onFocusInputMailOrPasseword,
                 onPressFunction: _loginAuthentication,
               }}
               enable={false}

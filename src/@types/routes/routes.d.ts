@@ -14,7 +14,7 @@ type RootStackParamListType = {
   AddFriend: undefined;
   Profile: undefined;
   EditNickName: undefined;
-  Chat: { groupChatRoomId: string, directChatRoomId: string, profileImage: string, name: string, groupMemberUserId?: string[], addGroupMemberName?: string[] };
+  Chat: { groupChatRoomId: string, directChatRoomId: string, profileImage: string, name: string, groupMemberUserId?: string[], addedGroupMemberUserNames?: string[] };
   AddGroupMember: {groupChatRoomId: string, groupMemberUserId: string[], image: string, name: string};
   AlreadyFriendModal: { user: string, groupChatRoomId: string, groupImage: string, groupName: string, directChatRoomId: string };
   NotFriendModal: { user: string, groupChatRoomId: string, groupImage: string, groupName: string, directChatRoomId: string | null };

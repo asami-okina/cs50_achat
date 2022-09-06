@@ -8,15 +8,13 @@ import {
   View,
   Image,
   ListRenderItemInfo,
-  StyleProp,
-  ViewStyle,
 } from "react-native";
 import { SwipeListView } from "react-native-swipe-list-view";
 import { API_SERVER_URL } from "../../../../constants/api";
 import { storage } from "../../../../../storage";
 import { useNavigationAChat } from "../../../../hooks/useNavigationAChat";
 import { Component } from "react";
-import { post_fetch_api_header } from "../../../../constants/common";
+import { postFetchApiHeader } from "../../../../constants/common";
 
 // layouts
 import {
@@ -35,9 +33,7 @@ type BasicPropsType = {
   type: string;
   setModalVisible: React.Dispatch<React.SetStateAction<boolean>>;
   clickedCancelMordal: boolean;
-  setClickedCancelMordal: React.Dispatch<
-    React.SetStateAction<boolean>
-  >;
+  setClickedCancelMordal: React.Dispatch<React.SetStateAction<boolean>>;
   clickedOkMordal: boolean;
   setClickedOkMordal: React.Dispatch<React.SetStateAction<boolean>>;
   setGroupCount: React.Dispatch<React.SetStateAction<number>>;
@@ -61,16 +57,10 @@ type NewListType =
 // RowMapの型生成(ライブラリより引用:/Users/asami/Desktop/A-Chat/develop/A-chat/node_modules/react-native-swipe-list-view/types/index.d.ts)
 type RowMap<T> = { [open_cell_key: string]: SwipeRow<T> };
 
-export class SwipeRow<T> extends Component<
-  Partial<IPropsSwipeRow<T>>
-> {
+export class SwipeRow<T> extends Component<Partial<IPropsSwipeRow<T>>> {
   closeRow: () => void;
   closeRowWithoutAnimation: () => void;
-  // render(): JSX.Element;
-  manuallySwipeRow: (
-    toValue: number,
-    onAnimationEnd?: () => void
-  ) => void;
+  manuallySwipeRow: (toValue: number, onAnimationEnd?: () => void) => void;
 }
 
 export default function Basic({
@@ -84,9 +74,7 @@ export default function Basic({
   setClickedOkMordal,
   setGroupCount,
 }: BasicPropsType) {
-  // navigation
   const navigation = useNavigationAChat();
-  // ユーザーID(今後は認証から取得するようにする)
   const [userId, setUserId] = useState<string>(null);
 
   // 削除時の確認モーダルでCancleの時は該当リストをデフォルト状態に戻す、Okの場合は該当リストを削除する甩に使用
@@ -117,7 +105,6 @@ export default function Basic({
     }
   }, [groupList]);
 
-  // ユーザーIDの取得
   useEffect(() => {
     storage
       .load({
@@ -142,18 +129,14 @@ export default function Basic({
     // Reactの差異を比較するのは、オブジェクト同士。そのため、新しくオブジェクトを作成する必要がある
     const newData = [...listData];
     // findIndex: 配列内の指定されたテスト関数に合格する要素がない場合を含め、それ以外は-1を返す
-    const prevIndex = listData.findIndex(
-      (item) => item.key === rowKey
-    );
+    const prevIndex = listData.findIndex((item) => item.key === rowKey);
     newData.splice(prevIndex, 1);
     setListData(newData);
     // グループ数の変更
     setGroupCount(newData.length);
   };
 
-  const renderItem = (
-    data: ListRenderItemInfo<FriendOrGroupHomeListType>
-  ) => (
+  const renderItem = (data: ListRenderItemInfo<FriendOrGroupHomeListType>) => (
     <>
       {"group_chat_room_id" in data.item && type === "Group" && (
         <TouchableHighlight
@@ -232,10 +215,7 @@ export default function Basic({
       <View style={styles.rowBackStyle}>
         {/* deleteボタン */}
         <TouchableOpacity
-          style={[
-            styles.backRightBtnStyle,
-            styles.backRightBtnRightStyle,
-          ]}
+          style={[styles.backRightBtnStyle, styles.backRightBtnRightStyle]}
           onPress={() => {
             // 確認モーダルを表示
             setModalVisible(true);
@@ -255,7 +235,6 @@ export default function Basic({
 
   // 削除時の確認モーダルでCancleの時は該当リストをデフォルト状態に戻す、Okの場合は該当リストを削除する甩に使用
   useEffect(() => {
-    // Cancelを押された場合
     if (clickedCancelMordal) {
       // スワイプされた行をデフォルト状態に戻す
       rowMap[key].closeRow();
@@ -279,18 +258,14 @@ export default function Basic({
   }, [clickedCancelMordal, clickedOkMordal]);
 
   // グループから脱退
-  async function _leaveGroup(
-    userId: string,
-    groupChatRoomId: string
-  ) {
+  async function _leaveGroup(userId: string, groupChatRoomId: string) {
     try {
-      // APIリクエスト
       const bodyData = {
         group_chat_room_id: groupChatRoomId,
       };
       const response = await fetch(
         API_SERVER_URL + `/api/users/${userId}/groups/leave`,
-        post_fetch_api_header(bodyData)
+        postFetchApiHeader(bodyData)
       );
       // グループ数の再取得
     } catch (e) {

@@ -5,7 +5,7 @@ import { View, Text, StyleSheet, Image } from "react-native";
 // components
 import { SmallButton } from "../common/smallButton";
 
-// constantsSelectedFriendStyles
+// style
 import { selectedFriendStyles } from "../../constants/styles/selectedFriendStyles";
 
 // layouts
@@ -19,45 +19,44 @@ import {
 } from "../../constants/layout";
 
 type ExistFriendType = {
-  friendInfo: FriendInfoType;
-  alreadyFriend: boolean;
+  friendInfoByUserId: FriendInfoType;
+  isAlreadyFriend: boolean;
 };
+
 export function ExistFriend({
-  friendInfo,
-  alreadyFriend,
+  friendInfoByUserId,
+  isAlreadyFriend,
 }: ExistFriendType) {
   return (
     <View style={styles.searchInfoWrapperStyle}>
       <View style={styles.searchInfoContainerStyle}>
-        {friendInfo.friend_profile_image ? (
+        {friendInfoByUserId.friend_profile_image ? (
           <Image
-            source={{ uri: friendInfo.friend_profile_image }}
+            source={{ uri: friendInfoByUserId.friend_profile_image }}
             style={styles.profileImageStyle}
           />
         ) : (
           <View style={styles.circleStyle}></View>
         )}
-        <Text
-          style={selectedFriendStyles.bigProfilelistItemNameStyle}
-        >
-          {friendInfo.friend_nickname}
+        <Text style={selectedFriendStyles.bigProfilelistItemNameStyle}>
+          {friendInfoByUserId.friend_nickname}
         </Text>
       </View>
       <SmallButton
         text={"Add"}
-        addFriendList={friendInfo}
+        addFriendList={friendInfoByUserId}
         addGroupFriendList={null}
         groupSetting={null}
         type={"addFriend"}
         friendListNames={null}
-        alreadyFriend={alreadyFriend}
+        isAlreadyFriend={isAlreadyFriend}
         addGroupMemberGroupChatRoomId={null}
         addGroupMemberGroupImage={null}
         addGroupMemberGroupName={null}
         backGroupName={null}
         backGroupImage={null}
       />
-      {alreadyFriend && (
+      {isAlreadyFriend && (
         <Text style={styles.errorTextStyle}>Already requested.</Text>
       )}
     </View>

@@ -1,12 +1,6 @@
 // libs
 import React from "react";
-import {
-  View,
-  Text,
-  StyleSheet,
-  Image,
-  Pressable,
-} from "react-native";
+import { View, Text, StyleSheet, Image, Pressable } from "react-native";
 import { useNavigationAChat } from "../../../hooks/useNavigationAChat";
 
 // layouts
@@ -36,7 +30,6 @@ export function MainTitle({
   groupChatRoomId,
   groupMemberUserId,
 }: MainTitlPropsType) {
-  // navigation
   const navigation = useNavigationAChat();
   return (
     <View style={styles.titleWrapperStyle}>

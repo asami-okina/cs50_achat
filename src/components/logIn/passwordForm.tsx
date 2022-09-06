@@ -1,12 +1,6 @@
 // libs
 import React from "react";
-import {
-  Text,
-  View,
-  Image,
-  TextInput,
-  Pressable,
-} from "react-native";
+import { Text, View, Image, TextInput, Pressable } from "react-native";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 
 // hooks
@@ -20,25 +14,22 @@ import { searchStyles } from "../../constants/styles/searchStyles";
 
 type PasswordFormPropsType = {
   inputAccessoryViewID: string;
-  passwordText: string;
+  passwordFormText: string;
   setPasswordText: React.Dispatch<React.SetStateAction<string>>;
   executedLoginAuthentication: boolean;
   onFocusInputMailOrPasseword: boolean;
-  setOnFocusInputMailOrPasseword: React.Dispatch<
-    React.SetStateAction<boolean>
-  >;
+  setOnFocusInputMailOrPasseword: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
 export function PasswordForm({
   inputAccessoryViewID,
-  passwordText,
+  passwordFormText,
   setPasswordText,
   executedLoginAuthentication,
   onFocusInputMailOrPasseword,
   setOnFocusInputMailOrPasseword,
 }: PasswordFormPropsType) {
-  // パスワードの表示/非表示アイコン
-  const { passwordVisibility, rightIcon, handlePasswordVisibility } =
+  const { passwordIconVisibility, rightIcon, handlePasswordVisibility } =
     useTogglePasswordVisibility();
 
   // メールフォームのラベル化
@@ -52,9 +43,7 @@ export function PasswordForm({
             style={searchStyles.searchContainerStyle}
             onPress={() => textInputPassword.focus()}
           >
-            <Text style={searchStyles.searchTitleStyle}>
-              Password
-            </Text>
+            <Text style={searchStyles.searchTitleStyle}>Password</Text>
             <View
               style={
                 executedLoginAuthentication
@@ -77,15 +66,14 @@ export function PasswordForm({
                 autoCapitalize="none"
                 autoCorrect={false}
                 textContentType="newPassword"
-                secureTextEntry={passwordVisibility}
-                value={passwordText}
+                secureTextEntry={passwordIconVisibility}
+                value={passwordFormText}
                 enablesReturnKeyAutomatically
                 onChangeText={setPasswordText}
                 inputAccessoryViewID={inputAccessoryViewID}
                 ref={(input) => (textInputPassword = input)}
                 maxLength={200}
                 onFocus={() => {
-                  // メールアドレスもしくはパスワード入力中判定
                   setOnFocusInputMailOrPasseword(true);
                 }}
                 onEndEditing={() => {}}

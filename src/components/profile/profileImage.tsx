@@ -4,7 +4,7 @@ import { View, StyleSheet, Image, Pressable } from "react-native";
 import * as ImagePicker from "expo-image-picker";
 import { API_SERVER_URL } from "../../constants/api";
 import { storage } from "../../../storage";
-import { post_fetch_api_header } from "../../constants/common";
+import { postFetchApiHeader } from "../../constants/common";
 
 // layouts
 import {
@@ -17,19 +17,17 @@ type ProfileImageType = {
   setImage: React.Dispatch<React.SetStateAction<string>>;
 };
 export function ProfileImage({ image, setImage }: ProfileImageType) {
-  // ユーザーID(今後は認証から取得するようにする)
   const [userId, setUserId] = useState<string>(null);
 
   // プロフィール画像の更新
   async function _updateProfileImage(newImageUri: string) {
     try {
-      // APIリクエスト
       const bodyData = {
         profile_image: newImageUri,
       };
       const response = await fetch(
         API_SERVER_URL + `/api/users/${userId}/profile`,
-        post_fetch_api_header(bodyData)
+        postFetchApiHeader(bodyData)
       );
     } catch (e) {
       console.error(e);
@@ -37,15 +35,12 @@ export function ProfileImage({ image, setImage }: ProfileImageType) {
   }
 
   const pickImage = async () => {
-    // No permissions request is necessary for launching the image library
-    let result: ImageInfo = await ImagePicker.launchImageLibraryAsync(
-      {
-        mediaTypes: ImagePicker.MediaTypeOptions.All,
-        allowsEditing: true,
-        aspect: [1, 1],
-        quality: 1,
-      }
-    );
+    let result: ImageInfo = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.All,
+      allowsEditing: true,
+      aspect: [1, 1],
+      quality: 1,
+    });
     if (!result.cancelled) {
       // リレンダーのタイミングまでstateが変わらないので、変更値を変数に保持して、useStateや関数に渡す
       const newImageUri = result.uri;
@@ -55,7 +50,6 @@ export function ProfileImage({ image, setImage }: ProfileImageType) {
     }
   };
 
-  // ユーザーIDの取得
   useEffect(() => {
     storage
       .load({

@@ -1,14 +1,10 @@
 // libs
 import React, { useEffect, useState } from "react";
-import {
-  View,
-  SafeAreaView,
-  KeyboardAvoidingView,
-} from "react-native";
+import { View, SafeAreaView, KeyboardAvoidingView } from "react-native";
 import { API_SERVER_URL } from "../constants/api";
 import { storage } from "../../storage";
 import { StackScreenProps } from "@react-navigation/stack";
-import { get_fetch_api_header } from "../constants/common";
+import { getFetchApiHeader } from "../constants/common";
 
 // components
 import { Footer } from "../components/common/footer";
@@ -19,7 +15,7 @@ import { AddFriendList } from "../components/addGroup/addFriendList";
 import { TopAreaWrapper } from "../components/common/topAreaWrapper";
 import { SearchForm } from "../components/common/_topAreaContainer/searchForm";
 
-// sameStyles
+// style
 import { sameStyles } from "../constants/styles/sameStyles";
 
 // layouts
@@ -29,15 +25,13 @@ type MainProps = StackScreenProps<RootStackParamListType, "AddGroup">;
 
 export function AddGroup({ route }: MainProps) {
   const { groupName, groupImage, backFriendList } = route.params;
-  // ユーザーID(今後は認証から取得するようにする)
   const [userId, setUserId] = useState<string>(null);
-
-  // 検索フォームのテキスト
-  const [searchText, setSearchText] = useState<string>("");
+  const [searchFormText, setSearchFormText] = useState<string>("");
 
   // [検索前]APIから取得した友達一覧リスト
-  const [beforeFriendListSearch, setBeforeFriendListSearch] =
-    useState<NewFriendListPropsType[]>([]);
+  const [beforeFriendListSearch, setBeforeFriendListSearch] = useState<
+    NewFriendListPropsType[]
+  >([]);
 
   // [検索後]APIから取得した友達一覧リスト
   const [afterFriendListSearch, setAfterFriendListSearch] = useState<
@@ -45,37 +39,34 @@ export function AddGroup({ route }: MainProps) {
   >([]);
 
   // [検索前後]選択した友達一覧リスト
-  const [mergedSelectedFriendList, setMergerdSelectedFriendList] =
-    useState<NewFriendListPropsType[]>([]);
+  const [mergedSelectedFriendList, setMergerdSelectedFriendList] = useState<
+    NewFriendListPropsType[]
+  >([]);
 
   // [検索前]選択した友達一覧リスト
-  const [beforeSelectedFriendList, setBeforeSelectedFriendList] =
-    useState<NewFriendListPropsType[]>([]);
+  const [beforeSelectedFriendList, setBeforeSelectedFriendList] = useState<
+    NewFriendListPropsType[]
+  >([]);
 
   // [検索後]選択した友達一覧リスト
-  const [afterSelectedFriendList, setAfterSelectedFriendList] =
-    useState<NewFriendListPropsType[]>([]);
+  const [afterSelectedFriendList, setAfterSelectedFriendList] = useState<
+    NewFriendListPropsType[]
+  >([]);
 
-  // 検索中かどうか
-  const [isDuringSearch, setIsDuringSearch] =
-    useState<boolean>(false);
+  const [isDuringSearch, setIsDuringSearch] = useState<boolean>(false);
 
   // ニックネームでヒットするユーザーの取得
-  async function _searchName(searchText: string) {
+  async function _searchName(searchFormText: string) {
     try {
-      // paramsを生成
-      const params = { search_text: searchText };
+      const params = { search_text: searchFormText };
       const query_params = new URLSearchParams(params);
-      // APIリクエスト
       const response = await fetch(
         API_SERVER_URL + `/api/users/${userId}/home?${query_params}`,
-        get_fetch_api_header
+        getFetchApiHeader
       );
-      // レスポンスをJSONにする
-      const parse_response = await response.json();
-      // 友達一覧のstateを更新
+      const parseResponse = await response.json();
       setAfterFriendListSearch(
-        parse_response.friend.map((_, i) => ({
+        parseResponse.friend.map((_, i) => ({
           ..._,
           key: `${i + "after"}`,
           type: "after",
@@ -89,15 +80,13 @@ export function AddGroup({ route }: MainProps) {
   // 友達一覧を取得
   async function _fetchFriendList(userId: string) {
     try {
-      // APIリクエスト
       const response = await fetch(
         API_SERVER_URL + `/api/users/${userId}/friends`,
-        get_fetch_api_header
+        getFetchApiHeader
       );
-      // レスポンスをJSONにする
-      const parse_response = await response.json();
+      const parseResponse = await response.json();
       setBeforeFriendListSearch(
-        parse_response.friend_list.map((_, i) => ({
+        parseResponse.friend_list.map((_, i) => ({
           ..._,
           key: `${i + "before"}`,
           type: "before",
@@ -193,7 +182,7 @@ export function AddGroup({ route }: MainProps) {
       setAfterSelectedFriendList(afterNewData);
     }
   };
-  // ユーザーIDの取得
+
   useEffect(() => {
     storage
       .load({
@@ -201,7 +190,6 @@ export function AddGroup({ route }: MainProps) {
       })
       .then((data) => {
         setUserId(data.userId);
-        // 友達一覧を取得
         _fetchFriendList(data.userId);
       });
   }, []);
@@ -230,8 +218,8 @@ export function AddGroup({ route }: MainProps) {
         {/* 丸みを帯びている白いトップ部分 */}
         <TopAreaWrapper type={"searchForm"}>
           <SearchForm
-            setSearchText={setSearchText}
-            searchText={searchText}
+            setSearchFormText={setSearchFormText}
+            searchFormText={searchFormText}
             searchName={_searchName}
             fetchGroupCount={null}
             fetchFriendCount={null}
@@ -286,7 +274,7 @@ export function AddGroup({ route }: MainProps) {
           groupSetting={null}
           type={"addGroup"}
           friendListNames={null}
-          alreadyFriend={null}
+          isAlreadyFriend={null}
           addGroupMemberGroupChatRoomId={null}
           addGroupMemberGroupImage={null}
           addGroupMemberGroupName={null}

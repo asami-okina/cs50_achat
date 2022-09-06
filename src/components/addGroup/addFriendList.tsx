@@ -5,7 +5,7 @@ import { View, ScrollView } from "react-native";
 // components
 import { AddFriendListItem } from "./_addFriendList/addFriendListItem";
 
-// constantsSelectedFriendStyles
+// style
 import { selectedFriendStyles } from "../../constants/styles/selectedFriendStyles";
 
 type AddFriendListType = {
@@ -17,7 +17,6 @@ export function AddFriendList({
   selectedFriendList,
   deleteFriendList,
 }: AddFriendListType) {
-  // refの生成
   const scrollViewRef = useRef<ScrollView | null>(null);
   return (
     <View style={selectedFriendStyles.wrapperStyle}>

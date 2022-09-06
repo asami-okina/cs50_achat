@@ -1,10 +1,6 @@
 // libs
 import React, { useState } from "react";
-import {
-  View,
-  SafeAreaView,
-  KeyboardAvoidingView,
-} from "react-native";
+import { View, SafeAreaView, KeyboardAvoidingView } from "react-native";
 
 // components
 import { TopAreaWrapper } from "../../../components/common/topAreaWrapper";
@@ -13,20 +9,14 @@ import { NickNameStringCount } from "../_profileInfo/_editNickName/nickNameStrin
 import { TextInputForm } from "../_profileInfo/_editNickName/textInputForm";
 import { ButtonContainer } from "../_profileInfo/_editNickName/buttonContainer";
 
-// sameStyles
+// syyle
 import { sameStyles } from "../../../constants/styles/sameStyles";
 
 export function EditNickName() {
   const [nickName, setNickName] = useState<string>("");
-
-  // 入力文字数
-  const [wordCount, setWordCount] = useState<number>(0);
-
-  // 有効な入力かどうか
+  const [inputLength, setInputLength] = useState<number>(0);
   const [isValidInput, setIsValidInput] = useState<boolean>(true);
-
-  // 未入力状態
-  const [defaultInput, setDefaultInput] = useState<boolean>(true);
+  const [isNotInput, setIsNotInput] = useState<boolean>(true);
 
   return (
     <KeyboardAvoidingView
@@ -48,14 +38,14 @@ export function EditNickName() {
         </TopAreaWrapper>
         {/* トップ部分を除くメイン部分*/}
         <View style={sameStyles.mainContainerStyle}>
-          <NickNameStringCount wordCount={wordCount} />
+          <NickNameStringCount inputLength={inputLength} />
           <TextInputForm
-            defaultInput={defaultInput}
-            setDefaultInput={setDefaultInput}
+            isNotInput={isNotInput}
+            setIsNotInput={setIsNotInput}
             isValidInput={isValidInput}
             setIsValidInput={setIsValidInput}
-            wordCount={wordCount}
-            setWordCount={setWordCount}
+            inputLength={inputLength}
+            setInputLength={setInputLength}
             nickName={nickName}
             setNickName={setNickName}
           />
@@ -64,9 +54,9 @@ export function EditNickName() {
           <ButtonContainer
             nickName={nickName}
             setNickName={setNickName}
-            wordCount={wordCount}
+            inputLength={inputLength}
             isValidInput={isValidInput}
-            defaultInput={defaultInput}
+            isNotInput={isNotInput}
           />
         </View>
       </SafeAreaView>

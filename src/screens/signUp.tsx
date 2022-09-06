@@ -18,46 +18,26 @@ import { ToSignUpOrLoginTextArea } from "../components/common/toSignUpOrLoginTex
 // components
 import { Button } from "../components/common/button";
 
-// sameStyles
+// style
 import { sameStyles } from "../constants/styles/sameStyles";
 
 export function SignUp() {
   // キーボードに完了ボタンを表示
   const inputAccessoryViewID: string = "uniqueID";
-
-  // バリデーション
-  // メールアドレスのバリデーション
   const [isCorrectMail, setIsCorrectMail] = useState<boolean>(false);
-
-  // パスワードのバリデーション(半角英数字記号)
   const [isCorrectPassewordSymbol, setIsCorrectPassewordSymbol] =
     useState<boolean>(false);
-  // パスワードのバリデーション(文字数)
-  const [
-    isCorrectPassewordStringCount,
-    setIsCorrectPassewordStringCount,
-  ] = useState<boolean>(false);
-
-  // ユーザーIDのバリデーション(半角英数字)
+  const [isCorrectPassewordStringCount, setIsCorrectPassewordStringCount] =
+    useState<boolean>(false);
   const [isCorrectUserIdSymbol, setIsCorrectUserIdSymbol] =
     useState<boolean>(false);
-  // ユーザーIDのバリデーション(文字数)
   const [isCorrectUserIdStringCount, setIsCorrectUserIdStringCount] =
     useState<boolean>(false);
-  // ユーザーIDのバリデーション(使用可能かどうか)
-  const [isAvailableUserId, setIsAvailableUserId] =
-    useState<boolean>(false);
-
-  // メールアドレスのバリデーション(使用可能かどうか)
-  const [isAvailableMail, setIsAvailableMail] =
-    useState<boolean>(false);
-
-  // メールアドレス入力フォーム
-  const [emailText, onChangeEmailText] = useState<string>("");
-  // パスワード入力フォーム
-  const [passwordText, onChangePasswordText] = useState<string>("");
-  // ユーザーID入力フォーム
-  const [userIdText, onChangeUserIdText] = useState<string>("");
+  const [isAvailableUserId, setIsAvailableUserId] = useState<boolean>(false);
+  const [isAvailableMail, setIsAvailableMail] = useState<boolean>(false);
+  const [emailFormText, onChangeEmailFormText] = useState<string>("");
+  const [passwordFormText, onChangePasswordFormText] = useState<string>("");
+  const [userIdFormText, onChangeUserIdFormText] = useState<string>("");
 
   return (
     <KeyboardAvoidingView
@@ -78,8 +58,8 @@ export function SignUp() {
             inputAccessoryViewID={inputAccessoryViewID}
             isCorrectMail={isCorrectMail}
             setIsCorrectMail={setIsCorrectMail}
-            emailText={emailText}
-            onChangeEmailText={onChangeEmailText}
+            emailFormText={emailFormText}
+            onChangeEmailFormText={onChangeEmailFormText}
             setIsAvailableMail={setIsAvailableMail}
             isAvailableMail={isAvailableMail}
           />
@@ -88,14 +68,10 @@ export function SignUp() {
             inputAccessoryViewID={inputAccessoryViewID}
             isCorrectPassewordSymbol={isCorrectPassewordSymbol}
             setIsCorrectPassewordSymbol={setIsCorrectPassewordSymbol}
-            isCorrectPassewordStringCount={
-              isCorrectPassewordStringCount
-            }
-            setIsCorrectPassewordStringCount={
-              setIsCorrectPassewordStringCount
-            }
-            passwordText={passwordText}
-            onChangePasswordText={onChangePasswordText}
+            isCorrectPassewordStringCount={isCorrectPassewordStringCount}
+            setIsCorrectPassewordStringCount={setIsCorrectPassewordStringCount}
+            passwordFormText={passwordFormText}
+            onChangePasswordFormText={onChangePasswordFormText}
           />
           {/* UserId */}
           <UserIdForm
@@ -103,19 +79,15 @@ export function SignUp() {
             isCorrectUserIdSymbol={isCorrectUserIdSymbol}
             setIsCorrectUserIdSymbol={setIsCorrectUserIdSymbol}
             isCorrectUserIdStringCount={isCorrectUserIdStringCount}
-            setIsCorrectUserIdStringCount={
-              setIsCorrectUserIdStringCount
-            }
+            setIsCorrectUserIdStringCount={setIsCorrectUserIdStringCount}
             isAvailableUserId={isAvailableUserId}
             setIsAvailableUserId={setIsAvailableUserId}
             pageType={"SignUp"}
-            userIdText={userIdText}
-            onChangeUserIdText={onChangeUserIdText}
+            userIdFormText={userIdFormText}
+            onChangeUserIdFormText={onChangeUserIdFormText}
           />
           {/* 画面下 */}
-          <View
-            style={sameStyles.bottomStyleByWelcomeAndSignUpAndLogin}
-          >
+          <View style={sameStyles.bottomStyleByWelcomeAndSignUpAndLogin}>
             {isCorrectMail &&
             isCorrectPassewordSymbol &&
             isCorrectPassewordStringCount &&
@@ -128,9 +100,9 @@ export function SignUp() {
                 enable={true}
                 scene={"SignUp"}
                 propsList={{
-                  email: emailText,
-                  password: passwordText,
-                  userId: userIdText,
+                  email: emailFormText,
+                  password: passwordFormText,
+                  userId: userIdFormText,
                 }}
               />
             ) : (

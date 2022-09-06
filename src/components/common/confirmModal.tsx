@@ -1,12 +1,6 @@
 // libs
 import React from "react";
-import {
-  View,
-  Text,
-  Modal,
-  Pressable,
-  StyleSheet,
-} from "react-native";
+import { View, Text, Modal, Pressable, StyleSheet } from "react-native";
 
 // layouts
 import {
@@ -22,9 +16,7 @@ import {
 type ConfirmModalPropsType = {
   modalVisible: boolean;
   setModalVisible: React.Dispatch<React.SetStateAction<boolean>>;
-  setClickedCancelMordal: React.Dispatch<
-    React.SetStateAction<boolean>
-  >;
+  setClickedCancelMordal: React.Dispatch<React.SetStateAction<boolean>>;
   setClickedOkMordal: React.Dispatch<React.SetStateAction<boolean>>;
   modalText: string;
 };
@@ -53,9 +45,7 @@ export function ConfirmModal({
             <Pressable
               style={[styles.buttonStyle, styles.cancelButtonStyle]}
               onPress={() => {
-                // 確認モーダルを閉じる
                 setModalVisible(!modalVisible);
-                // 確認モーダルで「Cancel」を押した判定
                 setClickedCancelMordal(true);
               }}
             >
@@ -64,9 +54,7 @@ export function ConfirmModal({
             <Pressable
               style={[styles.buttonStyle, styles.okButtonStyle]}
               onPress={() => {
-                // 確認モーダルを閉じる
                 setModalVisible(!modalVisible);
-                // 確認モーダルで「Ok」を押した判定
                 setClickedOkMordal(true);
               }}
             >

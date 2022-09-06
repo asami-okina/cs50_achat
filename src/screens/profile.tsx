@@ -8,7 +8,7 @@ import {
 } from "react-native";
 import { useIsFocused } from "@react-navigation/native";
 import { storage } from "../../storage";
-import { get_fetch_api_header } from "../constants/common";
+import { getFetchApiHeader } from "../constants/common";
 
 // components
 import { TopAreaWrapper } from "../components/common/topAreaWrapper";
@@ -17,53 +17,38 @@ import { ProfileInfo } from "../components/profile/profileInfo";
 import { ProfileImage } from "../components/profile/profileImage";
 import { API_SERVER_URL } from "../constants/api";
 
-// sameStyles
+// style
 import { sameStyles } from "../constants/styles/sameStyles";
 
 export function Profile() {
-  // ユーザーID(今後は認証から取得するようにする)
   const [userId, setUserId] = useState<string>(null);
-
-  // ニックネーム
   const [nickName, setNickName] = useState<string>("");
-
-  // プロフィール画像
   const [profileImage, setProfileImage] = useState<string>(null);
-
-  // 検索可能トグル
-  const [isEnabled, setIsEnabled] = useState<boolean>(false);
-
-  // 現在画面がフォーカスされているかをbooleanで保持
-  const isFocused = useIsFocused();
+  const [isEnabledToggle, setIsEnabledToggle] = useState<boolean>(false);
+  const isScreenFocused = useIsFocused();
 
   async function _fetchProfileByUserId(userId: string) {
     try {
-      // APIリクエスト
       const response = await fetch(
         API_SERVER_URL + `/api/users/${userId}/profile`,
-        get_fetch_api_header
+        getFetchApiHeader
       );
-      // レスポンスをJSONにする
-      const parse_response = await response.json();
+      const parseResponse = await response.json();
 
-      // 自分のニックネームの設定
-      if (parse_response.profile.nickname) {
-        setNickName(parse_response.profile.nickname);
+      if (parseResponse.profile.nickname) {
+        setNickName(parseResponse.profile.nickname);
       }
-      // 自分のプロフィール画像の設定
-      if (parse_response.profile.profile_image) {
-        setProfileImage(parse_response.profile.profile_image);
+      if (parseResponse.profile.profile_image) {
+        setProfileImage(parseResponse.profile.profile_image);
       }
-      // 自分の検索可能フラグの設定
-      if (parse_response.profile.search_flag) {
-        setIsEnabled(parse_response.profile.search_flag);
+      if (parseResponse.profile.search_flag) {
+        setIsEnabledToggle(parseResponse.profile.search_flag);
       }
     } catch (e) {
       console.error(e);
     }
   }
 
-  // ユーザーIDの取得
   useEffect(() => {
     storage
       .load({
@@ -74,7 +59,7 @@ export function Profile() {
         // navigationがリレンダーされないので、画面にフォーカスが当たった時に再実行するよう実装
         _fetchProfileByUserId(data.userId);
       });
-  }, [isFocused]);
+  }, [isScreenFocused]);
 
   return (
     <KeyboardAvoidingView
@@ -98,16 +83,13 @@ export function Profile() {
         <View style={sameStyles.mainContainerStyle}>
           <View style={styles.profileImageWrapperStyle}>
             {/* プロフィール画像 */}
-            <ProfileImage
-              image={profileImage}
-              setImage={setProfileImage}
-            />
+            <ProfileImage image={profileImage} setImage={setProfileImage} />
             {/* プロフィール */}
             <ProfileInfo
               setNickName={setNickName}
               nickName={nickName}
-              isEnabled={isEnabled}
-              setIsEnabled={setIsEnabled}
+              isEnabledToggle={isEnabledToggle}
+              setIsEnabledToggle={setIsEnabledToggle}
             />
           </View>
         </View>

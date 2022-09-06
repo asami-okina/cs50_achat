@@ -1,24 +1,19 @@
 // libs
 import React, { useEffect, useState } from "react";
-import {
-  View,
-  Pressable,
-  Image,
-  TextInput,
-  StyleSheet,
-} from "react-native";
+import { View, Pressable, Image, TextInput, StyleSheet } from "react-native";
 import { storage } from "../../../../storage";
+import { chatsSearchFormIconEnum } from "../../../constants/enum";
 
-// constantsSearchStyles
+// style
 import { searchStyles } from "../../../constants/styles/searchStyles";
 
 // layouts
 import { ICON_SIZE } from "../../../constants/layout";
 
 type SearchFormPropsType = {
-  setSearchText: React.Dispatch<React.SetStateAction<string>>;
-  searchText: string;
-  searchName: (searchText: string) => Promise<void>;
+  setSearchFormText: React.Dispatch<React.SetStateAction<string>>;
+  searchFormText: string;
+  searchName: (searchFormText: string) => Promise<void>;
   fetchGroupCount: (userId: string) => Promise<void>;
   fetchFriendCount: (userId: string) => Promise<void>;
   setIsDuringSearch: React.Dispatch<React.SetStateAction<boolean>>;
@@ -27,22 +22,20 @@ type SearchFormPropsType = {
 
 // 丸みを帯びている白いトップ部分
 export function SearchForm({
-  setSearchText,
-  searchText,
+  setSearchFormText,
+  searchFormText,
   searchName,
   fetchGroupCount,
   fetchFriendCount,
   setIsDuringSearch,
   placeholder,
 }: SearchFormPropsType) {
-  // 検索フォームの削除アイコン表示/非表示
-  const [deleteIconDisplay, setDeleteIconDisplay] =
-    useState<boolean>(false);
+  const [searchFormIconShowOrHide, setSearchFormIconShowOrHide] =
+    useState<chatsSearchFormIconEnum>();
   const [userId, setUserId] = useState<string>(null);
   // 検索フォームのラベル化
   let textInputSearch;
 
-  // userIdの取得
   useEffect(() => {
     storage
       .load({
@@ -56,40 +49,34 @@ export function SearchForm({
     <Pressable onPress={() => textInputSearch.focus()}>
       <View style={searchStyles.searchViewStyle}>
         <TextInput
-          onChangeText={setSearchText}
+          onChangeText={setSearchFormText}
           style={searchStyles.searchContentNoneLeftIconStyle}
-          value={searchText}
+          value={searchFormText}
           placeholder={placeholder}
           ref={(input) => (textInputSearch = input)}
           autoCapitalize="none"
           textContentType="username"
           onFocus={() => {
-            setDeleteIconDisplay(true);
+            setSearchFormIconShowOrHide(chatsSearchFormIconEnum.Show);
           }}
           onEndEditing={() => {
-            searchName(searchText);
-            // 検索中フラグをtrueにする
+            searchName(searchFormText);
             if (setIsDuringSearch) {
               setIsDuringSearch(true);
             }
-            // 削除アイコンの表示/非表示切り替え
-            setDeleteIconDisplay(true);
+            setSearchFormIconShowOrHide(chatsSearchFormIconEnum.Show);
           }}
         />
-        {deleteIconDisplay && (
+        {searchFormIconShowOrHide === chatsSearchFormIconEnum.Show && (
           <Pressable
             onPress={() => {
               textInputSearch.clear();
-              // グループ数の再取得
               if (fetchGroupCount) {
                 fetchGroupCount(userId);
               }
-              // 友達数の再取得
               if (fetchFriendCount) {
                 fetchFriendCount(userId);
               }
-
-              // 検索中フラグをfalseにする
               if (setIsDuringSearch) {
                 setIsDuringSearch(false);
               }
@@ -97,10 +84,7 @@ export function SearchForm({
           >
             <Image
               source={require("../../../../assets/images/close_gray.png")}
-              style={[
-                searchStyles.searchIconStyle,
-                styles.searchIconStyle,
-              ]}
+              style={[searchStyles.searchIconStyle, styles.searchIconStyle]}
             />
           </Pressable>
         )}

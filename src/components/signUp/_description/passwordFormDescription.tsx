@@ -9,77 +9,54 @@ type PasswordFormDescriptionPropsType = {
   displayPasswordDescription: boolean;
   isCorrectPassewordSymbol: boolean;
   isCorrectPassewordStringCount: boolean;
-  defaultDisplayPasswordIcons: boolean;
+  defaultDisplayPasswordIcon: boolean;
 };
 
 export function PasswordFormDescription({
   displayPasswordDescription,
   isCorrectPassewordSymbol,
   isCorrectPassewordStringCount,
-  defaultDisplayPasswordIcons,
+  defaultDisplayPasswordIcon,
 }: PasswordFormDescriptionPropsType) {
   return (
     <View>
       {displayPasswordDescription ? (
-        !isCorrectPassewordSymbol ||
-        !isCorrectPassewordStringCount ? (
+        !isCorrectPassewordSymbol || !isCorrectPassewordStringCount ? (
           <View style={formDescriptionStyles.descriptionBoxStyle}>
-            <View
-              style={formDescriptionStyles.descriptionWrapperStyle}
-            >
-              <View
-                style={
-                  formDescriptionStyles.descriptionContainerStyle
-                }
-              >
-                {!defaultDisplayPasswordIcons ? (
+            <View style={formDescriptionStyles.descriptionWrapperStyle}>
+              <View style={formDescriptionStyles.descriptionContainerStyle}>
+                {!defaultDisplayPasswordIcon ? (
                   isCorrectPassewordSymbol ? (
                     <Image
                       source={require("../../../../assets/images/correct.png")}
-                      style={
-                        formDescriptionStyles.descriptionIconStyle
-                      }
+                      style={formDescriptionStyles.descriptionIconStyle}
                     />
                   ) : (
                     <Image
                       source={require("../../../../assets/images/incorrect.png")}
-                      style={
-                        formDescriptionStyles.descriptionIconStyle
-                      }
+                      style={formDescriptionStyles.descriptionIconStyle}
                     />
                   )
                 ) : null}
-                <Text
-                  style={formDescriptionStyles.descriptionTextStyle}
-                >
+                <Text style={formDescriptionStyles.descriptionTextStyle}>
                   Half-width alphanumeric symbols only.
                 </Text>
               </View>
-              <View
-                style={
-                  formDescriptionStyles.descriptionContainerStyle
-                }
-              >
-                {!defaultDisplayPasswordIcons ? (
+              <View style={formDescriptionStyles.descriptionContainerStyle}>
+                {!defaultDisplayPasswordIcon ? (
                   isCorrectPassewordStringCount ? (
                     <Image
                       source={require("../../../../assets/images/correct.png")}
-                      style={
-                        formDescriptionStyles.descriptionIconStyle
-                      }
+                      style={formDescriptionStyles.descriptionIconStyle}
                     />
                   ) : (
                     <Image
                       source={require("../../../../assets/images/incorrect.png")}
-                      style={
-                        formDescriptionStyles.descriptionIconStyle
-                      }
+                      style={formDescriptionStyles.descriptionIconStyle}
                     />
                   )
                 ) : null}
-                <Text
-                  style={formDescriptionStyles.descriptionTextStyle}
-                >
+                <Text style={formDescriptionStyles.descriptionTextStyle}>
                   More than 5 and less than 200 characters.
                 </Text>
               </View>

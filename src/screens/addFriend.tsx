@@ -8,7 +8,7 @@ import {
 } from "react-native";
 import { API_SERVER_URL } from "../constants/api";
 import { storage } from "../../storage";
-import { get_fetch_api_header } from "../constants/common";
+import { getFetchApiHeader } from "../constants/common";
 
 // components
 import { Footer } from "../components/common/footer";
@@ -18,69 +18,54 @@ import { MainTitle } from "../components/common/_topAreaContainer/mainTitle";
 import { ExistFriend } from "../components/addFriend/existFriend";
 import { NotExistFriend } from "../components/addFriend/notExistFriend";
 
-// sameStyles
+// style
 import { sameStyles } from "../constants/styles/sameStyles";
 
 // layouts
 import { IPHONE_X_BOTTOM_SPACE } from "../constants/layout";
 
 export function AddFriend() {
-  // ユーザーID(今後は認証から取得するようにする)
   const [userId, setUserId] = useState<string>(null);
-
-  // 検索フォームのテキスト
-  const [searchText, setSearchText] = useState<string>("");
-
-  // ユーザーIDを条件にAPIから取得した友達情報
-  const [friendInfo, setFriendInfo] = useState<FriendInfoType>(null);
-
-  // すでに友達になっているか
-  const [alreadyFriend, setAlreadyFriend] = useState(false);
-
-  // 該当ユーザーIDが存在する場合
+  const [searchFormText, setSearchFormText] = useState<string>("");
+  const [friendInfoByUserId, setFriendInfoByUserId] =
+    useState<FriendInfoType>(null);
+  const [isAlreadyFriend, setIsAlreadyFriend] = useState(false);
   const [existUserId, setExistUserId] = useState(true);
 
   // ユーザーID検索にヒットしたユーザー情報(プロフィール画像、ニックネーム)
-  async function _searchId(searchText: string) {
+  async function _searchId(searchFormText: string) {
     try {
-      // paramsを生成
-      const params = { search_user_id: searchText };
+      const params = { search_user_id: searchFormText };
       const query_params = new URLSearchParams(params);
-      // APIリクエスト
       const response = await fetch(
         API_SERVER_URL + `/api/users/${userId}/user?${query_params}`,
-        get_fetch_api_header
+        getFetchApiHeader
       );
-      // レスポンスをJSONにする
-      const parse_response = await response.json();
-      // すでに友達になっているかどうか
-      const already_follow_requested =
-        parse_response.result.already_follow_requested;
-      // 該当user_idが存在するかどうか
-      const exist_user_id = parse_response.result.exist_user_id;
+      const parseResponse = await response.json();
+      const isAlreadyFollowRequested =
+        parseResponse.result.already_follow_requested;
+      const isExistUserId = parseResponse.result.exist_user_id;
       // 成功した場合
-      if (!already_follow_requested && exist_user_id) {
-        setAlreadyFriend(false);
+      if (!isAlreadyFollowRequested && isExistUserId) {
+        setIsAlreadyFriend(false);
         setExistUserId(true);
       }
       // 既に友達になっている場合
-      if (already_follow_requested && exist_user_id) {
-        setAlreadyFriend(true);
+      if (isAlreadyFollowRequested && isExistUserId) {
+        setIsAlreadyFriend(true);
         setExistUserId(true);
       }
       // 該当のユーザーIDが存在しない場合
-      if (!exist_user_id) {
-        setAlreadyFriend(false);
+      if (!isExistUserId) {
+        setIsAlreadyFriend(false);
         setExistUserId(false);
       }
-      // 友達一覧のstateを更新
-      setFriendInfo(parse_response.result);
+      setFriendInfoByUserId(parseResponse.result);
     } catch (e) {
       console.error(e);
     }
   }
 
-  // ユーザーIDの取得
   useEffect(() => {
     storage
       .load({
@@ -120,8 +105,8 @@ export function AddFriend() {
           {/* 検索フォーム */}
           <View style={styles.searchFormContainerStyle}>
             <SearchForm
-              setSearchText={setSearchText}
-              searchText={searchText}
+              setSearchFormText={setSearchFormText}
+              searchFormText={searchFormText}
               searchName={_searchId}
               fetchGroupCount={null}
               fetchFriendCount={null}
@@ -130,10 +115,10 @@ export function AddFriend() {
             />
           </View>
           {/* 検索結果が存在する場合 */}
-          {friendInfo && existUserId && (
+          {friendInfoByUserId && existUserId && (
             <ExistFriend
-              friendInfo={friendInfo}
-              alreadyFriend={alreadyFriend}
+              friendInfoByUserId={friendInfoByUserId}
+              isAlreadyFriend={isAlreadyFriend}
             />
           )}
           {/* 検索結果が存在しない場合 */}

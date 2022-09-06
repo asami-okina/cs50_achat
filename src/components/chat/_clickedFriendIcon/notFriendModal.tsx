@@ -14,7 +14,7 @@ import { TopAreaWrapper } from "../../../components/common/topAreaWrapper";
 import { Header } from "../_clickedFriendIcon/_alreadyFriendModal/header";
 import { Button } from "../../../components/common/button";
 
-// sameStyles
+// style
 import { sameStyles } from "../../../constants/styles/sameStyles";
 
 // layouts
@@ -26,13 +26,7 @@ import {
 } from "../../../constants/layout";
 
 export function NotFriendModal({ route, navigation }) {
-  const {
-    user,
-    groupChatRoomId,
-    groupImage,
-    groupName,
-    directChatRoomId,
-  } = route.params;
+  const { user, groupChatRoomId, groupImage, groupName } = route.params;
   const friendImage: string = user.avatar;
   const friendNickName: string = user.name;
   const friendUserId: string = user._id;
@@ -70,9 +64,7 @@ export function NotFriendModal({ route, navigation }) {
               <View style={styles.circleStyle}></View>
             )}
             <View style={styles.friendNickNameContainerStyle}>
-              <Text style={styles.friendNickNameStyle}>
-                {friendNickName}
-              </Text>
+              <Text style={styles.friendNickNameStyle}>{friendNickName}</Text>
             </View>
             <Button
               link={null}

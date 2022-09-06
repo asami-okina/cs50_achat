@@ -3,10 +3,7 @@ import React from "react";
 import { View, StyleSheet } from "react-native";
 
 // layouts
-import {
-  CONTENT_WIDTH,
-  MAIN_WHITE_COLOR,
-} from "../../constants/layout";
+import { CONTENT_WIDTH, MAIN_WHITE_COLOR } from "../../constants/layout";
 
 // components
 import { ListItem } from "./_friendAndGroupList/listItem";
@@ -15,14 +12,12 @@ type FriendAndGroupListlPropsType = {
   type: string;
   setModalVisible: React.Dispatch<React.SetStateAction<boolean>>;
   clickedCancelMordal: boolean;
-  setClickedCancelMordal: React.Dispatch<
-    React.SetStateAction<boolean>
-  >;
+  setClickedCancelMordal: React.Dispatch<React.SetStateAction<boolean>>;
   clickedOkMordal: boolean;
   setClickedOkMordal: React.Dispatch<React.SetStateAction<boolean>>;
-  openFriendList: boolean;
+  isOpenFriendList: boolean;
   friendList: FriendListPropsType[] | null;
-  openGroupList: boolean;
+  isOpenGroupList: boolean;
   groupList: GroupListPropsType[] | null;
   setGroupCount: React.Dispatch<React.SetStateAction<number>>;
 };
@@ -34,9 +29,9 @@ export function FriendAndGroupList({
   setClickedCancelMordal,
   clickedOkMordal,
   setClickedOkMordal,
-  openFriendList,
+  isOpenFriendList,
   friendList,
-  openGroupList,
+  isOpenGroupList,
   groupList,
   setGroupCount,
 }: FriendAndGroupListlPropsType) {
@@ -45,7 +40,7 @@ export function FriendAndGroupList({
       <View style={styles.groupAndFriendContainerStyle}>
         <View style={styles.topContainerStyle}></View>
         {/* グループ一覧をmapで回して表示 */}
-        {type === "Group" && openGroupList && (
+        {type === "Group" && isOpenGroupList && (
           <ListItem
             groupList={groupList}
             friendList={null}
@@ -59,7 +54,7 @@ export function FriendAndGroupList({
           />
         )}
         {/* 友達一覧をmapで回して表示 */}
-        {type === "Friend" && openFriendList && (
+        {type === "Friend" && isOpenFriendList && (
           <ListItem
             groupList={null}
             friendList={friendList}

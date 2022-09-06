@@ -4,7 +4,8 @@ import { StyleSheet, View } from "react-native";
 import { SwipeListView } from "react-native-swipe-list-view";
 import { API_SERVER_URL } from "../../../constants/api";
 import { storage } from "../../../../storage";
-import { post_fetch_api_header } from "../../../constants/common";
+import { postFetchApiHeader } from "../../../constants/common";
+import { chatsclickedTypeEnum } from "../../../constants/enum";
 
 // components
 import { ListItem } from "./_chatBasic/listItem";
@@ -15,28 +16,20 @@ import { MAIN_WHITE_COLOR } from "../../../constants/layout";
 
 type ChatBasicType = {
   chatRoomList: ChatRoomListType[];
-  setDeleteModalVisible: React.Dispatch<
+  setDeleteGroupModalVisible: React.Dispatch<React.SetStateAction<boolean>>;
+  clickedDeleteGroupCancelMordal: boolean;
+  setClickedDeleteGroupCancelMordal: React.Dispatch<
     React.SetStateAction<boolean>
   >;
-  clickedDeleteCancelMordal: boolean;
-  setClickedDeleteCancelMordal: React.Dispatch<
+  clickedDeleteGroupOkMordal: boolean;
+  setClickedDeleteGroupOkMordal: React.Dispatch<React.SetStateAction<boolean>>;
+  setHiddenGroupModalVisible: React.Dispatch<React.SetStateAction<boolean>>;
+  clickedHiddenGroupCancelMordal: boolean;
+  setClickedHiddenGroupCancelMordal: React.Dispatch<
     React.SetStateAction<boolean>
   >;
-  clickedDeleteOkMordal: boolean;
-  setClickedDeleteOkMordal: React.Dispatch<
-    React.SetStateAction<boolean>
-  >;
-  setHiddenModalVisible: React.Dispatch<
-    React.SetStateAction<boolean>
-  >;
-  clickedHiddenCancelMordal: boolean;
-  setClickedHiddenCancelMordal: React.Dispatch<
-    React.SetStateAction<boolean>
-  >;
-  clickedHiddenOkMordal: boolean;
-  setClickedHiddenOkMordal: React.Dispatch<
-    React.SetStateAction<boolean>
-  >;
+  clickedHiddenGroupOkMordal: boolean;
+  setClickedHiddenGroupOkMordal: React.Dispatch<React.SetStateAction<boolean>>;
   setGroupChatRoomId: React.Dispatch<React.SetStateAction<string>>;
   setDirectChatRoomId: React.Dispatch<React.SetStateAction<string>>;
   groupChatRoomId: string;
@@ -45,42 +38,35 @@ type ChatBasicType = {
 
 export default function ChatBasic({
   chatRoomList,
-  setDeleteModalVisible,
-  clickedDeleteCancelMordal,
-  setClickedDeleteCancelMordal,
-  clickedDeleteOkMordal,
-  setClickedDeleteOkMordal,
-  setHiddenModalVisible,
-  clickedHiddenCancelMordal,
-  setClickedHiddenCancelMordal,
-  clickedHiddenOkMordal,
-  setClickedHiddenOkMordal,
+  setDeleteGroupModalVisible,
+  clickedDeleteGroupCancelMordal,
+  setClickedDeleteGroupCancelMordal,
+  clickedDeleteGroupOkMordal,
+  setClickedDeleteGroupOkMordal,
+  setHiddenGroupModalVisible,
+  clickedHiddenGroupCancelMordal,
+  setClickedHiddenGroupCancelMordal,
+  clickedHiddenGroupOkMordal,
+  setClickedHiddenGroupOkMordal,
   setGroupChatRoomId,
   setDirectChatRoomId,
   groupChatRoomId,
   directChatRoomId,
 }: ChatBasicType) {
-  // ユーザーID(今後は認証から取得するようにする)
   const [userId, setUserId] = useState<string>(null);
-
   // 削除時の確認モーダルでCancleの時は該当リストをデフォルト状態に戻す、Okの場合は該当リストを削除する甩に使用
   const [rowMap, setRowMap] = useState<string>("");
   const [key, setkey] = useState<string>("");
-
-  // HiddenかDeleteどちらをクリックされたか
-  const [clickedType, setClickedType] = useState<string>("");
+  const [clickedType, setClickedType] = useState<chatsclickedTypeEnum>();
 
   // 一覧のリストを作成
   const [listData, setListData] = useState<ChatRoomListType[]>(
     chatRoomList.map((_, i) => ({ ..._, key: `${i}` }))
   );
 
-  // chatRoomListの更新
   useEffect(() => {
     if (chatRoomList) {
-      setListData(
-        chatRoomList.map((_, i) => ({ ..._, key: `${i}` }))
-      );
+      setListData(chatRoomList.map((_, i) => ({ ..._, key: `${i}` })));
     }
   }, [chatRoomList]);
 
@@ -98,9 +84,7 @@ export default function ChatBasic({
     // Reactの差異を比較するのは、オブジェクト同士。そのため、新しくオブジェクトを作成する必要がある
     const newData = [...listData];
     // findIndex: 配列内の指定されたテスト関数に合格する要素がない場合を含め、それ以外は-1を返す
-    const prevIndex = listData.findIndex(
-      (item) => item.key === rowKey
-    );
+    const prevIndex = listData.findIndex((item) => item.key === rowKey);
     newData.splice(prevIndex, 1);
     setListData(newData);
   };
@@ -139,8 +123,8 @@ export default function ChatBasic({
   // スワップできるようにする
   const renderHiddenItem = (data, rowMap) => (
     <HiddenListItem
-      setDeleteModalVisible={setDeleteModalVisible}
-      setHiddenModalVisible={setHiddenModalVisible}
+      setDeleteGroupModalVisible={setDeleteGroupModalVisible}
+      setHiddenGroupModalVisible={setHiddenGroupModalVisible}
       setRowMap={setRowMap}
       setkey={setkey}
       setGroupChatRoomId={setGroupChatRoomId}
@@ -154,19 +138,14 @@ export default function ChatBasic({
   // チャットの表示/非表示、削除API
   async function _updateChatRoomHiddenOrDeleteByUserId() {
     try {
-      // APIリクエスト
       const bodyData = {
-        direct_chat_room_id: directChatRoomId
-          ? Number(directChatRoomId)
-          : null,
-        group_chat_room_id: groupChatRoomId
-          ? Number(groupChatRoomId)
-          : null,
+        direct_chat_room_id: directChatRoomId ? Number(directChatRoomId) : null,
+        group_chat_room_id: groupChatRoomId ? Number(groupChatRoomId) : null,
         update_type: clickedType,
       };
       const response = await fetch(
         API_SERVER_URL + `/api/users/${userId}/chat-room`,
-        post_fetch_api_header(bodyData)
+        postFetchApiHeader(bodyData)
       );
     } catch (e) {
       console.error(e);
@@ -176,28 +155,28 @@ export default function ChatBasic({
   // 削除時の確認モーダルでCancleの時は該当リストをデフォルト状態に戻す、Okの場合は該当リストを削除する甩に使用
   useEffect(() => {
     // Cancelを押された場合
-    if (clickedDeleteCancelMordal || clickedHiddenCancelMordal) {
+    if (clickedDeleteGroupCancelMordal || clickedHiddenGroupCancelMordal) {
       // スワイプされた行をデフォルト状態に戻す
       rowMap[key].closeRow();
       // 初期化
       setRowMap("");
       setkey("");
-      setClickedDeleteCancelMordal(false);
-      setClickedHiddenCancelMordal(false);
+      setClickedDeleteGroupCancelMordal(false);
+      setClickedHiddenGroupCancelMordal(false);
       setGroupChatRoomId("");
       setDirectChatRoomId("");
     }
-    if (clickedDeleteOkMordal || clickedHiddenOkMordal) {
+    if (clickedDeleteGroupOkMordal || clickedHiddenGroupOkMordal) {
       // スワイプされた行を削除
-      if (clickedType === "Delete") {
+      if (clickedType === chatsclickedTypeEnum.Delete) {
         deleteRow(rowMap, key);
-        setClickedDeleteOkMordal(false);
+        setClickedDeleteGroupOkMordal(false);
         // チャットの削除API実行
         _updateChatRoomHiddenOrDeleteByUserId();
       }
-      if (clickedType === "Hidden") {
+      if (clickedType === chatsclickedTypeEnum.Hidden) {
         deleteRow(rowMap, key);
-        setClickedHiddenOkMordal(false);
+        setClickedHiddenGroupOkMordal(false);
         // チャットの非表示API実行
         _updateChatRoomHiddenOrDeleteByUserId();
       }
@@ -206,16 +185,15 @@ export default function ChatBasic({
       setkey("");
       setGroupChatRoomId("");
       setDirectChatRoomId("");
-      setClickedType("");
+      setClickedType(null);
     }
   }, [
-    clickedDeleteCancelMordal,
-    clickedDeleteOkMordal,
-    clickedHiddenCancelMordal,
-    clickedHiddenOkMordal,
+    clickedDeleteGroupCancelMordal,
+    clickedDeleteGroupOkMordal,
+    clickedHiddenGroupCancelMordal,
+    clickedHiddenGroupOkMordal,
   ]);
 
-  // ユーザーIDの取得
   useEffect(() => {
     storage
       .load({

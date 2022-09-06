@@ -1,31 +1,23 @@
 // libs
 import React from "react";
-import {
-  Text,
-  View,
-  Image,
-  TextInput,
-  Pressable,
-} from "react-native";
+import { Text, View, Image, TextInput, Pressable } from "react-native";
 
 // constantsSearchStyles
 import { searchStyles } from "../../constants/styles/searchStyles";
 
 type MailFormPropsType = {
   inputAccessoryViewID: string;
-  emailText: string;
-  setEmailText: React.Dispatch<React.SetStateAction<string>>;
+  emailFormText: string;
+  setEmailFormText: React.Dispatch<React.SetStateAction<string>>;
   executedLoginAuthentication: boolean;
   onFocusInputMailOrPasseword: boolean;
-  setOnFocusInputMailOrPasseword: React.Dispatch<
-    React.SetStateAction<boolean>
-  >;
+  setOnFocusInputMailOrPasseword: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
 export function MailForm({
   inputAccessoryViewID,
-  emailText,
-  setEmailText,
+  emailFormText,
+  setEmailFormText,
   executedLoginAuthentication,
   onFocusInputMailOrPasseword,
   setOnFocusInputMailOrPasseword,
@@ -59,16 +51,15 @@ export function MailForm({
                 style={searchStyles.searchIconStyle}
               />
               <TextInput
-                onChangeText={setEmailText}
+                onChangeText={setEmailFormText}
                 style={searchStyles.searchContentWithIconStyle}
-                value={emailText}
+                value={emailFormText}
                 placeholder="a-chat@test.com"
                 inputAccessoryViewID={inputAccessoryViewID}
                 ref={(input) => (textInputEmail = input)}
                 autoCapitalize="none"
                 textContentType="emailAddress"
                 onFocus={() => {
-                  // メールアドレスもしくはパスワード入力中判定
                   setOnFocusInputMailOrPasseword(true);
                 }}
                 onEndEditing={() => {}}

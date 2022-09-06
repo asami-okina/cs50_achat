@@ -1,27 +1,21 @@
 // libs
 import React, { useState } from "react";
-import {
-  Text,
-  View,
-  Image,
-  TextInput,
-  Pressable,
-} from "react-native";
+import { Text, View, Image, TextInput, Pressable } from "react-native";
 import { API_SERVER_URL } from "../../constants/api";
-import { get_fetch_api_header } from "../../constants/common";
+import { getFetchApiHeader } from "../../constants/common";
 
 // components
 import { MailFormDescription } from "./_description/mailFormDescription";
 
-// constantsSearchStyles
+// style
 import { searchStyles } from "../../constants/styles/searchStyles";
 
 type MailFormPropsType = {
   inputAccessoryViewID: string;
   isCorrectMail: boolean;
   setIsCorrectMail: React.Dispatch<React.SetStateAction<boolean>>;
-  emailText: string;
-  onChangeEmailText: React.Dispatch<React.SetStateAction<string>>;
+  emailFormText: string;
+  onChangeEmailFormText: React.Dispatch<React.SetStateAction<string>>;
   isAvailableMail: boolean;
   setIsAvailableMail: React.Dispatch<React.SetStateAction<boolean>>;
 };
@@ -30,52 +24,42 @@ export function MailForm({
   inputAccessoryViewID,
   isCorrectMail,
   setIsCorrectMail,
-  emailText,
-  onChangeEmailText,
+  emailFormText,
+  onChangeEmailFormText,
   isAvailableMail,
   setIsAvailableMail,
 }: MailFormPropsType) {
-  // メールアドレスの説明文表示
   const [displayMailDescription, setDisplayMailDescription] =
     useState<boolean>(false);
-  // メールアドレスアイコンのデフォルト表示
   const [defaultDisplayMailIcons, setDefaultDisplayMailIcons] =
     useState<boolean>(false);
-  // メールアドレスの入力フォームの枠線のデフォルト表示
   const [defaultMailBorderColor, setDefaultMailBorderColor] =
     useState<boolean>(false);
 
   // メールフォームのラベル化
   let textInputEmail;
 
-  // メールアドレスのバリデーション関数
   function _mailValidation() {
     const regexp =
       /^[A-Za-z0-9]{1}[A-Za-z0-9_.-]*@{1}[A-Za-z0-9_.-]{1,}\.[A-Za-z0-9]{1,}$/;
-    if (!regexp.test(emailText)) {
-      // メールアドレスの説明文表示
+    if (!regexp.test(emailFormText)) {
       setDisplayMailDescription(true);
     }
-    setIsCorrectMail(regexp.test(emailText));
+    setIsCorrectMail(regexp.test(emailFormText));
   }
 
   // メールアドレス(使用可能かどうか)のバリデーション
   async function _isAvailableMailValidation() {
     try {
-      // paramsを生成
-      const params = { mail: emailText };
+      const params = { mail: emailFormText };
       const query_params = new URLSearchParams(params);
-
-      // APIリクエスト
       const response = await fetch(
         API_SERVER_URL +
           `/api/signup/is_available_mail_validation?${query_params}`,
-        get_fetch_api_header
+        getFetchApiHeader
       );
-
-      // レスポンスをJSONにする
-      const parse_response = await response.json();
-      if (parse_response.is_available_mail) {
+      const parseResponse = await response.json();
+      if (parseResponse.is_available_mail) {
         setIsAvailableMail(true);
       } else {
         setIsAvailableMail(false);
@@ -112,28 +96,22 @@ export function MailForm({
                 style={searchStyles.searchIconStyle}
               />
               <TextInput
-                onChangeText={onChangeEmailText}
+                onChangeText={onChangeEmailFormText}
                 style={searchStyles.searchContentWithIconStyle}
-                value={emailText}
+                value={emailFormText}
                 placeholder="a-chat@test.com"
                 inputAccessoryViewID={inputAccessoryViewID}
                 ref={(input) => (textInputEmail = input)}
                 autoCapitalize="none"
                 textContentType="emailAddress"
                 onFocus={() => {
-                  // メールアドレスの入力フォームの枠線のデフォルト表示
                   setDefaultMailBorderColor(false);
-                  // メールアドレスアイコンのデフォルト表示
                   setDefaultDisplayMailIcons(true);
                 }}
                 onEndEditing={() => {
-                  // メールアドレスのバリデーション
                   _mailValidation();
-                  // メールアドレスの入力フォームの枠線のデフォルト表示
                   setDefaultMailBorderColor(true);
-                  // メールアドレスアイコンのデフォルト表示
                   setDefaultDisplayMailIcons(false);
-                  // メールアドレス(使用可能かどうか)のバリデーション
                   _isAvailableMailValidation();
                 }}
               />

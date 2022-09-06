@@ -1,17 +1,10 @@
 // libs
 import React, { useState, useEffect } from "react";
-import {
-  View,
-  Text,
-  StyleSheet,
-  Image,
-  Switch,
-  Pressable,
-} from "react-native";
+import { View, Text, StyleSheet, Image, Switch, Pressable } from "react-native";
 import { API_SERVER_URL } from "../../constants/api";
 import { storage } from "../../../storage";
 import { useNavigationAChat } from "../../hooks/useNavigationAChat";
-import { post_fetch_api_header } from "../../constants/common";
+import { postFetchApiHeader } from "../../constants/common";
 
 // layouts
 import {
@@ -28,46 +21,42 @@ import {
 type ProfileInfoType = {
   nickName: string;
   setNickName: React.Dispatch<React.SetStateAction<string>>;
-  isEnabled: boolean;
-  setIsEnabled: React.Dispatch<React.SetStateAction<boolean>>;
+  isEnabledToggle: boolean;
+  setIsEnabledToggle: React.Dispatch<React.SetStateAction<boolean>>;
 };
 export function ProfileInfo({
   nickName,
   setNickName,
-  isEnabled,
-  setIsEnabled,
+  isEnabledToggle,
+  setIsEnabledToggle,
 }: ProfileInfoType) {
-  // navigation
   const navigation = useNavigationAChat();
-  // ユーザーID(今後は認証から取得するようにする)
   const [userId, setUserId] = useState<string>(null);
 
   // 検索可能トグルの変更関数
   const toggleSwitch = () => {
     // リレンダーするまではisEnabledは変わらないため、反転させた値を変数に保持しておく
-    const newIsEnabled = !isEnabled;
-    setIsEnabled(newIsEnabled);
+    const newIsEnabled = !isEnabledToggle;
+    setIsEnabledToggle(newIsEnabled);
     _updateSearchFlag(newIsEnabled);
   };
 
   // 検索可能トグルの更新
   async function _updateSearchFlag(newIsEnabled: boolean) {
     try {
-      // APIリクエスト
       const bodyData = {
         isSetSearchFlag: true,
         searchFlag: newIsEnabled,
       };
       const response = await fetch(
         API_SERVER_URL + `/api/users/${userId}/profile`,
-        post_fetch_api_header(bodyData)
+        postFetchApiHeader(bodyData)
       );
     } catch (e) {
       console.error(e);
     }
   }
 
-  // ユーザーIDの取得
   useEffect(() => {
     storage
       .load({
@@ -104,9 +93,7 @@ export function ProfileInfo({
       </Pressable>
       {/* 検索許可トグル */}
       <View style={styles.listContainerStyle}>
-        <Text style={styles.searchTitleStyle}>
-          Search for friends by ID
-        </Text>
+        <Text style={styles.searchTitleStyle}>Search for friends by ID</Text>
         <View style={styles.searchContainerStyle}>
           <Switch
             trackColor={{
@@ -116,7 +103,7 @@ export function ProfileInfo({
             thumbColor={MAIN_WHITE_COLOR}
             ios_backgroundColor={MAIN_GRAY_COLOR}
             onValueChange={toggleSwitch}
-            value={isEnabled}
+            value={isEnabledToggle}
           />
         </View>
       </View>

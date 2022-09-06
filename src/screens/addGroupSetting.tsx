@@ -1,14 +1,10 @@
 // libs
 import React, { useState, useEffect, useMemo } from "react";
-import {
-  View,
-  SafeAreaView,
-  KeyboardAvoidingView,
-} from "react-native";
+import { View, SafeAreaView, KeyboardAvoidingView } from "react-native";
 import { API_SERVER_URL } from "../constants/api";
 import { storage } from "../../storage";
 import { StackScreenProps } from "@react-navigation/stack";
-import { get_fetch_api_header } from "../constants/common";
+import { getFetchApiHeader } from "../constants/common";
 
 // components
 import { AddGroupTitle } from "../components/addGroup/addGroupTitle";
@@ -17,31 +13,25 @@ import { GroupImageAndGroupName } from "../components/common/_topAreaContainer/g
 import { SmallButton } from "../components/common/smallButton";
 import { SelectedFriendSpace } from "../components/addGroupSetting/selectedFriendSpace";
 
-// sameStyles
+// style
 import { sameStyles } from "../constants/styles/sameStyles";
 
 // layouts
 import { IPHONE_X_BOTTOM_SPACE } from "../constants/layout";
 
-type MainProps = StackScreenProps<
-  RootStackParamListType,
-  "AddGroupSetting"
->;
+type MainProps = StackScreenProps<RootStackParamListType, "AddGroupSetting">;
 
 export function AddGroupSetting({ route }: MainProps) {
-  const [friendList, setFriendList] = useState<
-    NewFriendListPropsType[]
-  >(route.params.friendList);
+  const [friendList, setFriendList] = useState<NewFriendListPropsType[]>(
+    route.params.friendList
+  );
   const [userId, setUserId] = useState<string>(null);
   // グループ設定画面から、メンバー追加で戻ったときにグループ名とグループ画像を保持
   const { backGroupName, backGroupImage } = route.params;
   const groupMemberCount = friendList.length + 1; // 自分を1としてカウントし、足す
-
-  // 自分のニックネーム
   const [ownNickName, setOwnNickName] = useState<string>("");
-  // 自分のプロフィール画像
   const [ownProfileImage, setOwnProfileImage] = useState<string>("");
-
+  const [groupImage, setGroupImage] = useState<string>(null);
   const friendListNames = useMemo(() => {
     // グループ名のplaceholderを生成
     let _friendListNames = "";
@@ -56,37 +46,27 @@ export function AddGroupSetting({ route }: MainProps) {
     }
     return _friendListNames;
   }, [friendList, ownNickName]);
-
-  // グループ画像
-  const [image, setImage] = useState<string>(null);
-
-  // グループ名
   const [groupName, setGroupName] = useState<string>(friendListNames);
 
   // [自分の情報]ユーザーIDに紐づくニックネーム、プロフィール画像の取得
-  async function _fetchProfileByUserId(userId: string) {
+  async function _fetchOwnProfileByUserId(userId: string) {
     try {
-      // APIリクエスト
       const response = await fetch(
         API_SERVER_URL + `/api/users/${userId}/profile`,
-        get_fetch_api_header
+        getFetchApiHeader
       );
-      // レスポンスをJSONにする
-      const parse_response = await response.json();
-
-      // 自分のニックネームの設定
-      if (parse_response.profile.nickname) {
-        setOwnNickName(parse_response.profile.nickname);
+      const parseResponse = await response.json();
+      if (parseResponse.profile.nickname) {
+        setOwnNickName(parseResponse.profile.nickname);
       }
-      if (parse_response.profile.profile_image) {
-        setOwnProfileImage(parse_response.profile.profile_image);
+      if (parseResponse.profile.profile_image) {
+        setOwnProfileImage(parseResponse.profile.profile_image);
       }
     } catch (e) {
       console.error(e);
     }
   }
 
-  // ユーザーIDの取得
   useEffect(() => {
     storage
       .load({
@@ -94,8 +74,7 @@ export function AddGroupSetting({ route }: MainProps) {
       })
       .then((data) => {
         setUserId(data.userId);
-        // [自分の情報]ユーザーIDに紐づくニックネーム、プロフィール画像の取得
-        _fetchProfileByUserId(data.userId);
+        _fetchOwnProfileByUserId(data.userId);
       });
   }, []);
 
@@ -109,7 +88,7 @@ export function AddGroupSetting({ route }: MainProps) {
   //　グループ設定画面から、メンバー追加で戻ったときにグループ画像をセット
   useEffect(() => {
     if (backGroupImage) {
-      setImage(backGroupImage);
+      setGroupImage(backGroupImage);
     }
   }, [backGroupImage]);
 
@@ -124,9 +103,9 @@ export function AddGroupSetting({ route }: MainProps) {
         {/* 丸みを帯びている白いトップ部分 */}
         <TopAreaWrapper type={"addGroupSetting"}>
           <GroupImageAndGroupName
-            image={image}
-            setImage={(v: string) => {
-              setImage(v);
+            groupImage={groupImage}
+            setGroupImage={(v: string) => {
+              setGroupImage(v);
             }}
             groupName={groupName}
             setGroupName={(v: string) => {
@@ -144,10 +123,7 @@ export function AddGroupSetting({ route }: MainProps) {
           }
         >
           {/* タイトル */}
-          <AddGroupTitle
-            text={"Member"}
-            groupMemberCount={groupMemberCount}
-          />
+          <AddGroupTitle text={"Member"} groupMemberCount={groupMemberCount} />
           {/* 選択された友達のスペース */}
           <SelectedFriendSpace
             friendList={friendList}
@@ -155,7 +131,7 @@ export function AddGroupSetting({ route }: MainProps) {
             ownNickName={ownNickName}
             ownProfileImage={ownProfileImage}
             groupName={groupName}
-            groupImage={image}
+            groupImage={groupImage}
           />
         </View>
         {/* 右下のボタン(Create) */}
@@ -164,10 +140,10 @@ export function AddGroupSetting({ route }: MainProps) {
             text={"Create"}
             addGroupFriendList={friendList}
             addFriendList={null}
-            groupSetting={{ groupName: groupName, image: image }}
+            groupSetting={{ groupName: groupName, groupImage: groupImage }}
             type={"addGroupSetting"}
             friendListNames={friendListNames}
-            alreadyFriend={null}
+            isAlreadyFriend={null}
             addGroupMemberGroupChatRoomId={null}
             addGroupMemberGroupImage={null}
             addGroupMemberGroupName={null}

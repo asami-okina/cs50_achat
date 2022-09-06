@@ -1,14 +1,9 @@
 // libs
 import React, { useState } from "react";
-import {
-  View,
-  StyleSheet,
-  TextInput,
-  Pressable,
-  Image,
-} from "react-native";
+import { View, StyleSheet, TextInput, Pressable, Image } from "react-native";
+import { profileInputFormPasswordIconEnum } from "../../../../constants/enum";
 
-// constantsSearchStyles
+// style
 import { searchStyles } from "../../../../constants/styles/searchStyles";
 
 // layouts
@@ -22,32 +17,33 @@ import {
 } from "../../../../constants/layout";
 
 type TextInputFormType = {
-  defaultInput: boolean;
-  setDefaultInput: React.Dispatch<React.SetStateAction<boolean>>;
+  isNotInput: boolean;
+  setIsNotInput: React.Dispatch<React.SetStateAction<boolean>>;
   isValidInput: boolean;
   setIsValidInput: React.Dispatch<React.SetStateAction<boolean>>;
-  wordCount: number;
-  setWordCount: React.Dispatch<React.SetStateAction<number>>;
+  inputLength: number;
+  setInputLength: React.Dispatch<React.SetStateAction<number>>;
   nickName: string;
   setNickName: React.Dispatch<React.SetStateAction<string>>;
 };
 export function TextInputForm({
-  defaultInput,
-  setDefaultInput,
+  isNotInput,
+  setIsNotInput,
   isValidInput,
   setIsValidInput,
-  wordCount,
-  setWordCount,
+  inputLength,
+  setInputLength,
   nickName,
   setNickName,
 }: TextInputFormType) {
-  // 検索フォームの削除アイコン表示/非表示
-  const [deleteIconDisplay, setDeleteIconDisplay] =
-    useState<boolean>(false);
+  const [inputFormPasswordIconShowOrHide, setInputFormPasswordIconShowOrHide] =
+    useState<profileInputFormPasswordIconEnum>(
+      profileInputFormPasswordIconEnum.Hide
+    );
 
   const onChangeText = (text: string) => {
     setNickName(text);
-    setWordCount(text.length);
+    setInputLength(text.length);
     if (text.length > 20) {
       setIsValidInput(false);
     } else {
@@ -63,7 +59,7 @@ export function TextInputForm({
       <Pressable
         onPress={() => textInputSearch.focus()}
         style={
-          defaultInput
+          isNotInput
             ? styles.inputTextContainerStyle
             : isValidInput
             ? styles.inputTextContainerStyle
@@ -82,34 +78,34 @@ export function TextInputForm({
           autoCapitalize="none"
           textContentType="username"
           onFocus={() => {
-            setDeleteIconDisplay(true);
-            setDefaultInput(false);
+            setInputFormPasswordIconShowOrHide(
+              profileInputFormPasswordIconEnum.Show
+            );
+            setIsNotInput(false);
           }}
           onEndEditing={() => {
-            // 削除アイコンの表示/非表示切り替え
-            setDeleteIconDisplay(true);
-
+            setInputFormPasswordIconShowOrHide(
+              profileInputFormPasswordIconEnum.Show
+            );
             // ニックネームの入力が1文字以下の場合はエラーを出す
-            if (wordCount < 1) {
+            if (inputLength < 1) {
               setIsValidInput(false);
             }
           }}
         />
-        {deleteIconDisplay && (
+        {inputFormPasswordIconShowOrHide ==
+          profileInputFormPasswordIconEnum.Show && (
           <Pressable
             onPress={() => {
               textInputSearch.clear();
-              if (!defaultInput) {
+              if (!isNotInput) {
                 setIsValidInput(false);
               }
             }}
           >
             <Image
               source={require("../../../../../assets/images/close_gray.png")}
-              style={[
-                searchStyles.searchIconStyle,
-                styles.searchIconStyle,
-              ]}
+              style={[searchStyles.searchIconStyle, styles.searchIconStyle]}
             />
           </Pressable>
         )}

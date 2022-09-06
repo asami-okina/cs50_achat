@@ -10,7 +10,7 @@ type UserIdFormDescriptionPropsType = {
   isCorrectUserIdSymbol: boolean;
   isCorrectUserIdStringCount: boolean;
   isAvailableUserId: boolean;
-  defaultDisplayUserIcons: boolean;
+  defaultDisplayUserIcon: boolean;
 };
 
 export function UserIdFormDescription({
@@ -18,7 +18,7 @@ export function UserIdFormDescription({
   isCorrectUserIdSymbol,
   isCorrectUserIdStringCount,
   isAvailableUserId,
-  defaultDisplayUserIcons,
+  defaultDisplayUserIcon,
 }: UserIdFormDescriptionPropsType) {
   return (
     <View>
@@ -28,90 +28,58 @@ export function UserIdFormDescription({
         !isCorrectUserIdStringCount ||
         !isAvailableUserId ? (
           <View style={formDescriptionStyles.descriptionBoxStyle}>
-            <View
-              style={formDescriptionStyles.descriptionWrapperStyle}
-            >
-              <View
-                style={
-                  formDescriptionStyles.descriptionContainerStyle
-                }
-              >
-                {!defaultDisplayUserIcons ? (
+            <View style={formDescriptionStyles.descriptionWrapperStyle}>
+              <View style={formDescriptionStyles.descriptionContainerStyle}>
+                {!defaultDisplayUserIcon ? (
                   isCorrectUserIdSymbol ? (
                     <Image
                       source={require("../../../../assets/images/correct.png")}
-                      style={
-                        formDescriptionStyles.descriptionIconStyle
-                      }
+                      style={formDescriptionStyles.descriptionIconStyle}
                     />
                   ) : (
                     <Image
                       source={require("../../../../assets/images/incorrect.png")}
-                      style={
-                        formDescriptionStyles.descriptionIconStyle
-                      }
+                      style={formDescriptionStyles.descriptionIconStyle}
                     />
                   )
                 ) : null}
-                <Text
-                  style={formDescriptionStyles.descriptionTextStyle}
-                >
+                <Text style={formDescriptionStyles.descriptionTextStyle}>
                   Half-width alphanumeric characters only.
                 </Text>
               </View>
-              <View
-                style={
-                  formDescriptionStyles.descriptionContainerStyle
-                }
-              >
-                {!defaultDisplayUserIcons ? (
+              <View style={formDescriptionStyles.descriptionContainerStyle}>
+                {!defaultDisplayUserIcon ? (
                   isCorrectUserIdStringCount ? (
                     <Image
                       source={require("../../../../assets/images/correct.png")}
-                      style={
-                        formDescriptionStyles.descriptionIconStyle
-                      }
+                      style={formDescriptionStyles.descriptionIconStyle}
                     />
                   ) : (
                     <Image
                       source={require("../../../../assets/images/incorrect.png")}
-                      style={
-                        formDescriptionStyles.descriptionIconStyle
-                      }
+                      style={formDescriptionStyles.descriptionIconStyle}
                     />
                   )
                 ) : null}
-                <Text
-                  style={formDescriptionStyles.descriptionTextStyle}
-                >
+                <Text style={formDescriptionStyles.descriptionTextStyle}>
                   More than 4 words and less than 100 words.
                 </Text>
               </View>
-              <View
-                style={
-                  formDescriptionStyles.descriptionContainerStyle
-                }
-              >
-                {!defaultDisplayUserIcons ? (
+              <View style={formDescriptionStyles.descriptionContainerStyle}>
+                {!defaultDisplayUserIcon ? (
                   isAvailableUserId ? (
                     <Image
                       source={require("../../../../assets/images/correct.png")}
-                      style={
-                        formDescriptionStyles.descriptionIconStyle
-                      }
+                      style={formDescriptionStyles.descriptionIconStyle}
                     />
                   ) : (
                     <Image
                       source={require("../../../../assets/images/incorrect.png")}
-                      style={
-                        formDescriptionStyles.descriptionIconStyle
-                      }
+                      style={formDescriptionStyles.descriptionIconStyle}
                     />
                   )
                 ) : null}
-                <Text
-                  style={formDescriptionStyles.descriptionTextStyle}
-                >
+                <Text style={formDescriptionStyles.descriptionTextStyle}>
                   Available.
                 </Text>
               </View>

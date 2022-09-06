@@ -11,10 +11,7 @@ type TopAreaWrapperType = {
 };
 
 // 丸みを帯びている白いトップ部分
-export function TopAreaWrapper({
-  type,
-  children,
-}: TopAreaWrapperType) {
+export function TopAreaWrapper({ type, children }: TopAreaWrapperType) {
   return (
     <View
       style={

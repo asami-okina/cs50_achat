@@ -20,7 +20,6 @@ import {
   Time,
   Actions,
 } from "react-native-gifted-chat";
-import { addMessages } from "../components/chat/messages";
 import _ from "lodash";
 import moment from "moment";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
@@ -35,14 +34,14 @@ import { sock } from "../../websocket";
 import { StackScreenProps } from "@react-navigation/stack";
 import { useIsFocused } from "@react-navigation/native";
 import uuid from "react-native-uuid";
-import { get_fetch_api_header } from "../constants/common";
-import { post_fetch_api_header } from "../constants/common";
+import { getFetchApiHeader } from "../constants/common";
+import { postFetchApiHeader } from "../constants/common";
 
 // components
 import { TopAreaWrapper } from "../components/common/topAreaWrapper";
 import { MainTitle } from "../components/common/_topAreaContainer/mainTitle";
 
-// sameStyles
+// style
 import { sameStyles } from "../constants/styles/sameStyles";
 
 // layouts
@@ -58,46 +57,30 @@ import {
   IPHONE_X_BOTTOM_SPACE,
 } from "../constants/layout";
 
-// type
 type ChatRoomIdType = "DirectChatRoomId" | "GroupChatRoomId";
-
 type MainProps = StackScreenProps<RootStackParamListType, "Chat">;
 
 export function Chat({ navigation, route }: MainProps) {
-  // 引数を取得
-  // addGroupMemberName: 今後、○○がグループに参加しました。というメッセージに使用する
+  // addedGroupMemberUserNames: 今後、○○がグループに参加しました。というメッセージに使用する
   const {
     groupChatRoomId,
     directChatRoomId,
     profileImage,
     name,
     groupMemberUserId,
-    addGroupMemberName,
+    // addedGroupMemberUserNames,
   } = route.params;
   const [loadEarlier, setLoadEarlier] = useState<boolean>(false);
-  const [initialApiCount, setInitialApiCount] =
-    useState<boolean>(true);
-
-  // ユーザーID(今後は認証から取得するようにする)
   const [userId, setUserId] = useState<string>(null);
-
-  // メッセージ
   const [messages, setMessages] = useState<MessageType[] | []>([]);
-
-  // 画像
   const [image, setImage] = useState<string>("");
-
-  // マウント判定
   const isMounted = useIsMounted();
   const [sendUserIds, setSendUserIds] = useState<string[]>(null);
-
-  // 現在画面がフォーカスされているかをbooleanで保持
-  const isFocused = useIsFocused();
+  const isScreanFocused: boolean = useIsFocused();
 
   useEffect(() => {
     const handler = (e) => {
       let newMessage = JSON.parse(e.data);
-      // newMessageにメッセージ作成時間を追加
       newMessage.created_at = moment().unix();
       if (isMounted.current) {
         // チャット画面に遷移してきた際にのみ実行
@@ -144,7 +127,6 @@ export function Chat({ navigation, route }: MainProps) {
   // チャットルームIDに紐づくチャット履歴の取得
   async function _fetchMessageByChatRoomId() {
     try {
-      // paramsを生成
       let params;
       if (directChatRoomId) {
         params = {
@@ -159,16 +141,13 @@ export function Chat({ navigation, route }: MainProps) {
         };
       }
       const query_params = new URLSearchParams(params);
-      // APIリクエスト
       const response = await fetch(
-        API_SERVER_URL +
-          `/api/users/${userId}/message?${query_params}`,
-        get_fetch_api_header
+        API_SERVER_URL + `/api/users/${userId}/message?${query_params}`,
+        getFetchApiHeader
       );
-      // レスポンスをJSONにする
-      const parse_response = await response.json();
-      if (parse_response.messages.length !== 0) {
-        setMessages(parse_response.messages);
+      const parseResponse = await response.json();
+      if (parseResponse.messages.length !== 0) {
+        setMessages(parseResponse.messages);
       } else {
         setMessages([]);
       }
@@ -180,7 +159,6 @@ export function Chat({ navigation, route }: MainProps) {
   // directChatRoomId/groupChatRoomIdに紐づくメンバーのユーザーIDを取得
   async function _fetchUserIdsByDirectOrGroupChatRoomId() {
     try {
-      // paramsを生成
       let params;
       if (directChatRoomId) {
         params = {
@@ -195,14 +173,12 @@ export function Chat({ navigation, route }: MainProps) {
         };
       }
       const query_params = new URLSearchParams(params);
-      // APIリクエスト
       const response = await fetch(
         API_SERVER_URL + `/api/users/${userId}/chat?${query_params}`,
-        get_fetch_api_header
+        getFetchApiHeader
       );
-      // レスポンスをJSONにする
-      const parse_response = await response.json();
-      setSendUserIds(parse_response.user_ids);
+      const parseResponse = await response.json();
+      setSendUserIds(parseResponse.user_ids);
     } catch (e) {
       console.error(e);
     }
@@ -211,11 +187,9 @@ export function Chat({ navigation, route }: MainProps) {
   // メッセージ送信
   async function _postMessage(messages: MessageType[]) {
     try {
-      // APIリクエスト
       let bodyData = {};
       let chat_room_type: ChatRoomIdType;
       let chat_room_id;
-
       if (directChatRoomId) {
         chat_room_type = "DirectChatRoomId";
         chat_room_id = Number(directChatRoomId);
@@ -237,7 +211,7 @@ export function Chat({ navigation, route }: MainProps) {
         };
         let response = await fetch(
           API_SERVER_URL + `/api/users/${userId}/message`,
-          post_fetch_api_header(bodyData)
+          postFetchApiHeader(bodyData)
         );
         // 2回目の送信(画像のみ)
         bodyData = {
@@ -250,7 +224,7 @@ export function Chat({ navigation, route }: MainProps) {
         };
         response = await fetch(
           API_SERVER_URL + `/api/users/${userId}/message`,
-          post_fetch_api_header(bodyData)
+          postFetchApiHeader(bodyData)
         );
       } else {
         // テキスト、画像どちらか1つのみの場合
@@ -266,7 +240,7 @@ export function Chat({ navigation, route }: MainProps) {
         };
         const response = await fetch(
           API_SERVER_URL + `/api/users/${userId}/message`,
-          post_fetch_api_header(bodyData)
+          postFetchApiHeader(bodyData)
         );
       }
     } catch (e) {
@@ -277,7 +251,6 @@ export function Chat({ navigation, route }: MainProps) {
   // 最終既読日時の更新
   async function _updateLastReadTime() {
     try {
-      // APIリクエスト
       let bodyData;
 
       if (directChatRoomId !== null) {
@@ -295,7 +268,7 @@ export function Chat({ navigation, route }: MainProps) {
 
       const response = await fetch(
         API_SERVER_URL + `/api/users/${userId}/last-read-time`,
-        post_fetch_api_header(bodyData)
+        postFetchApiHeader(bodyData)
       );
     } catch (e) {
       console.error(e);
@@ -338,12 +311,10 @@ export function Chat({ navigation, route }: MainProps) {
         messages[0]["chat_room_id"] = groupChatRoomId;
       }
 
-      // setしたImageをなくす
       setImage("");
 
       // websocketでメッセージをサーバーに送る
       sock.send(JSON.stringify(messages));
-      // メッセージ更新API実行
       _postMessage(messages);
     },
     [userId, sendUserIds]
@@ -363,8 +334,7 @@ export function Chat({ navigation, route }: MainProps) {
   };
   // 送信メッセージのスタイル変更
   const _renderBubble = (props) => {
-    const ownUserId: boolean =
-      props.currentMessage.user._id === userId;
+    const ownUserId: boolean = props.currentMessage.user._id === userId;
     // console.log("props.currentMessage",props.currentMessage)
     return (
       <View>
@@ -379,9 +349,7 @@ export function Chat({ navigation, route }: MainProps) {
               {/* 既読未読処理はアップデート対応 */}
               {/* <Text style={styles.readStyle}>{props.currentMessage.received ? "Read" : "Unread"}</Text> */}
               <Text style={styles.readStyle}>
-                {moment(
-                  props.currentMessage.created_at * 1000
-                ).format("HH:mm")}
+                {moment(props.currentMessage.created_at * 1000).format("HH:mm")}
               </Text>
             </View>
           )}
@@ -432,9 +400,7 @@ export function Chat({ navigation, route }: MainProps) {
                 </Pressable>
               )}
               <Text style={styles.readStyle}>
-                {moment(
-                  props.currentMessage.created_at * 1000
-                ).format("HH:mm")}
+                {moment(props.currentMessage.created_at * 1000).format("HH:mm")}
               </Text>
             </View>
           )}
@@ -522,30 +488,6 @@ export function Chat({ navigation, route }: MainProps) {
     );
   };
 
-  // 以前のメッセージを取得する
-  const _onEndReached = () => {
-    // setTimeoutは時間切れになると関数を実行する(ミリ秒で指定)
-    // テスト段階では、1回だけAPIを取得したいため、initialApiCountを使って1回だけAPIを実行するよう調整。
-    // APIが完成したら、initialApiCountのif文とsetInitialApiCountは削除する
-    // 追加のメッセージがある場合のみ、API実行中のローディングを表示
-    if (addMessages.length !== 0 && initialApiCount) {
-      // 追加のメッセージがある場合の読み込みは今後アップデート
-      // setLoadEarlier(true)
-    }
-    if (initialApiCount) {
-      // 追加のメッセージがある場合の読み込みは今後アップデート
-      // setTimeout(() => {
-      // 	// マウントされているか判定
-      // 	if (isMounted.current) {
-      // 		const newData = [...messages, ...addMessages];
-      // 		setMessages(newData)
-      // 		setLoadEarlier(false)
-      // 		setInitialApiCount(false)
-      // 	}
-      // }, 1000)
-    }
-  };
-
   // 「以前のメッセージを読み込む」ボタンのスタイル変更
   const _renderLoadEarlier = (props) => {
     return (
@@ -584,19 +526,15 @@ export function Chat({ navigation, route }: MainProps) {
     );
   };
 
-  // イメージピッカー
   const pickImage = async () => {
-    let result: ImageInfo = await ImagePicker.launchImageLibraryAsync(
-      {
-        mediaTypes: ImagePicker.MediaTypeOptions.All,
-        allowsEditing: true,
-        aspect: [1, 1],
-        quality: 1,
-      }
-    );
+    let result: ImageInfo = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.All,
+      allowsEditing: true,
+      aspect: [1, 1],
+      quality: 1,
+    });
     if (!result.cancelled) {
       setImage(result.uri);
-      // イメージを送信
       _onSendMessage([], result.uri);
     }
   };
@@ -618,8 +556,7 @@ export function Chat({ navigation, route }: MainProps) {
             padding: 6,
             borderTopLeftRadius: 15,
             borderTopRightRadius: 15,
-            borderRadius:
-              props.currentMessage.user._id === userId ? 0 : 15,
+            borderRadius: props.currentMessage.user._id === userId ? 0 : 15,
             // 自分が送った画像の場合は、右下のborderRadiusを15に設定
             borderBottomLeftRadius:
               props.currentMessage.user._id === userId ? 15 : 0,
@@ -647,43 +584,33 @@ export function Chat({ navigation, route }: MainProps) {
     });
   };
 
-  // グループトーク画面で、クリックした人とのdirectChatRoomId(ない場合は、まだ友達ではない)
   const [
-    selectedFriendDirectChatRoomId,
-    setSelectedFriendDirectChatRoomId,
-  ] = useState(null);
-  // グループトーク画面でクリックした人と既に友達かどうか
-  const [selectedUserAlreadyFriend, setSelectedUserAlreadyFriend] =
-    useState(false);
-  // グループトーク画面でユーザーアイコンをクリックしたかどうか
-  const [clickedUserIcon, setClickedUserIcon] = useState(false);
-  // グループトーク画面でクリックした人のuser情報
+    userIdBySelectedUserAlreadyFriend,
+    setUserIdBySelectedUserAlreadyFriend,
+  ] = useState<string>();
+  const [selectedUserIsAlreadyFriend, setSelectedUserIsAlreadyFriend] =
+    useState<boolean>(false);
+  const [
+    isClickedUserIconOnGroupChatScreen,
+    setIsClickedUserIconOnGroupChatScreen,
+  ] = useState(false);
   const [selectedUserInfo, setSelectedUserInfo] = useState(null);
 
   // 該当友達とのdirectChatRoomIdを取得
   async function fetchDirectChatRoomIdByUserId(friendUserId: string) {
     try {
-      // paramsを生成
       const params = { friend_user_id: friendUserId };
       const query_params = new URLSearchParams(params);
-      // APIリクエスト
       const response = await fetch(
-        API_SERVER_URL +
-          `/api/users/${userId}/friend?${query_params}`,
-        get_fetch_api_header
+        API_SERVER_URL + `/api/users/${userId}/friend?${query_params}`,
+        getFetchApiHeader
       );
-      // レスポンスをJSONにする
-      const parse_response = await response.json();
-      // グループトーク画面でクリックした人と既に友達かどうか
-      setSelectedUserAlreadyFriend(
-        parse_response.result.already_friend
+      const parseResponse = await response.json();
+      setSelectedUserIsAlreadyFriend(parseResponse.result.already_friend);
+      setUserIdBySelectedUserAlreadyFriend(
+        parseResponse.result.direct_chat_room_id
       );
-      // グループトーク画面で、クリックした人とのdirectChatRoomId(ない場合は、まだ友達ではない)
-      setSelectedFriendDirectChatRoomId(
-        parse_response.result.direct_chat_room_id
-      );
-      // グループトーク画面でユーザーアイコンをクリックしたかどうか
-      setClickedUserIcon(true);
+      setIsClickedUserIconOnGroupChatScreen(true);
     } catch (e) {
       console.error(e);
     }
@@ -706,32 +633,24 @@ export function Chat({ navigation, route }: MainProps) {
       if (directChatRoomId || groupChatRoomId) {
         _fetchMessageByChatRoomId();
       }
-      // 最終既読日時の更新
       _updateLastReadTime();
-      // directChatRoomId/groupChatRoomIdに紐づくメンバーのユーザーIDを取得
       _fetchUserIdsByDirectOrGroupChatRoomId();
     }
-  }, [isFocused]);
+  }, [isScreanFocused]);
 
   useEffect(() => {
-    // グループトーク画面でユーザーアイコンをクリックしたかどうかをfalseに戻す
-    setClickedUserIcon(false);
-    // グループトーク画面でユーザーアイコンをクリックした場合
-    if (clickedUserIcon) {
+    if (isClickedUserIconOnGroupChatScreen) {
       // 既に友達の場合、Talkが選べるモーダルを表示
-      if (
-        selectedFriendDirectChatRoomId &&
-        selectedUserAlreadyFriend
-      ) {
+      if (userIdBySelectedUserAlreadyFriend && selectedUserIsAlreadyFriend) {
         navigation.navigate("AlreadyFriendModal", {
           user: selectedUserInfo,
           groupChatRoomId: groupChatRoomId,
           groupImage: image,
           groupName: name,
-          directChatRoomId: selectedFriendDirectChatRoomId,
+          directChatRoomId: userIdBySelectedUserAlreadyFriend,
         });
       }
-      if (!selectedUserAlreadyFriend) {
+      if (!selectedUserIsAlreadyFriend) {
         navigation.navigate("NotFriendModal", {
           user: selectedUserInfo,
           groupChatRoomId: groupChatRoomId,
@@ -741,9 +660,8 @@ export function Chat({ navigation, route }: MainProps) {
         });
       }
     }
-  }, [clickedUserIcon]);
+  }, [isClickedUserIconOnGroupChatScreen]);
 
-  // ユーザーIDの取得
   useEffect(() => {
     storage
       .load({
@@ -753,9 +671,7 @@ export function Chat({ navigation, route }: MainProps) {
         setUserId(data.userId);
         // websocketにuser_idを送信
         sock.send(
-          JSON.stringify([
-            { user_id: data.userId, message_type: "SetUserId" },
-          ])
+          JSON.stringify([{ user_id: data.userId, message_type: "SetUserId" }])
         );
       });
   }, []);
@@ -795,9 +711,7 @@ export function Chat({ navigation, route }: MainProps) {
               _id: userId,
             }}
             // 画面下のフッター部分
-            renderInputToolbar={(props) =>
-              _messengerBarContainer(props)
-            }
+            renderInputToolbar={(props) => _messengerBarContainer(props)}
             // Sendボタンを常に表示するか
             alwaysShowSend={true}
             // カスタム送信ボタンのスタイル変更
@@ -818,13 +732,6 @@ export function Chat({ navigation, route }: MainProps) {
             isLoadingEarlier={true}
             // 「以前のメッセージを読み込む」ボタンのカスタム
             renderLoadEarlier={(props) => _renderLoadEarlier(props)}
-            // メッセージ<ListView>に渡される追加のprops。いくつかのpropsはオーバーライドできない。
-            // onEndReachedThresholdで指定した距離までスクロールされたら、onEndReachedに指定された関数が一度だけ実行される
-            // onEndReached内に任意の処理を記述し、以前のメッセージを取得する
-            listViewProps={{
-              onEndReached: _onEndReached,
-              onEndReachedThreshold: 0.4,
-            }}
             // 日時部分のスタイル変更
             renderDay={(props) => _renderDay(props)}
             // メッセージ内に時間を表示しない

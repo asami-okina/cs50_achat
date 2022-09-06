@@ -1,32 +1,24 @@
 // libs
 import React, { useState } from "react";
-import {
-  Text,
-  View,
-  Image,
-  TextInput,
-  Pressable,
-} from "react-native";
+import { Text, View, Image, TextInput, Pressable } from "react-native";
 import { useTogglePasswordVisibility } from "../../hooks/useTogglePasswordVisibility";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { PasswordFormDescription } from "./_description/passwordFormDescription";
 import { MAIN_GRAY_COLOR } from "../../constants/layout";
 
-// constantsSearchStyles
+// style
 import { searchStyles } from "../../constants/styles/searchStyles";
 
 type PasswordFormPropsType = {
   inputAccessoryViewID: string;
   isCorrectPassewordSymbol: boolean;
-  setIsCorrectPassewordSymbol: React.Dispatch<
-    React.SetStateAction<boolean>
-  >;
+  setIsCorrectPassewordSymbol: React.Dispatch<React.SetStateAction<boolean>>;
   isCorrectPassewordStringCount: boolean;
   setIsCorrectPassewordStringCount: React.Dispatch<
     React.SetStateAction<boolean>
   >;
-  passwordText: string;
-  onChangePasswordText: React.Dispatch<React.SetStateAction<string>>;
+  passwordFormText: string;
+  onChangePasswordFormText: React.Dispatch<React.SetStateAction<string>>;
 };
 
 export function PasswordForm({
@@ -35,21 +27,15 @@ export function PasswordForm({
   setIsCorrectPassewordSymbol,
   isCorrectPassewordStringCount,
   setIsCorrectPassewordStringCount,
-  passwordText,
-  onChangePasswordText,
+  passwordFormText,
+  onChangePasswordFormText,
 }: PasswordFormPropsType) {
-  // パスワードの説明文表示
   const [displayPasswordDescription, setDisplayPasswordDescription] =
     useState<boolean>(false);
-  // パスワードの表示/非表示アイコン
-  const { passwordVisibility, rightIcon, handlePasswordVisibility } =
+  const { passwordIconVisibility, rightIcon, handlePasswordVisibility } =
     useTogglePasswordVisibility();
-  // パスワードアイコンのデフォルト表示
-  const [
-    defaultDisplayPasswordIcons,
-    setDefaultDisplayPasswordIcons,
-  ] = useState<boolean>(false);
-  // パスワードの入力フォームの枠線のデフォルト表示
+  const [defaultDisplayPasswordIcon, setDefaultDisplayPasswordIcon] =
+    useState<boolean>(false);
   const [defaultPasswordBorderColor, setDefaultPasswordBorderColor] =
     useState<boolean>(false);
 
@@ -57,14 +43,14 @@ export function PasswordForm({
   let textInputPassword;
 
   // パスワード(半角英数字記号)のバリデーション関数
-  function _passwordSymbolVaridation() {
+  function _passwordSymbolValidation() {
     const regexp = /^[a-zA-Z0-9!-/:-@¥[-`{-~]+$/;
-    setIsCorrectPassewordSymbol(regexp.test(passwordText));
+    setIsCorrectPassewordSymbol(regexp.test(passwordFormText));
   }
 
   // パスワード(文字数:5文字以上200文字未満)のバリデーション
   function _passwordStringCountValidation() {
-    let passwordLength = passwordText.length;
+    let passwordLength = passwordFormText.length;
 
     // パスワードの文字数が5文字以上200文字未満であれば、バリデーションが通る
     if (passwordLength >= 5 && passwordLength < 200) {
@@ -83,14 +69,11 @@ export function PasswordForm({
             style={searchStyles.searchContainerStyle}
             onPress={() => textInputPassword.focus()}
           >
-            <Text style={searchStyles.searchTitleStyle}>
-              Password
-            </Text>
+            <Text style={searchStyles.searchTitleStyle}>Password</Text>
             <View
               style={
                 defaultPasswordBorderColor
-                  ? isCorrectPassewordSymbol &&
-                    isCorrectPassewordStringCount
+                  ? isCorrectPassewordSymbol && isCorrectPassewordStringCount
                     ? searchStyles.searchViewStyle
                     : [
                         searchStyles.searchViewStyle,
@@ -109,29 +92,22 @@ export function PasswordForm({
                 autoCapitalize="none"
                 autoCorrect={false}
                 textContentType="newPassword"
-                secureTextEntry={passwordVisibility}
-                value={passwordText}
+                secureTextEntry={passwordIconVisibility}
+                value={passwordFormText}
                 enablesReturnKeyAutomatically
-                onChangeText={onChangePasswordText}
+                onChangeText={onChangePasswordFormText}
                 inputAccessoryViewID={inputAccessoryViewID}
                 ref={(input) => (textInputPassword = input)}
                 maxLength={200}
                 onFocus={() => {
-                  // パスワードの説明文表示
                   setDisplayPasswordDescription(true);
-                  // パスワードアイコンのデフォルト表示
-                  setDefaultDisplayPasswordIcons(true);
-                  // パスワードの入力フォームの枠線のデフォルト表示
+                  setDefaultDisplayPasswordIcon(true);
                   setDefaultPasswordBorderColor(false);
                 }}
                 onEndEditing={() => {
-                  // パスワード(半角英数字記号)のバリデーション
-                  _passwordSymbolVaridation();
-                  // パスワード(文字数)のバリデーション
+                  _passwordSymbolValidation();
                   _passwordStringCountValidation();
-                  // パスワードアイコンのデフォルト表示を無くす
-                  setDefaultDisplayPasswordIcons(false);
-                  // パスワードの入力フォームの枠線のデフォルト表示
+                  setDefaultDisplayPasswordIcon(false);
                   setDefaultPasswordBorderColor(true);
                 }}
               />
@@ -152,7 +128,7 @@ export function PasswordForm({
         displayPasswordDescription={displayPasswordDescription}
         isCorrectPassewordSymbol={isCorrectPassewordSymbol}
         isCorrectPassewordStringCount={isCorrectPassewordStringCount}
-        defaultDisplayPasswordIcons={defaultDisplayPasswordIcons}
+        defaultDisplayPasswordIcon={defaultDisplayPasswordIcon}
       />
     </View>
   );
