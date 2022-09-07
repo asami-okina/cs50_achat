@@ -14,6 +14,7 @@ use sqlx::mysql::MySqlPool;
 pub struct FetchFriendCountPath {
     user_id: String,
 }
+
 pub async fn handler_fetch_friend_count(Path(path): Path<FetchFriendCountPath>) -> Json<Value> {
     let user_id = path.user_id;
 
