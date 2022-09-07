@@ -1,7 +1,7 @@
 use axum::{extract::Query, response::Json};
 // シリアライズ: RustのオブジェクトをJSON形式に変換
 // デシリアライズ : JSON形式をRustのオブジェクトに変換
-use crate::common::mysqlpool_connect;
+use crate::common::mysqlpool_connect::mysqlpool_connect;
 use serde::{Deserialize, Serialize};
 use serde_json::{json, Value};
 use sqlx::mysql::MySqlPool;
@@ -32,7 +32,7 @@ pub async fn handler_is_available_mail_validation(
     let Query(query) = query.unwrap_or_default();
     let mail = query.mail;
 
-    let pool = mysqlpool_connect::mysqlpool_connect().await;
+    let pool = mysqlpool_connect().await;
     let is_available_mail = is_available_mail_validation(&pool, &mail).await.unwrap();
 
     Json(json!({ "is_available_mail": is_available_mail, }))

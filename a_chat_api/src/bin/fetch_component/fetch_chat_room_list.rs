@@ -4,7 +4,7 @@ use axum::{
 };
 // シリアライズ: RustのオブジェクトをJSON形式に変換
 // デシリアライズ : JSON形式をRustのオブジェクトに変換
-use crate::common::mysqlpool_connect;
+use crate::common::mysqlpool_connect::mysqlpool_connect;
 use serde::{Deserialize, Serialize};
 use serde_json::{json, Value};
 use sqlx::mysql::MySqlPool;
@@ -79,13 +79,13 @@ pub async fn handler_fetch_chat_room_list(
     let search_text_group = search_text.clone();
 
     // friends
-    let pool = mysqlpool_connect::mysqlpool_connect().await;
+    let pool = mysqlpool_connect().await;
     let friend_result = fetch_chat_room_list_friend(&pool, &user_id, search_text)
         .await
         .unwrap();
 
     // group
-    let pool = mysqlpool_connect::mysqlpool_connect().await;
+    let pool = mysqlpool_connect().await;
     let group_result = fetch_chat_room_list_group(&pool, &user_id, search_text_group)
         .await
         .unwrap();

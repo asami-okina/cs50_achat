@@ -1,4 +1,4 @@
-use crate::common::mysqlpool_connect;
+use crate::common::mysqlpool_connect::mysqlpool_connect;
 use axum::response::Json;
 use pwhash::bcrypt;
 use serde_json::{json, Value};
@@ -20,7 +20,7 @@ pub async fn handler_sign_up(body_json: Json<Value>) -> Json<Value> {
 
     let new_password = hashing_password(&password.to_string());
 
-    let pool = mysqlpool_connect::mysqlpool_connect().await;
+    let pool = mysqlpool_connect().await;
     sign_up(&pool, user_id, mail, &new_password).await.unwrap();
 
     Json(json!({ "user_id": user_id }))

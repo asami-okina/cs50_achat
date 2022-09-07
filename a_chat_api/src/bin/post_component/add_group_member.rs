@@ -1,7 +1,7 @@
 use axum::{extract::Path, response::Json};
 // シリアライズ: RustのオブジェクトをJSON形式に変換
 // デシリアライズ : JSON形式をRustのオブジェクトに変換
-use crate::common::mysqlpool_connect;
+use crate::common::mysqlpool_connect::mysqlpool_connect;
 use serde::{Deserialize, Serialize};
 use serde_json::{json, Value};
 use sqlx::mysql::MySqlPool;
@@ -33,7 +33,7 @@ pub async fn handler_add_group_member(
     // add_user_idsの取得
     let add_user_ids = &body_json.add_user_ids;
 
-    let pool = mysqlpool_connect::mysqlpool_connect().await;
+    let pool = mysqlpool_connect().await;
     add_group_member(&pool, &group_chat_room_id, add_user_ids)
         .await
         .unwrap();

@@ -1,7 +1,7 @@
 use axum::response::Json;
 // シリアライズ: RustのオブジェクトをJSON形式に変換
 // デシリアライズ : JSON形式をRustのオブジェクトに変換
-use crate::common::mysqlpool_connect;
+use crate::common::mysqlpool_connect::mysqlpool_connect;
 use pwhash::bcrypt;
 use serde::{Deserialize, Serialize};
 use serde_json::{json, Value};
@@ -24,7 +24,7 @@ pub async fn handler_log_in(body_json: Json<Value>) -> Json<Value> {
     // passwordの取得
     let password = body_json.0.get("password").unwrap().as_str().unwrap();
 
-    let pool = mysqlpool_connect::mysqlpool_connect().await;
+    let pool = mysqlpool_connect().await;
     let result = log_in(&pool, &mail, &password).await.unwrap();
     Json(json!({ "user_id": result.user_id, "certification_result": result.certification_result }))
 }

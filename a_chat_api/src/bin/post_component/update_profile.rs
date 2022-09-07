@@ -1,7 +1,7 @@
 use axum::{extract::Path, response::Json};
 // シリアライズ: RustのオブジェクトをJSON形式に変換
 // デシリアライズ : JSON形式をRustのオブジェクトに変換
-use crate::common::mysqlpool_connect;
+use crate::common::mysqlpool_connect::mysqlpool_connect;
 use serde::{Deserialize, Serialize};
 use serde_json::{json, Value};
 use sqlx::mysql::MySqlPool;
@@ -46,7 +46,7 @@ pub async fn handler_update_profile(
     // search_flagの取得
     let search_flag = &body_json.search_flag;
 
-    let pool = mysqlpool_connect::mysqlpool_connect().await;
+    let pool = mysqlpool_connect().await;
     update_profile(
         &pool,
         &user_id,

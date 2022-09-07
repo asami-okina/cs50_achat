@@ -1,7 +1,7 @@
 use axum::{extract::Path, response::Json};
 // シリアライズ: RustのオブジェクトをJSON形式に変換
 // デシリアライズ : JSON形式をRustのオブジェクトに変換
-use crate::common::mysqlpool_connect;
+use crate::common::mysqlpool_connect::mysqlpool_connect;
 use serde::{Deserialize, Serialize};
 use serde_json::{json, Value};
 use sqlx::mysql::MySqlPool;
@@ -41,7 +41,7 @@ pub async fn handler_update_last_read_time(
     // chat_room_idの取得
     let chat_room_id = &body_json.chat_room_id;
 
-    let pool = mysqlpool_connect::mysqlpool_connect().await;
+    let pool = mysqlpool_connect().await;
     update_last_read_time(&pool, &user_id, chat_room_type, &chat_room_id)
         .await
         .unwrap();

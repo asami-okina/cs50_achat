@@ -1,7 +1,7 @@
 use axum::{extract::Path, response::Json};
 // シリアライズ: RustのオブジェクトをJSON形式に変換
 // デシリアライズ : JSON形式をRustのオブジェクトに変換
-use crate::common::mysqlpool_connect;
+use crate::common::mysqlpool_connect::mysqlpool_connect;
 use serde::{Deserialize, Serialize};
 use serde_json::Value;
 use sqlx::mysql::MySqlPool;
@@ -29,7 +29,7 @@ pub async fn handler_leave_group(Path(path): Path<LeaveGroupPath>, body_json: Js
         .unwrap();
 
     // friends
-    let pool = mysqlpool_connect::mysqlpool_connect().await;
+    let pool = mysqlpool_connect().await;
     leave_group(&pool, &user_id, &group_chat_room_id)
         .await
         .unwrap();

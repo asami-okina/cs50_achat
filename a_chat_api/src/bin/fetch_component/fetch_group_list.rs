@@ -1,7 +1,7 @@
 use axum::{extract::Path, response::Json};
 // シリアライズ: RustのオブジェクトをJSON形式に変換
 // デシリアライズ : JSON形式をRustのオブジェクトに変換
-use crate::common::mysqlpool_connect;
+use crate::common::mysqlpool_connect::mysqlpool_connect;
 use serde::{Deserialize, Serialize};
 use serde_json::{json, Value};
 use sqlx::mysql::MySqlPool;
@@ -18,7 +18,7 @@ pub struct FetchGroupListPath {
 pub async fn handler_fetch_group_list(Path(path): Path<FetchGroupListPath>) -> Json<Value> {
     let user_id = path.user_id;
 
-    let pool = mysqlpool_connect::mysqlpool_connect().await;
+    let pool = mysqlpool_connect().await;
     let group_list = fetch_group_list(&pool, &user_id).await.unwrap();
     Json(json!({ "groups": group_list }))
 }

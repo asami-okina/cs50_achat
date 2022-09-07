@@ -4,7 +4,7 @@ use axum::{
 };
 // シリアライズ: RustのオブジェクトをJSON形式に変換
 // デシリアライズ : JSON形式をRustのオブジェクトに変換
-use crate::common::mysqlpool_connect;
+use crate::common::mysqlpool_connect::mysqlpool_connect;
 use serde::{Deserialize, Serialize};
 use serde_json::{json, Value};
 use sqlx::mysql::MySqlPool;
@@ -47,7 +47,7 @@ pub async fn handler_fetch_is_already_friend(
     let Query(query) = query.unwrap_or_default();
     let friend_user_id = query.friend_user_id;
 
-    let pool = mysqlpool_connect::mysqlpool_connect().await;
+    let pool = mysqlpool_connect().await;
     let result = fetch_is_already_friend(&pool, &user_id, &friend_user_id)
         .await
         .unwrap();

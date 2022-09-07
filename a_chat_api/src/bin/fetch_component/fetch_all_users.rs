@@ -1,4 +1,4 @@
-use crate::common::mysqlpool_connect;
+use crate::common::mysqlpool_connect::mysqlpool_connect;
 use axum::response::Json;
 use serde_json::{json, Value};
 use sqlx::mysql::MySqlPool;
@@ -9,7 +9,7 @@ use std::fmt::Debug;
 */
 // handler
 pub async fn handler_fetch_all_users() -> Json<Value> {
-    let pool = mysqlpool_connect::mysqlpool_connect().await;
+    let pool = mysqlpool_connect().await;
     let users = fetch_all_users(&pool).await.unwrap();
     Json(json!({ "users": users }))
 }
