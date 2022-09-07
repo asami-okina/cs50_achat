@@ -27,7 +27,7 @@ pub async fn fetch_friend_count(pool: &MySqlPool, user_id: &str) -> anyhow::Resu
     let friend_count = sqlx::query!(
         r#"
             SELECT
-            COUNT(*) as friend_count
+                COUNT(*) as friend_count
             FROM
                 follow
             WHERE

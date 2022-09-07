@@ -199,7 +199,7 @@ pub async fn fetch_chat_room_list_friend(
                         WHERE
                             dm.direct_chat_room_id = ?
                         AND dm.user_id != ?
-                        and u.nickname LIKE ?
+                        AND u.nickname LIKE ?
                     "#,
                     direct_chat_room_id,
                     user_id,
@@ -465,7 +465,7 @@ pub async fn fetch_group_member_user_ids(
     let result = sqlx::query!(
         r#"
             SELECT
-            user_id
+                user_id
             FROM
                 group_member
             WHERE
@@ -493,7 +493,7 @@ pub async fn fetch_chat_room_list_direct_chat_room_id(
     let result = sqlx::query!(
         r#"
             SELECT
-            direct_chat_room_id
+                direct_chat_room_id
             FROM
                 direct_member
             WHERE
@@ -524,7 +524,7 @@ pub async fn fetch_chat_room_list_group_chat_room_id(
     let result = sqlx::query!(
         r#"
             SELECT
-            group_chat_room_id
+                group_chat_room_id
             FROM
                 group_member
             WHERE
@@ -557,7 +557,7 @@ pub async fn fetch_chat_room_list_own_last_read_time_friend(
     let result = sqlx::query!(
         r#"
             SELECT
-            last_read_time
+                last_read_time
             FROM
                 direct_member
             WHERE
@@ -584,7 +584,7 @@ pub async fn fetch_chat_room_list_own_last_read_time_group(
     let result = sqlx::query!(
         r#"
             SELECT
-            last_read_time
+                last_read_time
             FROM
                 group_member
             WHERE
@@ -638,10 +638,10 @@ pub async fn fetch_chat_room_list_last_message_info_friend(
     let result = sqlx::query!(
         r#"
             SELECT
-            direct_chat_room_id,
-            sender_id,
-            content,
-            created_at
+                direct_chat_room_id,
+                sender_id,
+                content,
+                created_at
             FROM
                 message
             WHERE
@@ -685,10 +685,10 @@ pub async fn fetch_chat_room_list_last_message_info_group(
     let result = sqlx::query!(
         r#"
             SELECT
-            group_chat_room_id,
-            sender_id,
-            content,
-            created_at
+                group_chat_room_id,
+                sender_id,
+                content,
+                created_at
             FROM
                 message
             WHERE
@@ -734,7 +734,7 @@ pub async fn fetch_chat_room_list_last_message_info_unread_count_friend(
     let result = sqlx::query!(
         r#"
             SELECT
-            COUNT(*) as unread_count
+                COUNT(*) as unread_count
             FROM
                 message
             WHERE
@@ -764,7 +764,7 @@ pub async fn fetch_chat_room_list_last_message_info_unread_count_group(
     let result = sqlx::query!(
         r#"
             SELECT
-            COUNT(*) as unread_count
+                COUNT(*) as unread_count
             FROM
                 message
             WHERE

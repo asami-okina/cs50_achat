@@ -39,10 +39,10 @@ pub async fn fetch_friend_list(
     let friend_list = sqlx::query!(
         r#"
             SELECT
-            f.direct_chat_room_id as direct_chat_room_id,
-            u.id as friend_use_id,
-            u.profile_image as friend_profile_image,
-            u.nickname as friend_nickname
+                f.direct_chat_room_id as direct_chat_room_id,
+                u.id as friend_use_id,
+                u.profile_image as friend_profile_image,
+                u.nickname as friend_nickname
             FROM
                 user as u
                 INNER JOIN

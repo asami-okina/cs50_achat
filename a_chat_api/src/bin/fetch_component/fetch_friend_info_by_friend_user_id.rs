@@ -78,7 +78,7 @@ pub async fn fetch_friend_info_by_friend_user_id(
     let exist_user_id = sqlx::query!(
         r#"
             SELECT
-            count(*) as exist_user_id
+                count(*) as exist_user_id
             FROM
                 user
             WHERE
@@ -113,7 +113,7 @@ pub async fn fetch_friend_info_by_friend_user_id(
         let search_friend_user_info = sqlx::query!(
             r#"
                 SELECT
-                *
+                    *
                 FROM
                     user
                 WHERE
@@ -135,7 +135,7 @@ pub async fn fetch_friend_info_by_friend_user_id(
         let result = sqlx::query!(
             r#"
                 SELECT
-                count(*) as already_follow_requested
+                    count(*) as already_follow_requested
                 FROM
                     follow
                 WHERE
