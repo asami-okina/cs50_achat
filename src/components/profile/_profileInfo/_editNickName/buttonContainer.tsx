@@ -1,9 +1,9 @@
 // libs
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { View, StyleSheet, Text } from "react-native";
 import { API_SERVER_URL } from "../../../../constants/api";
-import { storage } from "../../../../../storage";
 import { postFetchApiHeader } from "../../../../constants/common";
+import { authContext } from "../../../../context/authContext";
 
 // components
 import { Button } from "../../../common/button";
@@ -26,6 +26,7 @@ export function ButtonContainer({
   isValidInput,
   isNotInput,
 }: ButtonContainerType) {
+  const auth = useContext(authContext);
   const [userId, setUserId] = useState<string>(null);
 
   // ニックネームの更新
@@ -44,13 +45,9 @@ export function ButtonContainer({
   }
 
   useEffect(() => {
-    storage
-      .load({
-        key: "key",
-      })
-      .then((data) => {
-        setUserId(data.userId);
-      });
+    if (auth) {
+      setUserId(auth);
+    }
   }, []);
 
   return (

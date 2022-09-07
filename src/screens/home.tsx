@@ -1,8 +1,9 @@
 // libs
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { View, SafeAreaView, KeyboardAvoidingView } from "react-native";
 import { useIsFocused } from "@react-navigation/native";
 import { getFetchApiHeader } from "../constants/common";
+import { authContext, setAuthContext } from "../context/authContext";
 
 // components
 import { Footer } from "../components/common/footer";
@@ -22,6 +23,8 @@ import { sameStyles } from "../constants/styles/sameStyles";
 import { IPHONE_X_BOTTOM_SPACE } from "../constants/layout";
 
 export function Home() {
+  const auth = useContext(authContext);
+  const setAuth = useContext(setAuthContext);
   const [userId, setUserId] = useState<string>(null);
   const [searchFormText, setSearchFormText] = useState<string>("");
   const [isDuringSearch, setIsDuringSearch] = useState<boolean>(false);
@@ -135,6 +138,7 @@ export function Home() {
         key: "key",
       })
       .then((data) => {
+        setAuth(data.userId);
         setUserId(data.userId);
         _fetchGroupList(data.userId);
         _fetchFriendList(data.userId);

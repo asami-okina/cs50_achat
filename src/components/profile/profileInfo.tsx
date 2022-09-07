@@ -1,10 +1,10 @@
 // libs
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { View, Text, StyleSheet, Image, Switch, Pressable } from "react-native";
 import { API_SERVER_URL } from "../../constants/api";
-import { storage } from "../../../storage";
 import { useNavigationAChat } from "../../hooks/useNavigationAChat";
 import { postFetchApiHeader } from "../../constants/common";
+import { authContext } from "../../context/authContext";
 
 // layouts
 import {
@@ -30,6 +30,7 @@ export function ProfileInfo({
   isEnabledToggle,
   setIsEnabledToggle,
 }: ProfileInfoType) {
+  const auth = useContext(authContext);
   const navigation = useNavigationAChat();
   const [userId, setUserId] = useState<string>(null);
 
@@ -58,13 +59,9 @@ export function ProfileInfo({
   }
 
   useEffect(() => {
-    storage
-      .load({
-        key: "key",
-      })
-      .then((data) => {
-        setUserId(data.userId);
-      });
+    if (auth) {
+      setUserId(auth);
+    }
   }, []);
 
   return (

@@ -1,8 +1,8 @@
 // libs
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import { View, SafeAreaView, KeyboardAvoidingView } from "react-native";
 import { API_SERVER_URL } from "../../constants/api";
-import { storage } from "../../../storage";
+import { authContext } from "../../context/authContext";
 
 // components
 import { Footer } from "../common/footer";
@@ -21,6 +21,7 @@ import { sameStyles } from "../../constants/styles/sameStyles";
 import { IPHONE_X_BOTTOM_SPACE } from "../../constants/layout";
 
 export function AddGroupMember({ route }) {
+  const auth = useContext(authContext);
   const { groupChatRoomId, groupMemberUserId, image, name } = route.params;
   const [userId, setUserId] = useState<string>(null);
   const [searchFormText, setSearchFormText] = useState<string>("");
@@ -182,15 +183,11 @@ export function AddGroupMember({ route }) {
 
   // ユーザーIDの取得
   useEffect(() => {
-    storage
-      .load({
-        key: "key",
-      })
-      .then((data) => {
-        setUserId(data.userId);
-        // 友達一覧を取得
-        _fetchFriendList(data.userId);
-      });
+    if (auth) {
+      // 友達一覧を取得
+      setUserId(auth);
+      _fetchFriendList(auth);
+    }
   }, []);
 
   return (

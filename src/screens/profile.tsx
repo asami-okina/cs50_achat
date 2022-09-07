@@ -1,5 +1,5 @@
 // libs
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import {
   View,
   SafeAreaView,
@@ -7,8 +7,8 @@ import {
   StyleSheet,
 } from "react-native";
 import { useIsFocused } from "@react-navigation/native";
-import { storage } from "../../storage";
 import { getFetchApiHeader } from "../constants/common";
+import { authContext } from "../context/authContext";
 
 // components
 import { TopAreaWrapper } from "../components/common/topAreaWrapper";
@@ -21,6 +21,7 @@ import { API_SERVER_URL } from "../constants/api";
 import { sameStyles } from "../constants/styles/sameStyles";
 
 export function Profile() {
+  const auth = useContext(authContext);
   const [userId, setUserId] = useState<string>(null);
   const [nickName, setNickName] = useState<string>("");
   const [profileImage, setProfileImage] = useState<string>(null);
@@ -50,15 +51,11 @@ export function Profile() {
   }
 
   useEffect(() => {
-    storage
-      .load({
-        key: "key",
-      })
-      .then((data) => {
-        setUserId(data.userId);
-        // navigationがリレンダーされないので、画面にフォーカスが当たった時に再実行するよう実装
-        _fetchProfileByUserId(data.userId);
-      });
+    if (auth) {
+      setUserId(auth);
+      // navigationがリレンダーされないので、画面にフォーカスが当たった時に再実行するよう実装
+      _fetchProfileByUserId(auth);
+    }
   }, [isScreenFocused]);
 
   return (

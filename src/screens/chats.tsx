@@ -1,9 +1,9 @@
 // libs
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import { View, SafeAreaView, KeyboardAvoidingView } from "react-native";
 import { useIsFocused } from "@react-navigation/native";
-import { storage } from "../../storage";
 import { getFetchApiHeader } from "../constants/common";
+import { authContext } from "../context/authContext";
 
 // components
 import { Footer } from "../components/common/footer";
@@ -20,6 +20,7 @@ import { sameStyles } from "../constants/styles/sameStyles";
 import { IPHONE_X_BOTTOM_SPACE } from "../constants/layout";
 
 export function Chats() {
+  const auth = useContext(authContext);
   const [userId, setUserId] = useState<string>(null);
   const [searchFormText, setSearchFormText] = useState<string>("");
   const [isDuringSearch, setIsDuringSearch] = useState<boolean>(false);
@@ -89,15 +90,11 @@ export function Chats() {
   };
 
   useEffect(() => {
-    storage
-      .load({
-        key: "key",
-      })
-      .then((data) => {
-        setUserId(data.userId);
-        // navigationがリレンダーされないので、画面にフォーカスが当たった時に再実行するよう実装
-        _fetchChatsList(data.userId);
-      });
+    if (auth) {
+      setUserId(auth);
+      // navigationがリレンダーされないので、画面にフォーカスが当たった時に再実行するよう実装
+      _fetchChatsList(auth);
+    }
   }, [isScreenFocused]);
 
   useEffect(() => {

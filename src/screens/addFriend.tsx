@@ -1,5 +1,5 @@
 // libs
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import {
   View,
   SafeAreaView,
@@ -7,8 +7,8 @@ import {
   StyleSheet,
 } from "react-native";
 import { API_SERVER_URL } from "../constants/api";
-import { storage } from "../../storage";
 import { getFetchApiHeader } from "../constants/common";
+import { authContext } from "../context/authContext";
 
 // components
 import { Footer } from "../components/common/footer";
@@ -25,6 +25,7 @@ import { sameStyles } from "../constants/styles/sameStyles";
 import { IPHONE_X_BOTTOM_SPACE } from "../constants/layout";
 
 export function AddFriend() {
+  const auth = useContext(authContext);
   const [userId, setUserId] = useState<string>(null);
   const [searchFormText, setSearchFormText] = useState<string>("");
   const [friendInfoByUserId, setFriendInfoByUserId] =
@@ -67,13 +68,9 @@ export function AddFriend() {
   }
 
   useEffect(() => {
-    storage
-      .load({
-        key: "key",
-      })
-      .then((data) => {
-        setUserId(data.userId);
-      });
+    if (auth) {
+      setUserId(auth);
+    }
   }, []);
 
   return (

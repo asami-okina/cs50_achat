@@ -1,10 +1,10 @@
 // libs
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import { View, SafeAreaView, KeyboardAvoidingView } from "react-native";
 import { API_SERVER_URL } from "../constants/api";
-import { storage } from "../../storage";
 import { StackScreenProps } from "@react-navigation/stack";
 import { getFetchApiHeader } from "../constants/common";
+import { authContext } from "../context/authContext";
 
 // components
 import { Footer } from "../components/common/footer";
@@ -24,6 +24,7 @@ import { IPHONE_X_BOTTOM_SPACE } from "../constants/layout";
 type MainProps = StackScreenProps<RootStackParamListType, "AddGroup">;
 
 export function AddGroup({ route }: MainProps) {
+  const auth = useContext(authContext);
   const { groupName, groupImage, backFriendList } = route.params;
   const [userId, setUserId] = useState<string>(null);
   const [searchFormText, setSearchFormText] = useState<string>("");
@@ -184,14 +185,10 @@ export function AddGroup({ route }: MainProps) {
   };
 
   useEffect(() => {
-    storage
-      .load({
-        key: "key",
-      })
-      .then((data) => {
-        setUserId(data.userId);
-        _fetchFriendList(data.userId);
-      });
+    if (auth) {
+      setUserId(auth);
+      _fetchFriendList(auth);
+    }
   }, []);
 
   // 一度設定画面に遷移した後、追加ボタンで戻ってきた場合の選択された友達一覧コンテナ、一覧部分

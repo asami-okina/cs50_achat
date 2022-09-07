@@ -1,5 +1,5 @@
 // libs
-import React, { useEffect, useState, useCallback } from "react";
+import React, { useEffect, useState, useCallback, useContext } from "react";
 import {
   View,
   SafeAreaView,
@@ -29,13 +29,13 @@ import { useIsMounted } from "../hooks/useIsMounted";
 import * as Sharing from "expo-sharing";
 import * as FileSystem from "expo-file-system";
 import { API_SERVER_URL } from "../constants/api";
-import { storage } from "../../storage";
 import { sock } from "../../websocket";
 import { StackScreenProps } from "@react-navigation/stack";
 import { useIsFocused } from "@react-navigation/native";
 import uuid from "react-native-uuid";
 import { getFetchApiHeader } from "../constants/common";
 import { postFetchApiHeader } from "../constants/common";
+import { authContext } from "../context/authContext";
 
 // components
 import { TopAreaWrapper } from "../components/common/topAreaWrapper";
@@ -70,6 +70,7 @@ export function Chat({ navigation, route }: MainProps) {
     groupMemberUserId,
     // addedGroupMemberUserNames,
   } = route.params;
+  const auth = useContext(authContext);
   const [loadEarlier, setLoadEarlier] = useState<boolean>(false);
   const [userId, setUserId] = useState<string>(null);
   const [messages, setMessages] = useState<MessageType[] | []>([]);
@@ -663,17 +664,11 @@ export function Chat({ navigation, route }: MainProps) {
   }, [isClickedUserIconOnGroupChatScreen]);
 
   useEffect(() => {
-    storage
-      .load({
-        key: "key",
-      })
-      .then((data) => {
-        setUserId(data.userId);
-        // websocketにuser_idを送信
-        sock.send(
-          JSON.stringify([{ user_id: data.userId, message_type: "SetUserId" }])
-        );
-      });
+    if (auth) {
+      setUserId(auth);
+      // websocketにuser_idを送信
+      sock.send(JSON.stringify([{ user_id: auth, message_type: "SetUserId" }]));
+    }
   }, []);
 
   return (

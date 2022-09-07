@@ -1,5 +1,5 @@
 // libs
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import {
   StyleSheet,
   Text,
@@ -11,10 +11,10 @@ import {
 } from "react-native";
 import { SwipeListView } from "react-native-swipe-list-view";
 import { API_SERVER_URL } from "../../../../constants/api";
-import { storage } from "../../../../../storage";
 import { useNavigationAChat } from "../../../../hooks/useNavigationAChat";
 import { Component } from "react";
 import { postFetchApiHeader } from "../../../../constants/common";
+import { authContext } from "../../../../context/authContext";
 
 // layouts
 import {
@@ -74,6 +74,7 @@ export default function Basic({
   setClickedOkMordal,
   setGroupCount,
 }: BasicPropsType) {
+  const auth = useContext(authContext);
   const navigation = useNavigationAChat();
   const [userId, setUserId] = useState<string>(null);
 
@@ -106,13 +107,9 @@ export default function Basic({
   }, [groupList]);
 
   useEffect(() => {
-    storage
-      .load({
-        key: "key",
-      })
-      .then((data) => {
-        setUserId(data.userId);
-      });
+    if (auth) {
+      setUserId(auth);
+    }
   }, []);
 
   // スワップされた該当行をデフォルト状態に戻す

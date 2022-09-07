@@ -1,10 +1,10 @@
 // libs
-import React, { useState, useEffect, useMemo } from "react";
+import React, { useState, useEffect, useMemo, useContext } from "react";
 import { View, SafeAreaView, KeyboardAvoidingView } from "react-native";
 import { API_SERVER_URL } from "../constants/api";
-import { storage } from "../../storage";
 import { StackScreenProps } from "@react-navigation/stack";
 import { getFetchApiHeader } from "../constants/common";
+import { authContext } from "../context/authContext";
 
 // components
 import { AddGroupTitle } from "../components/addGroup/addGroupTitle";
@@ -22,6 +22,7 @@ import { IPHONE_X_BOTTOM_SPACE } from "../constants/layout";
 type MainProps = StackScreenProps<RootStackParamListType, "AddGroupSetting">;
 
 export function AddGroupSetting({ route }: MainProps) {
+  const auth = useContext(authContext);
   const [friendList, setFriendList] = useState<NewFriendListPropsType[]>(
     route.params.friendList
   );
@@ -68,14 +69,10 @@ export function AddGroupSetting({ route }: MainProps) {
   }
 
   useEffect(() => {
-    storage
-      .load({
-        key: "key",
-      })
-      .then((data) => {
-        setUserId(data.userId);
-        _fetchOwnProfileByUserId(data.userId);
-      });
+    if (auth) {
+      setUserId(auth);
+      _fetchOwnProfileByUserId(auth);
+    }
   }, []);
 
   //　グループ設定画面から、メンバー追加で戻ったときにグループ名をセット

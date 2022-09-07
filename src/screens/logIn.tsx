@@ -1,5 +1,5 @@
 // libs
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import {
   View,
   SafeAreaView,
@@ -10,6 +10,7 @@ import {
 import { storage } from "../../storage";
 import { StackScreenProps } from "@react-navigation/stack";
 import { postFetchApiHeader } from "../constants/common";
+import { authContext, setAuthContext } from "../context/authContext";
 
 // components
 import { ToSignUpOrLoginTextArea } from "../components/common/toSignUpOrLoginTextArea";
@@ -27,6 +28,8 @@ import { sameStyles } from "../constants/styles/sameStyles";
 type MainProps = StackScreenProps<RootStackParamListType, "LogIn">;
 
 export function LogIn({ navigation }: MainProps) {
+  const auth = useContext(authContext);
+  const setAuth = useContext(setAuthContext);
   // キーボードに完了ボタンを表示
   const inputAccessoryViewID: string = "uniqueID";
   const [emailFormText, setEmailFormText] = useState<string>("");

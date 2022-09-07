@@ -1,8 +1,8 @@
 // libs
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import { View, Pressable, Image, TextInput, StyleSheet } from "react-native";
-import { storage } from "../../../../storage";
 import { chatsSearchFormIconEnum } from "../../../constants/enum";
+import { authContext } from "../../../context/authContext";
 
 // style
 import { searchStyles } from "../../../constants/styles/searchStyles";
@@ -30,6 +30,7 @@ export function SearchForm({
   setIsDuringSearch,
   placeholder,
 }: SearchFormPropsType) {
+  const auth = useContext(authContext);
   const [searchFormIconShowOrHide, setSearchFormIconShowOrHide] =
     useState<chatsSearchFormIconEnum>();
   const [userId, setUserId] = useState<string>(null);
@@ -37,13 +38,9 @@ export function SearchForm({
   let textInputSearch;
 
   useEffect(() => {
-    storage
-      .load({
-        key: "key",
-      })
-      .then((data) => {
-        setUserId(data.userId);
-      });
+    if (auth) {
+      setUserId(auth);
+    }
   });
   return (
     <Pressable onPress={() => textInputSearch.focus()}>

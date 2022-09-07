@@ -1,10 +1,10 @@
 // libs
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import { StyleSheet, TouchableOpacity, View, Text } from "react-native";
 import { API_SERVER_URL } from "../../constants/api";
-import { storage } from "../../../storage";
 import { useNavigationAChat } from "../../hooks/useNavigationAChat";
 import { postFetchApiHeader } from "../../constants/common";
+import { authContext } from "../../context/authContext";
 
 // layouts
 import {
@@ -49,6 +49,7 @@ export function SmallButton({
   backGroupName,
   backGroupImage,
 }: SmallButtonType) {
+  const auth = useContext(authContext);
   const navigation = useNavigationAChat();
   const [userId, setUserId] = useState<string>(null);
   const [groupChatRoomId, setGroupChatRoomId] = useState<string>("");
@@ -151,13 +152,9 @@ export function SmallButton({
   }, [addedGroupMemberUserNames]);
 
   useEffect(() => {
-    storage
-      .load({
-        key: "key",
-      })
-      .then((data) => {
-        setUserId(data.userId);
-      });
+    if (auth) {
+      setUserId(auth);
+    }
   }, []);
 
   // friendListからuserIdだけ取り出し、自分のuserIdも追加

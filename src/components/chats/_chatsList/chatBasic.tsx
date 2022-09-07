@@ -1,11 +1,11 @@
 // libs
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import { StyleSheet, View } from "react-native";
 import { SwipeListView } from "react-native-swipe-list-view";
 import { API_SERVER_URL } from "../../../constants/api";
-import { storage } from "../../../../storage";
 import { postFetchApiHeader } from "../../../constants/common";
 import { chatsclickedTypeEnum } from "../../../constants/enum";
+import { authContext } from "../../../context/authContext";
 
 // components
 import { ListItem } from "./_chatBasic/listItem";
@@ -53,6 +53,7 @@ export default function ChatBasic({
   groupChatRoomId,
   directChatRoomId,
 }: ChatBasicType) {
+  const auth = useContext(authContext);
   const [userId, setUserId] = useState<string>(null);
   // 削除時の確認モーダルでCancleの時は該当リストをデフォルト状態に戻す、Okの場合は該当リストを削除する甩に使用
   const [rowMap, setRowMap] = useState<string>("");
@@ -195,13 +196,9 @@ export default function ChatBasic({
   ]);
 
   useEffect(() => {
-    storage
-      .load({
-        key: "key",
-      })
-      .then((data) => {
-        setUserId(data.userId);
-      });
+    if (auth) {
+      setUserId(auth);
+    }
   }, []);
 
   return (

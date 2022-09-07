@@ -1,10 +1,10 @@
 // libs
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { View, StyleSheet, Image, Pressable } from "react-native";
 import * as ImagePicker from "expo-image-picker";
 import { API_SERVER_URL } from "../../constants/api";
-import { storage } from "../../../storage";
 import { postFetchApiHeader } from "../../constants/common";
+import { authContext } from "../../context/authContext";
 
 // layouts
 import {
@@ -17,6 +17,7 @@ type ProfileImageType = {
   setImage: React.Dispatch<React.SetStateAction<string>>;
 };
 export function ProfileImage({ image, setImage }: ProfileImageType) {
+  const auth = useContext(authContext);
   const [userId, setUserId] = useState<string>(null);
 
   // プロフィール画像の更新
@@ -51,13 +52,9 @@ export function ProfileImage({ image, setImage }: ProfileImageType) {
   };
 
   useEffect(() => {
-    storage
-      .load({
-        key: "key",
-      })
-      .then((data) => {
-        setUserId(data.userId);
-      });
+    if (auth) {
+      setUserId(auth);
+    }
   }, []);
 
   return (

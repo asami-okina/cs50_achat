@@ -3,6 +3,7 @@ import * as React from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import AppLoading from "expo-app-loading";
+import { AuthProvider } from "./src/context/authContext";
 
 // components
 import { SignUp } from "./src/screens/signUp";
@@ -74,94 +75,96 @@ function App() {
   } else {
     // フォントがダウンロードできたら、画面を出力する
     return (
-      <NavigationContainer>
-        <Stack.Navigator>
-          {/* あとで更新 */}
-          {/* <Stack.Screen name="Welcome" component={Welcome} options={{ headerShown: false }} />
+      <AuthProvider>
+        <NavigationContainer>
+          <Stack.Navigator>
+            {/* あとで更新 */}
+            {/* <Stack.Screen name="Welcome" component={Welcome} options={{ headerShown: false }} />
 					<Stack.Screen name="SignUp" component={SignUp} options={{ headerShown: false }} />
 					<Stack.Screen name="LogIn" component={LogIn} options={{ headerShown: false }} /> */}
-          <Stack.Screen
-            name="Home"
-            component={Home}
-            options={{ headerShown: false }}
-          />
-          <Stack.Screen
-            name="Footer"
-            component={Footer}
-            options={{ headerShown: false }}
-          />
-          <Stack.Screen
-            name="Button"
-            component={Button}
-            options={{ headerShown: false }}
-          />
-          <Stack.Screen
-            name="ToSignUpOrLoginTextArea"
-            component={ToSignUpOrLoginTextArea}
-            options={{ headerShown: false }}
-          />
-          <Stack.Screen
-            name="AuthErrorText"
-            component={AuthErrorText}
-            options={{ headerShown: false }}
-          />
-          <Stack.Screen
-            name="ForgotPassword"
-            component={ForgotPassword}
-            options={{ headerShown: false }}
-          />
-          <Stack.Screen
-            name="Chats"
-            component={Chats}
-            options={{ headerShown: false }}
-          />
-          <Stack.Screen
-            name="AddGroup"
-            component={AddGroup}
-            options={{ headerShown: false }}
-          />
-          <Stack.Screen
-            name="AddGroupSetting"
-            component={AddGroupSetting}
-            options={{ headerShown: false }}
-          />
-          <Stack.Screen
-            name="AddFriend"
-            component={AddFriend}
-            options={{ headerShown: false }}
-          />
-          <Stack.Screen
-            name="Profile"
-            component={Profile}
-            options={{ headerShown: false }}
-          />
-          <Stack.Screen
-            name="EditNickName"
-            component={EditNickName}
-            options={{ headerShown: false }}
-          />
-          <Stack.Screen
-            name="Chat"
-            component={Chat}
-            options={{ headerShown: false }}
-          />
-          <Stack.Screen
-            name="AddGroupMember"
-            component={AddGroupMember}
-            options={{ headerShown: false }}
-          />
-          <Stack.Screen
-            name="AlreadyFriendModal"
-            component={AlreadyFriendModal}
-            options={{ headerShown: false }}
-          />
-          <Stack.Screen
-            name="NotFriendModal"
-            component={NotFriendModal}
-            options={{ headerShown: false }}
-          />
-        </Stack.Navigator>
-      </NavigationContainer>
+            <Stack.Screen
+              name="Home"
+              component={Home}
+              options={{ headerShown: false }}
+            />
+            <Stack.Screen
+              name="Footer"
+              component={Footer}
+              options={{ headerShown: false }}
+            />
+            <Stack.Screen
+              name="Button"
+              component={Button}
+              options={{ headerShown: false }}
+            />
+            <Stack.Screen
+              name="ToSignUpOrLoginTextArea"
+              component={ToSignUpOrLoginTextArea}
+              options={{ headerShown: false }}
+            />
+            <Stack.Screen
+              name="AuthErrorText"
+              component={AuthErrorText}
+              options={{ headerShown: false }}
+            />
+            <Stack.Screen
+              name="ForgotPassword"
+              component={ForgotPassword}
+              options={{ headerShown: false }}
+            />
+            <Stack.Screen
+              name="Chats"
+              component={Chats}
+              options={{ headerShown: false }}
+            />
+            <Stack.Screen
+              name="AddGroup"
+              component={AddGroup}
+              options={{ headerShown: false }}
+            />
+            <Stack.Screen
+              name="AddGroupSetting"
+              component={AddGroupSetting}
+              options={{ headerShown: false }}
+            />
+            <Stack.Screen
+              name="AddFriend"
+              component={AddFriend}
+              options={{ headerShown: false }}
+            />
+            <Stack.Screen
+              name="Profile"
+              component={Profile}
+              options={{ headerShown: false }}
+            />
+            <Stack.Screen
+              name="EditNickName"
+              component={EditNickName}
+              options={{ headerShown: false }}
+            />
+            <Stack.Screen
+              name="Chat"
+              component={Chat}
+              options={{ headerShown: false }}
+            />
+            <Stack.Screen
+              name="AddGroupMember"
+              component={AddGroupMember}
+              options={{ headerShown: false }}
+            />
+            <Stack.Screen
+              name="AlreadyFriendModal"
+              component={AlreadyFriendModal}
+              options={{ headerShown: false }}
+            />
+            <Stack.Screen
+              name="NotFriendModal"
+              component={NotFriendModal}
+              options={{ headerShown: false }}
+            />
+          </Stack.Navigator>
+        </NavigationContainer>
+      </AuthProvider>
     );
   }
 }
