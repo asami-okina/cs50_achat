@@ -79,9 +79,21 @@ function App() {
         <NavigationContainer>
           <Stack.Navigator>
             {/* あとで更新 */}
-            {/* <Stack.Screen name="Welcome" component={Welcome} options={{ headerShown: false }} />
-					<Stack.Screen name="SignUp" component={SignUp} options={{ headerShown: false }} />
-					<Stack.Screen name="LogIn" component={LogIn} options={{ headerShown: false }} /> */}
+            <Stack.Screen
+              name="Welcome"
+              component={Welcome}
+              options={{ headerShown: false }}
+            />
+            <Stack.Screen
+              name="SignUp"
+              component={SignUp}
+              options={{ headerShown: false }}
+            />
+            <Stack.Screen
+              name="LogIn"
+              component={LogIn}
+              options={{ headerShown: false }}
+            />
             <Stack.Screen
               name="Home"
               component={Home}
